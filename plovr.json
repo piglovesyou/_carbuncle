@@ -1,0 +1,14 @@
+{
+  "id": "worm",
+  // "debug": true,
+  "closure-library": "./libs/closure-library/closure-library-master/closure/goog",
+  "paths": [
+	  "./public/worm",
+	  "./public/worm"
+  ],
+  "inputs": "./public/worm/main.js",
+  "mode": "ADVANCED",
+  "level": "VERBOSE",
+  "externs": [ ],
+  "output-file": "public/worm/javascripts/main-min.js"
+}

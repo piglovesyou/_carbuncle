@@ -1,4 +1,8 @@
 
+
+var SELENIUM_JAR_PATH = './libs/selenium/selenium-server-standalone-2.42.2.jar';
+
+
 var Q = require('q');
 var fs = require('fs');
 var readFile = Q.denodeify(fs.readFile);
@@ -7,6 +11,32 @@ var mime = require('mime');
 
 var httpProxy = require('http-proxy');
 var proxy = httpProxy.createProxyServer();
+
+var webdriver = require('selenium-webdriver');
+var By = webdriver.By;
+var SeleniumServer = require('selenium-webdriver/remote').SeleniumServer;
+
+
+
+// var server = new SeleniumServer(SELENIUM_JAR_PATH, {
+//   port: 4444
+// });
+// server.start();
+// var driver = new webdriver.Builder().
+//     usingServer(server.address()).
+//     withCapabilities(webdriver.Capabilities.firefox()).
+//     build();
+// driver.get('http://google.com');
+// driver.findElement(By.name('q')).sendKeys('webdriver');
+// driver.findElement(webdriver.By.name('btnK')).click();
+// driver.wait(function() {
+//  return driver.getTitle().then(function(title) {
+//    return title === 'webdriver - Google 検索';
+//  });
+// }, 2000);
+// driver.quit();
+
+
 
 
 http.createServer(function(req, res) {

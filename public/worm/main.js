@@ -1,2 +1,5 @@
 
-console.log('yeah');
+goog.require('app.App');
+
+new app.App;
+
