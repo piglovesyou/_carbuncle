@@ -24,40 +24,67 @@ app.App = function() {
       pixelBottom = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-bottom'),
       pixelLeft = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-left'));
   var selectorTextarea = goog.dom.getElementByClass('selector-textarea');
+  var selectorButton = goog.dom.getElementByClass('selector-button-a');
   var editorTitleInput = goog.dom.getElementByClass('editor-title-input');
   var mask = goog.dom.getElementByClass('mask');
 
-  enableSelectMode(true);
+  // enableSelectMode(true);
 
-  var iframeMonitor = new goog.net.IframeLoadMonitor(iframeEl);
-  if (iframeMonitor.isLoaded()) {
-    handleIframeLoad();
-  } else {
-    goog.events.listen(iframeMonitor,
-        goog.net.IframeLoadMonitor.LOAD_EVENT, handleIframeLoad);
-  }
-
-
+  // var iframeMonitor = new goog.net.IframeLoadMonitor(iframeEl);
+  // if (iframeMonitor.isLoaded()) {
+  //   handleIframeLoad();
+  // } else {
+  //   goog.events.listen(iframeMonitor,
+  //       goog.net.IframeLoadMonitor.LOAD_EVENT, handleIframeLoad);
+  // }
   goog.dom.append(document.body, pixel);
 
 
 
-  function handleIframeLoad() {
+  enableSelectMode(false);
 
-    goog.events.listen(doc, 'click', function(e) {
-      goog.dom.forms.setValue(selectorTextarea, buildSelector(e.target).join(' '));
-      goog.dom.forms.setValue(editorTitleInput, goog.dom.getTextContent(e.target));
-    }, true);
 
-    goog.events.listen(doc, 'mouseover', function(e) {
-      var et = /** @type {Node} */(e.target);
-      var iframePos = goog.style.getPageOffset(iframeEl);
-      var pos = goog.style.getPageOffset(et);
-      redrawPixel(
-          new goog.math.Coordinate(iframePos.x + pos.x, iframePos.y + pos.y),
-          goog.style.getBorderBoxSize(et),
-          buildSelector(et));
-    });
+
+  // function handleIframeLoad() {
+  //   goog.events.listen(doc, 'click', handleIframeLoad, true);
+  //   goog.events.listen(doc, 'mouseover', handleIframeMouseOver);
+  // }
+
+  var selectEnabled = false;
+  function enableSelectMode(enable) {
+    selectEnabled = enable;
+    goog.style.setElementShown(mask, enable);
+    if (enable) {
+      goog.events.unlisten(selectorButton, 'click', handleSelectorButtonClick, false);
+      goog.events.listen(doc, 'click', stopPropagation, true);
+      goog.events.listen(doc, 'click', handleIframeClick, true);
+      goog.events.listen(doc, 'mouseover', handleIframeMouseOver);
+    } else {
+      goog.events.listen(selectorButton, 'click', handleSelectorButtonClick, false);
+      goog.events.unlisten(doc, 'click', stopPropagation, true);
+      goog.events.unlisten(doc, 'click', handleIframeClick, true);
+      goog.events.unlisten(doc, 'mouseover', handleIframeMouseOver);
+    }
+  }
+
+  function handleSelectorButtonClick(e) {
+    enableSelectMode(true);
+  }
+
+  function handleIframeClick(e) {
+    goog.dom.forms.setValue(selectorTextarea, buildSelector(e.target).join(' '));
+    goog.dom.forms.setValue(editorTitleInput, goog.dom.getTextContent(e.target));
+    enableSelectMode(false);
+  }
+
+  function handleIframeMouseOver(e) {
+    var et = /** @type {Node} */(e.target);
+    var iframePos = goog.style.getPageOffset(iframeEl);
+    var pos = goog.style.getPageOffset(et);
+    redrawPixel(
+        new goog.math.Coordinate(iframePos.x + pos.x, iframePos.y + pos.y),
+        goog.style.getBorderBoxSize(et),
+        buildSelector(et));
   }
 
   function redrawPixel(pos, size, description) {
@@ -80,14 +107,6 @@ app.App = function() {
           (node.className ? '.' + node.className.split(' ').join('.') : ''));
     } while ((node = node.parentNode) && node && node.tagName && node.tagName.toLowerCase() != 'html');
     return rv.reverse();
-  }
-
-  function enableSelectMode(enable) {
-    if (enable) {
-      goog.events.listen(doc, 'click', stopPropagation, this, this);
-    } else {
-      goog.events.unlisten(doc, 'click', stopPropagation, this, this);
-    }
   }
 
   function stopPropagation(e) {

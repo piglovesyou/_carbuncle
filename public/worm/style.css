@@ -53,7 +53,7 @@ a {
   padding: .8em 1.2em;
 }
 .selector { display: flex }
-.selector .button {
+.selector-button {
   margin-right: 1em;
 }
 .selector-textarea { flex: 1 }
@@ -113,7 +113,6 @@ a {
 
 
 .mask {
-  display: none;
   position: absolute;
   top: 0;
   width: 100%;
