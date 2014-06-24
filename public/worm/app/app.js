@@ -19,11 +19,13 @@ app.App = function() {
   var pixelBottom;
   var pixelLeft;
   var pixel = goog.dom.createDom('div', 'worm-pixel',
-      pixelTop = goog.dom.createDom('div', 'worm-pixel-border'),
-      pixelRight = goog.dom.createDom('div', 'worm-pixel-border'),
-      pixelBottom = goog.dom.createDom('div', 'worm-pixel-border'),
-      pixelLeft = goog.dom.createDom('div', 'worm-pixel-border'));
+      pixelTop = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-top'),
+      pixelRight = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-right'),
+      pixelBottom = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-bottom'),
+      pixelLeft = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-left'));
   var selectorTextarea = goog.dom.getElementByClass('selector-textarea');
+  var editorTitleInput = goog.dom.getElementByClass('editor-title-input');
+  var mask = goog.dom.getElementByClass('mask');
 
   enableSelectMode(true);
 
@@ -44,6 +46,7 @@ app.App = function() {
 
     goog.events.listen(doc, 'click', function(e) {
       goog.dom.forms.setValue(selectorTextarea, buildSelector(e.target).join(' '));
+      goog.dom.forms.setValue(editorTitleInput, goog.dom.getTextContent(e.target));
     }, true);
 
     goog.events.listen(doc, 'mouseover', function(e) {
