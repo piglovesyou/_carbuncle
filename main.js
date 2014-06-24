@@ -8,6 +8,7 @@ var fs = require('fs');
 var readFile = Q.denodeify(fs.readFile);
 var http = require('http');
 var mime = require('mime');
+var url = require('url');
 
 var httpProxy = require('http-proxy');
 var proxy = httpProxy.createProxyServer();
@@ -42,12 +43,13 @@ var SeleniumServer = require('selenium-webdriver/remote').SeleniumServer;
 http.createServer(function(req, res) {
 
   if (~req.url.indexOf('/worm')) {
+    
+    var path = (req.url == '/worm' || req.url == '/worm/') ?
+      '/worm/index.html' :
+      url.parse(req.url).pathname;
+    res.setHeader('Content-Type', mime.lookup(path) + ';charset=UTF-8');
 
-    var url = (req.url == '/worm' || req.url == '/worm/') ?
-      '/worm/index.html' : req.url;
-    res.setHeader('Content-Type', mime.lookup(url) + ';charset=UTF-8');
-
-    readFile(__dirname + '/public' + url)
+    readFile(__dirname + '/public' + path)
     .then(function(content) { res.end(content) })
     .fail(function(e) { console.log(e.stack) });
 

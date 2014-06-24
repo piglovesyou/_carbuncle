@@ -3,6 +3,7 @@ html,
 body {
   width: 100%;
   height: 100%;
+  overflow: hidden;
 }
 
 body {
@@ -25,5 +26,80 @@ a {
   background: #fff;
   border-top: 2px #000 solid;
   border-right: 2px #000 solid;
+  cursor: pointer;
 }
 
+
+
+.toolbar {
+  padding: .4em .6em;
+  border-bottom: 1px #ccc solid
+}
+
+
+
+.editor {
+  padding: .8em;
+}
+.editor-content {
+  border: 1px #d3d3d3 solid;
+  background: #f9f9f9;
+  border-radius: 2px;
+  padding: .8em 1.2em;
+}
+.selector { display: flex }
+.selector .button {
+  margin-right: 1em;
+}
+.selector-textarea { flex: 1 }
+
+
+
+.sinario {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+}
+.sinario-header,
+.sinario-footer {
+  padding: 1.2em 1.6em;
+}
+.sinario-header {
+}
+.sinario-footer {
+}
+.sinario-list {
+  flex: 1;
+  border: 1px #d3d3d3 solid;
+  margin-left: 1.6em;
+  margin-right: 1.6em;
+}
+
+
+.worm-pixel {
+  position: absolute;
+  background: black;
+  width: 0;
+  height: 0;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+}
+.worm-pixel .worm-pixel-border {
+  position: absolute;
+  border: 1px dashed #0078e7;
+  box-sizing: border-box;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+}
+.worm-pixel-description {
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: 40%;
+  z-index: 9999;
+  font-size: 85%;
+  color: #999;
+  background: lightyellow;
+}

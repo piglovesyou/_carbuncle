@@ -1,14 +1,47 @@
 <head>
   <link rel="stylesheet" href="/worm/pure-min.css" />
+  <link rel="stylesheet" href="/worm/font-awesome-4.1.0/css/font-awesome.min.css" />
   <link rel="stylesheet" href="/worm/style.css" />
 </head>
 <body>
 </body>
-  <div class="header">
-    <div class="selector">selector</div>
+
+  <div class="toolbar">
+    toolbar
   </div>
+
+  <div class="editor">
+    <form class="pure-form pure-form-stacked">
+      <div class="pure-g">
+
+          <div class="selector pure-u-1">
+            <div class="button">
+              <a class="pure-button pure-button-primary" href="#">
+              <i class="fa fa-location-arrow fa-flip-horizontal fa-lg"></i>
+              A Primary Button</a>
+            </div>
+            <textarea class="selector-textarea" id="" name="selector" placeholder="CSSセレクタを入力"></textarea>
+          </div>
+          <div class="action pure-u-1-4">
+            <label for="multi-state">アクション</label>
+            <select id="multi-state" class="pure-input-1">
+                <option>クリック</option>
+                <option>ベリファイ</option>
+                <option>IL</option>
+            </select>
+          </div>
+        </div>
+
+    </form>
+  </div>
+
   <div class="main">
     <iframe id="iframe" src="/" frameborder="0"></iframe>
-    <div class="sinario">ooo</div>
+    <div class="sinario">
+      <div class="sinario-header">sinario header</div>
+      <div class="sinario-list"></div>
+      <div class="sinario-footer">sinario footer</div>
+    </div>
   </div>
+
   <script src="http://localhost:9810/compile?id=worm&mode=WHITESPACE"></script>
