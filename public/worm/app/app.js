@@ -28,27 +28,28 @@ app.App = function() {
   var editorTitleInput = goog.dom.getElementByClass('editor-title-input');
   var mask = goog.dom.getElementByClass('mask');
 
-  // enableSelectMode(true);
-
-  // var iframeMonitor = new goog.net.IframeLoadMonitor(iframeEl);
-  // if (iframeMonitor.isLoaded()) {
-  //   handleIframeLoad();
-  // } else {
-  //   goog.events.listen(iframeMonitor,
-  //       goog.net.IframeLoadMonitor.LOAD_EVENT, handleIframeLoad);
-  // }
   goog.dom.append(document.body, pixel);
 
 
+  var iframeMonitor = new goog.net.IframeLoadMonitor(iframeEl);
+  if (iframeMonitor.isLoaded()) {
+    handleIframeLoad();
+  } else {
+    goog.events.listen(iframeMonitor,
+        goog.net.IframeLoadMonitor.LOAD_EVENT, handleIframeLoad);
+  }
 
-  enableSelectMode(false);
+
+
+  function handleIframeLoad() {
+    enableSelectMode(false);
+  }
 
 
 
-  // function handleIframeLoad() {
-  //   goog.events.listen(doc, 'click', handleIframeLoad, true);
-  //   goog.events.listen(doc, 'mouseover', handleIframeMouseOver);
-  // }
+
+
+
 
   var selectEnabled = false;
   function enableSelectMode(enable) {
