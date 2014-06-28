@@ -11,27 +11,28 @@
   </div>
 
   <div class="editor">
-    <form class="pure-form pure-form-stacked">
+    <form class="pure-form">
       <div class="pure-g">
 
           <div class="editor-title pure-u-1">
             <input class="editor-title-input" type="text" placeholder="タイトルを入力" />
           </div>
 
-          <div class="selector pure-u-1">
-            <div class="selector-button">
-              <a class="selector-button-a pure-button pure-button-primary" href="#">
+          <div class="selector-button pure-u-1-4">
+            <a class="selector-button-a pure-button pure-button-primary" href="#">
               <i class="fa fa-location-arrow fa-flip-horizontal fa-lg"></i>
-              A Primary Button</a>
-            </div>
-            <textarea class="selector-textarea" id="" name="selector" placeholder="CSSセレクタを入力"></textarea>
+              A Primary Button
+            </a>
           </div>
+          <div class="selector-textarea-wrap pure-u-3-4">
+            <textarea rows="2" class="selector-textarea" id="" name="selector" placeholder="CSSセレクタを入力"></textarea>
+          </div>
+
           <div class="action pure-u-1-4">
             <label for="multi-state">アクション</label>
             <select id="multi-state" class="pure-input-1">
-                <option>クリック</option>
-                <option>ベリファイ</option>
-                <option>IL</option>
+              <option>クリック</option>
+              <option>ベリファイ</option>
             </select>
           </div>
         </div>

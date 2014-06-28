@@ -52,11 +52,16 @@ a {
   border-radius: 2px;
   padding: .8em 1.2em;
 }
-.selector { display: flex }
 .selector-button {
-  margin-right: 1em;
+  text-align: right;
 }
-.selector-textarea { flex: 1 }
+.selector-textarea-wrap {
+  display: flex;
+}
+.selector-textarea {
+  flex: 1;
+  font-size: 77%;
+}
 
 
 
