@@ -24,26 +24,24 @@
               A Primary Button
             </a>
           </div>
+
           <div class="selector-textarea-wrap pure-u-3-4">
             <textarea rows="2" class="selector-textarea" id="" name="selector" placeholder="CSSセレクタを入力"></textarea>
           </div>
 
-          <div class="mode-select pure-u-1-4">
-            <!-- <label for="multi-state">アクション</label> -->
-            <select id="multi-state" class="">
-              <option value="action">アクション</option>
-              <option value="verify">ベリファイ</option>
-            </select>
-          </div>
+          <select class="mode-select">
+            <option value="action">アクション</option>
+            <option value="verify">ベリファイ</option>
+          </select>
 
           <div class="action-select pure-u-1-2" style="display:none;">
-            <select id="multi-state" class="">
+            <select>
               <option value="click">クリック</option>
             </select>
           </div>
 
           <div class="verify-select pure-u-1-2" style="display:none;">
-            <select id="multi-state" class="">
+            <select>
               <option value="contains">を含む</option>
               <option value="startswith">で始まる</option>
               <option value="endswith">で終わる</option>

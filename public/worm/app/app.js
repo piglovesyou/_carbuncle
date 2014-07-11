@@ -35,10 +35,9 @@ app.App = function() {
   var editorTitleInputEl = goog.dom.getElementByClass('editor-title-input');
   var maskEl = goog.dom.getElementByClass('mask');
   var scenarioEl = goog.dom.getElementByClass('scenario');
-  var editorModeEl = goog.dom.getElementByClass('mode-select');
   var editorActionEl = goog.dom.getElementByClass('action-select');
   var editorVerifyEl = goog.dom.getElementByClass('verify-select');
-  var editorModeSelectEl = goog.dom.getElementsByTagNameAndClass('select', null, editorModeEl)[0];
+  var editorModeSelectEl = goog.dom.getElementByClass('mode-select');
   var editorActionSelectEl = goog.dom.getElementsByTagNameAndClass('select', null, editorActionEl)[0];
   var editorVerifySelectEl = goog.dom.getElementsByTagNameAndClass('select', null, editorVerifyEl)[0];
 
