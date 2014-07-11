@@ -7,7 +7,10 @@ goog.require('goog.events.EventTarget');
 goog.require('goog.events.InputHandler');
 goog.require('goog.net.IframeLoadMonitor');
 goog.require('goog.style');
+goog.require('goog.ui.List');
 
+var data;
+var list;
 
 /**
  * @constructor
@@ -15,20 +18,20 @@ goog.require('goog.style');
 app.App = function() {
   var iframeEl = goog.dom.getElement('iframe');
   var iframeDocument = goog.dom.getFrameContentDocument(iframeEl);
-  var pixelTop;
-  var pixelRight;
-  var pixelBottom;
-  var pixelLeft;
-  var pixel = goog.dom.createDom('div', 'worm-pixel',
-      pixelTop = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-top'),
-      pixelRight = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-right'),
-      pixelBottom = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-bottom'),
-      pixelLeft = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-left'));
+
+  var pixelTop, pixelRight, pixelBottom, pixelLeft,
+      pixel = goog.dom.createDom('div', 'worm-pixel',
+        pixelTop = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-top'),
+        pixelRight = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-right'),
+        pixelBottom = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-bottom'),
+        pixelLeft = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-left'));
+
   var selectorTextarea = goog.dom.getElementByClass('selector-textarea');
   var selectorTextareaInputHandler = new goog.events.InputHandler(selectorTextarea);
   var selectorButton = goog.dom.getElementByClass('selector-button-a');
   var editorTitleInput = goog.dom.getElementByClass('editor-title-input');
   var mask = goog.dom.getElementByClass('mask');
+  var sinarioList = goog.dom.getElementByClass('sinario-list');
 
   goog.dom.append(document.body, pixel);
 
@@ -75,12 +78,19 @@ app.App = function() {
 
   function handleIframeMouseOver(e) {
     var et = /** @type {Node} */(e.target);
-    var iframePos = goog.style.getPageOffset(iframeEl);
+    var iframePos = getIframePosision();
     var pos = goog.style.getPageOffset(et);
     redrawPixel(
         new goog.math.Coordinate(iframePos.x + pos.x, iframePos.y + pos.y),
         goog.style.getBorderBoxSize(et),
         buildSelector(et));
+  }
+
+  function getIframePosision() {
+    var pos = goog.style.getPageOffset(iframeEl);
+    pos.x += parseInt(goog.style.getComputedStyle(iframeEl, 'borderLeftWidth'), 10);
+    pos.y += parseInt(goog.style.getComputedStyle(iframeEl, 'borderTopWidth'), 10);
+    return pos;
   }
 
   function redrawPixel(pos, size, description) {
@@ -113,14 +123,14 @@ app.App = function() {
 
   function handleIframeLoad() {
     enableSelectMode(false);
+
+    data = new goog.ui.list.Data;
+    list = new goog.ui.List(function(item) {
+      return item.title;
+    });
+    list.renderBefore(goog.dom.getElementByClass('sinario-footer'));
+    goog.dom.classes.add(list.getElement(), 'sinario-list');
   }
-
-
-
-
-
-
-
 
 
   var iframeMonitor = new goog.net.IframeLoadMonitor(iframeEl);

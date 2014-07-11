@@ -104,6 +104,7 @@ a {
   z-index: 9999;
 }
 .worm-pixel-border-right { margin-left: -2px; }
+.worm-pixel-border-bottom { margin-top: -2px; }
 
 .worm-pixel-description {
   position: absolute;
