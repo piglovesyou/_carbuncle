@@ -16,25 +16,30 @@ var list;
  * @constructor
  */
 app.App = function() {
+
+
+  // DOM
   var iframeEl = goog.dom.getElement('iframe');
   var iframeDocument = goog.dom.getFrameContentDocument(iframeEl);
 
-  var pixelTop, pixelRight, pixelBottom, pixelLeft,
-      pixel = goog.dom.createDom('div', 'worm-pixel',
-        pixelTop = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-top'),
-        pixelRight = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-right'),
-        pixelBottom = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-bottom'),
-        pixelLeft = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-left'));
+  var pixelTopEl, pixelRightEl, pixelBottomEl, pixelLeftEl,
+      pixelEl = goog.dom.createDom('div', 'worm-pixel',
+        pixelTopEl = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-top'),
+        pixelRightEl = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-right'),
+        pixelBottomEl = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-bottom'),
+        pixelLeftEl = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-left'));
 
-  var selectorTextarea = goog.dom.getElementByClass('selector-textarea');
-  var selectorTextareaInputHandler = new goog.events.InputHandler(selectorTextarea);
-  var selectorButton = goog.dom.getElementByClass('selector-button-a');
-  var editorTitleInput = goog.dom.getElementByClass('editor-title-input');
-  var mask = goog.dom.getElementByClass('mask');
-  var scenarioList = goog.dom.getElementByClass('scenario-list');
+  var selectorTextareaEl = goog.dom.getElementByClass('selector-textarea');
+  var selectorButtonEl = goog.dom.getElementByClass('selector-button-a');
+  var editorTitleInputEl = goog.dom.getElementByClass('editor-title-input');
+  var maskEl = goog.dom.getElementByClass('mask');
+  var scenarioEl = goog.dom.getElementByClass('scenario');
 
-  goog.dom.append(document.body, pixel);
+  goog.dom.append(document.body, pixelEl);
 
+
+
+  var selectorTextareaInputHandler = new goog.events.InputHandler(selectorTextareaEl);
 
 
 
@@ -46,15 +51,15 @@ app.App = function() {
   var selectEnabled = false;
   function enableSelectMode(enable) {
     selectEnabled = enable;
-    goog.style.setElementShown(mask, enable);
+    goog.style.setElementShown(maskEl, enable);
     if (enable) {
-      goog.events.unlisten(selectorButton, 'click', handleSelectorButtonClick, false);
+      goog.events.unlisten(selectorButtonEl, 'click', handleSelectorButtonClick, false);
       goog.events.unlisten(selectorTextareaInputHandler, goog.events.InputHandler.EventType.INPUT, handleSelectorTextKey);
       goog.events.listen(iframeDocument, 'click', stopPropagation, true);
       goog.events.listen(iframeDocument, 'click', handleIframeClick, true);
       goog.events.listen(iframeDocument, 'mouseover', handleIframeMouseOver);
     } else {
-      goog.events.listen(selectorButton, 'click', handleSelectorButtonClick, false);
+      goog.events.listen(selectorButtonEl, 'click', handleSelectorButtonClick, false);
       goog.events.listen(selectorTextareaInputHandler, goog.events.InputHandler.EventType.INPUT, handleSelectorTextKey);
       goog.events.unlisten(iframeDocument, 'click', stopPropagation, true);
       goog.events.unlisten(iframeDocument, 'click', handleIframeClick, true);
@@ -71,8 +76,8 @@ app.App = function() {
   }
 
   function handleIframeClick(e) {
-    goog.dom.forms.setValue(selectorTextarea, buildSelector(e.target).join(' '));
-    goog.dom.forms.setValue(editorTitleInput, goog.dom.getTextContent(e.target));
+    goog.dom.forms.setValue(selectorTextareaEl, buildSelector(e.target).join(' '));
+    goog.dom.forms.setValue(editorTitleInputEl, goog.dom.getTextContent(e.target));
     enableSelectMode(false);
   }
 
@@ -94,15 +99,15 @@ app.App = function() {
   }
 
   function redrawPixel(pos, size, description) {
-    goog.style.setPosition(pixel, pos);
+    goog.style.setPosition(pixelEl, pos);
 
-    goog.style.setWidth(pixelTop, size.width);
-    goog.style.setWidth(pixelBottom, size.width);
-    goog.style.setHeight(pixelLeft, size.height);
-    goog.style.setHeight(pixelRight, size.height);
+    goog.style.setWidth(pixelTopEl, size.width);
+    goog.style.setWidth(pixelBottomEl, size.width);
+    goog.style.setHeight(pixelLeftEl, size.height);
+    goog.style.setHeight(pixelRightEl, size.height);
 
-    goog.style.setPosition(pixelRight, size.width, 0);
-    goog.style.setPosition(pixelBottom, 0, size.height);
+    goog.style.setPosition(pixelRightEl, size.width, 0);
+    goog.style.setPosition(pixelBottomEl, 0, size.height);
   }
 
   function buildSelector(node) {

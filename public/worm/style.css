@@ -84,6 +84,10 @@ a {
   margin-left: 1.6em;
   margin-right: 1.6em;
 }
+.scenario-entry {
+  padding: 1em;
+  background: #f3f3f3;
+}
 
 
 .worm-pixel {
