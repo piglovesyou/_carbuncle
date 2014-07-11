@@ -7,7 +7,8 @@ goog.require('goog.events.EventTarget');
 goog.require('goog.events.InputHandler');
 goog.require('goog.net.IframeLoadMonitor');
 goog.require('goog.style');
-goog.require('goog.ui.List');
+goog.require('app.Scenario');
+goog.require('goog.dom.forms');
 
 var data;
 var list;
@@ -34,12 +35,19 @@ app.App = function() {
   var editorTitleInputEl = goog.dom.getElementByClass('editor-title-input');
   var maskEl = goog.dom.getElementByClass('mask');
   var scenarioEl = goog.dom.getElementByClass('scenario');
+  var editorModeEl = goog.dom.getElementByClass('mode-select');
+  var editorActionEl = goog.dom.getElementByClass('action-select');
+  var editorVerifyEl = goog.dom.getElementByClass('verify-select');
+  var editorModeSelectEl = goog.dom.getElementsByTagNameAndClass('select', null, editorModeEl)[0];
+  var editorActionSelectEl = goog.dom.getElementsByTagNameAndClass('select', null, editorActionEl)[0];
+  var editorVerifySelectEl = goog.dom.getElementsByTagNameAndClass('select', null, editorVerifyEl)[0];
 
   goog.dom.append(document.body, pixelEl);
 
 
 
   var selectorTextareaInputHandler = new goog.events.InputHandler(selectorTextareaEl);
+  var scenario = new app.Scenario;
 
 
 
@@ -129,13 +137,31 @@ app.App = function() {
   function handleIframeLoad() {
     enableSelectMode(false);
 
-    // data = new goog.ui.list.Data;
-    // list = new goog.ui.List(function(item) {
-    //   return item.title;
-    // });
-    // list.renderBefore(goog.dom.getElementByClass('scenario-footer'));
-    // goog.dom.classes.add(list.getElement(), 'scenario-list');
+    scenario.decorate(scenarioEl);
+
+    setupModeSelector();
   }
+
+
+
+  function setupModeSelector() {
+    console.log(editorModeSelectEl);
+    goog.events.listen(editorModeSelectEl, 'change', toggleModeSelectorDependers);
+    toggleModeSelectorDependers();
+  }
+  function toggleModeSelectorDependers() {
+    switch(goog.dom.forms.getValue(editorModeSelectEl)) {
+      case 'action':
+        goog.style.setElementShown(editorActionEl, true);
+        goog.style.setElementShown(editorVerifyEl, false);
+        break;
+      case 'verify':
+        goog.style.setElementShown(editorActionEl, false);
+        goog.style.setElementShown(editorVerifyEl, true);
+        break;
+    }
+  }
+
 
 
   var iframeMonitor = new goog.net.IframeLoadMonitor(iframeEl);

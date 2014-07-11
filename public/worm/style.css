@@ -62,6 +62,9 @@ a {
   flex: 1;
   font-size: 77%;
 }
+.editor .append {
+  text-align: right;
+}
 
 
 

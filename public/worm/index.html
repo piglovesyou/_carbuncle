@@ -28,13 +28,34 @@
             <textarea rows="2" class="selector-textarea" id="" name="selector" placeholder="CSSセレクタを入力"></textarea>
           </div>
 
-          <div class="action pure-u-1-4">
-            <label for="multi-state">アクション</label>
-            <select id="multi-state" class="pure-input-1">
-              <option>クリック</option>
-              <option>ベリファイ</option>
+          <div class="mode-select pure-u-1-4">
+            <!-- <label for="multi-state">アクション</label> -->
+            <select id="multi-state" class="">
+              <option value="action">アクション</option>
+              <option value="verify">ベリファイ</option>
             </select>
           </div>
+
+          <div class="action-select pure-u-1-2" style="display:none;">
+            <select id="multi-state" class="">
+              <option value="click">クリック</option>
+            </select>
+          </div>
+
+          <div class="verify-select pure-u-1-2" style="display:none;">
+            <select id="multi-state" class="">
+              <option value="contains">を含む</option>
+              <option value="startswith">で始まる</option>
+              <option value="endswith">で終わる</option>
+              <option value="contains">と一致</option>
+            </select>
+            <input type="text" class="" placeholder="テキスト" />
+          </div>
+
+          <div class="append pure-u-1-4">
+            <a href="#" class="pure-button pure-button-primary">append</a>
+          </div>
+
         </div>
 
     </form>
@@ -45,7 +66,10 @@
     <div class="scenario">
       <div class="scenario-header">scenario header</div>
       <div class="scenario-body"></div>
-      <div class="scenario-footer">scenario footer</div>
+      <div class="scenario-footer">
+        <a href="javascript:void 0" class="pure-button">reset</a>
+        <a href="javascript:void 0" class="pure-button">save</a>
+      </div>
     </div>
   </div>
 

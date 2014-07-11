@@ -1,10 +1,10 @@
 {
   "id": "worm",
   // "debug": true,
-  "closure-library": "./libs/closure-library/closure/goog",
+  // "closure-library": "./libs/closure-library/closure/goog",
   "paths": [
-	  "./public/worm",
-	  "../closure-list/piglovesyou"
+	  "./public/worm/app"
+    // , "../closure-list/piglovesyou"
   ],
   "inputs": "./public/worm/main.js",
   "mode": "ADVANCED",
