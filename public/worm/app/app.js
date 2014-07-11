@@ -31,7 +31,7 @@ app.App = function() {
   var selectorButton = goog.dom.getElementByClass('selector-button-a');
   var editorTitleInput = goog.dom.getElementByClass('editor-title-input');
   var mask = goog.dom.getElementByClass('mask');
-  var sinarioList = goog.dom.getElementByClass('sinario-list');
+  var scenarioList = goog.dom.getElementByClass('scenario-list');
 
   goog.dom.append(document.body, pixel);
 
@@ -124,12 +124,12 @@ app.App = function() {
   function handleIframeLoad() {
     enableSelectMode(false);
 
-    data = new goog.ui.list.Data;
-    list = new goog.ui.List(function(item) {
-      return item.title;
-    });
-    list.renderBefore(goog.dom.getElementByClass('sinario-footer'));
-    goog.dom.classes.add(list.getElement(), 'sinario-list');
+    // data = new goog.ui.list.Data;
+    // list = new goog.ui.List(function(item) {
+    //   return item.title;
+    // });
+    // list.renderBefore(goog.dom.getElementByClass('scenario-footer'));
+    // goog.dom.classes.add(list.getElement(), 'scenario-list');
   }
 
 
