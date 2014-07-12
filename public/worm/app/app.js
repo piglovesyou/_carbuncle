@@ -1,14 +1,14 @@
 
 goog.provide('app.App');
 
+goog.require('goog.dom.forms');
+goog.require('app.Scenario');
 goog.require('goog.dom');
 goog.require('goog.dom.forms');
 goog.require('goog.events.EventTarget');
 goog.require('goog.events.InputHandler');
 goog.require('goog.net.IframeLoadMonitor');
 goog.require('goog.style');
-goog.require('app.Scenario');
-goog.require('goog.dom.forms');
 
 var data;
 var list;
@@ -24,7 +24,7 @@ app.App = function() {
   var iframeDocument = goog.dom.getFrameContentDocument(iframeEl);
 
   var pixelTopEl, pixelRightEl, pixelBottomEl, pixelLeftEl,
-      pixelEl = goog.dom.createDom('div', 'worm-pixel',
+      pixelEl = goog.dom.createDom('div', {className: 'worm-pixel', style: 'display:none'},
         pixelTopEl = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-top'),
         pixelRightEl = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-right'),
         pixelBottomEl = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-bottom'),
@@ -75,7 +75,14 @@ app.App = function() {
   }
 
   function handleSelectorTextKey(e) {
-    console.log(goog.dom.forms.getValue(e.target));
+    try {
+      var el = iframeDocument.querySelector(goog.dom.forms.getValue(e.target));
+      if (el) {
+        redrawPixel(el);
+        return;
+      }
+    } catch (e) {}
+    showPixel(false);
   }
 
   function handleSelectorButtonClick(e) {
@@ -83,19 +90,14 @@ app.App = function() {
   }
 
   function handleIframeClick(e) {
-    goog.dom.forms.setValue(selectorTextareaEl, buildSelector(e.target).join(' '));
+    goog.dom.forms.setValue(selectorTextareaEl, buildSelector(e.target));
     goog.dom.forms.setValue(editorTitleInputEl, goog.dom.getTextContent(e.target));
     enableSelectMode(false);
   }
 
   function handleIframeMouseOver(e) {
     var et = /** @type {Node} */(e.target);
-    var iframePos = getIframePosision();
-    var pos = goog.style.getPageOffset(et);
-    redrawPixel(
-        new goog.math.Coordinate(iframePos.x + pos.x, iframePos.y + pos.y),
-        goog.style.getBorderBoxSize(et),
-        buildSelector(et));
+    redrawPixel(et);
   }
 
   function getIframePosision() {
@@ -105,7 +107,17 @@ app.App = function() {
     return pos;
   }
 
-  function redrawPixel(pos, size, description) {
+  function redrawPixel(el) {
+    var iframePos = getIframePosision();
+    var pos = goog.style.getPageOffset(el);
+    redrawPixel_(
+        new goog.math.Coordinate(iframePos.x + pos.x, iframePos.y + pos.y),
+        goog.style.getBorderBoxSize(el),
+        buildSelector(el));
+  }
+
+  function redrawPixel_(pos, size, description) {
+    showPixel(true);
     goog.style.setPosition(pixelEl, pos);
 
     goog.style.setWidth(pixelTopEl, size.width);
@@ -117,14 +129,44 @@ app.App = function() {
     goog.style.setPosition(pixelBottomEl, 0, size.height);
   }
 
-  function buildSelector(node) {
+  function showPixel(show) {
+    goog.style.setElementShown(pixelEl, show);
+  }
+
+  /**
+   * @param {Element} targetNode .
+   * @return {string} .
+   */
+  function buildSelector(targetNode) {
     var rv = [];
+    var node = targetNode;
     do {
-      rv.push(node.tagName.toLowerCase() +
-          (node.id ? '#' + node.id : '') +
-          (node.className ? '.' + node.className.split(' ').join('.') : ''));
+      var builder = [];
+      builder.push(node.tagName.toLowerCase());
+      // TODO: It depends on each application to use DOM id because it can be a unique id.
+      // builder.push(node.id ? '#' + node.id : '');
+      builder.push(node.className ? '.' + node.className.split(' ').join('.') : '');
+      var tmpIndex = getChildIndex(node);
+      if (tmpIndex > 0) {
+        builder.push(':nth-child(' + (tmpIndex + 1) + ')');
+      }
+      rv.push(builder.join(''));
     } while ((node = node.parentNode) && node && node.tagName && node.tagName.toLowerCase() != 'html');
-    return rv.reverse();
+    rv.reverse();
+    goog.asserts.assert(iframeDocument.querySelector(rv.join(' ')) === targetNode);
+    return rv.join(' ');
+  }
+
+  function getChildIndex(node) {
+    var children = goog.dom.getChildren(node.parentNode);
+    if (node.parentNode && children.length > 1) {
+      for (var i = 0, item = children[i]; i < children.length; item = children[++i]) {
+        if (node === item) {
+          return i;
+        }
+      }
+    }
+    return -1;
   }
 
   function stopPropagation(e) {
@@ -149,7 +191,7 @@ app.App = function() {
     toggleModeSelectorDependers();
   }
   function toggleModeSelectorDependers() {
-    switch(goog.dom.forms.getValue(editorModeSelectEl)) {
+    switch (goog.dom.forms.getValue(editorModeSelectEl)) {
       case 'action':
         goog.style.setElementShown(editorActionEl, true);
         goog.style.setElementShown(editorVerifyEl, false);

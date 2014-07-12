@@ -104,14 +104,14 @@ a {
 }
 .worm-pixel-border {
   position: absolute;
-  border: 1px dashed #0078e7;
+  border: 2px dashed #f33;
   box-sizing: border-box;
   top: 0;
   left: 0;
   z-index: 9999;
 }
-.worm-pixel-border-right { margin-left: -2px; }
-.worm-pixel-border-bottom { margin-top: -2px; }
+.worm-pixel-border-right { margin-left: -4px; }
+.worm-pixel-border-bottom { margin-top: -4px; }
 
 .worm-pixel-description {
   position: absolute;
