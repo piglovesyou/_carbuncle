@@ -54,10 +54,6 @@ app.Scenario.prototype.canDecorate = function(element) {
 /** @inheritDoc */
 app.Scenario.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
-
-  this.append({
-    title: 'yeah'
-  });
 };
 
 /** @inheritDoc */

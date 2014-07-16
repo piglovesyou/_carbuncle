@@ -1,0 +1,69 @@
+{namespace app.soy.editor}
+
+
+/***/
+{template .createDom}
+  <div class="editor">
+    {call .renderContent /}
+  </div>
+{/template}
+
+/**
+ * @param? title
+ * @param? selector
+ * @param? mode
+ * @param? action
+ * @param? verify
+ * @param? verifyText
+ */
+{template .renderContent}
+
+  <form class="pure-form">
+    <div class="pure-g">
+
+      <div class="editor-title pure-u-1">
+        <input value="{$title?:''}" class="editor-title-input" type="text" placeholder="タイトルを入力" />
+      </div>
+
+      <div class="selector-button pure-u-1-4">
+        <a class="selector-button-a pure-button pure-button-primary" href="#">
+          <i class="fa fa-location-arrow fa-flip-horizontal fa-lg"></i>
+          A Primary Button
+        </a>
+      </div>
+
+      <div class="selector-textarea-wrap pure-u-3-4">
+        <textarea rows="2" class="selector-textarea" id="" name="selector" placeholder="CSSセレクタを入力">
+          {$selector?:''}
+        </textarea>
+      </div>
+
+      <select class="mode-select">
+        <option value="action" {if $mode == 'action'}selected{/if}>アクション</option>
+        <option value="verify" {if $mode == 'verify'}selected{/if}>ベリファイ</option>
+      </select>
+
+      <div class="action-select pure-u-1-2" style="display:none;">
+        <select>
+          <option value="click" {if $action == 'click'}selected{/if}>クリック</option>
+        </select>
+      </div>
+
+      <div class="verify-select pure-u-1-2" style="display:none;">
+        <select>
+          <option value="contains"   {if $verify == 'contains'}selected{/if}>を含む</option>
+          <option value="startswith" {if $verify == 'startswith'}selected{/if}>で始まる</option>
+          <option value="endswith"   {if $verify == 'endswith'}selected{/if}>で終わる</option>
+          <option value="equal"   {if $verify == 'equal'}selected{/if}>と一致</option>
+        </select>
+        <input value="{$verifyText?:''}" type="text" class="" placeholder="テキスト" />
+      </div>
+
+      <div class="append pure-u-1-4">
+        <a href="#" class="pure-button pure-button-primary">append</a>
+      </div>
+
+    </div>
+  </form>
+
+{/template}
