@@ -2,6 +2,10 @@
 goog.provide('app.App');
 
 goog.require('goog.dom.forms');
+goog.require('goog.ui.Component');
+goog.require('app.Editor');
+goog.require('app.Pixel');
+goog.require('app.Site');
 goog.require('app.Scenario');
 goog.require('goog.dom');
 goog.require('goog.dom.forms');
@@ -9,7 +13,6 @@ goog.require('goog.events.EventTarget');
 goog.require('goog.events.InputHandler');
 goog.require('goog.net.IframeLoadMonitor');
 goog.require('goog.style');
-goog.require('app.Editor');
 
 var iframeEl;
 var iframeDocument;
@@ -47,27 +50,66 @@ var iframeMonitor;
 
 /**
  * @constructor
+ * @extends goog.ui.Component
  */
 app.App = function() {
+  goog.base(this);
 
-  var editor = new app.Editor;
-  editor.renderBefore(goog.dom.getElementByClass('main'));
+  this.editor = new app.Editor;
+  this.addChild(this.editor);
+
+  this.site = new app.Site;
+  this.addChild(this.site);
+
+  this.scenario = new app.Scenario;
+  this.addChild(this.scenario);
+};
+goog.inherits(app.App, goog.ui.Component);
+
+app.App.prototype.enterDocument = function() {
+  goog.base(this, 'enterDocument');
+
+  var eh = this.getHandler();
+  eh.listen(this, 'enter-select-mode', this.handleEnterSelectMode);
+
+  this.editor.renderBefore(goog.dom.getElementByClass('main'));
+
+  this.site.render(goog.dom.getElementByClass('main'));
+
+  this.scenario.render(goog.dom.getElementByClass('main'));
+
+  app.Pixel.init(this.getElement());
+
+  function handleEnterSelectMode(e) {
+    
+  }
+
+
+
+
+
+
+
+
+
+
+
 
   // DOM
-  iframeEl = goog.dom.getElement('iframe');
-  iframeDocument = goog.dom.getFrameContentDocument(iframeEl);
+  // iframeEl = goog.dom.getElement('iframe');
+  // iframeDocument = goog.dom.getFrameContentDocument(iframeEl);
 
-  pixelEl = goog.dom.createDom('div', {className: 'worm-pixel', style: 'display:none'},
-    pixelTopEl = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-top'),
-    pixelRightEl = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-right'),
-    pixelBottomEl = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-bottom'),
-    pixelLeftEl = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-left'));
+  // pixelEl = goog.dom.createDom('div', {className: 'worm-pixel', style: 'display:none'},
+  //   pixelTopEl = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-top'),
+  //   pixelRightEl = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-right'),
+  //   pixelBottomEl = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-bottom'),
+  //   pixelLeftEl = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-left'));
 
   selectorTextareaEl = goog.dom.getElementByClass('selector-textarea');
   selectorButtonEl = goog.dom.getElementByClass('selector-button-a');
   editorTitleInputEl = goog.dom.getElementByClass('editor-title-input');
   maskEl = goog.dom.getElementByClass('mask');
-  scenarioEl = goog.dom.getElementByClass('scenario');
+  // scenarioEl = goog.dom.getElementByClass('scenario');
   editorActionEl = goog.dom.getElementByClass('action-select');
   editorVerifyEl = goog.dom.getElementByClass('verify-select');
   editorModeSelectEl = goog.dom.getElementByClass('mode-select');
@@ -76,29 +118,22 @@ app.App = function() {
   editorVerifyInputEl = goog.dom.getElementsByTagNameAndClass('input', null, editorVerifyEl)[0];
   appendButtonEl = goog.dom.getElementsByTagNameAndClass('a', null, goog.dom.getElementByClass('append'))[0];
 
-  console.log(appendButtonEl);
-
-  goog.dom.append(document.body, pixelEl);
+  // goog.dom.append(document.body, pixelEl);
 
 
 
   selectorTextareaInputHandler = new goog.events.InputHandler(selectorTextareaEl);
-  scenario = new app.Scenario;
 
-  (iframeMonitor = new goog.net.IframeLoadMonitor(iframeEl)).isLoaded() ?
-    handleIframeLoad() :
-    goog.events.listen(iframeMonitor, goog.net.IframeLoadMonitor.LOAD_EVENT, handleIframeLoad);
+  // (iframeMonitor = new goog.net.IframeLoadMonitor(iframeEl)).isLoaded() ?
+  //   handleIframeLoad() :
+  //   goog.events.listen(iframeMonitor, goog.net.IframeLoadMonitor.LOAD_EVENT, handleIframeLoad);
 
 
 
 
   function handleIframeLoad() {
 
-
-
-
-
-    enableSelectMode(false);
+    // enableSelectMode(false);
 
     scenario.decorate(scenarioEl);
 
@@ -108,25 +143,25 @@ app.App = function() {
 
 
 
-  function enableSelectMode(enable) {
-    selectEnabled = enable;
-    goog.style.setElementShown(maskEl, enable);
-    if (enable) {
-      goog.events.unlisten(selectorButtonEl, 'click', handleSelectorButtonClick, false);
-      goog.events.unlisten(selectorTextareaInputHandler, goog.events.InputHandler.EventType.INPUT, handleSelectorTextKey);
-      goog.events.unlisten(appendButtonEl, 'click', handleAppendButtonClick);
-      goog.events.listen(iframeDocument, 'click', stopPropagation, true);
-      goog.events.listen(iframeDocument, 'click', handleIframeClick, true);
-      goog.events.listen(iframeDocument, 'mouseover', handleIframeMouseOver);
-    } else {
-      goog.events.listen(selectorButtonEl, 'click', handleSelectorButtonClick, false);
-      goog.events.listen(selectorTextareaInputHandler, goog.events.InputHandler.EventType.INPUT, handleSelectorTextKey);
-      goog.events.listen(appendButtonEl, 'click', handleAppendButtonClick);
-      goog.events.unlisten(iframeDocument, 'click', stopPropagation, true);
-      goog.events.unlisten(iframeDocument, 'click', handleIframeClick, true);
-      goog.events.unlisten(iframeDocument, 'mouseover', handleIframeMouseOver);
-    }
-  }
+  // function enableSelectMode(enable) {
+  //   selectEnabled = enable;
+  //   goog.style.setElementShown(maskEl, enable);
+  //   if (enable) {
+  //     goog.events.unlisten(selectorButtonEl, 'click', handleSelectorButtonClick, false);
+  //     goog.events.unlisten(selectorTextareaInputHandler, goog.events.InputHandler.EventType.INPUT, handleSelectorTextKey);
+  //     goog.events.unlisten(appendButtonEl, 'click', handleAppendButtonClick);
+  //     goog.events.listen(iframeDocument, 'click', stopPropagation, true);
+  //     goog.events.listen(iframeDocument, 'click', handleIframeClick, true);
+  //     goog.events.listen(iframeDocument, 'mouseover', handleIframeMouseOver);
+  //   } else {
+  //     goog.events.listen(selectorButtonEl, 'click', handleSelectorButtonClick, false);
+  //     goog.events.listen(selectorTextareaInputHandler, goog.events.InputHandler.EventType.INPUT, handleSelectorTextKey);
+  //     goog.events.listen(appendButtonEl, 'click', handleAppendButtonClick);
+  //     goog.events.unlisten(iframeDocument, 'click', stopPropagation, true);
+  //     goog.events.unlisten(iframeDocument, 'click', handleIframeClick, true);
+  //     goog.events.unlisten(iframeDocument, 'mouseover', handleIframeMouseOver);
+  //   }
+  // }
 
   function handleAppendButtonClick(e) {
     var v = collectValues();
@@ -134,20 +169,20 @@ app.App = function() {
       scenario.append(v);
   }
 
-  function handleSelectorTextKey(e) {
-    try {
-      var el = iframeDocument.querySelector(goog.dom.forms.getValue(e.target));
-      if (el) {
-        redrawPixel(el);
-        return;
-      }
-    } catch (e) {}
-    showPixel(false);
-  }
+  // function handleSelectorTextKey(e) {
+  //   try {
+  //     var el = iframeDocument.querySelector(goog.dom.forms.getValue(e.target));
+  //     if (el) {
+  //       redrawPixel(el);
+  //       return;
+  //     }
+  //   } catch (e) {}
+  //   showPixel(false);
+  // }
 
-  function handleSelectorButtonClick(e) {
-    enableSelectMode(true);
-  }
+  // function handleSelectorButtonClick(e) {
+  //   enableSelectMode(true);
+  // }
 
   function handleIframeClick(e) {
     goog.dom.forms.setValue(selectorTextareaEl, buildSelector(e.target));
@@ -275,5 +310,32 @@ app.App = function() {
   }
 
 };
-goog.inherits(app.App, goog.events.EventTarget);
 
+app.App.prototype.handleEnterSelectMode = function(e) {
+  
+};
+
+app.App.prototype.enableSelectMode = function(enable) {
+
+  goog.style.setElementShown(this.getElementByClass('mask'), enable);
+
+  //   selectEnabled = enable;
+  //   goog.style.setElementShown(maskEl, enable);
+  //   if (enable) {
+  //     goog.events.unlisten(selectorButtonEl, 'click', handleSelectorButtonClick, false);
+  //     goog.events.unlisten(selectorTextareaInputHandler, goog.events.InputHandler.EventType.INPUT, handleSelectorTextKey);
+  //     goog.events.unlisten(appendButtonEl, 'click', handleAppendButtonClick);
+  //     goog.events.listen(iframeDocument, 'click', stopPropagation, true);
+  //     goog.events.listen(iframeDocument, 'click', handleIframeClick, true);
+  //     goog.events.listen(iframeDocument, 'mouseover', handleIframeMouseOver);
+  //   } else {
+  //     goog.events.listen(selectorButtonEl, 'click', handleSelectorButtonClick, false);
+  //     goog.events.listen(selectorTextareaInputHandler, goog.events.InputHandler.EventType.INPUT, handleSelectorTextKey);
+  //     goog.events.listen(appendButtonEl, 'click', handleAppendButtonClick);
+  //     goog.events.unlisten(iframeDocument, 'click', stopPropagation, true);
+  //     goog.events.unlisten(iframeDocument, 'click', handleIframeClick, true);
+  //     goog.events.unlisten(iframeDocument, 'mouseover', handleIframeMouseOver);
+  //   }
+  // }
+
+};

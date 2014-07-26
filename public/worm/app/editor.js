@@ -22,14 +22,9 @@ app.Editor.prototype.createDom = function() {
       goog.soy.renderAsFragment(app.soy.editor.createDom));
 };
 
-/** @inheritDoc */
 app.Editor.prototype.setData = function(data) {
   goog.soy.renderElement(this.getElement(),
       app.soy.editor.renderContent, data);
-};
-
-app.Editor.prototype.enable = function (enable) {
-  
 };
 
 /** @inheritDoc */
@@ -37,6 +32,7 @@ app.Editor.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
 
   var eh = this.getHandler();
+
   eh.listen(this.getElement(), 'change', function (e) {
     var selectEl = e.target;
     goog.asserts.assert(selectEl.tagName == goog.dom.TagName.SELECT);
@@ -45,7 +41,37 @@ app.Editor.prototype.enterDocument = function() {
     }
   });
 
+  eh.listen(this.getElement(), 'click', function (e) {
+    var el = e.target;
+    if (goog.dom.contains(this.getElementByClass('selector-button-a'), el)) {
+      this.dispatchEvent('enter-select-mode');
+
+    } else if (goog.dom.contains(this.getElementByClass('append-button'), el)) {
+      this.dispatchEvent('append-entry');
+    }
+  });
+
+  this.enableSelectorInputHandler(true);
+
   this.toggleModeSelectorDependers();
+};
+
+app.Editor.prototype.enableSelectorInputHandler = function(enable) {
+  var eh = this.getHandler();
+  if (enable) {
+    if (this.selectorInputHandler_) return;
+    this.selectorInputHandler_ = new goog.events.InputHandler(this.getElementByClass('selector-textarea'));
+    eh.listen(this.selectorInputHandler_, goog.events.InputHandler.EventType.INPUT, this.handleSelectorTextKey);
+  } else {
+    if (!this.selectorInputHandler_) return;
+    eh.unlisten(this.selectorInputHandler_, goog.events.InputHandler.EventType.INPUT, this.handleSelectorTextKey);
+    this.selectorInputHandler_.dispose();
+    this.selectorInputHandler_ = null;
+  }
+};
+
+app.Editor.prototype.handleSelectorTextKey = function (e) {
+  this.dispatchEvent('selector-text-input');
 };
 
 /***/

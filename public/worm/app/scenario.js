@@ -25,8 +25,14 @@ app.Scenario.prototype.append = function(obj) {
 
 /** @inheritDoc */
 app.Scenario.prototype.createDom = function() {
-  goog.base(this, 'createDom');
+  this.setElementInternal(
+      goog.soy.renderAsFragment(app.soy.scenario.createDom));
 };
+
+/** @inheritDoc */
+app.Scenario.prototype.getContentElement = function () {
+  return this.getElementByClass('scenario-body');
+}
 
 /** @inheritDoc */
 app.Scenario.prototype.decorateInternal = function(element) {
