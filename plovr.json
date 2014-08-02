@@ -1,14 +1,13 @@
 {
-  "id": "worm",
+  "id": "utsubo",
   // "debug": true,
   // "closure-library": "./libs/closure-library/closure/goog",
   "paths": [
-	  "./public/worm/app"
-    // , "../closure-list/piglovesyou"
+	  "./assets/utsubo/app"
   ],
-  "inputs": "./public/worm/main.js",
+  "inputs": "./assets/utsubo/main.js",
   "mode": "ADVANCED",
   "level": "VERBOSE",
   "externs": [ ],
-  "output-file": "public/worm/javascripts/main-min.js"
+  "output-file": "assets/utsubo/javascripts/main-min.js"
 }

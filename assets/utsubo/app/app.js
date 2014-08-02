@@ -2,17 +2,17 @@
 goog.provide('app.App');
 
 goog.require('goog.dom.forms');
-goog.require('goog.ui.Component');
 goog.require('app.Editor');
 goog.require('app.Pixel');
-goog.require('app.Site');
 goog.require('app.Scenario');
+goog.require('app.Site');
 goog.require('goog.dom');
 goog.require('goog.dom.forms');
 goog.require('goog.events.EventTarget');
 goog.require('goog.events.InputHandler');
 goog.require('goog.net.IframeLoadMonitor');
 goog.require('goog.style');
+goog.require('goog.ui.Component');
 
 var iframeEl;
 var iframeDocument;
@@ -66,27 +66,30 @@ app.App = function() {
 };
 goog.inherits(app.App, goog.ui.Component);
 
+app.App.prototype.decorateInternal = function(element) {
+  goog.base(this, 'decorateInternal', element);
+
+  this.editor.createDom();
+  this.site.createDom();
+  this.scenario.createDom();
+
+  var dh = this.getDomHelper();
+  dh.append(element,
+    this.editor.getElement(),
+    dh.createDom('div', 'main',
+      this.site.getElement(),
+      this.scenario.getElement()));
+
+};
+
 app.App.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
 
   var eh = this.getHandler();
   eh.listen(this, 'enter-select-mode', this.handleEnterSelectMode);
-
-  this.editor.renderBefore(goog.dom.getElementByClass('main'));
-
-  this.site.render(goog.dom.getElementByClass('main'));
-
-  this.scenario.render(goog.dom.getElementByClass('main'));
+  eh.listen(this, 'elementselect', this.handleElementSelect);
 
   app.Pixel.init(this.getElement());
-
-  function handleEnterSelectMode(e) {
-    
-  }
-
-
-
-
 
 
 
@@ -184,49 +187,49 @@ app.App.prototype.enterDocument = function() {
   //   enableSelectMode(true);
   // }
 
-  function handleIframeClick(e) {
-    goog.dom.forms.setValue(selectorTextareaEl, buildSelector(e.target));
-    goog.dom.forms.setValue(editorTitleInputEl, goog.dom.getTextContent(e.target));
-    enableSelectMode(false);
-  }
+  // function handleIframeClick(e) {
+  //   goog.dom.forms.setValue(selectorTextareaEl, buildSelector(e.target));
+  //   goog.dom.forms.setValue(editorTitleInputEl, goog.dom.getTextContent(e.target));
+  //   enableSelectMode(false);
+  // }
 
-  function handleIframeMouseOver(e) {
-    var et = /** @type {Node} */(e.target);
-    redrawPixel(et);
-  }
+  // function handleIframeMouseOver(e) {
+  //   var et = /** @type {Node} */(e.target);
+  //   redrawPixel(et);
+  // }
 
-  function getIframePosision() {
-    var pos = goog.style.getPageOffset(iframeEl);
-    pos.x += parseInt(goog.style.getComputedStyle(iframeEl, 'borderLeftWidth'), 10);
-    pos.y += parseInt(goog.style.getComputedStyle(iframeEl, 'borderTopWidth'), 10);
-    return pos;
-  }
+  // function getIframePosision() {
+  //   var pos = goog.style.getPageOffset(iframeEl);
+  //   pos.x += parseInt(goog.style.getComputedStyle(iframeEl, 'borderLeftWidth'), 10);
+  //   pos.y += parseInt(goog.style.getComputedStyle(iframeEl, 'borderTopWidth'), 10);
+  //   return pos;
+  // }
 
-  function redrawPixel(el) {
-    var iframePos = getIframePosision();
-    var pos = goog.style.getPageOffset(el);
-    redrawPixel_(
-        new goog.math.Coordinate(iframePos.x + pos.x, iframePos.y + pos.y),
-        goog.style.getBorderBoxSize(el),
-        buildSelector(el));
-  }
+  // function redrawPixel(el) {
+  //   var iframePos = getIframePosision();
+  //   var pos = goog.style.getPageOffset(el);
+  //   redrawPixel_(
+  //       new goog.math.Coordinate(iframePos.x + pos.x, iframePos.y + pos.y),
+  //       goog.style.getBorderBoxSize(el),
+  //       buildSelector(el));
+  // }
 
-  function redrawPixel_(pos, size, description) {
-    showPixel(true);
-    goog.style.setPosition(pixelEl, pos);
+  // function redrawPixel_(pos, size, description) {
+  //   showPixel(true);
+  //   goog.style.setPosition(pixelEl, pos);
 
-    goog.style.setWidth(pixelTopEl, size.width);
-    goog.style.setWidth(pixelBottomEl, size.width);
-    goog.style.setHeight(pixelLeftEl, size.height);
-    goog.style.setHeight(pixelRightEl, size.height);
+  //   goog.style.setWidth(pixelTopEl, size.width);
+  //   goog.style.setWidth(pixelBottomEl, size.width);
+  //   goog.style.setHeight(pixelLeftEl, size.height);
+  //   goog.style.setHeight(pixelRightEl, size.height);
 
-    goog.style.setPosition(pixelRightEl, size.width, 0);
-    goog.style.setPosition(pixelBottomEl, 0, size.height);
-  }
+  //   goog.style.setPosition(pixelRightEl, size.width, 0);
+  //   goog.style.setPosition(pixelBottomEl, 0, size.height);
+  // }
 
-  function showPixel(show) {
-    goog.style.setElementShown(pixelEl, show);
-  }
+  // function showPixel(show) {
+  //   goog.style.setElementShown(pixelEl, show);
+  // }
 
   function isElementExists(selector) {
     try {
@@ -235,48 +238,48 @@ app.App.prototype.enterDocument = function() {
     return false;
   }
 
-  /**
-   * @param {Element} targetNode .
-   * @return {string} .
-   */
-  function buildSelector(targetNode) {
-    var rv = [];
-    var node = targetNode;
-    do {
-      var builder = [];
-      builder.push(node.tagName.toLowerCase());
-      // TODO: It depends on each application to use DOM id because it can be a unique id.
-      // builder.push(node.id ? '#' + node.id : '');
-      builder.push(node.className ? '.' + node.className.split(' ').join('.') : '');
-      var tmpIndex = getChildIndex(node);
-      if (tmpIndex > 0) {
-        builder.push(':nth-child(' + (tmpIndex + 1) + ')');
-      }
-      rv.push(builder.join(''));
-    } while ((node = node.parentNode) && node && node.tagName && node.tagName.toLowerCase() != 'html');
-    rv.reverse();
-    if (iframeDocument.querySelector(rv.join(' ')) !== targetNode) {
-      return null;
-    }
-    return rv.join(' ');
-  }
+  // /**
+  //  * @param {Element} targetNode .
+  //  * @return {string} .
+  //  */
+  // function buildSelector(targetNode) {
+  //   var rv = [];
+  //   var node = targetNode;
+  //   do {
+  //     var builder = [];
+  //     builder.push(node.tagName.toLowerCase());
+  //     // TODO: It depends on each application to use DOM id because it can be a unique id.
+  //     // builder.push(node.id ? '#' + node.id : '');
+  //     builder.push(node.className ? '.' + node.className.split(' ').join('.') : '');
+  //     var tmpIndex = getChildIndex(node);
+  //     if (tmpIndex > 0) {
+  //       builder.push(':nth-child(' + (tmpIndex + 1) + ')');
+  //     }
+  //     rv.push(builder.join(''));
+  //   } while ((node = node.parentNode) && node && node.tagName && node.tagName.toLowerCase() != 'html');
+  //   rv.reverse();
+  //   if (iframeDocument.querySelector(rv.join(' ')) !== targetNode) {
+  //     return null;
+  //   }
+  //   return rv.join(' ');
+  // }
 
-  function getChildIndex(node) {
-    var children = goog.dom.getChildren(node.parentNode);
-    if (node.parentNode && children.length > 1) {
-      for (var i = 0, item = children[i]; i < children.length; item = children[++i]) {
-        if (node === item) {
-          return i;
-        }
-      }
-    }
-    return -1;
-  }
+  // function getChildIndex(node) {
+  //   var children = goog.dom.getChildren(node.parentNode);
+  //   if (node.parentNode && children.length > 1) {
+  //     for (var i = 0, item = children[i]; i < children.length; item = children[++i]) {
+  //       if (node === item) {
+  //         return i;
+  //       }
+  //     }
+  //   }
+  //   return -1;
+  // }
 
-  function stopPropagation(e) {
-    e.stopPropagation();
-    e.preventDefault();
-  }
+  // function stopPropagation(e) {
+  //   e.stopPropagation();
+  //   e.preventDefault();
+  // }
 
 
 
@@ -311,31 +314,35 @@ app.App.prototype.enterDocument = function() {
 
 };
 
+app.App.prototype.handleElementSelect = function(e) {
+  this.enableSelectMode(false);
+  this.editor.setSelectorText(e.selectorText);
+};
+
 app.App.prototype.handleEnterSelectMode = function(e) {
-  
+  this.enableSelectMode(true);
 };
 
 app.App.prototype.enableSelectMode = function(enable) {
 
   goog.style.setElementShown(this.getElementByClass('mask'), enable);
-
-  //   selectEnabled = enable;
-  //   goog.style.setElementShown(maskEl, enable);
-  //   if (enable) {
-  //     goog.events.unlisten(selectorButtonEl, 'click', handleSelectorButtonClick, false);
-  //     goog.events.unlisten(selectorTextareaInputHandler, goog.events.InputHandler.EventType.INPUT, handleSelectorTextKey);
-  //     goog.events.unlisten(appendButtonEl, 'click', handleAppendButtonClick);
-  //     goog.events.listen(iframeDocument, 'click', stopPropagation, true);
-  //     goog.events.listen(iframeDocument, 'click', handleIframeClick, true);
-  //     goog.events.listen(iframeDocument, 'mouseover', handleIframeMouseOver);
-  //   } else {
-  //     goog.events.listen(selectorButtonEl, 'click', handleSelectorButtonClick, false);
-  //     goog.events.listen(selectorTextareaInputHandler, goog.events.InputHandler.EventType.INPUT, handleSelectorTextKey);
-  //     goog.events.listen(appendButtonEl, 'click', handleAppendButtonClick);
-  //     goog.events.unlisten(iframeDocument, 'click', stopPropagation, true);
-  //     goog.events.unlisten(iframeDocument, 'click', handleIframeClick, true);
-  //     goog.events.unlisten(iframeDocument, 'mouseover', handleIframeMouseOver);
-  //   }
-  // }
+  var eh = this.getHandler();
+  if (enable) {
+    this.editor.enable(false);
+    this.site.enable(true);
+    // eh.listen(iframeDocument, 'click', stopPropagation, true);
+    // eh.listen(iframeDocument, 'click', handleIframeClick, true);
+    // eh.listen(iframeDocument, 'mouseover', handleIframeMouseOver);
+  } else {
+    this.editor.enable(true);
+    this.site.enable(false);
+    // This should go to Editor
+    // eh.listen(selectorButtonEl, 'click', handleSelectorButtonClick, false);
+    // eh.listen(selectorTextareaInputHandler, goog.events.InputHandler.EventType.INPUT, handleSelectorTextKey);
+    // eh.listen(appendButtonEl, 'click', handleAppendButtonClick);
+    // eh.unlisten(iframeDocument, 'click', stopPropagation, true);
+    // eh.unlisten(iframeDocument, 'click', handleIframeClick, true);
+    // eh.unlisten(iframeDocument, 'mouseover', handleIframeMouseOver);
+  }
 
 };

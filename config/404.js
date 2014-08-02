@@ -7,32 +7,38 @@
  * Usage: res.notFound()
  */
 
+var httpProxy = require('http-proxy');
+var proxy = httpProxy.createProxyServer();
+
 module.exports[404] = function pageNotFound(req, res) {
 
-  /*
-   * NOTE: This function is Sails middleware-- that means that not only do `req` and `res`
-   * work just like their Express equivalents to handle HTTP requests, they also simulate
-   * the same interface for receiving socket messages.
-   */
+  // yeah
+  proxy.web(req, res, { target: 'http://yan-yan-yahuoku.com' });
 
-  var viewFilePath = '404';
-  var statusCode = 404;
-  var result = {
-    status: statusCode
-  };
+  // /*
+  //  * NOTE: This function is Sails middleware-- that means that not only do `req` and `res`
+  //  * work just like their Express equivalents to handle HTTP requests, they also simulate
+  //  * the same interface for receiving socket messages.
+  //  */
 
-  // If the user-agent wants a JSON response, send json
-  if (req.wantsJSON) {
-    return res.json(result, result.status);
-  }
+  // var viewFilePath = '404';
+  // var statusCode = 404;
+  // var result = {
+  //   status: statusCode
+  // };
 
-  res.status(result.status);
-  res.render(viewFilePath, function (err) {
-    // If the view doesn't exist, or an error occured, send json
-    if (err) { return res.json(result, result.status); }
+  // // If the user-agent wants a JSON response, send json
+  // if (req.wantsJSON) {
+  //   return res.json(result, result.status);
+  // }
 
-    // Otherwise, serve the `views/404.*` page
-    res.render(viewFilePath);
-  });
+  // res.status(result.status);
+  // res.render(viewFilePath, function (err) {
+  //   // If the view doesn't exist, or an error occured, send json
+  //   if (err) { return res.json(result, result.status); }
+
+  //   // Otherwise, serve the `views/404.*` page
+  //   res.render(viewFilePath);
+  // });
 
 };
