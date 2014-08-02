@@ -13,6 +13,7 @@ goog.require('goog.events.InputHandler');
 goog.require('goog.net.IframeLoadMonitor');
 goog.require('goog.style');
 goog.require('goog.ui.Component');
+goog.require('goog.structs.Set');
 
 var iframeEl;
 var iframeDocument;
@@ -317,6 +318,7 @@ app.App.prototype.enterDocument = function() {
 app.App.prototype.handleElementSelect = function(e) {
   this.enableSelectMode(false);
   this.editor.setSelectorText(e.selectorText);
+  this.editor.setRoughTitle(e.roughTitle);
 };
 
 app.App.prototype.handleEnterSelectMode = function(e) {

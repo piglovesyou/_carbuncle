@@ -1,8 +1,8 @@
 
 goog.provide('app.Editor');
 
-goog.require('goog.ui.Component');
 goog.require('app.soy.editor');
+goog.require('goog.ui.Component');
 
 
 
@@ -59,16 +59,20 @@ app.Editor.prototype.enable = function(enable) {
 
 };
 
+app.Editor.prototype.setRoughTitle = function(text) {
+  goog.dom.forms.setValue(this.getElementByClass('editor-title-input'), text);
+};
+
 app.Editor.prototype.setSelectorText = function(text) {
   goog.dom.forms.setValue(this.getElementByClass('selector-textarea'), text);
 };
 
 app.Editor.prototype.handleSelectChange = function(e) {
   var selectEl = e.target;
-  goog.asserts.assert(selectEl.tagName == goog.dom.TagName.SELECT);
-  if (goog.dom.classes.has(selectEl, 'mode-select')) {
-    this.applyModeSelectInternal();
+  if (!selectEl.tagName == goog.dom.TagName.SELECT) {
+    return;
   }
+  this.applyModeSelectInternal();
 };
 
 app.Editor.prototype.handleClick = function(e) {
@@ -95,7 +99,7 @@ app.Editor.prototype.handleClick = function(e) {
 //   }
 // };
 
-app.Editor.prototype.handleSelectorTextKey = function (e) {
+app.Editor.prototype.handleSelectorTextKey = function(e) {
   this.dispatchEvent('selector-text-input');
 };
 
@@ -105,10 +109,19 @@ app.Editor.prototype.applyModeSelectInternal = function() {
     case 'action':
       goog.style.setElementShown(this.getElementByClass('action-select'), true);
       goog.style.setElementShown(this.getElementByClass('verify-select'), false);
+      switch (goog.dom.forms.getValue(this.getElementByClass('action-select'))) {
+        case 'input':
+          goog.style.setElementShown(this.getElementByClass('action-input-text'), true);
+          break;
+        default:
+          goog.style.setElementShown(this.getElementByClass('action-input-text'), false);
+          break;
+      }
       break;
     case 'verify':
       goog.style.setElementShown(this.getElementByClass('action-select'), false);
       goog.style.setElementShown(this.getElementByClass('verify-select'), true);
+      goog.style.setElementShown(this.getElementByClass('action-input-text'), false);
       break;
   }
 };
