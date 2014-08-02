@@ -41,26 +41,26 @@
 
 			<div class="pure-u-7-8">
 
-				<select class="mode-select">
+				<select class="mode-select pure-u-1-4">
 					<option value="action" {if $mode == 'action'}selected{/if}>アクション</option>
 					<option value="verify" {if $mode == 'verify'}selected{/if}>ベリファイ</option>
 				</select>
 
-				<select class="action-select" style="display:none;">
+				<select class="action-select pure-u-1-4" style="display:none;">
 					<option value="click" {if $action == 'click'}selected{/if}>クリック</option>
 					<option value="input" {if $action == 'input'}selected{/if}>入力</option>
 				</select>
 
-				<input style="display: none" value="{$actionInputText?:''}" type="text" class="action-input-text" placeholder="入力するテキスト" />
+				<input class="action-input-text pure-u-2-4" style="display: none" value="{$actionInputText?:''}" type="text" placeholder="入力するテキスト" />
 
-				<div class="verify-select pure-u-1-2" style="display:none;">
+				<div class="verify-select pure-u-2-4" style="display:none;">
 					<select>
 						<option value="contains"   {if $verify == 'contains'}selected{/if}>を含む</option>
 						<option value="startswith" {if $verify == 'startswith'}selected{/if}>で始まる</option>
 						<option value="endswith"   {if $verify == 'endswith'}selected{/if}>で終わる</option>
 						<option value="equal"      {if $verify == 'equal'}selected{/if}>と一致</option>
 					</select>
-					<input value="{$verifyText?:''}" type="text" class="" placeholder="確認するテキスト" />
+					<input value="{$verifyText?:''}" type="text" class="verity-input" placeholder="確認するテキスト" />
 				</div>
 
 			</div>

@@ -19,7 +19,7 @@ goog.inherits(app.Editor, goog.ui.Component);
 /** @inheritDoc */
 app.Editor.prototype.createDom = function() {
   this.setElementInternal(
-      goog.soy.renderAsFragment(app.soy.editor.createDom));
+      /** @type {Element} */(goog.soy.renderAsFragment(app.soy.editor.createDom)));
 };
 
 app.Editor.prototype.draw = function(data) {
@@ -85,20 +85,6 @@ app.Editor.prototype.handleClick = function(e) {
   }
 };
 
-// app.Editor.prototype.enableSelectorInputKey = function(enable) {
-//   var eh = this.getHandler();
-//   if (enable) {
-//     if (this.selectorInputHandler_) return;
-//     this.selectorInputHandler_ = new goog.events.InputHandler(this.getElementByClass('selector-textarea'));
-//     eh.listen(this.selectorInputHandler_, goog.events.InputHandler.EventType.INPUT, this.handleSelectorTextKey);
-//   } else {
-//     if (!this.selectorInputHandler_) return;
-//     eh.unlisten(this.selectorInputHandler_, goog.events.InputHandler.EventType.INPUT, this.handleSelectorTextKey);
-//     this.selectorInputHandler_.dispose();
-//     this.selectorInputHandler_ = null;
-//   }
-// };
-
 app.Editor.prototype.handleSelectorTextKey = function(e) {
   this.dispatchEvent('selector-text-input');
 };
@@ -130,3 +116,18 @@ app.Editor.prototype.applyModeSelectInternal = function() {
 app.Editor.prototype.disposeInternal = function() {
   goog.base(this, 'disposeInternal');
 };
+
+/**
+ * TODO* use this
+ */
+app.Editor.prototype.collectValues =   function () {
+  return {
+    title: this.getElementByClass('editor-title-input'),
+    selector: goog.dom.forms.getValue(this.getElementByClass('selector-textarea')),
+    mode: goog.dom.forms.getValue(this.getElementByClass('mode-select')),
+    action: goog.dom.forms.getValue(this.getElementByClass('action-select')),
+    verify: goog.dom.forms.getValue(this.getElementByClass('verify-select')),
+    verifyText: goog.dom.forms.getValue(this.getElementByClass('verity-input'))
+  };
+}
+

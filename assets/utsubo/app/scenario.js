@@ -26,7 +26,7 @@ app.Scenario.prototype.append = function(obj) {
 /** @inheritDoc */
 app.Scenario.prototype.createDom = function() {
   this.setElementInternal(
-      goog.soy.renderAsFragment(app.soy.scenario.createDom));
+      /** @type {Element} */(goog.soy.renderAsFragment(app.soy.scenario.createDom)));
 };
 
 /** @inheritDoc */
@@ -42,11 +42,6 @@ app.Scenario.prototype.decorateInternal = function(element) {
   this.contentEl = this.getElementByClass('scenario-body');
   this.footerEl = this.getElementByClass('scenario-footer');
 
-};
-
-/** @inheritDoc */
-app.Scenario.prototype.getContentElement = function() {
-  return this.contentEl;
 };
 
 /** @inheritDoc */

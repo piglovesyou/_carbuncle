@@ -29,7 +29,8 @@ app.Site.EventType = {
 
 /** @inheritDoc */
 app.Site.prototype.createDom = function() {
-  this.setElementInternal(goog.soy.renderAsFragment(app.soy.site.createDom));
+  this.setElementInternal(
+      /** @type {Element} */(goog.soy.renderAsFragment(app.soy.site.createDom)));
 };
 
 app.Site.prototype.enable = function(enable) {
@@ -63,7 +64,7 @@ app.Site.prototype.redrawPixel = function(el) {
 
 /**
  * @param {Element} targetNode .
- * @return {string} .
+ * @return {?string} .
  */
 app.Site.prototype.buildSelector = function(targetNode) {
   var rv = [];
@@ -127,7 +128,8 @@ app.Site.prototype.handleClick = function(e) {
   this.dispatchEvent({
     type: app.Site.EventType.ELEMENT_SELECT,
     element: e.target,
-    selectorText: this.buildSelector(e.target)
+    selectorText: this.buildSelector(e.target),
+    roughTitle: goog.dom.getTextContent(e.target)
   });
   // TODO:
   // goog.dom.forms.setValue(selectorTextareaEl, buildSelector(e.target));

@@ -1,6 +1,6 @@
 {
   "id": "utsubo",
-  // "debug": true,
+  "debug": true,
   // "closure-library": "./libs/closure-library/closure/goog",
   "paths": [
 	  "./assets/utsubo/app"
