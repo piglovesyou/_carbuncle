@@ -13,6 +13,8 @@
  * @param? mode
  * @param? type
  * @param? actionInputText
+ *
+ * @param? isEdit
  */
 {template .renderContent}
 
@@ -21,23 +23,18 @@
 
       <input name="entry-id" class="entry-id" type="hidden" value="{$id}" />
 
-			<div class="pure-u-1">
-				<input name="entry-title" class="entry-title" value="{$title?:''}" type="text" placeholder="タイトルを入力" />
-				<input name="entry-title" class="entry-title" value="{$title?:''}" type="text" placeholder="タイトルを入力" />
-			</div>
+      <input name="entry-title" class="entry-title pure-u-1" value="{$title?:''}" type="text" placeholder="タイトルを入力" />
 
-			<div class="pure-u-1-4">
-				<a class="selector-button pure-button pure-button-primary" href="#">
-					<i class="fa fa-location-arrow fa-flip-horizontal fa-lg"></i>
-					{sp}要素を選択
-				</a>
-			</div>
+      <div class="pure-u-1-4">
+        <a class="selector-button pure-button pure-button-primary" href="#">
+          <i class="fa fa-location-arrow fa-flip-horizontal fa-lg"></i>
+          {sp}要素を選択
+        </a>
+      </div>
 
-			<div class="pure-u-3-4">
-				<textarea class="entry-css" name="entry-css" rows="2" placeholder="CSSセレクタを入力">
-					{$selector?:''}
-				</textarea>
-			</div>
+      <textarea class="entry-css pure-u-3-4" name="entry-css" rows="2" placeholder="CSSセレクタを入力">
+        {$selector?:''}
+      </textarea>
 
 			<div class="pure-u-7-8">
 
@@ -67,7 +64,7 @@
 			</div>
 
       <div class="append pure-u-1-8">
-        <a href="#" class="append-button pure-button pure-button-primary">追加</a>
+        <a href="#" class="append-button pure-button pure-button-primary">{$isEdit ? '編集' : '追加'}</a>
       </div>
 
     </div>

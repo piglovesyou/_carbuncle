@@ -21,17 +21,30 @@ app.Scenario = function(opt_domHelper) {
 };
 goog.inherits(app.Scenario, app.ui.Rows);
 
+/**
+ * @enum {string}
+ */
+app.Scenario.EventTarget = {
+  EDIT_ENTRY: 'editentry'
+}
+
 app.Scenario.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var eh = this.getHandler();
   eh.listen(this.getElement(), 'click', function (e) {
     var et = /** @type {Element} */(e.target);
 
-    var entryEl = app.dom.getAncestorFromEventTargetByClass(this.getElement(), 'scenario-entry', et);
-    if (entryEl) {
-      var entry = this.data.get(goog.dom.dataset.get(entryEl, 'id'));
-      if (entry) {
-        console.log(entry);
+    var editEl = this.getElementByClass('scenario-entry-edithook');
+    if (editEl) {
+      var entryEl = app.dom.getAncestorFromEventTargetByClass(this.getElement(), 'scenario-entry', et);
+      if (entryEl) {
+        var entry = this.data.get(goog.dom.dataset.get(entryEl, 'id'));
+        if (entry) {
+          this.dispatchEvent({
+            type: 'editentry',
+            data: entry
+          })
+        }
       }
       return;
     }

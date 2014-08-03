@@ -102,7 +102,10 @@ app.Editor.prototype.handleClick = function(e) {
 };
 
 app.Editor.prototype.handleSelectorTextKey = function(e) {
-  this.dispatchEvent('selector-text-input');
+  this.dispatchEvent({
+    type: 'selector-text-input',
+    text: goog.dom.forms.getValue(this.getElementByClass('entry-css'))
+  });
 };
 
 /***/

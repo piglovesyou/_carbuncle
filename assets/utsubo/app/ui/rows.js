@@ -3,6 +3,7 @@ goog.provide('app.ui.Rows');
 
 goog.require('goog.ui.Component');
 goog.require('goog.soy');
+goog.require('goog.object');
 
 
 
@@ -115,6 +116,16 @@ app.ui.Rows.Data.prototype.add = function(element) {
 	if (existing) return;
 	this.items.push(element);
 	this.ids[id] = element;
+};
+
+app.ui.Rows.Data.prototype.upsert = function(element) {
+	var id = element[this.idProperty];
+	var existing = this.ids[id];
+  if (existing) {
+    goog.object.extend(existing, element);
+  } else {
+    this.add(element);
+  }
 };
 
 app.ui.Rows.Data.prototype.remove = function(element) {

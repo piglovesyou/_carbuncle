@@ -164,6 +164,16 @@ app.Site.prototype.disposeInternal = function() {
   goog.base(this, 'disposeInternal');
 };
 
+/**
+ * @param {string} css .
+ * @return {boolean}
+ */
+app.Site.prototype.isElementExists = function(css) {
+  try {
+    return !!this.getDocument().querySelector(css);
+  } catch (e) {}
+  return false;
+}
 
 
 

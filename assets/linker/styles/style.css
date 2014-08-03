@@ -40,8 +40,6 @@ a {
 
 
 
-/* .editor-title { flex: 1; } */
-
 .editor {
   padding: .8em;
 }
@@ -55,7 +53,6 @@ a {
   text-align: right;
 }
 .entry-css {
-  flex: 1;
   font-size: 77%;
 }
 .editor .append {
