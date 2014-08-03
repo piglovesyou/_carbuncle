@@ -4,6 +4,7 @@ goog.provide('app.App');
 goog.require('app.Editor');
 goog.require('app.Scenario');
 goog.require('app.Site');
+goog.require('app.Socket');
 goog.require('goog.dom');
 goog.require('goog.dom.forms');
 goog.require('goog.events.EventTarget');
@@ -59,6 +60,12 @@ app.App.prototype.enterDocument = function() {
   eh.listen(this, 'elementselect', this.handleElementSelect);
   eh.listen(this, 'append-entry', this.handleAppendEntry);
   eh.listen(this, 'editentry', this.handleEditEntry);
+
+  app.socket().then(function(socket) {
+    socket.get('/utsubo/entry', function (res) {
+      console.log(res);
+    })
+  })
 };
 
 /**
