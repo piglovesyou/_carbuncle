@@ -91,6 +91,7 @@ app.App.prototype.enterDocument = function() {
   var eh = this.getHandler();
   eh.listen(this, 'enter-select-mode', this.handleEnterSelectMode);
   eh.listen(this, 'elementselect', this.handleElementSelect);
+  eh.listen(this, 'append-entry', this.handleAppendEntry);
 
 
 
@@ -306,10 +307,15 @@ app.App.prototype.enterDocument = function() {
 
 };
 
+app.App.prototype.handleAppendEntry = function(e) {
+  this.scenario.data.add(e.data);
+  this.scenario.redraw();
+};
+
 app.App.prototype.handleElementSelect = function(e) {
   this.enableSelectMode(false);
   this.editor.setSelectorText(e.selectorText);
-  this.editor.setRoughTitle(e.selectorText);
+  this.editor.setRoughTitle(e.roughTitle);
 };
 
 app.App.prototype.handleEnterSelectMode = function(e) {

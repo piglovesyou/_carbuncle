@@ -87,10 +87,6 @@ a {
   margin-left: 1.6em;
   margin-right: 1.6em;
 }
-.scenario-entry {
-  padding: 1em;
-  background: #f3f3f3;
-}
 
 
 .worm-pixel {
@@ -132,4 +128,11 @@ a {
   height: 100%;
   background: rgba(0,0,0,.2);
   z-index: 1;
+}
+
+
+.scenario-body .scenario-entry {
+  padding: 10px;
+  border: 1px blue solid;
+  font-size: 85%;
 }

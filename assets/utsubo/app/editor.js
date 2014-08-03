@@ -20,11 +20,22 @@ goog.inherits(app.Editor, goog.ui.Component);
 app.Editor.prototype.createDom = function() {
   this.setElementInternal(
       /** @type {Element} */(goog.soy.renderAsFragment(app.soy.editor.createDom)));
+  this.draw({ id: this.generateId() })
+  this.applyModeSelectInternal();
 };
 
-app.Editor.prototype.draw = function(data) {
+/**
+ * @param {Object} opt_data .
+ */
+app.Editor.prototype.draw = function(opt_data) {
+  if (!opt_data) {
+    opt_data = {};
+  }
+  if (!opt_data.id) {
+    opt_data.id = this.generateId();
+  }
   goog.soy.renderElement(this.getElement(),
-      app.soy.editor.renderContent, data);
+      app.soy.editor.renderContent, opt_data);
 };
 
 /** @inheritDoc */
@@ -81,7 +92,11 @@ app.Editor.prototype.handleClick = function(e) {
     this.dispatchEvent('enter-select-mode');
 
   } else if (goog.dom.contains(this.getElementByClass('append-button'), el)) {
-    this.dispatchEvent('append-entry');
+    this.dispatchEvent({
+      type: 'append-entry',
+      data: this.collectValues()
+    });
+    this.draw({ id: this.generateId() })
   }
 };
 
@@ -122,7 +137,8 @@ app.Editor.prototype.disposeInternal = function() {
  */
 app.Editor.prototype.collectValues =   function () {
   return {
-    title: this.getElementByClass('editor-title-input'),
+    id: goog.dom.forms.getValue(this.getElementByClass('editor-entry-id')),
+    title: goog.dom.forms.getValue(this.getElementByClass('editor-title-input')),
     selector: goog.dom.forms.getValue(this.getElementByClass('selector-textarea')),
     mode: goog.dom.forms.getValue(this.getElementByClass('mode-select')),
     action: goog.dom.forms.getValue(this.getElementByClass('action-select')),
@@ -131,3 +147,19 @@ app.Editor.prototype.collectValues =   function () {
   };
 }
 
+app.Editor.prototype.generateId =   function () {
+  return goog.string.getRandomString() + '-' + goog.string.getRandomString();
+};
+
+// /**
+//  * @constructor
+//  */
+// app.Editor.Entry = function (data) {
+//   this.id = data.id;
+//   this.title = data.title;
+//   this.selector = data.selector;
+//   this.mode = data.mode;
+//   this.action = data.action;
+//   this.verify = data.verify;
+//   this.verifyText = data.verifyText;
+// };

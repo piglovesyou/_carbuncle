@@ -63,8 +63,8 @@ app.ui.Rows.prototype.redraw = function() {
 	var contentEl = this.getContentElement();
 	goog.dom.removeChildren(contentEl)
 	goog.array.forEach(this.data.getAll(), function (item) {
-		fragment.appendChild(dh.createDom('div', 'ui-rows-row',
-				goog.soy.renderAsFragment(this.templateFn, item)));
+		fragment.appendChild(
+        goog.soy.renderAsFragment(this.templateFn, item));
 	}, this);
 	dh.append(contentEl, fragment);
 };

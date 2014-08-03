@@ -9,18 +9,12 @@ var EventEmitter = require('events').EventEmitter;
 
 
 module.exports.Executor = Executor;
-var seed = {
-	title: 'xxx',
-	entries: [
-		{title: 'open website', mode: 'action', type: 'open', text: 'http://yan-yan-yahuoku.com'},
-		{title: 'remove extra tag', mode: 'action', type: 'click', css: '.button-tag .button-remove'},
-		{title: 'input search text', mode: 'action', type: 'input', css: 'body:nth-child(2) div.body:nth-child(2) div.frame.app-frame-selected div.tag-input div.tag-input-leftcontent:nth-child(2) input.tag-input-textbox', text: 'AKB' + webdriver.Key.ENTER},
-		{title: 'verify whether any item was loaded', mode: 'verify', type: 'contains', css: 'body:nth-child(2) div.body:nth-child(2) div.frame.app-frame-selected div.goog-splitpane:nth-child(2) div.goog-splitpane-first-container div.goog-list.pane-list.goog-splitpane-first-container div.goog-list-container:nth-child(2) div.pure-g.pane-list-item.goog-list-item div.pure-u-18-24:nth-child(2) div.pane-list-item-title', text: 'AKB'}
-	]
-};
 
 
 
+/**
+ * @constructor
+ */
 function Executor(entries) {
   EventEmitter.call(this);
   Object.defineProperty(this, 'entries', { value: entries });
@@ -56,6 +50,15 @@ Executor.prototype.execute = function() {
 
 
 // Example
+var seed = {
+	title: 'xxx',
+	entries: [
+		{title: 'open website', mode: 'action', type: 'open', text: 'http://yan-yan-yahuoku.com'},
+		{title: 'remove extra tag', mode: 'action', type: 'click', css: '.button-tag .button-remove'},
+		{title: 'input search text', mode: 'action', type: 'input', css: 'body:nth-child(2) div.body:nth-child(2) div.frame.app-frame-selected div.tag-input div.tag-input-leftcontent:nth-child(2) input.tag-input-textbox', text: 'AKB' + webdriver.Key.ENTER},
+		{title: 'verify whether any item was loaded', mode: 'verify', type: 'contains', css: 'body:nth-child(2) div.body:nth-child(2) div.frame.app-frame-selected div.goog-splitpane:nth-child(2) div.goog-splitpane-first-container div.goog-list.pane-list.goog-splitpane-first-container div.goog-list-container:nth-child(2) div.pure-g.pane-list-item.goog-list-item div.pure-u-18-24:nth-child(2) div.pane-list-item-title', text: 'AKB'}
+	]
+};
 var executor = new Executor(seed.entries);
 executor.on('before', function (entry) { console.log('before ' + entry.title + ' ...') })
 executor.on('pass', function () { console.log('test passed.') })
@@ -87,9 +90,6 @@ var executionMap = {
 
 
 
-
-
-
 function actionOpen(context, noUse, url) {
 	return context.open(url);
 }
@@ -117,6 +117,9 @@ function verify(type, context, css, text) {
 
 
 
+/**
+ * @constructor
+ */
 function Context() {
   Object.defineProperty(this, 'driver_', {
     value: new webdriver.Builder().
@@ -144,7 +147,6 @@ Context.prototype.quit = function() {
 
 
 
-// static tools
 function mapVerifyMethod(type) {
 	assert([
 		'equal',

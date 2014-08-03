@@ -11,6 +11,7 @@
     <div class="scenario-body"></div>
     <div class="scenario-footer">
       <a href="javascript:void 0" class="pure-button">reset</a>
+      {sp}
       <a href="javascript:void 0" class="pure-button">save</a>
     </div>
   </div>
@@ -24,9 +25,13 @@
 /**
  * @param title
  */
-{template .renderEntryContent}
+{template .renderEntry}
+<div class="scenario-entry">
   <a href="javascript:void(0)" style="float: right;">
     edit
   </a>
   {$title}
+  <div class="scenario-entry-meta">
+  </div>
+</div>
 {/template}

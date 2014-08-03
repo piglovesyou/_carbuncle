@@ -3,12 +3,11 @@
 
 /***/
 {template .createDom}
-  <div class="editor">
-    {call .renderContent /}
-  </div>
+  <div class="editor"></div>
 {/template}
 
 /**
+ * @param id
  * @param? title
  * @param? selector
  * @param? mode
@@ -21,6 +20,8 @@
 
   <form class="pure-form">
     <div class="pure-g">
+
+      <input class="editor-entry-id" type="hidden" value="{$id}" />
 
 			<div class="editor-title pure-u-1">
 				<input value="{$title?:''}" class="editor-title-input" type="text" placeholder="タイトルを入力" />
@@ -49,6 +50,7 @@
 				<select class="action-select pure-u-1-4" style="display:none;">
 					<option value="click" {if $action == 'click'}selected{/if}>クリック</option>
 					<option value="input" {if $action == 'input'}selected{/if}>入力</option>
+					<option value="open" {if $action == 'open'}selected{/if}>ページを開く</option>
 				</select>
 
 				<input class="action-input-text pure-u-2-4" style="display: none" value="{$actionInputText?:''}" type="text" placeholder="入力するテキスト" />
