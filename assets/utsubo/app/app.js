@@ -308,7 +308,6 @@ app.App.prototype.enterDocument = function() {
 };
 
 app.App.prototype.handleAppendEntry = function(e) {
-  console.log(e.data);
   this.scenario.data.add(e.data);
   this.scenario.redraw();
 };

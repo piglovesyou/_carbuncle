@@ -10,9 +10,11 @@
     <div class="scenario-header">scenario header</div>
     <div class="scenario-body"></div>
     <div class="scenario-footer">
-      <a href="javascript:void 0" class="pure-button">reset</a>
+      <a class="scenario-footer-reset pure-button" href="javascript:void 0">reset</a>
       {sp}
-      <a href="javascript:void 0" class="pure-button">save</a>
+      <a class="scenario-footer-save pure-button" href="javascript:void 0">save</a>
+      {sp}
+      <a class="scenario-footer-preview pure-button" href="javascript:void 0">preview</a>
     </div>
   </div>
 {/template}
@@ -23,17 +25,21 @@
 
 
 /**
+ * @param id
  * @param title
+ * @param css
  * @param mode
+ * @param type
+ * @param text
  */
 {template .renderEntry}
-<div class="scenario-entry">
+<div data-id="{$id}" class="scenario-entry" title="{$css}">
   <a href="javascript:void(0)" style="float: right;">
     edit
   </a>
   {$title}
-  <div class="scenario-entry-meta">
-    {$mode}
+  <div class="scenario-entry-meta" style="color:gray">
+    {$mode}, {$type}{$text ? ', ' + $text : ''}
   </div>
 </div>
 {/template}
