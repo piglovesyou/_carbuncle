@@ -93,6 +93,7 @@ app.Editor.prototype.handleSelectChange = function(e) {
 };
 
 app.Editor.prototype.handleClick = function(e) {
+  var tmp;
   var el = e.target;
   if (goog.dom.contains(this.getElementByClass('selector-button'), el)) {
     this.dispatchEvent('enter-select-mode');
@@ -103,7 +104,7 @@ app.Editor.prototype.handleClick = function(e) {
       data: this.collectValues()
     });
     this.draw();
-  } else if (goog.dom.contains(this.getElementByClass('quit-edit-button'), el)) {
+  } else if ((tmp = this.getElementByClass('quit-edit-button')) && goog.dom.contains(tmp, el)) {
     this.draw();
   }
 };
@@ -121,10 +122,16 @@ app.Editor.prototype.applyDependencyVisibility = function() {
     case 'action':
       goog.dom.forms.setDisabled(this.getElementByClass('entry-type-action'), false);
       goog.dom.forms.setDisabled(this.getElementByClass('entry-type-verify'), true);
+      if (goog.dom.forms.getValue(this.getElementByClass('entry-type-action')) == 'click') {
+        goog.dom.forms.setDisabled(this.getElementByClass('entry-text'), true);
+      } else {
+        goog.dom.forms.setDisabled(this.getElementByClass('entry-text'), false);
+      }
       break;
     case 'verify':
       goog.dom.forms.setDisabled(this.getElementByClass('entry-type-action'), true);
       goog.dom.forms.setDisabled(this.getElementByClass('entry-type-verify'), false);
+      goog.dom.forms.setDisabled(this.getElementByClass('entry-text'), false);
       break;
   }
 };
