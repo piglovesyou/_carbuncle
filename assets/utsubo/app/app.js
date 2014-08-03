@@ -112,13 +112,13 @@ app.App.prototype.enterDocument = function() {
   //   pixelLeftEl = goog.dom.createDom('div', 'worm-pixel-border worm-pixel-border-left'));
 
   // selectorTextareaEl = goog.dom.getElementByClass('selector-textarea');
-  // selectorButtonEl = goog.dom.getElementByClass('selector-button-a');
-  // editorTitleInputEl = goog.dom.getElementByClass('editor-title-input');
+  // selectorButtonEl = goog.dom.getElementByClass('selector-button');
+  // editorTitleInputEl = goog.dom.getElementByClass('editor-title');
   // maskEl = goog.dom.getElementByClass('mask');
   // scenarioEl = goog.dom.getElementByClass('scenario');
-  // editorActionEl = goog.dom.getElementByClass('action-select');
+  // editorActionEl = goog.dom.getElementByClass('entry-type');
   // editorVerifyEl = goog.dom.getElementByClass('verify-select');
-  // editorModeSelectEl = goog.dom.getElementByClass('mode-select');
+  // editorModeSelectEl = goog.dom.getElementByClass('entry-mode');
   // editorActionSelectEl = goog.dom.getElementsByTagNameAndClass('select', null, editorActionEl)[0];
   // editorVerifySelectEl = goog.dom.getElementsByTagNameAndClass('select', null, editorVerifyEl)[0];
   // editorVerifyInputEl = goog.dom.getElementsByTagNameAndClass('input', null, editorVerifyEl)[0];
@@ -308,6 +308,7 @@ app.App.prototype.enterDocument = function() {
 };
 
 app.App.prototype.handleAppendEntry = function(e) {
+  console.log(e.data);
   this.scenario.data.add(e.data);
   this.scenario.redraw();
 };

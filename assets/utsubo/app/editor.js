@@ -3,6 +3,7 @@ goog.provide('app.Editor');
 
 goog.require('app.soy.editor');
 goog.require('goog.ui.Component');
+goog.require('app.model.Entry');
 
 
 
@@ -20,8 +21,8 @@ goog.inherits(app.Editor, goog.ui.Component);
 app.Editor.prototype.createDom = function() {
   this.setElementInternal(
       /** @type {Element} */(goog.soy.renderAsFragment(app.soy.editor.createDom)));
-  this.draw({ id: this.generateId() })
-  this.applyModeSelectInternal();
+  this.draw({ id: this.generateId() });
+  this.applyDependencyVisibility();
 };
 
 /**
@@ -55,9 +56,9 @@ app.Editor.prototype.enable = function(enable) {
       this.selectorInputHandler_.dispose();
       this.selectorInputHandler_ = null;
     }
-    this.selectorInputHandler_ = new goog.events.InputHandler(this.getElementByClass('selector-textarea'));
+    this.selectorInputHandler_ = new goog.events.InputHandler(this.getElementByClass('entry-css'));
     eh.listen(this.selectorInputHandler_, goog.events.InputHandler.EventType.INPUT, this.handleSelectorTextKey);
-    this.applyModeSelectInternal();
+    this.applyDependencyVisibility();
   } else {
     eh.unlisten(this.getElement(), 'change', this.handleSelectChange);
     eh.unlisten(this.getElement(), 'click', this.handleClick);
@@ -71,11 +72,11 @@ app.Editor.prototype.enable = function(enable) {
 };
 
 app.Editor.prototype.setRoughTitle = function(text) {
-  goog.dom.forms.setValue(this.getElementByClass('editor-title-input'), text);
+  goog.dom.forms.setValue(this.getElementByClass('entry-title'), text);
 };
 
 app.Editor.prototype.setSelectorText = function(text) {
-  goog.dom.forms.setValue(this.getElementByClass('selector-textarea'), text);
+  goog.dom.forms.setValue(this.getElementByClass('entry-css'), text);
 };
 
 app.Editor.prototype.handleSelectChange = function(e) {
@@ -83,12 +84,12 @@ app.Editor.prototype.handleSelectChange = function(e) {
   if (!selectEl.tagName == goog.dom.TagName.SELECT) {
     return;
   }
-  this.applyModeSelectInternal();
+  this.applyDependencyVisibility();
 };
 
 app.Editor.prototype.handleClick = function(e) {
   var el = e.target;
-  if (goog.dom.contains(this.getElementByClass('selector-button-a'), el)) {
+  if (goog.dom.contains(this.getElementByClass('selector-button'), el)) {
     this.dispatchEvent('enter-select-mode');
 
   } else if (goog.dom.contains(this.getElementByClass('append-button'), el)) {
@@ -96,7 +97,7 @@ app.Editor.prototype.handleClick = function(e) {
       type: 'append-entry',
       data: this.collectValues()
     });
-    this.draw({ id: this.generateId() })
+    this.draw({ id: this.generateId() });
   }
 };
 
@@ -105,24 +106,15 @@ app.Editor.prototype.handleSelectorTextKey = function(e) {
 };
 
 /***/
-app.Editor.prototype.applyModeSelectInternal = function() {
-  switch (goog.dom.forms.getValue(this.getElementByClass('mode-select'))) {
+app.Editor.prototype.applyDependencyVisibility = function() {
+  switch (goog.dom.forms.getValue(this.getElementByClass('entry-mode'))) {
     case 'action':
-      goog.style.setElementShown(this.getElementByClass('action-select'), true);
-      goog.style.setElementShown(this.getElementByClass('verify-select'), false);
-      switch (goog.dom.forms.getValue(this.getElementByClass('action-select'))) {
-        case 'input':
-          goog.style.setElementShown(this.getElementByClass('action-input-text'), true);
-          break;
-        default:
-          goog.style.setElementShown(this.getElementByClass('action-input-text'), false);
-          break;
-      }
+      goog.dom.forms.setDisabled(this.getElementByClass('entry-type-action'), false);
+      goog.dom.forms.setDisabled(this.getElementByClass('entry-type-verify'), true);
       break;
     case 'verify':
-      goog.style.setElementShown(this.getElementByClass('action-select'), false);
-      goog.style.setElementShown(this.getElementByClass('verify-select'), true);
-      goog.style.setElementShown(this.getElementByClass('action-input-text'), false);
+      goog.dom.forms.setDisabled(this.getElementByClass('entry-type-action'), true);
+      goog.dom.forms.setDisabled(this.getElementByClass('entry-type-verify'), false);
       break;
   }
 };
@@ -135,31 +127,31 @@ app.Editor.prototype.disposeInternal = function() {
 /**
  * TODO* use this
  */
-app.Editor.prototype.collectValues =   function () {
-  return {
-    id: goog.dom.forms.getValue(this.getElementByClass('editor-entry-id')),
-    title: goog.dom.forms.getValue(this.getElementByClass('editor-title-input')),
-    selector: goog.dom.forms.getValue(this.getElementByClass('selector-textarea')),
-    mode: goog.dom.forms.getValue(this.getElementByClass('mode-select')),
-    action: goog.dom.forms.getValue(this.getElementByClass('action-select')),
-    verify: goog.dom.forms.getValue(this.getElementByClass('verify-select')),
-    verifyText: goog.dom.forms.getValue(this.getElementByClass('verity-input'))
-  };
-}
+app.Editor.prototype.collectValues = function() {
+  var map = goog.dom.forms.getFormDataMap(this.getElementByClass('editor-form'));
+  var data = {};
+  var prefix =  'entry-';
+  map.forEach(function(v, k) {
+    if (goog.string.startsWith(k, prefix)) {
+      data[k.slice(prefix.length)] = v[0];
+    }
+  });
+  return new app.model.Entry(data);
+};
 
-app.Editor.prototype.generateId =   function () {
+app.Editor.prototype.generateId = function() {
   return goog.string.getRandomString() + '-' + goog.string.getRandomString();
 };
 
 // /**
 //  * @constructor
 //  */
-// app.Editor.Entry = function (data) {
-//   this.id = data.id;
-//   this.title = data.title;
-//   this.selector = data.selector;
-//   this.mode = data.mode;
-//   this.action = data.action;
-//   this.verify = data.verify;
-//   this.verifyText = data.verifyText;
+// app.Editor.Entry = function(map) {
+//   this.id = map.get('entry-id')[0];
+//   this.title = map.get('entry-title')[0];
+//   this.css = map.get('entry-css')[0];
+//   this.mode = map.get('entry-mode')[0];
+//   this.type = map.get('entry-type')[0];
+//   this.text = map.get('entry-text')[0];
+//   Object.seal && Object.seal(this);
 // };

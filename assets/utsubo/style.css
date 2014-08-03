@@ -40,8 +40,7 @@ a {
 
 
 
-.editor-title { display: flex; }
-.editor-title input[type="text"] { flex: 1; }
+/* .editor-title { flex: 1; } */
 
 .editor {
   padding: .8em;
@@ -55,15 +54,16 @@ a {
 .selector-button {
   text-align: right;
 }
-.selector-textarea-wrap {
-  display: flex;
-}
-.selector-textarea {
+.entry-css {
   flex: 1;
   font-size: 77%;
 }
 .editor .append {
   text-align: right;
+}
+
+#editor-form :disabled {
+  display: none;
 }
 
 

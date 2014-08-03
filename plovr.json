@@ -1,9 +1,10 @@
 {
   "id": "utsubo",
   "debug": true,
-  // "closure-library": "./libs/closure-library/closure/goog",
+  "closure-library": "./libs/closure-library/closure/goog",
   "paths": [
-	  "./assets/utsubo/app"
+	  "./assets/utsubo/app",
+	  "./assets/utsubo/soyutils_usegoog.js"
   ],
   "inputs": "./assets/utsubo/main.js",
   "mode": "ADVANCED",

@@ -11,59 +11,58 @@
  * @param? title
  * @param? selector
  * @param? mode
- * @param? action
- * @param? verify
- * @param? verifyText
+ * @param? type
  * @param? actionInputText
  */
 {template .renderContent}
 
-  <form class="pure-form">
+  <form id="editor-form" class="editor-form pure-form" action="javascript:void(0)">
     <div class="pure-g">
 
-      <input class="editor-entry-id" type="hidden" value="{$id}" />
+      <input name="entry-id" class="entry-id" type="hidden" value="{$id}" />
 
-			<div class="editor-title pure-u-1">
-				<input value="{$title?:''}" class="editor-title-input" type="text" placeholder="タイトルを入力" />
+			<div class="pure-u-1">
+				<input name="entry-title" class="entry-title" value="{$title?:''}" type="text" placeholder="タイトルを入力" />
+				<input name="entry-title" class="entry-title" value="{$title?:''}" type="text" placeholder="タイトルを入力" />
 			</div>
 
-			<div class="selector-button pure-u-1-4">
-				<a class="selector-button-a pure-button pure-button-primary" href="#">
+			<div class="pure-u-1-4">
+				<a class="selector-button pure-button pure-button-primary" href="#">
 					<i class="fa fa-location-arrow fa-flip-horizontal fa-lg"></i>
 					{sp}要素を選択
 				</a>
 			</div>
 
-			<div class="selector-textarea-wrap pure-u-3-4">
-				<textarea rows="2" class="selector-textarea" id="" name="selector" placeholder="CSSセレクタを入力">
+			<div class="pure-u-3-4">
+				<textarea class="entry-css" name="entry-css" rows="2" placeholder="CSSセレクタを入力">
 					{$selector?:''}
 				</textarea>
 			</div>
 
 			<div class="pure-u-7-8">
 
-				<select class="mode-select pure-u-1-4">
+				<select name="entry-mode" class="entry-mode pure-u-1-4">
 					<option value="action" {if $mode == 'action'}selected{/if}>アクション</option>
 					<option value="verify" {if $mode == 'verify'}selected{/if}>ベリファイ</option>
 				</select>
+        {sp}
 
-				<select class="action-select pure-u-1-4" style="display:none;">
-					<option value="click" {if $action == 'click'}selected{/if}>クリック</option>
-					<option value="input" {if $action == 'input'}selected{/if}>入力</option>
-					<option value="open" {if $action == 'open'}selected{/if}>ページを開く</option>
+				<select name="entry-type" class="entry-type entry-type-action pure-u-1-4">
+					<option value="click" {if $type == 'click'}selected{/if}>クリック</option>
+					<option value="input" {if $type == 'input'}selected{/if}>入力</option>
+					<option value="open" {if $type == 'open'}selected{/if}>ページを開く</option>
 				</select>
+        {sp}
 
-				<input class="action-input-text pure-u-2-4" style="display: none" value="{$actionInputText?:''}" type="text" placeholder="入力するテキスト" />
+        <select name="entry-type" class="entry-type entry-type-verify pure-u-1-4" disabled>
+          <option value="contains"   {if $type == 'contains'}selected{/if}>を含む</option>
+          <option value="startswith" {if $type == 'startswith'}selected{/if}>で始まる</option>
+          <option value="endswith"   {if $type == 'endswith'}selected{/if}>で終わる</option>
+          <option value="equal"      {if $type == 'equal'}selected{/if}>と一致</option>
+        </select>
+        {sp}
 
-				<div class="verify-select pure-u-2-4" style="display:none;">
-					<select>
-						<option value="contains"   {if $verify == 'contains'}selected{/if}>を含む</option>
-						<option value="startswith" {if $verify == 'startswith'}selected{/if}>で始まる</option>
-						<option value="endswith"   {if $verify == 'endswith'}selected{/if}>で終わる</option>
-						<option value="equal"      {if $verify == 'equal'}selected{/if}>と一致</option>
-					</select>
-					<input value="{$verifyText?:''}" type="text" class="verity-input" placeholder="確認するテキスト" />
-				</div>
+				<input name="entry-text" class="entry-text pure-u-2-4" value="{$actionInputText?:''}" type="text" placeholder="テキスト" />
 
 			</div>
 
