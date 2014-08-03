@@ -9,6 +9,10 @@
   "inputs": "./assets/utsubo/main.js",
   "mode": "ADVANCED",
   "level": "VERBOSE",
-  "externs": [ ],
+  "externs": [
+    './assets/linker/js/socket.io.js',
+    './assets/linker/js/sails.io.js'
+  ],
+  "checks": {},
   "output-file": "assets/utsubo/javascripts/main-min.js"
 }

@@ -14,6 +14,9 @@
  *
  * For more information, visit:
  * http://sailsjs.org/#documentation
+ *
+ * @fileoverview
+ * @suppress {nonStandardJsDocs}
  */
 
 (function (io) {
@@ -92,7 +95,7 @@
 
    /**
    * Simulate HTTP over Socket.io
-   * @api private :: but exposed for backwards compatibility w/ <= sails@~0.8
+   * @private :: but exposed for backwards compatibility w/ <= sails@~0.8
    */
 
   Socket.prototype.request = request;
