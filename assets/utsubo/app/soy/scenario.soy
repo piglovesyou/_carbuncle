@@ -34,9 +34,11 @@
  */
 {template .renderEntry}
 <div data-id="{$id}" class="scenario-entry" title="{$css}">
-  <a class="scenario-entry-edithook" href="javascript:void(0)" style="float: right;">
-    edit
-  </a>
+  <div style="float:right;text-align:right;">
+    <a class="scenario-entry-edithook" href="javascript:void(0)">edit</a>
+    <br />
+    <a class="scenario-entry-deletehook" href="javascript:void(0)">del</a>
+  </div>
   {$title}
   <div class="scenario-entry-meta" style="color:gray">
     {$mode}, {$type}{$text ? ', ' + $text : ''}

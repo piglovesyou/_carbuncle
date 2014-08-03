@@ -92,7 +92,7 @@ app.App.prototype.handleSelectorTextKey = function(e) {
  * @param {goog.events.Event} e .
  */
 app.App.prototype.handleAppendEntry = function(e) {
-  this.scenario.data.add(e.data);
+  this.scenario.data.upsert(e.data);
   this.scenario.redraw();
 };
 

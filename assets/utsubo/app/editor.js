@@ -21,7 +21,7 @@ goog.inherits(app.Editor, goog.ui.Component);
 app.Editor.prototype.createDom = function() {
   this.setElementInternal(
       /** @type {Element} */(goog.soy.renderAsFragment(app.soy.editor.createDom)));
-  this.draw({ id: this.generateId() });
+  this.draw();
   this.applyDependencyVisibility();
 };
 
@@ -35,8 +35,13 @@ app.Editor.prototype.draw = function(opt_data) {
   if (!opt_data.id) {
     opt_data.id = this.generateId();
   }
-  goog.soy.renderElement(this.getElement(),
-      app.soy.editor.renderContent, opt_data);
+  if (!opt_data.mode) {
+    opt_data.mode = 'action';
+  }
+  if (!opt_data.type) {
+    opt_data.mode = 'click';
+  }
+  goog.soy.renderElement(this.getElement(), app.soy.editor.renderContent, opt_data);
 };
 
 /** @inheritDoc */
@@ -97,7 +102,9 @@ app.Editor.prototype.handleClick = function(e) {
       type: 'append-entry',
       data: this.collectValues()
     });
-    this.draw({ id: this.generateId() });
+    this.draw();
+  } else if (goog.dom.contains(this.getElementByClass('quit-edit-button'), el)) {
+    this.draw();
   }
 };
 

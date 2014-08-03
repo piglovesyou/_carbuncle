@@ -31,31 +31,50 @@ app.Scenario.EventTarget = {
 app.Scenario.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var eh = this.getHandler();
-  eh.listen(this.getElement(), 'click', function (e) {
-    var et = /** @type {Element} */(e.target);
+  eh.listen(this.getElement(), 'click', this.handleClick)
+}
 
-    var editEl = this.getElementByClass('scenario-entry-edithook');
-    if (editEl) {
-      var entryEl = app.dom.getAncestorFromEventTargetByClass(this.getElement(), 'scenario-entry', et);
-      if (entryEl) {
-        var entry = this.data.get(goog.dom.dataset.get(entryEl, 'id'));
-        if (entry) {
-          this.dispatchEvent({
-            type: 'editentry',
-            data: entry
-          })
-        }
-      }
-      return;
+app.Scenario.prototype.handleClick = function (e) {
+  var et = /** @type {Element} */(e.target);
+  
+  if (goog.dom.classes.has(et, 'scenario-entry-edithook')) {
+    var entry = this.getEntryFromEventTarget(et);
+    if (entry) {
+      this.dispatchEvent({
+        type: 'editentry',
+        data: entry
+      })
     }
+    return;
+  }
 
-    if (goog.dom.classes.has(et, 'scenario-footer-reset')) {
-      this.data.clear();
-      this.draw();
-    } else if (goog.dom.classes.has(et, 'scenario-footer-save')) {
-    } else if (goog.dom.classes.has(et, 'scenario-footer-preview')) {
+  if (goog.dom.classes.has(et, 'scenario-entry-deletehook')) {
+    var entry = this.getEntryFromEventTarget(et);
+    if (entry) {
+      this.data.remove(entry);
+      this.redraw();
     }
-  })
+    return;
+  };
+
+  if (goog.dom.classes.has(et, 'scenario-footer-reset')) {
+    this.data.clear();
+    this.redraw();
+  } else if (goog.dom.classes.has(et, 'scenario-footer-save')) {
+  } else if (goog.dom.classes.has(et, 'scenario-footer-preview')) {
+  }
+};
+
+/**
+ * @param {Node} et
+ * @return {Object}
+ */
+app.Scenario.prototype.getEntryFromEventTarget = function(et) {
+  var entryEl = app.dom.getAncestorFromEventTargetByClass(this.getElement(), 'scenario-entry', et);
+  if (entryEl) {
+    return this.data.get(goog.dom.dataset.get(entryEl, 'id'));
+  }
+  return null;
 }
 
 /** @inheritDoc */
