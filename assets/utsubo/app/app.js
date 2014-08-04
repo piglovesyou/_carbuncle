@@ -4,6 +4,7 @@ goog.provide('app.App');
 goog.require('app.Editor');
 goog.require('app.Scenario');
 goog.require('app.Site');
+goog.require('app.mask');
 goog.require('app.Socket');
 goog.require('goog.dom');
 goog.require('goog.dom.forms');
@@ -62,7 +63,7 @@ app.App.prototype.enterDocument = function() {
   eh.listen(this, 'editentry', this.handleEditEntry);
 
   app.socket().then(function(socket) {
-    socket.get('/utsubo/entry', function (res) {
+    socket.get('/utsubo/set', function (res) {
       console.log(res);
     })
   })
@@ -123,12 +124,14 @@ app.App.prototype.handleEnterSelectMode = function(e) {
  * @param {boolean} enable .
  */
 app.App.prototype.enableSelectMode = function(enable) {
-  goog.style.setElementShown(this.getElementByClass('mask'), enable);
+  // goog.style.setElementShown(this.getElementByClass('Mask'), enable);
   var eh = this.getHandler();
   if (enable) {
+    app.mask.focus(this.site.getElement());
     this.editor.enable(false);
     this.site.enable(true);
   } else {
+    app.mask.hide();
     this.editor.enable(true);
     this.site.enable(false);
   }

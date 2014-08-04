@@ -1,11 +1,12 @@
 
 goog.provide('app.Scenario');
 
-goog.require('app.soy.scenario');
-goog.require('goog.soy');
-goog.require('goog.dom.dataset');
 goog.require('app.dom');
+goog.require('app.soy.scenario');
 goog.require('app.ui.Rows');
+goog.require('app.mask');
+goog.require('goog.dom.dataset');
+goog.require('goog.soy');
 goog.require('goog.ui.Component');
 
 
@@ -26,24 +27,28 @@ goog.inherits(app.Scenario, app.ui.Rows);
  */
 app.Scenario.EventTarget = {
   EDIT_ENTRY: 'editentry'
-}
+};
 
+/** @inheritDoc */
 app.Scenario.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var eh = this.getHandler();
-  eh.listen(this.getElement(), 'click', this.handleClick)
-}
+  eh.listen(this.getElement(), 'click', this.handleClick);
+};
 
-app.Scenario.prototype.handleClick = function (e) {
+/**
+ * @param {goog.events.Every} e .
+ */
+app.Scenario.prototype.handleClick = function(e) {
   var et = /** @type {Element} */(e.target);
-  
+
   if (goog.dom.classes.has(et, 'scenario-entry-edithook')) {
     var entry = this.getEntryFromEventTarget(et);
     if (entry) {
       this.dispatchEvent({
         type: 'editentry',
         data: entry
-      })
+      });
     }
     return;
   }
@@ -55,13 +60,23 @@ app.Scenario.prototype.handleClick = function (e) {
       this.redraw();
     }
     return;
-  };
+  }
 
-  if (goog.dom.classes.has(et, 'scenario-footer-reset')) {
+  if (goog.dom.classes.has(et, 'scenario-footer-preview')) {
+    app.mask.focus(this.getElement());
+
+  } else if (goog.dom.classes.has(et, 'scenario-footer-reset')) {
     this.data.clear();
     this.redraw();
+
   } else if (goog.dom.classes.has(et, 'scenario-footer-save')) {
-  } else if (goog.dom.classes.has(et, 'scenario-footer-preview')) {
+    app.socket().then(function(socket) {
+      socket.post('/utsubo/set', {
+        entries: this.data.getAll()
+      }, function (res) {
+        console.log(res);
+      })
+    }, null, this);
   }
 };
 
@@ -75,7 +90,7 @@ app.Scenario.prototype.getEntryFromEventTarget = function(et) {
     return this.data.get(goog.dom.dataset.get(entryEl, 'id'));
   }
   return null;
-}
+};
 
 /** @inheritDoc */
 app.Scenario.prototype.createDom = function() {
@@ -83,6 +98,7 @@ app.Scenario.prototype.createDom = function() {
       /** @type {Element} */(goog.soy.renderAsFragment(app.soy.scenario.createDom)));
 };
 
+/** @inheritDoc */
 app.Scenario.prototype.getContentElement = function() {
   return this.getElementByClass('scenario-body');
 };

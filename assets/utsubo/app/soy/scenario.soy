@@ -10,18 +10,23 @@
     <div class="scenario-header">scenario header</div>
     <div class="scenario-body"></div>
     <div class="scenario-footer">
-      <a class="scenario-footer-reset pure-button" href="javascript:void 0">reset</a>
-      {sp}
-      <a class="scenario-footer-save pure-button" href="javascript:void 0">save</a>
-      {sp}
-      <a class="scenario-footer-preview pure-button" href="javascript:void 0">preview</a>
+      {call .footerContent data="all" /}
     </div>
   </div>
 {/template}
 
 
 
-
+/**
+ * @param? disabled
+ */
+{template .footerContent}
+  <a class="scenario-footer-preview pure-button{if $disabled} pure-button-disabled{/if}" href="javascript:void 0">preview</a>
+  {sp}
+  <a class="scenario-footer-reset pure-button{if $disabled} pure-button-disabled{/if}" href="javascript:void 0">reset</a>
+  {sp}
+  <a class="scenario-footer-save pure-button pure-button-primary{if $disabled} pure-button-disabled{/if}" href="javascript:void 0">save</a>
+{/template}
 
 
 /**
