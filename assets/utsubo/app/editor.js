@@ -39,7 +39,7 @@ app.Editor.prototype.draw = function(opt_data) {
     opt_data.mode = 'action';
   }
   if (!opt_data.type) {
-    opt_data.mode = 'click';
+    opt_data.type = 'click';
   }
   goog.soy.renderElement(this.getElement(), app.soy.editor.renderContent, opt_data);
 };
@@ -54,7 +54,9 @@ app.Editor.prototype.enterDocument = function() {
 app.Editor.prototype.enable = function(enable) {
 
   var eh = this.getHandler();
+  var dh = this.getDomHelper();
   if (enable) {
+    eh.listen(dh.getElement('editor-form'), 'submit', this.handleSubmit);
     eh.listen(this.getElement(), 'change', this.handleSelectChange);
     eh.listen(this.getElement(), 'click', this.handleClick);
     if (this.selectorInputHandler_) {
@@ -65,6 +67,7 @@ app.Editor.prototype.enable = function(enable) {
     eh.listen(this.selectorInputHandler_, goog.events.InputHandler.EventType.INPUT, this.handleSelectorTextKey);
     this.applyDependencyVisibility();
   } else {
+    eh.unlisten(dh.getElement('editor-form'), 'submit', this.handleSubmit);
     eh.unlisten(this.getElement(), 'change', this.handleSelectChange);
     eh.unlisten(this.getElement(), 'click', this.handleClick);
     if (this.selectorInputHandler_) {
@@ -75,6 +78,19 @@ app.Editor.prototype.enable = function(enable) {
   }
 
 };
+
+app.Editor.prototype.dispatchAppendEntryEvent = function(e) {
+  this.dispatchEvent({
+    type: 'append-entry',
+    data: this.collectValues()
+  });
+}
+
+app.Editor.prototype.handleSubmit = function(e) {
+  this.dispatchAppendEntryEvent();;
+  this.draw();
+  e.preventDefault();
+}
 
 app.Editor.prototype.setRoughTitle = function(text) {
   goog.dom.forms.setValue(this.getElementByClass('entry-title'), text);
@@ -98,12 +114,6 @@ app.Editor.prototype.handleClick = function(e) {
   if (goog.dom.contains(this.getElementByClass('selector-button'), el)) {
     this.dispatchEvent('enter-select-mode');
 
-  } else if (goog.dom.contains(this.getElementByClass('append-button'), el)) {
-    this.dispatchEvent({
-      type: 'append-entry',
-      data: this.collectValues()
-    });
-    this.draw();
   } else if ((tmp = this.getElementByClass('quit-edit-button')) && goog.dom.contains(tmp, el)) {
     this.draw();
   }
