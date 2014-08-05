@@ -33,7 +33,7 @@ app.Socket.prototype.promiseConnect = function() {
       resolver(socket);
     })
     socket.on('disconnect', function () {
-      that.connect_(); // Persistently connect
+      that.promiseConnect(); // Persistently connecting
     })
   }, this);
 };

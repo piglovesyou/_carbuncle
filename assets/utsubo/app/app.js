@@ -24,6 +24,8 @@ goog.require('goog.ui.Component');
 app.App = function() {
   goog.base(this);
 
+  this.initializePageResources_();
+
   this.editor = new app.Editor;
   this.addChild(this.editor);
 
@@ -34,6 +36,11 @@ app.App = function() {
   this.addChild(this.scenario);
 };
 goog.inherits(app.App, goog.ui.Component);
+
+app.App.prototype.initializePageResources_ = function(element) {
+  goog.global.sessionStorage.clear();
+  goog.global.localStorage.clear();
+};
 
 /** @inheritDoc */
 app.App.prototype.decorateInternal = function(element) {
@@ -62,9 +69,13 @@ app.App.prototype.enterDocument = function() {
   eh.listen(this, 'append-entry', this.handleAppendEntry);
   eh.listen(this, 'editentry', this.handleEditEntry);
 
+  var that = this;
   app.socket().then(function(socket) {
     socket.get('/utsubo/set', function (res) {
-      console.log(res);
+      if (res[0] && res[0].entries) {
+        that.scenario.data.addAll(res[0].entries);
+        that.scenario.redraw();
+      }
     })
   })
 };

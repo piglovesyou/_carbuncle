@@ -118,6 +118,12 @@ app.ui.Rows.Data.prototype.add = function(element) {
 	this.ids[id] = element;
 };
 
+app.ui.Rows.Data.prototype.addAll = function(entries) {
+	goog.array.forEach(entries, function (entry) {
+	  this.add(entry);
+	}, this);
+};
+
 app.ui.Rows.Data.prototype.upsert = function(element) {
 	var id = element[this.idProperty];
 	var existing = this.ids[id];

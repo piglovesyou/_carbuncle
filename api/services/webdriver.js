@@ -5,6 +5,7 @@ goog.require('goog.string');
 var Q = require('q');
 var util = require('util');
 var EventEmitter = require('events').EventEmitter;
+var Url = require('url');
 
 
 
@@ -15,14 +16,16 @@ module.exports.Executor = Executor;
 /**
  * @constructor
  */
-function Executor(entries) {
+function Executor(entries, opt_interval) {
   EventEmitter.call(this);
   Object.defineProperty(this, 'entries', { value: entries });
+  Object.defineProperty(this, 'interval', { value: opt_interval || 0 });
   Object.seal(this);
+  this.execute_();
 }
 util.inherits(Executor, EventEmitter);
 
-Executor.prototype.execute = function() {
+Executor.prototype.execute_ = function() {
   var that = this;
   var context = new Context;
   // Not return promise for preventing confusing
@@ -30,7 +33,7 @@ Executor.prototype.execute = function() {
     return p.then(function() {
       that.emit('before', e);
       return executionMap[e.mode][e.type](context, e.css, e.text);
-    });
+    }).delay(that.interval);
   }, Q())
   .then(function() {
     that.emit('pass');
@@ -70,7 +73,9 @@ var executionMap = {
 
 
 function actionOpen(context, noUse, url) {
-	return context.open(url);
+  var u = Url.parse(url);
+  var dest = global.options.site + u.pathname;
+	return context.open(dest);
 }
 function actionClick(context, css) {
 	return context.wait(css).then(function() {
@@ -81,7 +86,7 @@ function actionClick(context, css) {
 }
 function actionInput(context, css, input) {
 	return context.wait(css).then(function() {
-		return context.find(css).sendKeys(input);
+		return context.find(css).sendKeys(replaceMetaKey(input));
 	});
 }
 function verify(type, context, css, text) {
@@ -135,4 +140,13 @@ function mapVerifyMethod(type) {
 	].some(function(s) {return s == type}));
 	return type == 'equal' ?
 		function(text, v) { return text == v } : goog.string[type];
+}
+function replaceMetaKey(input) {
+  return input.replace(/(\{.*?\})/g, function (hit) {
+    var content = hit.match(/\{(.*?)\}/);
+    if (content && webdriver.Key[content[1]]) {
+      return webdriver.Key[content[1]];
+    }
+    return hit;
+  });
 }

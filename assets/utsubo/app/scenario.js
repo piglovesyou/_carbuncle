@@ -2,9 +2,9 @@
 goog.provide('app.Scenario');
 
 goog.require('app.dom');
+goog.require('app.mask');
 goog.require('app.soy.scenario');
 goog.require('app.ui.Rows');
-goog.require('app.mask');
 goog.require('goog.dom.dataset');
 goog.require('goog.soy');
 goog.require('goog.ui.Component');
@@ -63,7 +63,27 @@ app.Scenario.prototype.handleClick = function(e) {
   }
 
   if (goog.dom.classes.has(et, 'scenario-footer-preview')) {
-    app.mask.focus(this.getElement());
+
+    var that = this;
+    app.socket().then(function(socket) {
+      app.mask.focus(this.getElement());
+      goog.soy.renderElement(that.getElementByClass('scenario-footer'),
+          app.soy.scenario.footerContent, {disabled: true});
+      socket.post('/utsubo/set/preview', {
+        entries: this.data.getAll()
+      }, function(res) {
+        if (res.error) {
+          console.log(res.stack);
+          alert(res.stack);
+        } else {
+          alert('success!')
+        }
+        app.mask.hide();
+        goog.soy.renderElement(that.getElementByClass('scenario-footer'),
+            app.soy.scenario.footerContent);
+      });
+    }, null, this);
+
 
   } else if (goog.dom.classes.has(et, 'scenario-footer-reset')) {
     this.data.clear();
@@ -73,9 +93,9 @@ app.Scenario.prototype.handleClick = function(e) {
     app.socket().then(function(socket) {
       socket.post('/utsubo/set', {
         entries: this.data.getAll()
-      }, function (res) {
-        console.log(res);
-      })
+      }, function(res) {
+        console.log('====done..?', res);
+      });
     }, null, this);
   }
 };

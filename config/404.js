@@ -13,7 +13,7 @@ var proxy = httpProxy.createProxyServer();
 module.exports[404] = function pageNotFound(req, res) {
 
   // yeah
-  proxy.web(req, res, { target: 'http://yan-yan-yahuoku.com' });
+  proxy.web(req, res, { target: global.options.site });
 
   // /*
   //  * NOTE: This function is Sails middleware-- that means that not only do `req` and `res`

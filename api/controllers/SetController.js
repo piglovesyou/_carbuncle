@@ -15,8 +15,37 @@
  * @docs        :: http://sailsjs.org/#!documentation/controllers
  */
 
+var Executor = require('../services/webdriver').Executor;
+
 module.exports = {
     
+
+
+  preview: function (req, res) {
+    var json = req.body;
+    var entries = json.entries;
+    if (_.isArray(entries) && !_.isEmpty(entries)) {
+      console.log('#######');
+      var executor = new Executor(entries, 800);
+      var error;
+      executor.on('before', function(entry) { console.log('before ' + entry.title + ' ...') });
+      executor.on('pass', function() {
+        console.log(arguments);
+      });
+      executor.on('error', function(e) {
+        error = e;
+      });
+      executor.on('end', function() {
+        if (error) {
+          res.json({error: error, stack: error.stack})
+        } else {
+          res.json({success: true});
+        }
+      });
+    } else {
+      res.json({error: 'boom'});
+    }
+  },
   
 
 
