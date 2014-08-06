@@ -129,8 +129,17 @@ a {
 }
 
 
-.scenario-body .scenario-entry {
+.scenario-entry {
   padding: 10px;
-  border: 1px blue solid;
+  border-bottom: 1px #ccc solid;
   font-size: 85%;
 }
+.scenario-entry-action {}
+.scenario-entry-verify {
+  background: rgb(255,255,100);
+}
+.scenario-entry-done {
+  margin-top: -1px; 
+  background: lightgray;
+}
+.scenario-entry-done:first-of-type { margin-top: 0; }

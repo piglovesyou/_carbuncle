@@ -37,6 +37,10 @@ app.App = function() {
 };
 goog.inherits(app.App, goog.ui.Component);
 
+/**
+ * @param {Element} element
+ * @private
+ */
 app.App.prototype.initializePageResources_ = function(element) {
   goog.global.sessionStorage.clear();
   goog.global.localStorage.clear();
@@ -68,6 +72,7 @@ app.App.prototype.enterDocument = function() {
   eh.listen(this, 'elementselect', this.handleElementSelect);
   eh.listen(this, 'append-entry', this.handleAppendEntry);
   eh.listen(this, 'editentry', this.handleEditEntry);
+  
 
   var that = this;
   app.socket().then(function(socket) {
@@ -135,16 +140,25 @@ app.App.prototype.handleEnterSelectMode = function(e) {
  * @param {boolean} enable .
  */
 app.App.prototype.enableSelectMode = function(enable) {
-  // goog.style.setElementShown(this.getElementByClass('Mask'), enable);
   var eh = this.getHandler();
   if (enable) {
+    eh.listen(app.mask.get(), app.Mask.EventType.CANCEL, this.handleCancelOnSelectMode);
     app.mask.focus(this.site.getElement());
     this.editor.enable(false);
     this.site.enable(true);
   } else {
+    eh.unlisten(app.mask.get(), app.Mask.EventType.CANCEL, this.handleCancelOnSelectMode);
     app.mask.hide();
     this.editor.enable(true);
     this.site.enable(false);
   }
+};
+
+/**
+ * @param {goog.events.Event} e .
+ */
+app.App.prototype.handleCancelOnSelectMode = function(e) {
+  this.site.pixel.show(false);
+  this.enableSelectMode(false);
 };
 

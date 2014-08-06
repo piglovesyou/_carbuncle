@@ -7,6 +7,10 @@ goog.require('goog.ui.Component');
 
 
 
+app.mask.get = function () {
+  return app.Mask.getInstance();
+};
+
 app.mask.focus = function (paneEl) {
   app.Mask.getInstance().focus(paneEl);
 };
@@ -36,6 +40,13 @@ app.Mask = function(opt_domHelper) {
 goog.inherits(app.Mask, goog.ui.Component);
 goog.addSingletonGetter(app.Mask);
 
+/**
+ * @enum {string}
+ */
+app.Mask.EventType = {
+  CANCEL: 'cancel'
+};
+
 app.Mask.prototype.focus = function(el) {
   goog.style.setStyle((this.focusedEl = el), 'z-index', 11);
   goog.style.setElementShown(this.getElement(), true);
@@ -44,6 +55,14 @@ app.Mask.prototype.focus = function(el) {
 app.Mask.prototype.hide = function() {
   goog.style.setStyle(this.focusedEl, 'z-index', '');
   goog.style.setElementShown(this.getElement(), false);
+};
+
+app.Mask.prototype.enterDocument = function() {
+  goog.base(this, 'enterDocument');
+  var eh = this.getHandler();
+  eh.listen(this.getElement(), goog.events.EventType.CLICK, function (e) {
+    this.dispatchEvent(app.Mask.EventType.CANCEL);
+  });
 };
 
 /** @inheritDoc */
