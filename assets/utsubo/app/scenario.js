@@ -5,6 +5,7 @@ goog.require('app.dom');
 goog.require('app.mask');
 goog.require('app.soy.scenario');
 goog.require('app.ui.Rows');
+goog.require('goog.dom.classes');
 goog.require('goog.dom.dataset');
 goog.require('goog.soy');
 goog.require('goog.ui.Component');
@@ -76,7 +77,7 @@ app.Scenario.prototype.handleClick = function(e) {
           console.log(res.stack);
           alert(res.stack);
         } else {
-          alert('success!')
+          alert('success!');
         }
         app.mask.hide();
         goog.soy.renderElement(that.getElementByClass('scenario-footer'),

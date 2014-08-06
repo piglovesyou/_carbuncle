@@ -142,7 +142,8 @@ case $1 in
         cleanup_lib
         setup_plovr
         setup_closurelibrary
-        setup_solr
+        setup_selenium
+        # setup_solr
         # setup_closurestylesheets
         # setup_closuretemplates
         # setup_closurecompiler
