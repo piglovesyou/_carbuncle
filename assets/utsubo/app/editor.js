@@ -56,7 +56,6 @@ app.Editor.prototype.enable = function(enable) {
   var eh = this.getHandler();
   var dh = this.getDomHelper();
   if (enable) {
-    eh.listen(dh.getElement('editor-form'), 'submit', this.handleSubmit);
     eh.listen(this.getElement(), 'change', this.handleSelectChange);
     eh.listen(this.getElement(), 'click', this.handleClick);
     if (this.selectorInputHandler_) {
@@ -67,7 +66,6 @@ app.Editor.prototype.enable = function(enable) {
     eh.listen(this.selectorInputHandler_, goog.events.InputHandler.EventType.INPUT, this.handleSelectorTextKey);
     this.applyDependencyVisibility();
   } else {
-    eh.unlisten(dh.getElement('editor-form'), 'submit', this.handleSubmit);
     eh.unlisten(this.getElement(), 'change', this.handleSelectChange);
     eh.unlisten(this.getElement(), 'click', this.handleClick);
     if (this.selectorInputHandler_) {
@@ -84,12 +82,6 @@ app.Editor.prototype.dispatchAppendEntryEvent = function(e) {
     type: 'append-entry',
     data: this.collectValues()
   });
-}
-
-app.Editor.prototype.handleSubmit = function(e) {
-  this.dispatchAppendEntryEvent();;
-  this.draw();
-  e.preventDefault();
 }
 
 app.Editor.prototype.setRoughTitle = function(text) {
@@ -113,6 +105,10 @@ app.Editor.prototype.handleClick = function(e) {
   var el = e.target;
   if (goog.dom.contains(this.getElementByClass('selector-button'), el)) {
     this.dispatchEvent('enter-select-mode');
+
+  } else if ((tmp = this.getElementByClass('append-button')) && goog.dom.contains(tmp, el)) {
+    this.dispatchAppendEntryEvent();;
+    this.draw();
 
   } else if ((tmp = this.getElementByClass('quit-edit-button')) && goog.dom.contains(tmp, el)) {
     this.draw();
