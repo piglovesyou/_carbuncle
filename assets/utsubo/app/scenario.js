@@ -35,6 +35,32 @@ app.Scenario.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
   var eh = this.getHandler();
   eh.listen(this.getElement(), 'click', this.handleClick);
+
+  var that = this;
+  app.socket().then(function(socket) {
+    socket.get('/utsubo/scenario', function(res) {
+      if (res[0]) {
+        that.applyScenario(res[0]);
+      }
+    });
+  });
+};
+
+app.Scenario.prototype.collectScenario = function() {
+  var tmp;
+  var rv = {
+    id: !goog.global.isNaN(tmp = parseInt(goog.dom.forms.getValue(this.getElementByClass('scenario-id')), 10)) ? tmp : undefined,
+    title: goog.dom.forms.getValue(this.getElementByClass('scenario-title')) || undefined,
+    entries: this.data.getAll() || []
+  };
+  return rv;
+};
+
+app.Scenario.prototype.applyScenario = function(doc) {
+  goog.dom.forms.setValue(this.getElementByClass('scenario-id'), doc.id);
+  goog.dom.forms.setValue(this.getElementByClass('scenario-title'), doc.title);
+  this.data.addAll(doc.entries || []);
+  this.redraw();
 };
 
 /**
@@ -42,6 +68,7 @@ app.Scenario.prototype.enterDocument = function() {
  */
 app.Scenario.prototype.handleClick = function(e) {
   var et = /** @type {Element} */(e.target);
+  var that = this;
 
   if (goog.dom.classes.has(et, 'scenario-entry-edithook')) {
     var entry = this.getEntryFromEventTarget(et);
@@ -65,23 +92,17 @@ app.Scenario.prototype.handleClick = function(e) {
 
   if (goog.dom.classes.has(et, 'scenario-footer-preview')) {
 
-    var that = this;
     app.socket().then(function(socket) {
       app.mask.focus(this.getElement());
-      goog.soy.renderElement(that.getElementByClass('scenario-footer'),
-          app.soy.scenario.footerContent, {disabled: true});
-      socket.post('/utsubo/set/preview', {
-        entries: this.data.getAll()
-      }, function(res) {
+      that.makeButtonsEnabled(false);
+      socket.post('/utsubo/scenario/preview', that.collectScenario(), function(res) {
         if (res.error) {
-          console.log(res.stack);
           alert(res.stack);
         } else {
           alert('success!');
         }
         app.mask.hide();
-        goog.soy.renderElement(that.getElementByClass('scenario-footer'),
-            app.soy.scenario.footerContent);
+        that.makeButtonsEnabled(true);
       });
     }, null, this);
 
@@ -91,14 +112,22 @@ app.Scenario.prototype.handleClick = function(e) {
     this.redraw();
 
   } else if (goog.dom.classes.has(et, 'scenario-footer-save')) {
+    this.makeButtonsEnabled(false);
     app.socket().then(function(socket) {
-      socket.post('/utsubo/set', {
-        entries: this.data.getAll()
-      }, function(res) {
-        console.log('====done..?', res);
+      socket.post('/utsubo/scenario/upsert', that.collectScenario(), function(doc) {
+        that.makeButtonsEnabled(true);
+        that.applyScenario(doc);
       });
-    }, null, this);
+    }, goog.bind(that.makeButtonsEnabled, that, true));
   }
+};
+
+/**
+ * @param {boolean} enable .
+ */
+app.Scenario.prototype.makeButtonsEnabled = function(enable) {
+  goog.soy.renderElement(this.getElementByClass('scenario-footer'),
+      app.soy.scenario.footerContent, {disabled: !enable});
 };
 
 /**

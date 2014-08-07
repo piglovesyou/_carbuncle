@@ -11,7 +11,6 @@ goog.require('goog.dom.forms');
 goog.require('goog.events.EventTarget');
 goog.require('goog.events.InputHandler');
 goog.require('goog.net.IframeLoadMonitor');
-goog.require('goog.structs.Set');
 goog.require('goog.style');
 goog.require('goog.ui.Component');
 
@@ -73,16 +72,6 @@ app.App.prototype.enterDocument = function() {
   eh.listen(this, 'append-entry', this.handleAppendEntry);
   eh.listen(this, 'editentry', this.handleEditEntry);
   
-
-  var that = this;
-  app.socket().then(function(socket) {
-    socket.get('/utsubo/set', function (res) {
-      if (res[0] && res[0].entries) {
-        that.scenario.data.addAll(res[0].entries);
-        that.scenario.redraw();
-      }
-    })
-  })
 };
 
 /**

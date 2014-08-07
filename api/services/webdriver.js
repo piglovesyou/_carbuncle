@@ -74,7 +74,7 @@ var executionMap = {
 
 function actionOpen(context, noUse, url) {
   var u = Url.parse(url);
-  var dest = global.options.site + u.pathname;
+  var dest = global.options.site + (u.pathname || '');
 	return context.open(dest);
 }
 function actionClick(context, css) {

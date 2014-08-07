@@ -10,8 +10,11 @@ global.options = new Options({
   site: 'http://yan-yan-yahuoku.com/'
 })
 
+global._ = require('underscore');
+
 // Start sails and pass it command line arguments
 require('sails').lift(require('optimist').argv);
+
 
 
 

@@ -1,5 +1,5 @@
 /**
- * SetController
+ * ScenarioController
  *
  * @module      :: Controller
  * @description	:: A set of functions called `actions`.
@@ -15,11 +15,10 @@
  * @docs        :: http://sailsjs.org/#!documentation/controllers
  */
 
+var common = require('./common');
 var Executor = require('../services/webdriver').Executor;
 
 module.exports = {
-    
-
 
   preview: function (req, res) {
     var json = req.body;
@@ -28,7 +27,9 @@ module.exports = {
       console.log('#######');
       var executor = new Executor(entries, 800);
       var error;
-      executor.on('before', function(entry) { console.log('before ' + entry.title + ' ...') });
+      executor.on('before', function(entry) {
+        console.log('before ' + entry.title + ' ...') 
+      });
       executor.on('pass', function() {
         console.log(arguments);
       });
@@ -46,14 +47,35 @@ module.exports = {
       res.json({error: 'boom'});
     }
   },
-  
 
+
+  upsert: function (req, res) {
+    var json = req.body;
+    if (json && _.isObject(json)) {
+      Scenario.upsertOne(json).then(function(doc) {
+        res.json(doc);
+      }).catch(common.promiseHandleError(res));
+    } else {
+      res.json({error: 1});
+    }
+  },
+
+
+  drop: function (req, res) {
+    Scenario.destroy().then(function() {
+      res.json({success: 1})
+    }).catch(function() {
+      res.json({error: 1})
+    })
+  },
+  
 
   /**
    * Overrides for the settings in `config/controllers.js`
-   * (specific to SetController)
+   * (specific to ScenarioController)
    */
   _config: {}
 
   
 };
+
