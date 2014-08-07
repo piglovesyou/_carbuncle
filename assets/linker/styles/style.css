@@ -34,7 +34,16 @@ a {
 
 .toolbar {
   padding: .4em .6em;
-  border-bottom: 1px #ccc solid
+  border-bottom: 1px #ccc solid;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 100;
+  background: white;
+}
+.toolbar-message {
+  float: right;
+  font-size: 85%;
+  color: #999;
 }
 
 
@@ -137,8 +146,13 @@ a {
 .scenario-entry-verify {
   background: rgb(255,255,100);
 }
+.scenario-entry-doing {
+  background: rgb(34, 34, 249);
+}
 .scenario-entry-done {
-  margin-top: -1px; 
-  background: lightgray;
+  background: rgb(17, 234, 17);
+}
+.scenario-entry-fail {
+  background: rgb(239, 37, 37);
 }
 .scenario-entry-done:first-of-type { margin-top: 0; }

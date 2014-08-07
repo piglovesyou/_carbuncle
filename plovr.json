@@ -3,15 +3,16 @@
   "debug": true,
   "closure-library": "./libs/closure-library/closure/goog",
   "paths": [
-	  "./assets/utsubo/app",
-	  "./assets/utsubo/soyutils_usegoog.js"
+    "./assets/utsubo/app",
+    "./assets/utsubo/soyutils_usegoog.js"
   ],
   "inputs": "./assets/utsubo/main.js",
   "mode": "ADVANCED",
   "level": "VERBOSE",
   "externs": [
     './assets/linker/js/socket.io.js',
-    './assets/linker/js/sails.io.js'
+    './assets/linker/js/sails.io.js',
+    "./assets/utsubo/externs.js"
   ],
   "checks": {},
   "output-file": "assets/utsubo/javascripts/main-min.js"

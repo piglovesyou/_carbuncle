@@ -1,0 +1,31 @@
+
+{namespace app.soy.toolbar}
+
+/***/
+{template .createDom}
+  <div class="toolbar pure-u-1">
+    {call .content /}
+  </div>
+{/template}
+
+/**
+ * @param? type
+ * @param? entry
+ * @param? scenario
+ */
+{template .content}
+  {if $type}
+    <div class="toolbar-message {if $type}toolbar-message-{$type}{/if}">
+      {if $type == 'progress' and $entry}
+        {$entry?.title|truncate:14,false}...
+      {elseif $type == 'passed'}
+        {if $scenario?.title}{$scenario.title|truncate:14,false}が{/if}成功しました。
+      {elseif $type == 'error'}
+        {if $scenario?.title}{$scenario.title|truncate:14,false}が{/if}失敗しました。
+      {/if}
+    </div>
+  {/if}
+  <div>
+    Testr.
+  </div>
+{/template}

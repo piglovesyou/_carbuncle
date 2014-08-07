@@ -21,20 +21,33 @@ var Executor = require('../services/webdriver').Executor;
 module.exports = {
 
   preview: function (req, res) {
-    var json = req.body;
-    var entries = json.entries;
+    var scenario = req.body;
+    var entries = scenario.entries;
     if (_.isArray(entries) && !_.isEmpty(entries)) {
       console.log('#######');
       var executor = new Executor(entries, 800);
       var error;
       executor.on('before', function(entry) {
-        console.log('before ' + entry.title + ' ...') 
+        req.socket.emit('progress', {
+          type: 'progress',
+          scenario: scenario,
+          entry: entry
+        });
       });
       executor.on('pass', function() {
-        console.log(arguments);
+        req.socket.emit('progress', {
+          type: 'passed',
+          scenario: scenario
+        });
       });
       executor.on('error', function(e) {
         error = e;
+        req.socket.emit('progress', {
+          type: 'error',
+          scenario: scenario,
+          error: e,
+          stack: e.stack
+        });
       });
       executor.on('end', function() {
         if (error) {

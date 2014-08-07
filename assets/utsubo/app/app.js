@@ -1,6 +1,7 @@
 
 goog.provide('app.App');
 
+goog.require('app.Toolbar');
 goog.require('app.Editor');
 goog.require('app.Scenario');
 goog.require('app.Site');
@@ -24,6 +25,9 @@ app.App = function() {
   goog.base(this);
 
   this.initializePageResources_();
+
+  this.toolbar = new app.Toolbar;
+  this.addChild(this.toolbar);
 
   this.editor = new app.Editor;
   this.addChild(this.editor);
@@ -49,12 +53,14 @@ app.App.prototype.initializePageResources_ = function(element) {
 app.App.prototype.decorateInternal = function(element) {
   goog.base(this, 'decorateInternal', element);
 
+  this.toolbar.createDom();
   this.editor.createDom();
   this.site.createDom();
   this.scenario.createDom();
 
   var dh = this.getDomHelper();
   dh.append(/** @type {!Node} */(element),
+    this.toolbar.getElement(),
     this.editor.getElement(),
     dh.createDom('div', 'main',
       this.site.getElement(),
