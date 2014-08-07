@@ -56,17 +56,17 @@ Executor.prototype.execute_ = function() {
  * executionMap[mode][type](css, text)
  */
 var executionMap = {
-	action: {
-		open: actionOpen,
-		click: actionClick,
-		input: actionInput
-	},
-	verify: {
-		equal: verify.bind(null, 'equal'),
-		contains: verify.bind(null, 'contains'),
-		startsWith: verify.bind(null, 'startsWith'),
-		endsWith: verify.bind(null, 'endsWith')
-	}
+  action: {
+    open: actionOpen,
+    click: actionClick,
+    input: actionInput
+  },
+  verify: {
+    equal: verify.bind(null, 'equal'),
+    contains: verify.bind(null, 'contains'),
+    startsWith: verify.bind(null, 'startsWith'),
+    endsWith: verify.bind(null, 'endsWith')
+  }
 };
 
 
@@ -75,27 +75,27 @@ var executionMap = {
 function actionOpen(context, noUse, url) {
   var u = Url.parse(url);
   var dest = global.options.site + (u.pathname || '');
-	return context.open(dest);
+  return context.open(dest);
 }
 function actionClick(context, css) {
-	return context.wait(css).then(function() {
+  return context.wait(css).then(function() {
     return context.find(css).click().then(function() {
-		  return context;
-		});
-	});
+      return context;
+    });
+  });
 }
 function actionInput(context, css, input) {
-	return context.wait(css).then(function() {
-		return context.find(css).sendKeys(replaceMetaKey(input));
-	});
+  return context.wait(css).then(function() {
+    return context.find(css).sendKeys(replaceMetaKey(input));
+  });
 }
 function verify(type, context, css, text) {
-	var method = mapVerifyMethod(type);
-	return context.wait(css).then(function() {
-		return context.find(css).getText().then(function(v) {
-			assert(method(v, text));
-		});
-	});
+  var method = mapVerifyMethod(type);
+  return context.wait(css).then(function() {
+    return context.find(css).getText().then(function(v) {
+      assert(method(v, text));
+    });
+  });
 }
 
 
@@ -110,6 +110,7 @@ function Context() {
         withCapabilities(webdriver.Capabilities.chrome()).
         build()
   });
+  this.driver_.manage().window().setSize(800, 600);
   Object.seal(this);
 }
 Context.prototype.open = function(url) {
@@ -117,9 +118,9 @@ Context.prototype.open = function(url) {
 };
 Context.prototype.wait = function(selector) {
   var that = this;
-	return that.driver_.wait(function() {
-		return that.driver_.isElementPresent(webdriver.By.css(selector));
-	}, 1000);
+  return that.driver_.wait(function() {
+    return that.driver_.isElementPresent(webdriver.By.css(selector));
+  }, 1000);
 };
 Context.prototype.find = function(css) {
   return this.driver_.findElement(webdriver.By.css(css));
@@ -132,14 +133,14 @@ Context.prototype.quit = function() {
 
 
 function mapVerifyMethod(type) {
-	assert([
-		'equal',
-		'contains',
-		'startsWith',
-		'endsWith'
-	].some(function(s) {return s == type}));
-	return type == 'equal' ?
-		function(text, v) { return text == v } : goog.string[type];
+  assert([
+    'equal',
+    'contains',
+    'startsWith',
+    'endsWith'
+  ].some(function(s) {return s == type}));
+  return type == 'equal' ?
+    function(text, v) { return text == v } : goog.string[type];
 }
 function replaceMetaKey(input) {
   return input.replace(/(\{.*?\})/g, function (hit) {

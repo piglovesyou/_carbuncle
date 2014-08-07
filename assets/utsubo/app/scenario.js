@@ -50,7 +50,7 @@ app.Scenario.prototype.collectScenario = function() {
   var tmp;
   var rv = {
     id: !goog.global.isNaN(tmp = parseInt(goog.dom.forms.getValue(this.getElementByClass('scenario-id')), 10)) ? tmp : undefined,
-    title: goog.dom.forms.getValue(this.getElementByClass('scenario-title')) || undefined,
+    title: goog.dom.forms.getValue(this.getElementByClass('scenario-title')),
     entries: this.data.getAll() || []
   };
   return rv;
