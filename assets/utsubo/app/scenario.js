@@ -52,6 +52,9 @@ app.Scenario.prototype.enterDocument = function() {
         if (last) {
           goog.dom.classlist.addRemove(goog.dom.getElement(last),
               'scenario-entry-doing', 'scenario-entry-done');
+        } else {
+          clearTimer.stop();
+          that.redraw();
         }
         if (data.type != 'progress') {
           if (data.type == 'error') {

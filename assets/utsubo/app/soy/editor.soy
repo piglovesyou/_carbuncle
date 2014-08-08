@@ -31,10 +31,12 @@
 
       <div class="pure-u-1" style="margin-top:.4em;">
 
-        <button class="append-button pure-button pure-button-primary" style="float:right;">{$isEdit ? '編集' : '追加'}</button>
-        {if $isEdit}
-          {sp}<a class="quit-edit-button" title="quit editing" href="javascript:void(0)">quit</a>
-        {/if}
+        <div style="white-space:nowrap; float:right;">
+          <button class="append-button pure-button pure-button-primary">{$isEdit ? '編集' : '追加'}</button>
+          {if $isEdit}
+            {sp}<a class="quit-edit-button" title="quit editing" href="javascript:void(0)">quit</a>
+          {/if}
+        </div>
 
         <a class="selector-button pure-button pure-button-primary" href="#">
           <i class="fa fa-location-arrow fa-flip-horizontal fa-lg"></i>
