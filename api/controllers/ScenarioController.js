@@ -24,7 +24,6 @@ module.exports = {
     var scenario = req.body;
     var entries = scenario.entries;
     if (_.isArray(entries) && !_.isEmpty(entries)) {
-      console.log('#######');
       var executor = new Executor(entries, 800);
       var error;
       executor.on('before', function(entry) {

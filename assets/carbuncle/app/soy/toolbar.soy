@@ -19,13 +19,20 @@
       {if $situation == 'before' and $entry}
         {$entry?.title|truncate:14,false}...
       {elseif $situation == 'pass'}
-        {if $scenario?.title}{$scenario.title|truncate:14,false}が{/if}成功しました。
+        {if $scenario?.title}<b>{$scenario.title|truncate:14,false}</b>が{/if}成功しました。
       {elseif $situation == 'fail'}
-        {if $scenario?.title}{$scenario.title|truncate:14,false}が{/if}失敗しました。
+        {if $scenario?.title}<b>{$scenario.title|truncate:14,false}</b>が{/if}失敗しました。
       {/if}
     </div>
   {/if}
-  <div class="toolbar-logo">
-    Carbuncle
+
+  <div class="pure-menu pure-menu-open pure-menu-horizontal">
+    <a href="/carbuncle" class="pure-menu-heading">carbuncle</a>
+    <ul>
+      <li class="pure-menu-selected"><a href="javascript:void(0)">つくる</a></li>
+      {sp}
+      <li class=""><a href="javascript:void(0)">一覧</a></li>
+    </ul>
   </div>
+
 {/template}

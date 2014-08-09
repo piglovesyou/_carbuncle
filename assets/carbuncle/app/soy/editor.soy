@@ -23,20 +23,15 @@
 
       <input name="entry-id" class="entry-id" type="hidden" value="{$id}" />
 
-      <input name="entry-title" class="entry-title pure-u-1-2" value="{$title?:''}" type="text" placeholder="ステップのタイトル" />
+      <div class="pure-u-1" style="margin-bottom: .4em;">
+        <input name="entry-title" class="entry-title pure-u-11-24" value="{$title?:''}" type="text" placeholder="ステップのタイトル" />
+        {sp}
+        <textarea class="entry-css pure-u-1-2" name="entry-css" rows="1" placeholder="CSSセレクタ">
+          {$css?:''}
+        </textarea>
+      </div>
 
-      <textarea class="entry-css pure-u-1-2" name="entry-css" rows="2" placeholder="CSSセレクタ">
-        {$css?:''}
-      </textarea>
-
-      <div class="pure-u-1" style="margin-top:.4em;">
-
-        <div style="white-space:nowrap; float:right;">
-          <button class="append-button pure-button pure-button-primary">{$isEdit ? '編集' : '追加'}</button>
-          {if $isEdit}
-            {sp}<a class="quit-edit-button" title="quit editing" href="javascript:void(0)">quit</a>
-          {/if}
-        </div>
+      <div class="pure-u-1">
 
         <a class="selector-button pure-button pure-button-primary" href="#">
           <i class="fa fa-location-arrow fa-flip-horizontal fa-lg"></i>
@@ -67,6 +62,11 @@
 
         <input name="entry-text" class="entry-text" value="{$text?:''}" type="text" placeholder="テキスト" />
         {sp}
+
+        <button class="append-button pure-button pure-button-primary">ステップを{$isEdit ? '編集' : '追加'}</button>
+        {if $isEdit}
+          {sp}<a class="quit-edit-button" title="quit editing" href="javascript:void(0)">やめる</a>
+        {/if}
 
       </div>
 
