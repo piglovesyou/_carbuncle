@@ -43,7 +43,7 @@ app.Scenario.prototype.enterDocument = function() {
   var clearTimer = new goog.Delay(this.redraw, 3000, this);
   app.socket().then(function(socket) {
 
-    socket.get('/utsubo/scenario', function(res) {
+    socket.get('/carbuncle/scenario', function(res) {
       var scenario = res && !goog.array.isEmpty(res) && goog.array.peek(res);
       if (scenario) {
         that.applyScenario(/** @type {ObjectInterface.Scenario} */(scenario));
@@ -141,7 +141,7 @@ app.Scenario.prototype.handleClick = function(e) {
     app.socket().then(function(socket) {
       app.mask.focus(this.getElement());
       that.makeButtonsEnabled(false);
-      socket.post('/utsubo/scenario/preview', that.collectScenario(), function(res) {
+      socket.post('/carbuncle/scenario/preview', that.collectScenario(), function(res) {
         if (res.error) {
           alert(res.stack);
         } else {
@@ -160,7 +160,7 @@ app.Scenario.prototype.handleClick = function(e) {
   } else if (goog.dom.classes.has(et, 'scenario-footer-save')) {
     this.makeButtonsEnabled(false);
     app.socket().then(function(socket) {
-      socket.post('/utsubo/scenario/upsert', that.collectScenario(), function(doc) {
+      socket.post('/carbuncle/scenario/upsert', that.collectScenario(), function(doc) {
         that.makeButtonsEnabled(true);
         that.applyScenario(doc);
       });
