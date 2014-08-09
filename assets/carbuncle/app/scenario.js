@@ -141,7 +141,11 @@ app.Scenario.prototype.handleClick = function(e) {
     app.socket().then(function(socket) {
       app.mask.focus(this.getElement());
       that.makeButtonsEnabled(false);
-      socket.post('/carbuncle/scenario/preview', that.collectScenario(), function(res) {
+      var params = that.collectScenario();
+      goog.mixin(params, {
+        'delay': 800
+      });
+      socket.post('/carbuncle/carbuncle/call', params, function(res) {
         if (res.error) {
           alert(res.stack);
         } else {

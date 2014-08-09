@@ -16,47 +16,8 @@
  */
 
 var common = require('./common');
-var Executor = require('../services/webdriver').Executor;
 
 module.exports = {
-
-  preview: function (req, res) {
-    var scenario = req.body;
-    var entries = scenario.entries;
-    if (_.isArray(entries) && !_.isEmpty(entries)) {
-      var executor = new Executor(entries, 800);
-      var error;
-      executor.on('before', function(entry) {
-        req.socket.emit('before', {
-          scenario: scenario,
-          entry: entry
-        });
-      });
-      executor.on('pass', function() {
-        req.socket.emit('pass', {
-          scenario: scenario
-        });
-      });
-      executor.on('fail', function(e) {
-        error = e;
-        req.socket.emit('fail', {
-          scenario: scenario,
-          error: e,
-          stack: e.stack
-        });
-      });
-      executor.on('end', function() {
-        if (error) {
-          res.json({error: error, stack: error.stack})
-        } else {
-          res.json({success: true});
-        }
-      });
-    } else {
-      res.json({error: 'boom'});
-    }
-  },
-
 
   upsert: function (req, res) {
     var json = req.body;

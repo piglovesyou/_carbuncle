@@ -2,9 +2,9 @@
 var assert = require('assert');
 var Options = require('../helpers').Options;
 var webdriver = require('selenium-webdriver');
-var Executor = require('../api/services/webdriver').Executor;
+var Executor = require('../api/services/carbuncle').Executor;
 
-describe('webdriver.js', function() {
+describe('carbuncle.js', function() {
 
   global.options = new Options({ site: 'http://yan-yan-yahuoku.com' });
 

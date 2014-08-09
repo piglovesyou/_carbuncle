@@ -62,6 +62,29 @@ a {
 
 
 
+
+
+
+
+
+
+
+/* Common */
+.helptext {
+  font-size: 85%;
+  color: #999;
+}
+
+
+
+
+
+
+
+
+
+
+
 .toolbar {
   padding: .4em .6em;
   border-bottom: 1px #ccc solid;
@@ -109,6 +132,8 @@ a {
 .scenario-header {
   padding: 0 1.6em .8em;
 }
+.scenario-header .pure-form { display: flex; }
+.scenario-header .scenario-title { flex: 1; }
 .scenario-footer {
   padding: 1.2em 1.6em;
 }
