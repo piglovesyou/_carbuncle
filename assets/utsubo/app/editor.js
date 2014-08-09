@@ -1,9 +1,9 @@
 
 goog.provide('app.Editor');
 
+goog.require('app.model.Entry');
 goog.require('app.soy.editor');
 goog.require('goog.ui.Component');
-goog.require('app.model.Entry');
 
 
 
@@ -26,7 +26,7 @@ app.Editor.prototype.createDom = function() {
 };
 
 /**
- * @param {Object} opt_data .
+ * @param {Object=} opt_data .
  */
 app.Editor.prototype.draw = function(opt_data) {
   if (!opt_data) {
@@ -77,13 +77,6 @@ app.Editor.prototype.enable = function(enable) {
 
 };
 
-app.Editor.prototype.dispatchAppendEntryEvent = function(e) {
-  this.dispatchEvent({
-    type: 'append-entry',
-    data: this.collectValues()
-  });
-}
-
 app.Editor.prototype.setRoughTitle = function(text) {
   goog.dom.forms.setValue(this.getElementByClass('entry-title'), text);
 };
@@ -107,7 +100,7 @@ app.Editor.prototype.handleClick = function(e) {
     this.dispatchEvent('enter-select-mode');
 
   } else if ((tmp = this.getElementByClass('append-button')) && goog.dom.contains(tmp, el)) {
-    this.dispatchAppendEntryEvent();;
+    this.dispatchEvent(new app.Editor.EditEntry(this.collectValues()));
     this.draw();
 
   } else if ((tmp = this.getElementByClass('quit-edit-button')) && goog.dom.contains(tmp, el)) {
@@ -116,10 +109,8 @@ app.Editor.prototype.handleClick = function(e) {
 };
 
 app.Editor.prototype.handleSelectorTextKey = function(e) {
-  this.dispatchEvent({
-    type: 'selector-text-input',
-    text: goog.dom.forms.getValue(this.getElementByClass('entry-css'))
-  });
+  this.dispatchEvent(new app.Editor.TextKey(
+      /** @type {string} */(goog.dom.forms.getValue(this.getElementByClass('entry-css')))));
 };
 
 /***/
@@ -151,9 +142,9 @@ app.Editor.prototype.disposeInternal = function() {
  * TODO* use this
  */
 app.Editor.prototype.collectValues = function() {
-  var map = goog.dom.forms.getFormDataMap(this.getElementByClass('editor-form'));
+  var map = goog.dom.forms.getFormDataMap(/** @type {HTMLFormElement} */(this.getElementByClass('editor-form')));
   var data = {};
-  var prefix =  'entry-';
+  var prefix = 'entry-';
   map.forEach(function(v, k) {
     if (goog.string.startsWith(k, prefix)) {
       data[k.slice(prefix.length)] = v[0];
@@ -166,15 +157,31 @@ app.Editor.prototype.generateId = function() {
   return goog.string.getRandomString() + '-' + goog.string.getRandomString();
 };
 
-// /**
-//  * @constructor
-//  */
-// app.Editor.Entry = function(map) {
-//   this.id = map.get('entry-id')[0];
-//   this.title = map.get('entry-title')[0];
-//   this.css = map.get('entry-css')[0];
-//   this.mode = map.get('entry-mode')[0];
-//   this.type = map.get('entry-type')[0];
-//   this.text = map.get('entry-text')[0];
-//   Object.seal && Object.seal(this);
-// };
+
+
+/**
+ * @constructor
+ * @extends goog.events.Event
+ * @param {Object} data
+ * @param {Object=} opt_target
+ */
+app.Editor.EditEntry = function(data, opt_target) {
+  goog.base(this, 'append-entry', opt_target);
+  /** @type {Object} */
+  this.data = data;
+};
+goog.inherits(app.Editor.EditEntry, goog.events.Event);
+
+/**
+ * @constructor
+ * @extends goog.events.Event
+ * @param {string} text
+ * @param {Object=} opt_target
+ */
+app.Editor.TextKey = function(text, opt_target) {
+  goog.base(this, 'selector-text-input', opt_target);
+  /** @type {string} */
+  this.text = text;
+};
+goog.inherits(app.Editor.TextKey, goog.events.Event);
+

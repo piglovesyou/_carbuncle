@@ -8,12 +8,12 @@
   ],
   "inputs": "./assets/utsubo/main.js",
   "mode": "ADVANCED",
-  "level": "VERBOSE",
+  // "level": "VERBOSE",
   "externs": [
-    './assets/linker/js/socket.io.js',
-    './assets/linker/js/sails.io.js',
     "./assets/utsubo/externs.js"
   ],
-  "checks": {},
+  "checks": {
+    "externsValidation": "OFF"
+  },
   "output-file": "assets/utsubo/javascripts/main-min.js"
 }

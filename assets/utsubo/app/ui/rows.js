@@ -23,7 +23,7 @@ app.ui.Rows = function(templateFn, opt_data, opt_domHelper) {
 goog.inherits(app.ui.Rows, goog.ui.Component);
 
 /**
- * @param {app.ui.Rows.Data} opt_data
+ * @param {app.ui.Rows.Data} data
  */
 app.ui.Rows.prototype.setData = function(data) {
 	this.data = data;
@@ -67,7 +67,7 @@ app.ui.Rows.prototype.redraw = function() {
 		fragment.appendChild(
         goog.soy.renderAsFragment(this.templateFn, item));
 	}, this);
-	dh.append(contentEl, fragment);
+	dh.append(/** @type {!Node} */(contentEl), fragment);
 };
 
 /** @inheritDoc */

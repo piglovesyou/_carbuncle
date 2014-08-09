@@ -19,8 +19,8 @@ goog.inherits(app.Toolbar, goog.ui.Component);
 
 /** @inheritDoc */
 app.Toolbar.prototype.createDom = function() {
-  this.setElementInternal(
-      goog.soy.renderAsFragment(app.soy.toolbar.createDom));
+  this.setElementInternal(/** @type {Element} */
+      (goog.soy.renderAsFragment(app.soy.toolbar.createDom)));
 };
 
 /** @inheritDoc */
@@ -32,16 +32,24 @@ app.Toolbar.prototype.enterDocument = function() {
   }, 3000, this);
 
   app.socket().then(function(socket) {
-    socket.on('progress', function(data) {
+    socket.on('before', function(data) {
+      goog.mixin(data, { situation: 'before' });
       goog.soy.renderElement(that.getElement(),
-          app.soy.toolbar.content,
-            /** @type {ObjectInterface.Json.Progress} */(data));
-      if (data.type != 'progress') {
-        clearTimer.start();
-      }
+          app.soy.toolbar.content, /** @type {ObjectInterface.Json.Progress} */(data));
+    });
+    socket.on('pass', function(data) {
+      goog.mixin(data, { situation: 'pass' });
+      goog.soy.renderElement(that.getElement(),
+          app.soy.toolbar.content, /** @type {ObjectInterface.Json.Progress} */(data));
+      clearTimer.start();
+    });
+    socket.on('fail', function(data) {
+      goog.mixin(data, { situation: 'fail' });
+      goog.soy.renderElement(that.getElement(),
+          app.soy.toolbar.content, /** @type {ObjectInterface.Json.Progress} */(data));
+      clearTimer.start();
     });
   });
-
 };
 
 /** @inheritDoc */

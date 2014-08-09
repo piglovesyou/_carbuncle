@@ -125,30 +125,25 @@ app.Site.prototype.getPosision = function() {
 app.Site.prototype.handleClick = function(e) {
   e.stopPropagation();
   e.preventDefault();
+
+  this.dispatchEvent(new app.Editor.ElementSelect(
+      this.buildSelector(e.target),
+      goog.dom.getTextContent(e.target), e.target));
+
   this.dispatchEvent({
     type: app.Site.EventType.ELEMENT_SELECT,
     element: e.target,
     selectorText: this.buildSelector(e.target),
     roughTitle: goog.dom.getTextContent(e.target)
   });
+
+
+
   // TODO:
   // goog.dom.forms.setValue(selectorTextareaEl, buildSelector(e.target));
   // goog.dom.forms.setValue(editorTitleInputEl, goog.dom.getTextContent(e.target));
   // enableSelectMode(false);
 };
-
-// /** @inheritDoc */
-// app.Site.prototype.decorateInternal = function(element) {
-//   goog.base(this, 'decorateInternal', element);
-// };
-//
-// /** @inheritDoc */
-// app.Site.prototype.canDecorate = function(element) {
-//   if (element) {
-//     return true;
-//   }
-//   return false;
-// };
 
 /** @inheritDoc */
 app.Site.prototype.enterDocument = function() {
@@ -224,4 +219,22 @@ app.Site.Pixel.prototype.draw = function(pos, size, description) {
   goog.style.setPosition(this.rightEl, size.width, 0);
   goog.style.setPosition(this.bottomEl, 0, size.height);
 };
+
+
+
+/**
+ * @constructor
+ * @extends {goog.events.Event}
+ * @param {?string} selectorText
+ * @param {string} roughTitle
+ * @param {Object} target
+ */
+app.Editor.ElementSelect = function(selectorText, roughTitle, target) {
+  goog.base(this, app.Site.EventType.ELEMENT_SELECT, target);
+  /** @type {Object} */
+  this.element = target;
+  this.selectorText = selectorText;
+  this.roughTitle = roughTitle;
+};
+goog.inherits(app.Editor.ElementSelect, goog.events.Event);
 

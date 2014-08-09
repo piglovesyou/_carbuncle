@@ -9,7 +9,6 @@ goog.require('goog.Promise');
 /**
  * @private
  * @constructor
- * @param {goog.dom.DomHelper=} opt_domHelper .
  * @extends {goog.events.EventTarget}
  */
 app.Socket = function() {
@@ -28,7 +27,7 @@ goog.addSingletonGetter(app.Socket);
 app.Socket.prototype.promiseConnect = function() {
   var that = this;
   this.promise = new goog.Promise(function(resolver, rejector) {
-    var socket = goog.global.io.connect();
+    var socket = io.connect();
     socket.on('connect', function () {
       resolver(socket);
     })

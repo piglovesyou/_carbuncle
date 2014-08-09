@@ -42,7 +42,7 @@ Executor.prototype.execute_ = function() {
     return context;
   })
   .catch (function(e) {
-    that.emit('error', e);
+    that.emit('fail', e);
     context.quit(); // Make sure to quit even if an error occures.
     that.emit('end', e);
     // throw new Error(e);

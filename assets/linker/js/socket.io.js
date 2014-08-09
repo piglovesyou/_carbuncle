@@ -63,8 +63,8 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   /**
    * Manages connections to hosts.
    *
-   * @param {String} uri
-   * @param {Boolean} force creation of new socket (defaults to false)
+   * @param {string} uri
+   * @param {boolean} force creation of new socket (defaults to false)
    * @public
    */
 
@@ -177,8 +177,8 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   /**
    * Mergest 2 query strings in to once unique query string
    *
-   * @param {String} base
-   * @param {String} addition
+   * @param {string} base
+   * @param {string} addition
    * @public
    */
 
@@ -199,7 +199,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   /**
    * Transforms a querystring in to an object
    *
-   * @param {String} qs
+   * @param {string} qs
    * @public
    */
 
@@ -256,7 +256,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   /**
    * Generates the correct `XMLHttpRequest` for regular and cross domain requests.
    *
-   * @param {Boolean} [xdomain] Create a request that can be used cross domain.
+   * @param {boolean} [xdomain] Create a request that can be used cross domain.
    * @returns {XMLHttpRequest|false} If we can create a XMLHttpRequest.
    * @private
    */
@@ -372,7 +372,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    */
 
   util.isArray = Array.isArray || function (obj) {
-    return Object.prototype.toString.call(obj) === '[object Array]';
+    return Object.prototype.tostring.call(obj) === '[object Array]';
   };
 
   /**
@@ -715,7 +715,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
       return escapable.test(string) ? '"' + string.replace(escapable, function (a) {
           var c = meta[a];
           return typeof c === 'string' ? c :
-              '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
+              '\\u' + ('0000' + a.charCodeAt(0).tostring(16)).slice(-4);
       }) + '"' : '"' + string + '"';
   }
 
@@ -785,9 +785,9 @@ var io = ('undefined' === typeof module ? {} : module.exports);
 
 // Is the value an array?
 
-          if (Object.prototype.toString.apply(value) === '[object Array]') {
+          if (Object.prototype.tostring.apply(value) === '[object Array]') {
 
-// The value is an array. Stringify every element. Use null as a placeholder
+// The value is an array. stringify every element. Use null as a placeholder
 // for non-JSON values.
 
               length = value.length;
@@ -926,7 +926,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
       if (cx.test(text)) {
           text = text.replace(cx, function (a) {
               return '\\u' +
-                  ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
+                  ('0000' + a.charCodeAt(0).tostring(16)).slice(-4);
           });
       }
 
@@ -1281,7 +1281,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    * it will automatically update the timeout, decode the message and
    * forwards the response to the onMessage function for further processing.
    *
-   * @param {String} data Response from the server.
+   * @param {string} data Response from the server.
    * @private
    */
 
@@ -1417,7 +1417,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    * Send the received heartbeat message back to server. So the server
    * knows we are still connected.
    *
-   * @param {String} heartbeat Heartbeat response from the server.
+   * @param {string} heartbeat Heartbeat response from the server.
    * @private
    */
 
@@ -1461,7 +1461,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    * Generates a connection url based on the Socket.IO URL Protocol.
    * See <https://github.com/learnboost/socket.io-node/> for more details.
    *
-   * @returns {String} Connection url
+   * @returns {string} Connection url
    * @private
    */
 
@@ -1869,7 +1869,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    * Check if we need to use cross domain enabled transports. Cross domain would
    * be a different port or different domain name.
    *
-   * @returns {Boolean}
+   * @returns {boolean}
    * @private
    */
 
@@ -2465,7 +2465,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    * Checks if the browser has support for native `WebSockets` and that
    * it's not the polyfill created for the FlashSocket transport.
    *
-   * @return {Boolean}
+   * @return {boolean}
    * @public
    */
 
@@ -2477,7 +2477,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   /**
    * Check if the `WebSocket` transport support cross domain communications.
    *
-   * @returns {Boolean}
+   * @returns {boolean}
    * @public
    */
 
@@ -2587,7 +2587,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   /**
    * Posts a encoded message to the Socket.IO server.
    *
-   * @param {String} data A encoded message.
+   * @param {string} data A encoded message.
    * @private
    */
 
@@ -2641,8 +2641,8 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   /**
    * Generates a configured XHR request
    *
-   * @param {String} url The url that needs to be requested.
-   * @param {String} method The method the request should use.
+   * @param {string} url The url that needs to be requested.
+   * @param {string} method The method the request should use.
    * @returns {XMLHttpRequest}
    * @private
    */
@@ -2680,8 +2680,8 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   /**
    * Check if the XHR transports are supported
    *
-   * @param {Boolean} xdomain Check if we support cross domain requests.
-   * @returns {Boolean}
+   * @param {boolean} xdomain Check if we support cross domain requests.
+   * @returns {boolean}
    * @public
    */
 
@@ -2702,7 +2702,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   /**
    * Check if the XHR transport supports cross domain requests.
    *
-   * @returns {Boolean}
+   * @returns {boolean}
    * @public
    */
 
@@ -2796,7 +2796,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    * iframe, this function will be used as callback for the incoming
    * information.
    *
-   * @param {String} data The message
+   * @param {string} data The message
    * @param {document} doc Reference to the context
    * @private
    */
@@ -2849,7 +2849,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    * Checks if the browser supports this transport. The browser
    * must have an `Ac...eXObject` implementation.
    *
-   * @return {Boolean}
+   * @return {boolean}
    * @public
    */
 
@@ -2866,7 +2866,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   /**
    * Check if cross domain requests are supported.
    *
-   * @returns {Boolean}
+   * @returns {boolean}
    * @public
    */
 
@@ -3133,7 +3133,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    * The iframe is positioned outside of the view so the user does not
    * notice it's existence.
    *
-   * @param {String} data A encoded message.
+   * @param {string} data A encoded message.
    * @private
    */
 
@@ -3257,7 +3257,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   /**
    * Callback function for the incoming message stream from the Socket.IO server.
    *
-   * @param {String} data The message
+   * @param {string} data The message
    * @private
    */
 
@@ -3289,7 +3289,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   /**
    * Checks if browser supports this transport.
    *
-   * @return {Boolean}
+   * @return {boolean}
    * @public
    */
 
@@ -3300,7 +3300,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   /**
    * Check if cross domain requests are supported
    *
-   * @returns {Boolean}
+   * @returns {boolean}
    * @public
    */
 

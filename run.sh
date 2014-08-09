@@ -43,6 +43,7 @@ CLOSURETEMPLATES_SOY_MSG_EXTRACTOR_JAR=SoyMsgExtractor.jar
 
 CLOSURECOMPILER_DIR=${LIBS_DIR}closure-compiler/
 CLOSURECOMPILER_REMOTE_DIR=http://dl.google.com/closure-compiler/
+CLOSURECOMPILER_ZIP=compiler-latest.zip
 
 SELENIUM_JAR=selenium-server-standalone-2.42.2.jar
 SELENIUM_REMOTE_JAR=http://selenium-release.storage.googleapis.com/2.42/${SELENIUM_JAR}

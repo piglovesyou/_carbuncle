@@ -28,22 +28,19 @@ module.exports = {
       var executor = new Executor(entries, 800);
       var error;
       executor.on('before', function(entry) {
-        req.socket.emit('progress', {
-          type: 'progress',
+        req.socket.emit('before', {
           scenario: scenario,
           entry: entry
         });
       });
       executor.on('pass', function() {
-        req.socket.emit('progress', {
-          type: 'passed',
+        req.socket.emit('pass', {
           scenario: scenario
         });
       });
-      executor.on('error', function(e) {
+      executor.on('fail', function(e) {
         error = e;
-        req.socket.emit('progress', {
-          type: 'error',
+        req.socket.emit('fail', {
           scenario: scenario,
           error: e,
           stack: e.stack

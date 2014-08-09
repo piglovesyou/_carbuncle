@@ -12,6 +12,7 @@ app.model.Entry = function(data) {
   this.mode = data['mode'];
   this.type = data['type'];
   this.text = data['text'];
+  this.entries = data['entries'];
   Object.seal && Object.seal(this);
 };
 

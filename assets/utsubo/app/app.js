@@ -41,10 +41,9 @@ app.App = function() {
 goog.inherits(app.App, goog.ui.Component);
 
 /**
- * @param {Element} element
  * @private
  */
-app.App.prototype.initializePageResources_ = function(element) {
+app.App.prototype.initializePageResources_ = function() {
   goog.global.sessionStorage.clear();
   goog.global.localStorage.clear();
 };
@@ -103,7 +102,7 @@ app.App.prototype.handleSelectorTextKey = function(e) {
       this.site.pixel.show(true);
       return;
     }
-  } catch (e) {}
+  } catch (err) {}
   this.site.pixel.show(false);
 };
 

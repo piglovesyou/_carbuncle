@@ -9,18 +9,18 @@
 {/template}
 
 /**
- * @param? type
+ * @param? situation
  * @param? entry
  * @param? scenario
  */
 {template .content}
-  {if $type}
-    <div class="toolbar-message {if $type}toolbar-message-{$type}{/if}">
-      {if $type == 'progress' and $entry}
+  {if $situation}
+    <div class="toolbar-message {if $situation}toolbar-message-{$situation}{/if}">
+      {if $situation == 'before' and $entry}
         {$entry?.title|truncate:14,false}...
-      {elseif $type == 'passed'}
+      {elseif $situation == 'pass'}
         {if $scenario?.title}{$scenario.title|truncate:14,false}が{/if}成功しました。
-      {elseif $type == 'error'}
+      {elseif $situation == 'fail'}
         {if $scenario?.title}{$scenario.title|truncate:14,false}が{/if}失敗しました。
       {/if}
     </div>

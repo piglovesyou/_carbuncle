@@ -24,7 +24,7 @@ describe('webdriver.js', function() {
       var executor = new Executor(seed.entries);
       executor.on('before', function(entry) { console.log('before ' + entry.title + ' ...') });
       executor.on('pass', function() { passed = true });
-      executor.on('error', function(e) { passed = false });
+      executor.on('fail', function(e) { passed = false });
       executor.on('end', function() {
         assert(passed === true);
         setTimeout(done, 100);
@@ -47,7 +47,7 @@ describe('webdriver.js', function() {
       var executor = new Executor(seed.entries);
       executor.on('before', function(entry) { console.log('before ' + entry.title + ' ...') });
       executor.on('pass', function() { passed = true });
-      executor.on('error', function(e) { passed = false });
+      executor.on('fail', function(e) { passed = false });
       executor.on('end', function() {
         assert(passed === false);
         setTimeout(done, 100);
