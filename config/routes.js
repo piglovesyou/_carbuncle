@@ -35,7 +35,7 @@ module.exports.routes = {
   // '/': {}
 
   '/carbuncle': {
-    view: 'home/index'
+    controller: 'CarbuncleController'
   }
 
   /*

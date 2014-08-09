@@ -1,7 +1,16 @@
 {namespace app.soy.site}
 
-/***/
+/**
+ * @param site
+ */
 {template .createDom}
-  <iframe id="iframe" src="/" frameborder="0"></iframe>
+  <div class="iframe">
+    <form class="iframe-locationbar" action="javascript:void(0)">
+      <div style="padding: .5em 2px .5em 1em;color: #666; ">{$site}/</div>
+      <input class="iframe-locationbar-text" type="text" placeholder="URLを入力" />
+      <button class="button-xsmall pure-button" style="border-radius: 0;">Go</button>
+    </form>
+    <iframe class="iframe-iframe" frameborder="0"></iframe>
+  </div>
 {/template}
 

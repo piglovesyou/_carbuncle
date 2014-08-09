@@ -2,6 +2,7 @@
 goog.provide('app.Site');
 
 goog.require('app.soy.site');
+goog.require('app.options');
 goog.require('goog.soy');
 goog.require('goog.ui.Component');
 
@@ -30,7 +31,8 @@ app.Site.EventType = {
 /** @inheritDoc */
 app.Site.prototype.createDom = function() {
   this.setElementInternal(
-      /** @type {Element} */(goog.soy.renderAsFragment(app.soy.site.createDom)));
+      /** @type {Element} */(goog.soy.renderAsFragment(app.soy.site.createDom,
+      app.options())));
 };
 
 app.Site.prototype.enable = function(enable) {
@@ -44,8 +46,12 @@ app.Site.prototype.enable = function(enable) {
   }
 };
 
+app.Site.prototype.getIframe = function() {
+  return this.getElementByClass('iframe-iframe');
+}
+
 app.Site.prototype.getDocument = function() {
-  return goog.dom.getFrameContentDocument(this.getElement());
+  return goog.dom.getFrameContentDocument(this.getIframe());
 };
 
 app.Site.prototype.handleMouseover = function(e) {
@@ -145,14 +151,39 @@ app.Site.prototype.handleClick = function(e) {
   // enableSelectMode(false);
 };
 
+/**
+ * @private
+ */
+app.Site.prototype.initializeResources_ = function() {
+  goog.global.sessionStorage.clear();
+  goog.global.localStorage.clear();
+};
+
 /** @inheritDoc */
 app.Site.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
+
+  var eh = this.getHandler();
+  eh.listen(this.getElementByClass('iframe-locationbar'),
+      'submit', this.handleLocationbarSubmit);
+  eh.listen(this.getIframe(), 'load', function () {
+    // TODO: apply new url to iframe-locationbar-text
+  });
+
+  this.initializeResources_();
 
   this.pixel.render(); // Append to document.body
 
   this.enable(false);
 };
+
+app.Site.prototype.handleLocationbarSubmit = function(e) {
+  var url = goog.dom.forms.getValue(this.getElementByClass('iframe-locationbar-text'));
+  if (!goog.string.startsWith(url, '/')) {
+    url = '/' + url;
+  }
+  goog.dom.setProperties(this.getIframe(), { src: url });
+}
 
 /** @inheritDoc */
 app.Site.prototype.disposeInternal = function() {

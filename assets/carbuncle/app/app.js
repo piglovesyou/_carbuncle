@@ -25,8 +25,6 @@ goog.require('goog.ui.Component');
 app.App = function() {
   goog.base(this);
 
-  this.initializePageResources_();
-
   this.toolbar = new app.Toolbar;
   this.addChild(this.toolbar);
 
@@ -40,14 +38,6 @@ app.App = function() {
   this.addChild(this.scenario);
 };
 goog.inherits(app.App, goog.ui.Component);
-
-/**
- * @private
- */
-app.App.prototype.initializePageResources_ = function() {
-  goog.global.sessionStorage.clear();
-  goog.global.localStorage.clear();
-};
 
 /** @inheritDoc */
 app.App.prototype.decorateInternal = function(element) {

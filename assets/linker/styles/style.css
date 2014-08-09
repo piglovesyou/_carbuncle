@@ -51,13 +51,28 @@ a {
   color: #00B7FF;
 }
 
-#iframe {
+.iframe {
+  display: flex;
   position: relative;
   flex: 1;
+  flex-direction: column;
   background: #fff;
   border-top: 2px #000 solid;
   border-right: 2px #000 solid;
   cursor: pointer;
+}
+.iframe-locationbar {
+  display: flex;
+  border-bottom: 1px #000 solid;
+  font-size: 85%;
+}
+.iframe-locationbar-text {
+  flex: 1;
+  border: none;
+  margin-left: .2em;
+}
+.iframe-iframe {
+  flex: 1;
 }
 
 
