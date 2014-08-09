@@ -1,2 +1,3 @@
-# _moray
-### a Sails application
+# Carbuncle
+
+A Final Browser Test Suite.
