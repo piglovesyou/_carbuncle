@@ -10,8 +10,14 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
+.pure-form input[type=text]:focus, .pure-form input[type=password]:focus, .pure-form input[type=email]:focus, .pure-form input[type=url]:focus, .pure-form input[type=date]:focus, .pure-form input[type=month]:focus, .pure-form input[type=time]:focus, .pure-form input[type=datetime]:focus, .pure-form input[type=datetime-local]:focus, .pure-form input[type=week]:focus, .pure-form input[type=number]:focus, .pure-form input[type=search]:focus, .pure-form input[type=tel]:focus, .pure-form input[type=color]:focus, .pure-form select:focus, .pure-form textarea:focus,
+.pure-form input[type=text]:hover, .pure-form input[type=password]:hover, .pure-form input[type=email]:hover, .pure-form input[type=url]:hover, .pure-form input[type=date]:hover, .pure-form input[type=month]:hover, .pure-form input[type=time]:hover, .pure-form input[type=datetime]:hover, .pure-form input[type=datetime-local]:hover, .pure-form input[type=week]:hover, .pure-form input[type=number]:hover, .pure-form input[type=search]:hover, .pure-form input[type=tel]:hover, .pure-form input[type=color]:hover, .pure-form select:hover, .pure-form textarea:hover {
+  background: lightyellow;
+  border-bottom-color: transparent;
+}
 .pure-form input[type=text]:focus, .pure-form input[type=password]:focus, .pure-form input[type=email]:focus, .pure-form input[type=url]:focus, .pure-form input[type=date]:focus, .pure-form input[type=month]:focus, .pure-form input[type=time]:focus, .pure-form input[type=datetime]:focus, .pure-form input[type=datetime-local]:focus, .pure-form input[type=week]:focus, .pure-form input[type=number]:focus, .pure-form input[type=search]:focus, .pure-form input[type=tel]:focus, .pure-form input[type=color]:focus, .pure-form select:focus, .pure-form textarea:focus {
   box-shadow: inset 0 1px 3px #ddd;
+  border-bottom-color: #129FEA;
 }
 
 
@@ -146,6 +152,9 @@ a {
 }
 .scenario-header {
   padding: 0 1.6em .8em;
+}
+.scenario-header .helptext {
+  padding-left: .6em;
 }
 .scenario-header .pure-form { display: flex; }
 .scenario-header .scenario-title { flex: 1; }

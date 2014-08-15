@@ -122,9 +122,12 @@ app.Site.prototype.getChildIndex = function(node) {
 // };
 
 app.Site.prototype.getPosision = function() {
-  var pos = goog.style.getPageOffset(this.getElement());
-  pos.x += parseInt(goog.style.getComputedStyle(this.getElement(), 'borderLeftWidth'), 10);
-  pos.y += parseInt(goog.style.getComputedStyle(this.getElement(), 'borderTopWidth'), 10);
+  var pos = goog.style.getPageOffset(this.getIframe());
+  // pos.x += parseInt(goog.style.getComputedStyle(this.getElement(), 'borderLeftWidth'), 10);
+  // pos.y += parseInt(goog.style.getComputedStyle(this.getElement(), 'borderTopWidth'), 10);
+  var offset = goog.style.getViewportPageOffset(this.getDocument());
+  pos.x -= offset.x;
+  pos.y -= offset.y;
   return pos;
 };
 

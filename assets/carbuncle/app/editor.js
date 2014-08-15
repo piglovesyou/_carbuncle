@@ -22,26 +22,26 @@ app.Editor.prototype.createDom = function() {
   this.setElementInternal(
       /** @type {Element} */(goog.soy.renderAsFragment(app.soy.editor.createDom)));
   this.draw();
-  this.applyDependencyVisibility();
 };
 
 /**
  * @param {Object=} opt_data .
  */
 app.Editor.prototype.draw = function(opt_data) {
-  if (!opt_data) {
-    opt_data = {};
+  var data = opt_data || {};
+
+  if (!data.id) {
+    data.id = this.generateId();
   }
-  if (!opt_data.id) {
-    opt_data.id = this.generateId();
+  if (!data.mode) {
+    data.mode = 'action';
   }
-  if (!opt_data.mode) {
-    opt_data.mode = 'action';
+  if (!data.type) {
+    data.type = 'click';
   }
-  if (!opt_data.type) {
-    opt_data.type = 'click';
-  }
-  goog.soy.renderElement(this.getElement(), app.soy.editor.renderContent, opt_data);
+
+  goog.soy.renderElement(this.getElement(), app.soy.editor.renderContent, data);
+  this.applyDependencyVisibility();
 };
 
 /** @inheritDoc */
@@ -64,7 +64,6 @@ app.Editor.prototype.enable = function(enable) {
     }
     this.selectorInputHandler_ = new goog.events.InputHandler(this.getElementByClass('entry-css'));
     eh.listen(this.selectorInputHandler_, goog.events.InputHandler.EventType.INPUT, this.handleSelectorTextKey);
-    this.applyDependencyVisibility();
   } else {
     eh.unlisten(this.getElement(), 'change', this.handleSelectChange);
     eh.unlisten(this.getElement(), 'click', this.handleClick);

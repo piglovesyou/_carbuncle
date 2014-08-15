@@ -10,6 +10,18 @@
 var httpProxy = require('http-proxy');
 var proxy = httpProxy.createProxyServer();
 
+// TODO: How can I suppress iframe warning perfectly?
+var url = require('url').parse(global.options.site);
+proxy.on('proxyReq', function(proxyReq) {
+  proxyReq.setHeader('Origin', url.protocol + '//' + url.hostname);
+  proxyReq.setHeader('Host', url.hostname);
+});
+// proxy.on('proxyRes', function (proxyRes, req, res) {
+//   console.log('---------------');
+//   console.log(proxyRes.headers);
+// });
+
+
 module.exports[404] = function pageNotFound(req, res) {
 
   // yeah
