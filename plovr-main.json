@@ -1,0 +1,6 @@
+{
+  "id": "carbuncle",
+  "inherits": "./plovr-base.json",
+  "inputs": "./assets/carbuncle/main.js",
+  "output-file": "assets/carbuncle/javascripts/main-min.js"
+}

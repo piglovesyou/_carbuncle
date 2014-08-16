@@ -36,6 +36,10 @@ module.exports.routes = {
 
   '/carbuncle': {
     controller: 'CarbuncleController'
+  },
+
+  '/carbuncle/sandbox': {
+    view: 'home/sandbox'
   }
 
   /*

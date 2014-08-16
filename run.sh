@@ -161,9 +161,9 @@ case $1 in
 
     soyweb) java -jar ${PLOVR_JAR_PATH} soyweb --dir ./public;;
 
-    serve) java -jar ${PLOVR_JAR_PATH} serve plovr.json;;
+    serve) java -jar ${PLOVR_JAR_PATH} serve plovr-main.json plovr-sandbox.json;;
 
-    build) java -jar ${PLOVR_JAR_PATH} build plovr.json;;
+    build) java -jar ${PLOVR_JAR_PATH} build plovr-main.json plovr-sandbox.json;;
 
     extract_msg) extract_msg;;
 

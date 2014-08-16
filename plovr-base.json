@@ -1,12 +1,10 @@
 {
-  "id": "carbuncle",
   "debug": true,
   "closure-library": "./libs/closure-library/closure/goog",
   "paths": [
     "./assets/carbuncle/app",
     "./assets/carbuncle/soyutils_usegoog.js"
   ],
-  "inputs": "./assets/carbuncle/main.js",
   "mode": "ADVANCED",
   // "level": "VERBOSE",
   "externs": [
@@ -14,6 +12,6 @@
   ],
   "checks": {
     "externsValidation": "OFF"
-  },
-  "output-file": "assets/carbuncle/javascripts/main-min.js"
+  }
 }
+

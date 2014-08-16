@@ -7,7 +7,6 @@ goog.require('app.Scenario');
 goog.require('app.Site');
 goog.require('app.Overlay');
 goog.require('app.mask');
-goog.require('app.Socket');
 goog.require('goog.dom');
 goog.require('goog.dom.forms');
 goog.require('goog.events.EventTarget');
