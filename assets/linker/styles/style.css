@@ -278,3 +278,6 @@ a {
   background: rgba(200,200,200,.8);
   z-index: 9999;
 }
+.overlay-content {
+  padding: 4em 6em;
+}

@@ -3,6 +3,7 @@ goog.provide('app.Scenario');
 
 goog.require('app.dom');
 goog.require('app.mask');
+goog.require('app.scenario.BlockSelector');
 goog.require('app.socket');
 goog.require('app.soy.scenario');
 goog.require('app.ui.Rows');
@@ -23,6 +24,13 @@ goog.require('goog.ui.Component');
 app.Scenario = function(opt_domHelper) {
   goog.base(this, app.soy.scenario.renderEntry,
       new app.ui.Rows.Data('id'), opt_domHelper);
+
+  // TODO
+  var bs = new app.scenario.BlockSelector;
+
+  setTimeout(function() {
+    bs.show(1);
+  }, 100)
 };
 goog.inherits(app.Scenario, app.ui.Rows);
 
