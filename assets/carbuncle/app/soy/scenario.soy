@@ -54,21 +54,25 @@
 /**
  * @param id
  * @param title
- * @param css
  * @param mode
- * @param type
- * @param text
+ * @param? css
+ * @param? type
+ * @param? text
  */
 {template .renderEntry}
 <div id="{$id}" data-id="{$id}" class="scenario-entry scenario-entry-{$mode}" title="{$css}">
   <div style="float:right;text-align:right;">
-    <a class="scenario-entry-edithook" href="javascript:void(0)">edit</a>
-    <br />
+    {if $mode != 'block'}
+      <a class="scenario-entry-edithook" href="javascript:void(0)">edit</a>
+      <br />
+    {/if}
     <a class="scenario-entry-deletehook" href="javascript:void(0)">del</a>
   </div>
   {$title}
   <div class="scenario-entry-meta" style="color:gray;clear:both;">
-    {$mode}, {$type}{$text ? ', ' + $text : ''}
+    {$mode}
+    {$type ? ', ' + $type : ''}
+    {$text ? ', ' + $text : ''}
   </div>
 </div>
 {/template}

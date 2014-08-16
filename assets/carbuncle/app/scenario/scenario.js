@@ -89,8 +89,7 @@ app.Scenario.prototype.enterDocument = function() {
   eh.listen(this, [app.ui.Overlay.EventType.CANCEL,
                    app.ui.ScenarioGrid.SELECT], function(e) {
     if (e.data) {
-      // TODO: 
-      this.data.add(e.data);
+      this.insertBlock_(e.data);
     }
     this.blockSelector.show(false, function() {
       this.blockSelector.dispose();
@@ -193,6 +192,15 @@ app.Scenario.prototype.handleClick = function(e) {
       });
     }, goog.bind(that.makeButtonsEnabled, that, true));
   }
+};
+
+app.Scenario.prototype.insertBlock_ = function(data) {
+  this.data.add({
+    id: data.id,
+    title: data.title,
+    mode: 'block'
+  });
+  this.redraw();
 };
 
 /**

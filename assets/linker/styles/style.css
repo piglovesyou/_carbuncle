@@ -222,6 +222,9 @@ a {
   border-bottom: 1px #ccc solid;
   font-size: 85%;
 }
+.scenario-entry-block {
+  background: mintcream;
+}
 .scenario-entry-action {}
 .scenario-entry-verify {
   background: rgb(255,255,100);
@@ -230,7 +233,7 @@ a {
   background: rgb(34, 34, 249);
 }
 .scenario-entry-done {
-  background: rgb(17, 234, 17);
+  background: chartreuse;
 }
 .scenario-entry-fail {
   background: rgb(239, 37, 37);
