@@ -5,23 +5,34 @@
 /***/
 {template .createDom}
   <div class="scenario">
-    <div class="scenario-header">
-      <form action="javascript:void(0)" class="pure-form">
-        <input class="scenario-id" type="hidden" />
-        <input class="scenario-title" type="text" title="シナリオのタイトル" placeholder="シナリオのタイトル" />
-        {let $description}
-          ブロックは他のシナリオのエントリーにすることができます
-        {/let}
-        <label for="scenario-block" class="helptext" title="{$description}">
-          <input class="scenario-block" id="scenario-block" type="checkbox" style="vertical-align:middle;" />
-          {sp}ブロック
-        </label>
-      </form>
+    {call .createContent /}
+  </div>
+{/template}
+
+
+
+/***/
+{template .createContent}
+  <div class="scenario-header">
+    <form action="javascript:void(0)" class="pure-form">
+      <input class="scenario-id" type="hidden" />
+      <input class="scenario-title" type="text" title="シナリオのタイトル" placeholder="シナリオのタイトル" />
+      {let $description}
+        ブロックは他のシナリオのエントリーにすることができます
+      {/let}
+      <label for="scenario-block" class="helptext" title="{$description}">
+        <input class="scenario-block" id="scenario-block" type="checkbox" style="vertical-align:middle;" />
+        {sp}ブロック
+      </label>
+    </form>
+  </div>
+  <div class="scenario-body">
+    <div class="scenario-body-container">
     </div>
-    <div class="scenario-body"></div>
-    <div class="scenario-footer">
-      {call .footerContent data="all" /}
-    </div>
+    <a class="scenario-body-insertblock" href="javascript:void(0)">ブロックを挿入</a>
+  </div>
+  <div class="scenario-footer">
+    {call .footerContent data="all" /}
   </div>
 {/template}
 
@@ -32,11 +43,12 @@
  */
 {template .footerContent}
   <a class="scenario-footer-preview pure-button{if $disabled} pure-button-disabled{/if}" href="javascript:void 0">試す</a>
-  // {sp}
-  // <a class="scenario-footer-reset pure-button{if $disabled} pure-button-disabled{/if}" href="javascript:void 0">クリア</a>
+  {sp}
+  <a class="scenario-footer-create pure-button{if $disabled} pure-button-disabled{/if}" href="javascript:void 0">新規</a>
   {sp}
   <a class="scenario-footer-save pure-button pure-button-primary{if $disabled} pure-button-disabled{/if}" href="javascript:void 0">保存</a>
 {/template}
+
 
 
 /**

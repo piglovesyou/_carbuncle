@@ -1,5 +1,5 @@
 
-goog.provide('app.Overlay');
+goog.provide('app.ui.Overlay');
 
 goog.require('goog.ui.Component');
 

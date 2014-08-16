@@ -158,9 +158,13 @@ app.Scenario.prototype.handleClick = function(e) {
     }, null, this);
 
 
-  } else if (goog.dom.classes.has(et, 'scenario-footer-reset')) {
+  } else if (goog.dom.classes.has(et, 'scenario-footer-create')) {
     this.data.clear();
     this.redraw();
+    goog.soy.renderElement(this.getElement(), app.soy.scenario.createContent);
+
+  } else if (goog.dom.classes.has(et, 'scenario-body-insertblock')) {
+    console.log('yeah');
 
   } else if (goog.dom.classes.has(et, 'scenario-footer-save')) {
     this.makeButtonsEnabled(false);
@@ -202,5 +206,5 @@ app.Scenario.prototype.createDom = function() {
 
 /** @inheritDoc */
 app.Scenario.prototype.getContentElement = function() {
-  return this.getElementByClass('scenario-body');
+  return this.getElementByClass('scenario-body-container');
 };

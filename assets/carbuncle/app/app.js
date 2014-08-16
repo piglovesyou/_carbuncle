@@ -5,7 +5,7 @@ goog.require('app.Toolbar');
 goog.require('app.Editor');
 goog.require('app.Scenario');
 goog.require('app.Site');
-goog.require('app.Overlay');
+goog.require('app.ui.Overlay');
 goog.require('app.mask');
 goog.require('goog.dom');
 goog.require('goog.dom.forms');

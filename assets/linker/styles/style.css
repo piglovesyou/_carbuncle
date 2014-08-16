@@ -168,6 +168,11 @@ a {
   margin-right: 1.6em;
   overflow: auto;
 }
+.scenario-body-insertblock {
+  display: block;
+  margin: 1em 0;
+  text-align: center;
+}
 
 
 .worm-pixel {
