@@ -34,6 +34,7 @@
   border-bottom: 1px solid #cbcbcb;
   border-left: none;
 }
+.slick-row:active,
 .slick-row.active {
   background: #1f8dd6;
   color: white;

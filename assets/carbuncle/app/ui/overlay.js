@@ -12,8 +12,6 @@ goog.require('goog.ui.Component');
  */
 app.ui.Overlay = function(opt_domHelper) {
   goog.base(this, opt_domHelper);
-
-  this.render();
 };
 goog.inherits(app.ui.Overlay, goog.ui.Component);
 
@@ -27,21 +25,31 @@ app.ui.Overlay.EventType = {
 /**
  * @param {boolean} show .
  */
-app.ui.Overlay.prototype.show = function(show) {
-  var eh = this.getHandler();
-  if (show) {
-    eh.listen(this.getElement(), 'click', this.handleClick);
-  } else {
-    eh.unlisten(this.getElement(), 'click', this.handleClick);
-  }
+app.ui.Overlay.prototype.show = function(show, opt_transitionend, opt_context) {
+  if (!this.isInDocument()) this.render();
   goog.dom.classlist.enable(this.getElement(), 'open', show);
+
+  if (opt_transitionend) {
+    var eh = this.getHandler();
+    eh.listenOnce(this.getElement(), goog.events.EventType.TRANSITIONEND, function (e) {
+      opt_transitionend.call(opt_context, e);
+    });
+  }
+};
+
+/** @inheritDoc */
+app.ui.Overlay.prototype.enterDocument = function() {
+  goog.base(this, 'enterDocument');
+  var eh = this.getHandler();
+  eh.listen(this.getElement(), 'click', this.handleClick);
 };
 
 /**
  * @param {goog.events.Event} e .
  */
 app.ui.Overlay.prototype.handleClick = function(e) {
-  if (e.target == this.getElement()) {
+  if (e.target == this.getElement() ||
+      e.target == this.getContentElement()) {
     this.dispatchEvent(app.ui.Overlay.EventType.CANCEL);
   }
 };

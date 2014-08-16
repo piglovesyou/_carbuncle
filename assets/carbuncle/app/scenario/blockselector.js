@@ -2,7 +2,7 @@
 goog.provide('app.scenario.BlockSelector');
 
 goog.require('app.ui.Overlay');
-goog.require('app.ui.SlickGrid');
+goog.require('app.ui.ScenarioGrid');
 
 
 
@@ -15,31 +15,17 @@ app.scenario.BlockSelector = function(opt_domHelper) {
   goog.base(this, opt_domHelper);
 
   this.setTitle('ブロックを選択してください');
+
+  this.scenarioGrid = new app.ui.ScenarioGrid([]);
+  this.addChild(this.scenarioGrid);
 };
 goog.inherits(app.scenario.BlockSelector, app.ui.Overlay);
 
+var s;
+
 /** @inheritDoc */
-app.ui.Overlay.prototype.enterDocument = function() {
+app.scenario.BlockSelector.prototype.enterDocument = function() {
+  this.scenarioGrid.render(this.getContentElement())
+
   goog.base(this, 'enterDocument');
-
-  function entriesFormatter(row, cell, value, column, raw) {
-    return value.length;
-  }
-
-  var columns = [
-    {id: "id", name: "ID", field: "id"},
-    {id: "title", name: "Title", field: "title", width: 200},
-    {id: "entries", name: "Number of Entries", field: "entries", formatter: entriesFormatter},
-    {id: "createdAt", name: "createdAt", field: "createdAt", formatter: app.ui.SlickGrid.dateFormatter, width: 170},
-    {id: "updatedAt", name: "updatedAt", field: "updatedAt", formatter: app.ui.SlickGrid.dateFormatter, width: 170}
-  ];
-
-  var options = {
-    enableCellNavigation: true,
-    enableColumnReorder: false,
-    rowHeight: 41
-  };
-
-  var s = new app.ui.SlickGrid([], columns, options);
-  s.render(this.getContentElement())
 };

@@ -25,12 +25,6 @@ app.Scenario = function(opt_domHelper) {
   goog.base(this, app.soy.scenario.renderEntry,
       new app.ui.Rows.Data('id'), opt_domHelper);
 
-  // TODO
-  var bs = new app.scenario.BlockSelector;
-
-  setTimeout(function() {
-    bs.show(1);
-  }, 100)
 };
 goog.inherits(app.Scenario, app.ui.Rows);
 
@@ -92,7 +86,21 @@ app.Scenario.prototype.enterDocument = function() {
 
   });
 
+  eh.listen(this, [app.ui.Overlay.EventType.CANCEL,
+                   app.ui.ScenarioGrid.SELECT], function(e) {
+    if (e.data) {
+      // TODO: 
+      this.data.add(e.data);
+    }
+    this.blockSelector.show(false, function() {
+      this.blockSelector.dispose();
+      this.blockSelector = null;
+    }, this);
+  });
+
+
 };
+
 
 /**
  * @return { {
@@ -172,7 +180,9 @@ app.Scenario.prototype.handleClick = function(e) {
     goog.soy.renderElement(this.getElement(), app.soy.scenario.createContent);
 
   } else if (goog.dom.classes.has(et, 'scenario-body-insertblock')) {
-    console.log('yeah');
+    if (this.blockSelector) return;
+    this.addChild(this.blockSelector = new app.scenario.BlockSelector);
+    this.blockSelector.show(true);
 
   } else if (goog.dom.classes.has(et, 'scenario-footer-save')) {
     this.makeButtonsEnabled(false);

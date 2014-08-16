@@ -13,10 +13,6 @@ var columns = [
 
 
 
-function entriesFormatter(row, cell, value, column, raw) {
-  return value.length;
-}
-
 
 
 
