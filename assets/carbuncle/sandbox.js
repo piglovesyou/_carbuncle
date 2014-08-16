@@ -1,3 +1,4 @@
+goog.require('app.socket');
 
 var dataView;
 var grid;
@@ -252,3 +253,10 @@ $(function () {
 
 
 
+app.socket().then(function(socket) {
+
+  socket.get('/carbuncle/scenario', function(res) {
+    console.log(res);
+  });
+
+});

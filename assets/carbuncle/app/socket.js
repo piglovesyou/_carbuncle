@@ -1,5 +1,5 @@
 
-goog.provide('app.Socket');
+goog.provide('app.socket');
 
 goog.require('goog.ui.Component');
 goog.require('goog.Promise');

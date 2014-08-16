@@ -43,21 +43,14 @@ module.exports = function (grunt) {
 
   var jsFilesToInject = [
 
-    // Below, as a demonstration, you'll see the built-in dependencies 
-    // linked in the proper order order
-
-    // Bring in the socket.io client
     'linker/js/socket.io.js',
 
-    // then beef it up with some convenience logic for talking to Sails.js
     'linker/js/sails.io.js',
 
-    // *->    put other dependencies here   <-*
-
-    // All of the rest of your app scripts imported here
-    'linker/js/lib/jquery-1.7.min.js',
+    'linker/slickgrid/lib/**/*.js',
 
     'linker/**/*.js'
+
   ];
 
 

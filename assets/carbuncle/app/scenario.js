@@ -3,6 +3,7 @@ goog.provide('app.Scenario');
 
 goog.require('app.dom');
 goog.require('app.mask');
+goog.require('app.socket');
 goog.require('app.soy.scenario');
 goog.require('app.ui.Rows');
 goog.require('goog.Delay');
