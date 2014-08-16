@@ -22,7 +22,9 @@
   </head>
 
   <body
-    <% if (locals.site) { %> data-site="<%= site %>"<% } %>
+    <% if (typeof site != 'undefined') { %>
+      data-site="<%= site %>"
+    <% } %>
   >
 
     <!--SCRIPTS-->
