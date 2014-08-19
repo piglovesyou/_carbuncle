@@ -19,14 +19,18 @@ goog.require('goog.ui.Component');
 /**
  * @constructor
  * @param {goog.dom.DomHelper=} opt_domHelper .
- * @extends {app.ui.Rows}
+ * @extends {goog.ui.Component}
  */
 app.Scenario = function(opt_domHelper) {
-  goog.base(this, app.soy.scenario.renderEntry,
-      new app.ui.Rows.Data('id'), opt_domHelper);
+  goog.base(this, opt_domHelper);
 
+  /**
+   * @type {app.Scenario.Rows}
+   */
+  this.rows = new app.Scenario.Rows;
+  this.addChild(this.rows);
 };
-goog.inherits(app.Scenario, app.ui.Rows);
+goog.inherits(app.Scenario, goog.ui.Component);
 
 /**
  * @enum {string}
@@ -43,7 +47,7 @@ app.Scenario.prototype.enterDocument = function() {
 
   eh.listen(this.getElement(), 'click', this.handleClick);
 
-  var clearTimer = new goog.Delay(this.redraw, 3000, this);
+  var clearTimer = new goog.Delay(this.rows.redraw, 3000, this.rows);
   app.socket().then(function(socket) {
 
     socket.get('/carbuncle/scenario', function(res) {
@@ -57,11 +61,11 @@ app.Scenario.prototype.enterDocument = function() {
           passLast();
         } else {
           clearTimer.stop();
-          that.redraw();
+          that.rows.redraw();
         }
-        goog.dom.classlist.add(goog.dom.getElement(data.entry.id),
-            'scenario-entry-doing');
-        last = data.entry.id;
+        var id = String(data.entry.id);
+        goog.dom.classlist.add(goog.dom.getElement(id), 'scenario-entry-doing');
+        last = id;
       });
 
       socket.on('pass', function() {
@@ -89,7 +93,7 @@ app.Scenario.prototype.enterDocument = function() {
   eh.listen(this, [app.ui.Overlay.EventType.CANCEL,
                    app.ui.ScenarioGrid.SELECT], function(e) {
     if (e.data) {
-      this.insertBlock_(e.data);
+      this.rows.insertBlock_(e.data);
     }
     this.blockSelector.show(false, function() {
       this.blockSelector.dispose();
@@ -99,7 +103,6 @@ app.Scenario.prototype.enterDocument = function() {
 
 
 };
-
 
 /**
  * @return { {
@@ -113,7 +116,7 @@ app.Scenario.prototype.collectScenario = function() {
   var rv = {
     id: !isNaN(tmp = parseInt(goog.dom.forms.getValue(this.getElementByClass('scenario-id')), 10)) ? tmp : undefined,
     title: goog.dom.forms.getValue(this.getElementByClass('scenario-title')),
-    entries: this.data.getAll() || []
+    entries: this.rows.data.getAll() || []
   };
   return rv;
 };
@@ -121,8 +124,8 @@ app.Scenario.prototype.collectScenario = function() {
 app.Scenario.prototype.applyScenario = function(doc) {
   goog.dom.forms.setValue(this.getElementByClass('scenario-id'), doc.id);
   goog.dom.forms.setValue(this.getElementByClass('scenario-title'), doc.title);
-  this.data.addAll(doc.entries || []);
-  this.redraw();
+  this.rows.data.addAll(doc.entries || []);
+  this.rows.redraw();
 };
 
 /**
@@ -146,8 +149,8 @@ app.Scenario.prototype.handleClick = function(e) {
   if (goog.dom.classes.has(et, 'scenario-entry-deletehook')) {
     var entry = this.getEntryFromEventTarget(et);
     if (entry) {
-      this.data.remove(entry);
-      this.redraw();
+      this.rows.data.remove(entry);
+      this.rows.redraw();
     }
     return;
   }
@@ -174,8 +177,8 @@ app.Scenario.prototype.handleClick = function(e) {
 
 
   } else if (goog.dom.classes.has(et, 'scenario-footer-create')) {
-    this.data.clear();
-    this.redraw();
+    this.rows.data.clear();
+    this.rows.redraw();
     goog.soy.renderElement(this.getElement(), app.soy.scenario.createContent);
 
   } else if (goog.dom.classes.has(et, 'scenario-body-insertblock')) {
@@ -194,14 +197,14 @@ app.Scenario.prototype.handleClick = function(e) {
   }
 };
 
-app.Scenario.prototype.insertBlock_ = function(data) {
-  this.data.add({
-    id: data.id,
-    title: data.title,
-    mode: 'block'
-  });
-  this.redraw();
-};
+// app.Scenario.prototype.insertBlock_ = function(data) {
+//   this.rows.data.add({
+//     id: data.id,
+//     title: data.title,
+//     mode: 'block'
+//   });
+//   this.rows.redraw();
+// };
 
 /**
  * @param {boolean} enable .
@@ -219,7 +222,7 @@ app.Scenario.prototype.getEntryFromEventTarget = function(et) {
   var entryEl = /** @type {Element} */(
       app.dom.getAncestorFromEventTargetByClass(this.getElement(), 'scenario-entry', et));
   if (entryEl) {
-    return this.data.get(goog.dom.dataset.get(entryEl, 'id'));
+    return this.rows.data.get(goog.dom.dataset.get(entryEl, 'id'));
   }
   return null;
 };
@@ -228,9 +231,35 @@ app.Scenario.prototype.getEntryFromEventTarget = function(et) {
 app.Scenario.prototype.createDom = function() {
   this.setElementInternal(
       /** @type {Element} */(goog.soy.renderAsFragment(app.soy.scenario.createDom)));
+  this.rows.decorate(this.getElementByClass('scenario-body'));
+};
+
+
+
+
+
+
+/**
+ * @constructor
+ * @extends {app.ui.Rows}
+ */
+app.Scenario.Rows = function(opt_domHelper) {
+  goog.base(this, app.soy.scenario.renderEntry,
+      new app.ui.Rows.Data('id'), opt_domHelper);
+};
+goog.inherits(app.Scenario.Rows, app.ui.Rows);
+
+app.Scenario.Rows.prototype.insertBlock_ = function(data) {
+  this.rows.data.add({
+    id: data.id,
+    title: data.title,
+    mode: 'block'
+  });
+  this.rows.redraw();
 };
 
 /** @inheritDoc */
-app.Scenario.prototype.getContentElement = function() {
+app.Scenario.Rows.prototype.getContentElement = function() {
   return this.getElementByClass('scenario-body-container');
 };
+
