@@ -12,11 +12,11 @@ goog.require('app.ui.SlickGrid');
 app.ui.ScenarioGrid = function(opt_data, opt_columns, opt_options, opt_domHelper) {
 
   var columns = [
-    {id: "id", name: "ID", field: "id"},
-    {id: "title", name: "Title", field: "title", width: 200},
-    {id: "entries", name: "Number of Entries", field: "entries", formatter: entriesFormatter},
-    {id: "createdAt", name: "createdAt", field: "createdAt", formatter: app.ui.SlickGrid.dateFormatter, width: 170},
-    {id: "updatedAt", name: "updatedAt", field: "updatedAt", formatter: app.ui.SlickGrid.dateFormatter, width: 170}
+    {id: 'id', name: 'ID', field: 'id'},
+    {id: 'title', name: 'Title', field: 'title', width: 200},
+    {id: 'entries', name: 'Number of Entries', field: 'entries', formatter: entriesFormatter},
+    {id: 'createdAt', name: 'createdAt', field: 'createdAt', formatter: app.ui.SlickGrid.dateFormatter, width: 170},
+    {id: 'updatedAt', name: 'updatedAt', field: 'updatedAt', formatter: app.ui.SlickGrid.dateFormatter, width: 170}
   ];
   if (opt_columns) {
     columns = columns.concat(opt_columns);
@@ -28,7 +28,7 @@ app.ui.ScenarioGrid = function(opt_data, opt_columns, opt_options, opt_domHelper
     rowHeight: 41
   };
   if (opt_options) {
-    goog.mixin(options, opt_options)
+    goog.mixin(options, opt_options);
   }
 
   goog.base(this, opt_data, columns, options, opt_domHelper);
@@ -40,8 +40,10 @@ app.ui.ScenarioGrid = function(opt_data, opt_columns, opt_options, opt_domHelper
 };
 goog.inherits(app.ui.ScenarioGrid, app.ui.SlickGrid);
 
+/** @type {string} */
 app.ui.ScenarioGrid.SELECT = 'slct';
 
+/** @inheritDoc */
 app.ui.ScenarioGrid.prototype.enterDocument = function() {
   goog.dom.classlist.add(this.getElement(), 'scenariogrid');
   goog.base(this, 'enterDocument');
@@ -54,13 +56,12 @@ app.ui.ScenarioGrid.prototype.enterDocument = function() {
       that.dispatchEvent({
         type: app.ui.ScenarioGrid.SELECT,
         data: row
-      })
+      });
     }
   });
 
   app.socket().then(function(socket) {
     socket.get('/carbuncle/scenario', function(res) {
-      console.log(res);
       that.slickgrid.setData(res);
       that.slickgrid.render();
     });

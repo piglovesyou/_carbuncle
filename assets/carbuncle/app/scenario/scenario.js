@@ -93,7 +93,7 @@ app.Scenario.prototype.enterDocument = function() {
   eh.listen(this, [app.ui.Overlay.EventType.CANCEL,
                    app.ui.ScenarioGrid.SELECT], function(e) {
     if (e.data) {
-      this.rows.insertBlock_(e.data);
+      this.rows.insertBlock(e.data);
     }
     this.blockSelector.show(false, function() {
       this.blockSelector.dispose();
@@ -116,7 +116,8 @@ app.Scenario.prototype.collectScenario = function() {
   var rv = {
     id: !isNaN(tmp = parseInt(goog.dom.forms.getValue(this.getElementByClass('scenario-id')), 10)) ? tmp : undefined,
     title: goog.dom.forms.getValue(this.getElementByClass('scenario-title')),
-    entries: this.rows.data.getAll() || []
+    entries: this.rows.data.getAll() || [],
+    isBlock: !!goog.dom.forms.getValue(this.getElementByClass('scenario-block'))
   };
   return rv;
 };
@@ -124,6 +125,7 @@ app.Scenario.prototype.collectScenario = function() {
 app.Scenario.prototype.applyScenario = function(doc) {
   goog.dom.forms.setValue(this.getElementByClass('scenario-id'), doc.id);
   goog.dom.forms.setValue(this.getElementByClass('scenario-title'), doc.title);
+  goog.dom.forms.setValue(this.getElementByClass('scenario-block'), doc.isBlock);
   this.rows.data.addAll(doc.entries || []);
   this.rows.redraw();
 };
@@ -197,15 +199,6 @@ app.Scenario.prototype.handleClick = function(e) {
   }
 };
 
-// app.Scenario.prototype.insertBlock_ = function(data) {
-//   this.rows.data.add({
-//     id: data.id,
-//     title: data.title,
-//     mode: 'block'
-//   });
-//   this.rows.redraw();
-// };
-
 /**
  * @param {boolean} enable .
  */
@@ -242,6 +235,7 @@ app.Scenario.prototype.createDom = function() {
 /**
  * @constructor
  * @extends {app.ui.Rows}
+ * @param {goog.dom.DomHelper} opt_domHelper .
  */
 app.Scenario.Rows = function(opt_domHelper) {
   goog.base(this, app.soy.scenario.renderEntry,
@@ -249,13 +243,13 @@ app.Scenario.Rows = function(opt_domHelper) {
 };
 goog.inherits(app.Scenario.Rows, app.ui.Rows);
 
-app.Scenario.Rows.prototype.insertBlock_ = function(data) {
-  this.rows.data.add({
+app.Scenario.Rows.prototype.insertBlock = function(data) {
+  this.data.add({
     id: data.id,
-    title: data.title,
+    title: data && data.title, // Can be null
     mode: 'block'
   });
-  this.rows.redraw();
+  this.redraw();
 };
 
 /** @inheritDoc */

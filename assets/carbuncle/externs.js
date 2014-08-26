@@ -4,9 +4,9 @@ var console = {};
 var module = {};
 module.exports;
 
-var CollectGarbage = function(){};
+var CollectGarbage = function() {};
 
-var define = function(a, b){};
+var define = function(a, b) {};
 define.amd;
 
 var io = {};
@@ -15,7 +15,7 @@ io.connect = function() {};
 
 
 /** @constructor */
-var Socket = function(){};
+var Socket = function() {};
 Socket.prototype.on;
 Socket.prototype.get;
 Socket.prototype.post;
@@ -29,18 +29,19 @@ var ObjectInterface = {};
 /**
  * @constructor
  */
-ObjectInterface.Entry = function () {};
+ObjectInterface.Entry = function() {};
 ObjectInterface.Entry.prototype.id;
 ObjectInterface.Entry.prototype.title;
 ObjectInterface.Entry.prototype.css;
 ObjectInterface.Entry.prototype.mode;
 ObjectInterface.Entry.prototype.type;
 ObjectInterface.Entry.prototype.text;
+ObjectInterface.Entry.prototype.isBlock;
 
 /**
  * @constructor
  */
-ObjectInterface.Scenario = function () {};
+ObjectInterface.Scenario = function() {};
 ObjectInterface.Scenario.prototype.id;
 ObjectInterface.Scenario.prototype.title;
 /** @type {Array.<ObjectInterface.Entry>} */

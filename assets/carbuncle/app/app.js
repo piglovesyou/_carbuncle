@@ -1,12 +1,12 @@
 
 goog.provide('app.App');
 
-goog.require('app.Toolbar');
 goog.require('app.Editor');
 goog.require('app.Scenario');
 goog.require('app.Site');
-goog.require('app.ui.Overlay');
+goog.require('app.Toolbar');
 goog.require('app.mask');
+goog.require('app.ui.Overlay');
 goog.require('goog.dom');
 goog.require('goog.dom.forms');
 goog.require('goog.events.EventTarget');
@@ -35,6 +35,9 @@ app.App = function() {
 
   this.scenario = new app.Scenario;
   this.addChild(this.scenario);
+
+  // XXX debug
+  window.scenario = this.scenario;
 };
 goog.inherits(app.App, goog.ui.Component);
 
@@ -66,7 +69,7 @@ app.App.prototype.enterDocument = function() {
   eh.listen(this, 'elementselect', this.handleElementSelect);
   eh.listen(this, 'append-entry', this.handleAppendEntry);
   eh.listen(this, 'editentry', this.handleEditEntry);
-  
+
 };
 
 /**
@@ -101,8 +104,8 @@ app.App.prototype.handleSelectorTextKey = function(e) {
  */
 app.App.prototype.handleAppendEntry = function(e) {
   this.site.pixel.show(false);
-  this.scenario.data.upsert(e.data);
-  this.scenario.redraw();
+  this.scenario.rows.data.upsert(e.data);
+  this.scenario.rows.redraw();
 };
 
 /**

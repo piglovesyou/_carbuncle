@@ -12,7 +12,7 @@
 }
 .pure-form input[type=text]:focus, .pure-form input[type=password]:focus, .pure-form input[type=email]:focus, .pure-form input[type=url]:focus, .pure-form input[type=date]:focus, .pure-form input[type=month]:focus, .pure-form input[type=time]:focus, .pure-form input[type=datetime]:focus, .pure-form input[type=datetime-local]:focus, .pure-form input[type=week]:focus, .pure-form input[type=number]:focus, .pure-form input[type=search]:focus, .pure-form input[type=tel]:focus, .pure-form input[type=color]:focus, .pure-form select:focus, .pure-form textarea:focus,
 .pure-form input[type=text]:hover, .pure-form input[type=password]:hover, .pure-form input[type=email]:hover, .pure-form input[type=url]:hover, .pure-form input[type=date]:hover, .pure-form input[type=month]:hover, .pure-form input[type=time]:hover, .pure-form input[type=datetime]:hover, .pure-form input[type=datetime-local]:hover, .pure-form input[type=week]:hover, .pure-form input[type=number]:hover, .pure-form input[type=search]:hover, .pure-form input[type=tel]:hover, .pure-form input[type=color]:hover, .pure-form select:hover, .pure-form textarea:hover {
-  background: lightyellow;
+  background: infobackground;
   border-bottom-color: transparent;
 }
 .pure-form input[type=text]:focus, .pure-form input[type=password]:focus, .pure-form input[type=email]:focus, .pure-form input[type=url]:focus, .pure-form input[type=date]:focus, .pure-form input[type=month]:focus, .pure-form input[type=time]:focus, .pure-form input[type=datetime]:focus, .pure-form input[type=datetime-local]:focus, .pure-form input[type=week]:focus, .pure-form input[type=number]:focus, .pure-form input[type=search]:focus, .pure-form input[type=tel]:focus, .pure-form input[type=color]:focus, .pure-form select:focus, .pure-form textarea:focus {
@@ -203,7 +203,7 @@ a {
   z-index: 9999;
   font-size: 85%;
   color: #999;
-  background: lightyellow;
+  background: infobackground;
 }
 
 

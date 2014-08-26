@@ -11,7 +11,9 @@
 
 
 
-/***/
+/**
+ * @param? isBlock
+ */
 {template .createContent}
   <div class="scenario-header">
     <form action="javascript:void(0)" class="pure-form">
@@ -21,7 +23,12 @@
         ブロックは他のシナリオのエントリーにすることができます
       {/let}
       <label for="scenario-block" class="helptext" title="{$description}">
-        <input class="scenario-block" id="scenario-block" type="checkbox" style="vertical-align:middle;" />
+        <input class="scenario-block"
+               id="scenario-block"
+               type="checkbox"
+               style="vertical-align:middle;"
+               {if $isBlock} checked="checked"{/if}
+         />
         {sp}ブロック
       </label>
     </form>
