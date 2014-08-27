@@ -5,7 +5,23 @@
 /***/
 {template .createDom}
   <div class="scenario">
-    {call .createContent /}
+    {call ._createContent /}
+  </div>
+{/template}
+
+
+
+/**
+ */
+{template ._createContent private="true"}
+  <div class="scenario-header">
+    {call .headerContent data="all" /}
+  </div>
+  <div class="scenario-body">
+    {call .bodyContent /}
+  </div>
+  <div class="scenario-footer">
+    {call .footerContent data="all" /}
   </div>
 {/template}
 
@@ -14,33 +30,32 @@
 /**
  * @param? isBlock
  */
-{template .createContent}
-  <div class="scenario-header">
-    <form action="javascript:void(0)" class="pure-form">
-      <input class="scenario-id" type="hidden" />
-      <input class="scenario-title" type="text" title="シナリオのタイトル" placeholder="シナリオのタイトル" />
-      {let $description}
-        ブロックは他のシナリオのエントリーにすることができます
-      {/let}
-      <label for="scenario-block" class="helptext" title="{$description}">
-        <input class="scenario-block"
-               id="scenario-block"
-               type="checkbox"
-               style="vertical-align:middle;"
-               {if $isBlock} checked="checked"{/if}
-         />
-        {sp}ブロック
-      </label>
-    </form>
+{template .headerContent}
+  <form action="javascript:void(0)" class="pure-form">
+    <input class="scenario-id" type="hidden" />
+    <input class="scenario-title" type="text" title="シナリオのタイトル" placeholder="シナリオのタイトル" />
+    {let $description}
+      ブロックは他のシナリオのエントリーにすることができます
+    {/let}
+    <label for="scenario-block" class="helptext" title="{$description}">
+      <input class="scenario-block"
+             id="scenario-block"
+             type="checkbox"
+             style="vertical-align:middle;"
+             {if $isBlock} checked="checked"{/if}
+       />
+      {sp}ブロック
+    </label>
+  </form>
+{/template}
+
+
+
+/***/
+{template .bodyContent}
+  <div class="scenario-body-container">
   </div>
-  <div class="scenario-body">
-    <div class="scenario-body-container">
-    </div>
-    <a class="scenario-body-insertblock" href="javascript:void(0)">ブロックを挿入</a>
-  </div>
-  <div class="scenario-footer">
-    {call .footerContent data="all" /}
-  </div>
+  <a class="scenario-body-insertblock" href="javascript:void(0)">ブロックを挿入</a>
 {/template}
 
 

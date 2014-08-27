@@ -32,7 +32,15 @@ Executor.prototype.execute_ = function() {
   this.entries.reduce(function(p, e) {
     return p.then(function() {
       that.emit('before', e);
-      return executionMap[e.mode][e.type](context, e.css, e.text);
+      if (e.mode == 'block') {
+        // return Scenario.findOne(e.id)
+        // .then(function(doc) {
+        //   assert(doc.isBlock, 'Wrong scenario was stored as a block.');
+        //   console.log(doc);
+        // })
+      } else {
+        return executionMap[e.mode][e.type](context, e.css, e.text);
+      }
     }).delay(that.interval);
   }, Q())
   .then(function() {

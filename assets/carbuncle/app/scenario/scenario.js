@@ -181,7 +181,9 @@ app.Scenario.prototype.handleClick = function(e) {
   } else if (goog.dom.classes.has(et, 'scenario-footer-create')) {
     this.rows.data.clear();
     this.rows.redraw();
-    goog.soy.renderElement(this.getElement(), app.soy.scenario.createContent);
+    goog.soy.renderElement(this.getElementByClass('scenario-header'), app.soy.scenario.headerContent);
+    goog.soy.renderElement(this.getElementByClass('scenario-body'), app.soy.scenario.bodyContent);
+    goog.soy.renderElement(this.getElementByClass('scenario-footer'), app.soy.scenario.footerContent);
 
   } else if (goog.dom.classes.has(et, 'scenario-body-insertblock')) {
     if (this.blockSelector) return;
