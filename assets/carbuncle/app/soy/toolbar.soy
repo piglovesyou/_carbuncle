@@ -17,11 +17,11 @@
   {if $situation}
     <div class="toolbar-message {if $situation}toolbar-message-{$situation}{/if}">
       {if $situation == 'before' and $entry}
-        {$entry?.title|truncate:14,false}...
+        <b>{$entry?.title|truncate:14,false}</b> ...
       {elseif $situation == 'pass'}
-        {if $scenario?.title}<b>{$scenario.title|truncate:14,false}</b>が{/if}成功しました。
+        {if $scenario?.title}シナリオ <b>{$scenario.title|truncate:14,false}</b> が{/if}成功しました。
       {elseif $situation == 'fail'}
-        {if $scenario?.title}<b>{$scenario.title|truncate:14,false}</b>が{/if}失敗しました。
+        {if $scenario?.title}シナリオ <b>{$scenario.title|truncate:14,false}</b> が{/if}失敗しました。
       {/if}
     </div>
   {/if}

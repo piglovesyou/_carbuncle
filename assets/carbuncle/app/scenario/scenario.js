@@ -168,7 +168,7 @@ app.Scenario.prototype.handleClick = function(e) {
       });
       socket.post('/carbuncle/carbuncle/call', params, function(res) {
         if (res.error) {
-          alert(res.stack);
+          // alert(res.stack);
         } else {
           // alert('success!');
         }

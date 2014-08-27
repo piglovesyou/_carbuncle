@@ -35,7 +35,7 @@
     <input class="scenario-id" type="hidden" />
     <input class="scenario-title" type="text" title="シナリオのタイトル" placeholder="シナリオのタイトル" />
     {let $description}
-      ブロックは他のシナリオのエントリーにすることができます
+      ブロックは他のシナリオのステップにすることができます
     {/let}
     <label for="scenario-block" class="helptext" title="{$description}">
       <input class="scenario-block"
@@ -55,7 +55,13 @@
 {template .bodyContent}
   <div class="scenario-body-container">
   </div>
-  <a class="scenario-body-insertblock" href="javascript:void(0)">ブロックを挿入</a>
+  <div class="scenario-body-insertblock-wrap">
+    <a class="scenario-body-insertblock" href="javascript:void(0)">
+      <i class="fa fa-plus"></i>
+      {sp}
+      ブロックを挿入
+    </a>
+  </div>
 {/template}
 
 
@@ -64,7 +70,7 @@
  * @param? disabled
  */
 {template .footerContent}
-  <a class="scenario-footer-preview pure-button{if $disabled} pure-button-disabled{/if}" href="javascript:void 0">試す</a>
+  <a class="pure-button-darkgreen scenario-footer-preview pure-button{if $disabled} pure-button-disabled{/if}" href="javascript:void 0">試す</a>
   {sp}
   <a class="scenario-footer-create pure-button{if $disabled} pure-button-disabled{/if}" href="javascript:void 0">新規</a>
   {sp}
@@ -91,7 +97,7 @@
     <a class="scenario-entry-deletehook" href="javascript:void(0)">del</a>
   </div>
   {$title}
-  <div class="scenario-entry-meta" style="color:gray;clear:both;">
+  <div class="scenario-entry-meta">
     {$mode}
     {$type ? ', ' + $type : ''}
     {$text ? ', ' + $text : ''}

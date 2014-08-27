@@ -33,7 +33,7 @@
 
       <div class="pure-u-1">
 
-        <a class="selector-button pure-button pure-button-primary" href="#">
+        <a class="selector-button pure-button-crimson pure-button" href="#">
           <i class="fa fa-location-arrow fa-flip-horizontal fa-lg"></i>
           {sp}要素を選択
         </a>
@@ -63,7 +63,17 @@
         <input name="entry-text" class="entry-text" value="{$text?:''}" type="text" placeholder="テキスト" />
         {sp}
 
-        <button class="append-button pure-button pure-button-primary">ステップを{$isEdit ? '編集' : '追加'}</button>
+        <button class="append-button pure-button pure-button-primary">
+          {if $isEdit}
+            <i class="fa fa-edit"></i>
+            {sp}
+            ステップを編集
+          {else}
+            <i class="fa fa-plus"></i>
+            {sp}
+            ステップを追加
+          {/if}
+          {$isEdit ? '' : ''}</button>
         {if $isEdit}
           {sp}<a class="quit-edit-button" title="quit editing" href="javascript:void(0)">やめる</a>
         {/if}
@@ -71,6 +81,7 @@
       </div>
 
     </div>
+
   </form>
 
 {/template}

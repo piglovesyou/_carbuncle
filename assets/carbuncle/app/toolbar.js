@@ -29,7 +29,7 @@ app.Toolbar.prototype.enterDocument = function() {
   var that = this;
   var clearTimer = new goog.Delay(function clearMessage() {
     goog.soy.renderElement(that.getElement(), app.soy.toolbar.content);
-  }, 3000, this);
+  }, 10000, this);
 
   app.socket().then(function(socket) {
     socket.on('before', function(data) {
