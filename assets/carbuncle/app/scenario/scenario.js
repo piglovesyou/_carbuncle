@@ -63,9 +63,17 @@ app.Scenario.prototype.enterDocument = function() {
           clearTimer.stop();
           that.rows.redraw();
         }
-        var id = String(data.entry.id);
-        goog.dom.classlist.add(goog.dom.getElement(id), 'scenario-entry-doing');
-        last = id;
+        last = String(data.entry.id);
+        decorateStepEl(null, 'scenario-entry-doing');
+
+        if (data.entry.mode == 'block') {
+          goog.array.forEach(data.entry.entries, function(e) {
+            that.rows.data.add(e);
+          });
+          that.rows.redraw();
+
+          console.log('=========', data);
+        }
       });
 
       socket.on('pass', function() {
@@ -73,18 +81,21 @@ app.Scenario.prototype.enterDocument = function() {
         end();
       });
       socket.on('fail', function(data) {
-        goog.dom.classlist.add(goog.dom.getElement(last),
-            'scenario-entry-fail');
+        decorateStepEl(null, 'scenario-entry-fail');
         end();
       });
 
       function passLast() {
-        goog.dom.classlist.addRemove(goog.dom.getElement(last),
-            'scenario-entry-doing', 'scenario-entry-done');
+        decorateStepEl('scenario-entry-doing', 'scenario-entry-done');
       }
       function end() {
         last = null;
         clearTimer.start();
+      }
+      function decorateStepEl(removeClass, addClass) {
+        var stepEl = goog.dom.getElement(last);
+        goog.dom.classlist.addRemove(stepEl, removeClass, addClass);
+        goog.style.scrollIntoContainerView(stepEl, that.rows.getElement());
       }
     });
 
