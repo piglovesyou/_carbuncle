@@ -20,6 +20,7 @@ function Executor(entries, opt_interval) {
   EventEmitter.call(this);
   Object.defineProperty(this, 'entries', { value: entries });
   Object.defineProperty(this, 'interval', { value: opt_interval || 0 });
+  Object.defineProperty(this, 'context', { value: new Context });
   Object.seal(this);
   this.execute_();
 }
@@ -27,9 +28,26 @@ util.inherits(Executor, EventEmitter);
 
 Executor.prototype.execute_ = function() {
   var that = this;
-  var context = new Context;
-  // Not return promise for preventing confusing
-  this.entries.reduce(function(p, e) {
+  var context = this.context;
+  that.scheduleEntries_(this.entries)
+  .then(function() {
+    that.emit('pass');
+    context.quit();
+    that.emit('end');
+    return context;
+  })
+  .catch (function(e) {
+    that.emit('fail', e);
+    context.quit(); // Make sure to quit even if an error occures.
+    that.emit('end', e);
+    // throw new Error(e);
+  });
+};
+
+Executor.prototype.scheduleEntries_ = function(entries) {
+  var that = this;
+  var context = this.context;
+  return entries.reduce(function(p, e) {
     return p.then(function() {
       that.emit('before', e);
       if (e.mode == 'block') {
@@ -42,21 +60,8 @@ Executor.prototype.execute_ = function() {
         return executionMap[e.mode][e.type](context, e.css, e.text);
       }
     }).delay(that.interval);
-  }, Q())
-  .then(function() {
-    that.emit('pass');
-    context.quit();
-    that.emit('end');
-    return context;
-  })
-  .catch (function(e) {
-    that.emit('fail', e);
-    context.quit(); // Make sure to quit even if an error occures.
-    that.emit('end', e);
-    // throw new Error(e);
-  })
+  }, Q());
 };
-
 
 
 
@@ -151,7 +156,7 @@ function mapVerifyMethod(type) {
     function(text, v) { return text == v } : goog.string[type];
 }
 function replaceMetaKey(input) {
-  return input.replace(/(\{.*?\})/g, function (hit) {
+  return input.replace(/(\{.*?\})/g, function(hit) {
     var content = hit.match(/\{(.*?)\}/);
     if (content && webdriver.Key[content[1]]) {
       return webdriver.Key[content[1]];
