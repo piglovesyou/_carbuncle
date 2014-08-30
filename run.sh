@@ -155,9 +155,9 @@ case $1 in
 
     soyweb) $PLOVR_PATH soyweb --dir ./public;;
 
-    serve) $PLOVR_PATH serve plovr-main.json plovr-sandbox.json;;
+    serve) $PLOVR_PATH serve plovr/main.json plovr/sandbox.json;;
 
-    build) $PLOVR_PATH build plovr-main.json;;
+    build) $PLOVR_PATH build plovr/main.json;;
 
     extract_msg) extract_msg;;
 
