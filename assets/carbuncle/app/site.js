@@ -1,8 +1,8 @@
 
 goog.provide('app.Site');
 
-goog.require('app.soy.site');
 goog.require('app.options');
+goog.require('app.soy.site');
 goog.require('goog.soy');
 goog.require('goog.ui.Component');
 
@@ -48,7 +48,7 @@ app.Site.prototype.enable = function(enable) {
 
 app.Site.prototype.getIframe = function() {
   return this.getElementByClass('iframe-iframe');
-}
+};
 
 app.Site.prototype.getDocument = function() {
   return goog.dom.getFrameContentDocument(this.getIframe());
@@ -169,7 +169,7 @@ app.Site.prototype.enterDocument = function() {
   var eh = this.getHandler();
   eh.listen(this.getElementByClass('iframe-locationbar'),
       'submit', this.handleLocationbarSubmit);
-  eh.listen(this.getIframe(), 'load', function () {
+  eh.listen(this.getIframe(), 'load', function() {
     // TODO: apply new url to iframe-locationbar-text
   });
 
@@ -182,11 +182,11 @@ app.Site.prototype.enterDocument = function() {
 
 app.Site.prototype.handleLocationbarSubmit = function(e) {
   var url = goog.dom.forms.getValue(this.getElementByClass('iframe-locationbar-text'));
-  if (!goog.string.startsWith(url, '/')) {
+  if (!goog.string.startsWith(/** @type {string} */(url), '/')) {
     url = '/' + url;
   }
   goog.dom.setProperties(this.getIframe(), { src: url });
-}
+};
 
 /** @inheritDoc */
 app.Site.prototype.disposeInternal = function() {
@@ -202,7 +202,7 @@ app.Site.prototype.isElementExists = function(css) {
     return !!this.getDocument().querySelector(css);
   } catch (e) {}
   return false;
-}
+};
 
 
 
@@ -223,7 +223,7 @@ app.Site.Pixel.prototype.createDom = function() {
       this.topEl = dh.createDom('div', 'worm-pixel-border worm-pixel-border-top'),
       this.rightEl = dh.createDom('div', 'worm-pixel-border worm-pixel-border-right'),
       this.bottomEl = dh.createDom('div', 'worm-pixel-border worm-pixel-border-bottom'),
-      this.leftEl = dh.createDom('div', 'worm-pixel-border worm-pixel-border-left')))
+      this.leftEl = dh.createDom('div', 'worm-pixel-border worm-pixel-border-left')));
 };
 
 app.Site.Pixel.prototype.show = function(show) {
@@ -237,7 +237,7 @@ app.Site.Pixel.prototype.show = function(show) {
 
 app.Site.Pixel.prototype.draw = function(pos, size, description) {
   goog.asserts.assert(this.isInDocument());
-  
+
   this.show(true);
   goog.dom.setProperties(this.getElement(), {
     title: description

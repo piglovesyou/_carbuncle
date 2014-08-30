@@ -1,6 +1,4 @@
 
-var console = {};
-
 var module = {};
 module.exports;
 
@@ -19,6 +17,16 @@ var Socket = function() {};
 Socket.prototype.on;
 Socket.prototype.get;
 Socket.prototype.post;
+
+var Slick = {};
+/** @constructor */
+Slick.Grid = function(element, data, columns, options) {};
+Slick.Grid.prototype.getDataItem;
+Slick.Grid.prototype.getData;
+Slick.Grid.prototype.setData;
+Slick.Grid.prototype.render;
+Slick.Grid.prototype.onClick;
+Slick.Grid.prototype.onClick.subscribe;
 
 
 

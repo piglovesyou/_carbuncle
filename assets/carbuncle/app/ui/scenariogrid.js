@@ -6,8 +6,12 @@ goog.require('app.ui.SlickGrid');
 
 /**
  * @constructor
- * @extends {app.ui.ScenarioGrid}
- * @inheritDoc
+ * @extends {app.ui.SlickGrid}
+ *
+ * @param {Object=} opt_data .
+ * @param {Array=} opt_columns .
+ * @param {Object=} opt_options .
+ * @param {goog.dom.DomHelper=} opt_domHelper .
  */
 app.ui.ScenarioGrid = function(opt_data, opt_columns, opt_options, opt_domHelper) {
 

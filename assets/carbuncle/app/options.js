@@ -13,7 +13,8 @@ app.options = function() {
  * @constructor
  */
 app.Options = function() {
-  var dataset = goog.dom.dataset.getAll(goog.dom.getDocument().body);
+  var dataset = goog.dom.dataset.getAll(
+      /** @type {!Element} */(goog.dom.getDocument().body));
 
   /** @type {string} */
   this.site = dataset['site'];

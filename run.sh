@@ -157,7 +157,7 @@ case $1 in
 
     serve) $PLOVR_PATH serve plovr-main.json plovr-sandbox.json;;
 
-    build) $PLOVR_PATH build plovr-main.json plovr-sandbox.json;;
+    build) $PLOVR_PATH build plovr-main.json;;
 
     extract_msg) extract_msg;;
 

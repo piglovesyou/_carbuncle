@@ -9,7 +9,7 @@ goog.require('app.ui.ScenarioGrid');
 /**
  * @constructor
  * @param {goog.dom.DomHelper=} opt_domHelper .
- * @extends {goog.ui.Component}
+ * @extends {app.ui.Overlay}
  */
 app.scenario.BlockSelector = function(opt_domHelper) {
   goog.base(this, opt_domHelper);
@@ -25,7 +25,7 @@ var s;
 
 /** @inheritDoc */
 app.scenario.BlockSelector.prototype.enterDocument = function() {
-  this.scenarioGrid.render(this.getContentElement())
+  this.scenarioGrid.render(this.getContentElement());
 
   goog.base(this, 'enterDocument');
 };

@@ -114,17 +114,13 @@ app.Scenario.prototype.enterDocument = function() {
 };
 
 /**
- * @return { {
- *    id: ?string,
- *    title: string,
- *    entries: Array.<app.model.Entry>
- *  } }
+ * @return { { id, title, entries } }
  */
 app.Scenario.prototype.collectScenario = function() {
   var tmp;
   var rv = {
     id: !isNaN(tmp = parseInt(goog.dom.forms.getValue(this.getElementByClass('scenario-id')), 10)) ? tmp : undefined,
-    title: goog.dom.forms.getValue(this.getElementByClass('scenario-title')),
+    title: /** @type {string} */(goog.dom.forms.getValue(this.getElementByClass('scenario-title'))),
     entries: this.rows.data.getAll() || [],
     isBlock: !!goog.dom.forms.getValue(this.getElementByClass('scenario-block'))
   };
@@ -241,7 +237,7 @@ app.Scenario.prototype.createDom = function() {
 /**
  * @constructor
  * @extends {app.ui.Rows}
- * @param {goog.dom.DomHelper} opt_domHelper .
+ * @param {goog.dom.DomHelper=} opt_domHelper .
  */
 app.Scenario.Rows = function(opt_domHelper) {
   goog.base(this, app.soy.scenario.renderEntry,
@@ -259,7 +255,7 @@ app.Scenario.Rows.createData = function() {
  */
 app.Scenario.Rows.prototype.useTemporaryData = function(temporary) {
   if (temporary) {
-    this.data = goog.object.unsafeClone(this.original_);
+    this.data = /** @type {app.ui.Rows.Data} */(goog.object.unsafeClone(this.original_));
     goog.removeUid(this.data);
   } else {
     goog.asserts.assert(this.data);

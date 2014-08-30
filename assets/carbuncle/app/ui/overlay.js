@@ -24,6 +24,9 @@ app.ui.Overlay.EventType = {
 
 /**
  * @param {boolean} show .
+ * @param {function(this:T, goog.events.Event)=} opt_transitionend .
+ * @param {T=} opt_context .
+ * @template T
  */
 app.ui.Overlay.prototype.show = function(show, opt_transitionend, opt_context) {
   if (!this.isInDocument()) this.render();
@@ -31,7 +34,7 @@ app.ui.Overlay.prototype.show = function(show, opt_transitionend, opt_context) {
 
   if (opt_transitionend) {
     var eh = this.getHandler();
-    eh.listenOnce(this.getElement(), goog.events.EventType.TRANSITIONEND, function (e) {
+    eh.listenOnce(this.getElement(), goog.events.EventType.TRANSITIONEND, function(e) {
       opt_transitionend.call(opt_context, e);
     });
   }
@@ -61,7 +64,7 @@ app.ui.Overlay.prototype.setTitle = function(title) {
   this.title_ = title;
   var dh = this.getDomHelper();
   if (this.isInDocument()) {
-    dh.setTextContent(this.getElementByClass( 'overlay-title'), this.title_);
+    dh.setTextContent(this.getElementByClass('overlay-title'), this.title_);
   }
 };
 

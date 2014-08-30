@@ -19,8 +19,12 @@ goog.require('goog.ui.Component');
 
 /**
  * @constructor
- * @param {goog.dom.DomHelper=} opt_domHelper .
  * @extends {goog.ui.Component}
+ *
+ * @param {Object=} opt_data .
+ * @param {Array=} opt_columns .
+ * @param {Object=} opt_options .
+ * @param {goog.dom.DomHelper=} opt_domHelper .
  */
 app.ui.SlickGrid = function(opt_data, opt_columns, opt_options, opt_domHelper) {
   goog.base(this, opt_domHelper);
@@ -48,8 +52,8 @@ app.ui.SlickGrid.prototype.disposeInternal = function() {
   goog.base(this, 'disposeInternal');
 };
 
-app.ui.SlickGrid.dateFormatter = function (row, cell, value, column, raw) {
-  var fmt = app.ui.SlickGrid.dateFormatter.fmt_ || 
+app.ui.SlickGrid.dateFormatter = function(row, cell, value, column, raw) {
+  var fmt = app.ui.SlickGrid.dateFormatter.fmt_ ||
     (app.ui.SlickGrid.dateFormatter.fmt_ = new goog.i18n.DateTimeFormat(
         goog.i18n.DateTimePatterns.WEEKDAY_MONTH_DAY_YEAR_MEDIUM));
   return fmt.format(new Date(value));
