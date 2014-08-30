@@ -8,7 +8,8 @@
   "mode": "ADVANCED",
   "level": "VERBOSE",
   "externs": [
-    "../assets/javascript/externs.js"
+    "../assets/javascript/externs.js",
+    "../assets/thirdparty/closure-compiler-externs"
   ],
   "checks": {
     "externsValidation": "OFF"
