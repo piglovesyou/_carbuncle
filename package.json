@@ -24,7 +24,7 @@
     "start": "node app.js",
     "debug": "node-dev app.js"
   },
-  "main": "app.js",
+  "main": "app.html",
   "repository": "",
   "author": "",
   "license": ""

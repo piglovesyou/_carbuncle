@@ -2,13 +2,13 @@
   "debug": false,
   "closure-library": "../libs/closure-library/closure/goog",
   "paths": [
-    "../assets/carbuncle/app",
-    "../assets/carbuncle/soyutils_usegoog.js"
+    "../assets/javascript/app",
+    "../assets/thirdparty/soyutils_usegoog.js"
   ],
   "mode": "ADVANCED",
   "level": "VERBOSE",
   "externs": [
-    "../assets/carbuncle/externs.js"
+    "../assets/javascript/externs.js"
   ],
   "checks": {
     "externsValidation": "OFF"

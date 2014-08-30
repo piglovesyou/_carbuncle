@@ -1,6 +1,6 @@
 {
   "id": "carbuncle",
   "inherits": "./base.json",
-  "inputs": "../assets/carbuncle/main.js",
-  "output-file": "../assets/carbuncle/main-min.js"
+  "inputs": "../assets/javascript/main.js",
+  "output-file": "../assets/javascript/main-min.js"
 }
