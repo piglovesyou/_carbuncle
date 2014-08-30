@@ -95,7 +95,7 @@ a:hover {
 .iframe-locationbar-text {
   flex: 1;
   border: none;
-  margin-left: .2em;
+  text-indent: .6em;
 }
 .iframe-iframe {
   flex: 1;

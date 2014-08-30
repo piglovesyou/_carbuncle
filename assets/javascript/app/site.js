@@ -182,10 +182,9 @@ app.Site.prototype.enterDocument = function() {
 
 app.Site.prototype.handleLocationbarSubmit = function(e) {
   var url = goog.dom.forms.getValue(this.getElementByClass('iframe-locationbar-text'));
-  if (!goog.string.startsWith(/** @type {string} */(url), '/')) {
-    url = '/' + url;
-  }
-  goog.dom.setProperties(this.getIframe(), { src: url });
+  goog.dom.setProperties(this.getIframe(), {
+    src: url
+  });
 };
 
 /** @inheritDoc */
