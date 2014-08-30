@@ -70,8 +70,6 @@ app.Scenario.prototype.enterDocument = function() {
         if (data.entry.mode == 'block') {
           goog.array.forEach(data.entry.entries, that.rows.data.add, that.rows.data);
           that.rows.redraw();
-
-          console.log('=========', data);
         }
       });
 
@@ -178,11 +176,6 @@ app.Scenario.prototype.handleClick = function(e) {
         'delay': 800
       });
       socket.post('/carbuncle/carbuncle/call', params, function(res) {
-        if (res.error) {
-          // alert(res.stack);
-        } else {
-          // alert('success!');
-        }
         app.mask.hide();
         that.makeButtonsEnabled(true);
       });
@@ -267,6 +260,7 @@ app.Scenario.Rows.createData = function() {
 app.Scenario.Rows.prototype.useTemporaryData = function(temporary) {
   if (temporary) {
     this.data = goog.object.unsafeClone(this.original_);
+    goog.removeUid(this.data);
   } else {
     goog.asserts.assert(this.data);
     goog.asserts.assert(goog.getUid(this.data) != goog.getUid(this.original_));

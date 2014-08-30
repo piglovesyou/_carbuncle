@@ -17,6 +17,9 @@
     "underscore": "^1.6.0",
     "underscore.string": "^2.3.3"
   },
+  "devDependency": {
+    "plovr": "*"
+  },
   "scripts": {
     "start": "node app.js",
     "debug": "node-dev app.js"

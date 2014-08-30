@@ -7,7 +7,6 @@
 USAGE_TEXT="\n
     ---- Pass one of them ---- \n\n\
     setup\n\
-    setup_plovr\n\
     setup_closurelibrary\n\
     setup_closurestylesheets\n\
     setup_closuretemplates\n\
@@ -19,11 +18,6 @@ USAGE_TEXT="\n
         \n"
 
 LIBS_DIR=libs/
-
-PLOVR_DIR=${LIBS_DIR}plovr/
-PLOVR_REMOTE_DIR=http://plovr.googlecode.com/files/
-PLOVR_JAR=plovr-81ed862.jar
-PLOVR_JAR_PATH=${PLOVR_DIR}${PLOVR_JAR}
 
 CLOSURELIBRARY_DIR=${LIBS_DIR}closure-library/
 CLOSURELIBRARY_REMOTE_ZIP=https://github.com/google/closure-library/archive/master.zip
@@ -49,6 +43,7 @@ SELENIUM_JAR=selenium-server-standalone-2.42.2.jar
 SELENIUM_REMOTE_JAR=http://selenium-release.storage.googleapis.com/2.42/${SELENIUM_JAR}
 SELENIUM_DIR=${LIBS_DIR}selenium/
 
+PLOVR_PATH=node_modules/plovr/bin/plovr
 
 
 cleanup_lib() {
@@ -141,7 +136,7 @@ case $1 in
 
     setup)
         cleanup_lib
-        setup_plovr
+        # setup_plovr
         setup_closurelibrary
         setup_selenium
         # setup_solr
@@ -150,47 +145,25 @@ case $1 in
         # setup_closurecompiler
         ;;
     cleanup_lib) cleanup_lib;;
-    setup_plovr) setup_plovr;;
+    # setup_plovr) setup_plovr;;
     setup_closurelibrary) setup_closurelibrary;;
     setup_closurestylesheets) setup_closurestylesheets;;
     setup_closuretemplates) setup_closuretemplates;;
     setup_closurecompiler) setup_closurecompiler;;
-    setup_plovr) setup_plovr;;
     setup_solr) setup_solr;;
     setup_selenium) setup_selenium;;
 
-    soyweb) java -jar ${PLOVR_JAR_PATH} soyweb --dir ./public;;
+    soyweb) $PLOVR_PATH soyweb --dir ./public;;
 
-    serve) java -jar ${PLOVR_JAR_PATH} serve plovr-main.json plovr-sandbox.json;;
+    serve) $PLOVR_PATH serve plovr-main.json plovr-sandbox.json;;
 
-    build) java -jar ${PLOVR_JAR_PATH} build plovr-main.json plovr-sandbox.json;;
+    build) $PLOVR_PATH build plovr-main.json plovr-sandbox.json;;
 
     extract_msg) extract_msg;;
 
-    soyweb) java -jar ${PLOVR_JAR_PATH} soyweb --dir ./public;;
+    soyweb) $PLOVR_PATH soyweb --dir ./public;;
 
     solr) solr;;
-
-    # sass) sass --watch public/sass/main.sass:public/stylesheets/main.css;;
-
-    serve) java -jar ${PLOVR_JAR_PATH} serve plovr.json;;
-
-    serve_playground) java -jar ${PLOVR_JAR_PATH} serve playground_plovr.json;;
-
-    all)
-        # redis-server redis/redis.conf
-        ./run.sh soyweb &
-        # ./run.sh sass &
-        ./run.sh serve &
-        # java -jar libs/selenium-server/selenium-server-standalone-2.32.0.jar &
-        ;;
-
-    killall)
-        # pidof redis | xargs kill -9
-        # pidof mongo | xargs kill -9
-        # pidof ruby | xargs kill -9
-        pidof java | xargs kill -9
-        ;;
 
     *) echo -e $USAGE_TEXT;;
 

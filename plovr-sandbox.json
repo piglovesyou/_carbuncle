@@ -2,5 +2,5 @@
   "id": "carbuncle-sandbox",
   "inherits": "./plovr-base.json",
   "inputs": "./assets/carbuncle/sandbox.js",
-  "output-file": "assets/carbuncle/javascripts/sandbox-min.js"
+  "output-file": "./assets/carbuncle/sandbox-min.js"
 }
