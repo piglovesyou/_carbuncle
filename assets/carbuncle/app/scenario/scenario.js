@@ -57,19 +57,18 @@ app.Scenario.prototype.enterDocument = function() {
       }
       var last;
       socket.on('before', function(data) {
-        if (last) {
-          passLast();
-        } else {
+        if (!last) {
           clearTimer.stop();
+          that.rows.useTemporaryData(true);
           that.rows.redraw();
+        } else {
+          passLast();
         }
         last = String(data.entry.id);
         decorateStepEl(null, 'scenario-entry-doing');
 
         if (data.entry.mode == 'block') {
-          goog.array.forEach(data.entry.entries, function(e) {
-            that.rows.data.add(e);
-          });
+          goog.array.forEach(data.entry.entries, that.rows.data.add, that.rows.data);
           that.rows.redraw();
 
           console.log('=========', data);
@@ -91,6 +90,7 @@ app.Scenario.prototype.enterDocument = function() {
       function end() {
         last = null;
         clearTimer.start();
+        that.rows.useTemporaryData(false);
       }
       function decorateStepEl(removeClass, addClass) {
         var stepEl = goog.dom.getElement(last);
@@ -252,9 +252,28 @@ app.Scenario.prototype.createDom = function() {
  */
 app.Scenario.Rows = function(opt_domHelper) {
   goog.base(this, app.soy.scenario.renderEntry,
-      new app.ui.Rows.Data('id'), opt_domHelper);
+      app.Scenario.Rows.createData(), opt_domHelper);
+  this.original_ = this.data;
 };
 goog.inherits(app.Scenario.Rows, app.ui.Rows);
+
+app.Scenario.Rows.createData = function() {
+  return new app.ui.Rows.Data('id');
+};
+
+/**
+ * @param {boolean} temporary .
+ */
+app.Scenario.Rows.prototype.useTemporaryData = function(temporary) {
+  if (temporary) {
+    this.data = goog.object.unsafeClone(this.original_);
+  } else {
+    goog.asserts.assert(this.data);
+    goog.asserts.assert(goog.getUid(this.data) != goog.getUid(this.original_));
+    this.data.dispose();
+    this.data = this.original_;
+  }
+};
 
 app.Scenario.Rows.prototype.insertBlock = function(data) {
   this.data.add({
