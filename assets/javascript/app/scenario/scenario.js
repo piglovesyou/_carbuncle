@@ -59,6 +59,10 @@ app.Scenario.prototype.enterDocument = function() {
       }
     });
 
+  });
+
+  (function() {
+    // Reference to the last entry during previewing
     var last;
 
     app.bus.scenario.subscribe('before', function(data) {
@@ -100,8 +104,7 @@ app.Scenario.prototype.enterDocument = function() {
       goog.dom.classlist.addRemove(stepEl, removeClass, addClass);
       goog.style.scrollIntoContainerView(stepEl, that.rows.getElement());
     }
-
-  });
+  })();
 
   eh.listen(this, [app.ui.Overlay.EventType.CANCEL,
                    app.ui.ScenarioGrid.SELECT], function(e) {
@@ -168,18 +171,26 @@ app.Scenario.prototype.handleClick = function(e) {
 
   if (goog.dom.classes.has(et, 'scenario-footer-preview')) {
 
-    app.socket().then(function(socket) {
-      app.mask.focus(this.getElement());
-      that.makeButtonsEnabled(false);
-      var params = that.collectScenario();
-      goog.mixin(params, { 'delay': 800 });
+    app.mask.focus(this.getElement());
+    app.mask.hide();
+    app.bus.scenario.preview(that.collectScenario(), 800)
+
+    // app.socket().then(function(socket) {
+
+      // that.makeButtonsEnabled(false);
+      // var params = that.collectScenario();
+      // goog.mixin(params, { 'delay': 800 });
+
+
+      // that.makeButtonsEnabled(true);
 
       // TODO: carbuncle executor
-      socket.post('/carbuncle/carbuncle/call', params, function(res) {
-        app.mask.hide();
-        that.makeButtonsEnabled(true);
-      });
-    }, null, this);
+      // socket.post('/carbuncle/carbuncle/call', params, function(res) {
+      //   app.mask.hide();
+      //   that.makeButtonsEnabled(true);
+      // });
+
+    // }, null, this);
 
 
   } else if (goog.dom.classes.has(et, 'scenario-footer-create')) {
