@@ -1,6 +1,8 @@
 
 goog.provide('app.Scenario');
 
+goog.require('app.bus');
+goog.require('app.dao');
 goog.require('app.dom');
 goog.require('app.mask');
 goog.require('app.scenario.BlockSelector');
@@ -13,8 +15,6 @@ goog.require('goog.dom.classlist');
 goog.require('goog.dom.dataset');
 goog.require('goog.soy');
 goog.require('goog.ui.Component');
-goog.require('app.bus');
-goog.require('app.dao');
 
 
 
@@ -50,9 +50,10 @@ app.Scenario.prototype.enterDocument = function() {
   eh.listen(this.getElement(), 'click', this.handleClick);
 
   var clearTimer = new goog.Delay(this.rows.redraw, 3000, this.rows);
+
   app.dao.scenario().then(function(scenario) {
 
-    scenario.findOne(function(err, doc) {
+    scenario.findOne({}, function(err, doc) {
       if (doc) {
         that.applyScenario(/** @type {ObjectInterface.Scenario} */(doc));
       }
@@ -122,19 +123,19 @@ app.Scenario.prototype.enterDocument = function() {
 app.Scenario.prototype.collectScenario = function() {
   var tmp;
   var rv = {
-    id: !isNaN(tmp = parseInt(goog.dom.forms.getValue(this.getElementByClass('scenario-id')), 10)) ? tmp : undefined,
-    title: /** @type {string} */(goog.dom.forms.getValue(this.getElementByClass('scenario-title'))),
-    entries: this.rows.data.getAll() || [],
-    isBlock: !!goog.dom.forms.getValue(this.getElementByClass('scenario-block'))
+    '_id': goog.dom.forms.getValue(this.getElementByClass('scenario-id')),
+    'title': /** @type {string} */(goog.dom.forms.getValue(this.getElementByClass('scenario-title'))),
+    'entries': this.rows.data.getAll() || [],
+    'isBlock': !!goog.dom.forms.getValue(this.getElementByClass('scenario-block'))
   };
   return rv;
 };
 
 app.Scenario.prototype.applyScenario = function(doc) {
-  goog.dom.forms.setValue(this.getElementByClass('scenario-id'), doc.id);
-  goog.dom.forms.setValue(this.getElementByClass('scenario-title'), doc.title);
-  goog.dom.forms.setValue(this.getElementByClass('scenario-block'), doc.isBlock);
-  this.rows.data.addAll(doc.entries || []);
+  goog.dom.forms.setValue(this.getElementByClass('scenario-id'), doc['_id']);
+  goog.dom.forms.setValue(this.getElementByClass('scenario-title'), doc['title']);
+  goog.dom.forms.setValue(this.getElementByClass('scenario-block'), doc['isBlock']);
+  this.rows.data.addAll(doc['entries'] || []);
   this.rows.redraw();
 };
 
@@ -171,9 +172,9 @@ app.Scenario.prototype.handleClick = function(e) {
       app.mask.focus(this.getElement());
       that.makeButtonsEnabled(false);
       var params = that.collectScenario();
-      goog.mixin(params, {
-        'delay': 800
-      });
+      goog.mixin(params, { 'delay': 800 });
+
+      // TODO: carbuncle executor
       socket.post('/carbuncle/carbuncle/call', params, function(res) {
         app.mask.hide();
         that.makeButtonsEnabled(true);
@@ -195,12 +196,13 @@ app.Scenario.prototype.handleClick = function(e) {
 
   } else if (goog.dom.classes.has(et, 'scenario-footer-save')) {
     this.makeButtonsEnabled(false);
-    app.socket().then(function(socket) {
-      socket.post('/carbuncle/scenario/upsert', that.collectScenario(), function(doc) {
+    app.dao.scenario().then(function(scenario) {
+      scenario.upsertById(that.collectScenario(), function(err, doc) {
         that.makeButtonsEnabled(true);
+        if (err) return;
         that.applyScenario(doc);
       });
-    }, goog.bind(that.makeButtonsEnabled, that, true));
+    });
   }
 };
 

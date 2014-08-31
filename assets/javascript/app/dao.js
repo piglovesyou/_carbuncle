@@ -1,15 +1,22 @@
 
 goog.provide('app.dao');
-goog.provide('app.dao.scenario');
 goog.provide('app.dao.preference');
+goog.provide('app.dao.scenario');
 
 goog.require('goog.Promise');
 
 
 
 
+goog.scope(function() {
 
+var Nedb = require('nedb');
 
+Nedb.prototype.upsertById = function(doc, callback) {
+  this.update({_id: doc['_id']}, doc, {upsert: true}, callback ? function(err, numReplaced, newDoc) {
+    callback(err, newDoc || doc);
+  } : null);
+};
 
 app.dao = {};
 
@@ -23,7 +30,6 @@ app.dao.scenario = function() {
 
 app.dao.promise_ = function(dbName) {
   var path = require('path');
-  var Nedb = require('nedb');
   var dataPath = require('nw.gui').App.dataPath;
   var dbFileName = dbName + '.db';
   var privateNamespace = dbName + '_';
@@ -44,3 +50,4 @@ app.dao.promise_ = function(dbName) {
       }));
 };
 
+}); // goog.scope

@@ -1,6 +1,7 @@
 
 goog.provide('app.Site');
 
+goog.require('app.dao');
 goog.require('app.options');
 goog.require('app.soy.site');
 goog.require('goog.soy');
@@ -178,12 +179,26 @@ app.Site.prototype.enterDocument = function() {
   this.pixel.render(); // Append to document.body
 
   this.enable(false);
+
+  var that = this;
+  app.dao.preference().then(function(preference) {
+    preference.findOne({_id: 'cache'}, function(err, doc) {
+      if (doc && doc['site']) {
+        goog.dom.forms.setValue(that.getElementByClass('iframe-locationbar-text'), doc['site']);
+        goog.dom.setProperties(that.getIframe(), { src: doc['site'] });
+      }
+    });
+  });
 };
 
 app.Site.prototype.handleLocationbarSubmit = function(e) {
   var url = goog.dom.forms.getValue(this.getElementByClass('iframe-locationbar-text'));
-  goog.dom.setProperties(this.getIframe(), {
-    src: url
+  goog.dom.setProperties(this.getIframe(), { src: url });
+  app.dao.preference().then(function(preference) {
+    preference.upsertById({
+      '_id': 'cache',
+      'site': url
+    });
   });
 };
 
