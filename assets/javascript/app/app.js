@@ -16,7 +16,6 @@ goog.require('goog.style');
 goog.require('goog.ui.Component');
 
 
-
 /**
  * @constructor
  * @extends goog.ui.Component

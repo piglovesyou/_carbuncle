@@ -13,6 +13,8 @@ goog.require('goog.dom.classlist');
 goog.require('goog.dom.dataset');
 goog.require('goog.soy');
 goog.require('goog.ui.Component');
+goog.require('app.bus');
+goog.require('app.dao');
 
 
 
@@ -48,54 +50,55 @@ app.Scenario.prototype.enterDocument = function() {
   eh.listen(this.getElement(), 'click', this.handleClick);
 
   var clearTimer = new goog.Delay(this.rows.redraw, 3000, this.rows);
-  app.socket().then(function(socket) {
+  app.dao.scenario().then(function(scenario) {
 
-    socket.get('/carbuncle/scenario', function(res) {
-      var scenario = res && !goog.array.isEmpty(res) && goog.array.peek(res);
-      if (scenario) {
-        that.applyScenario(/** @type {ObjectInterface.Scenario} */(scenario));
-      }
-      var last;
-      socket.on('before', function(data) {
-        if (!last) {
-          clearTimer.stop();
-          that.rows.useTemporaryData(true);
-          that.rows.redraw();
-        } else {
-          passLast();
-        }
-        last = String(data.entry.id);
-        decorateStepEl(null, 'scenario-entry-doing');
-
-        if (data.entry.mode == 'block') {
-          goog.array.forEach(data.entry.entries, that.rows.data.add, that.rows.data);
-          that.rows.redraw();
-        }
-      });
-
-      socket.on('pass', function() {
-        passLast();
-        end();
-      });
-      socket.on('fail', function(data) {
-        decorateStepEl(null, 'scenario-entry-fail');
-        end();
-      });
-
-      function passLast() {
-        decorateStepEl('scenario-entry-doing', 'scenario-entry-done');
-      }
-      function end() {
-        last = null;
-        clearTimer.start();
-        that.rows.useTemporaryData(false);
-      }
-      function decorateStepEl(removeClass, addClass) {
-        var stepEl = goog.dom.getElement(last);
-        goog.dom.classlist.addRemove(stepEl, removeClass, addClass);
-        goog.style.scrollIntoContainerView(stepEl, that.rows.getElement());
+    scenario.findOne(function(err, doc) {
+      if (doc) {
+        that.applyScenario(/** @type {ObjectInterface.Scenario} */(doc));
       }
     });
+
+    var last;
+
+    app.bus.scenario.subscribe('before', function(data) {
+      if (!last) {
+        clearTimer.stop();
+        that.rows.useTemporaryData(true);
+        that.rows.redraw();
+      } else {
+        passLast();
+      }
+      last = String(data.entry.id);
+      decorateStepEl(null, 'scenario-entry-doing');
+      if (data.entry.mode == 'block') {
+        goog.array.forEach(data.entry.entries, that.rows.data.add, that.rows.data);
+        that.rows.redraw();
+      }
+    });
+
+    app.bus.scenario.subscribe('pass', function() {
+      passLast();
+      end();
+    });
+
+    app.bus.scenario.subscribe('fail', function(data) {
+      decorateStepEl(null, 'scenario-entry-fail');
+      end();
+    });
+
+    function passLast() {
+      decorateStepEl('scenario-entry-doing', 'scenario-entry-done');
+    }
+    function end() {
+      last = null;
+      clearTimer.start();
+      that.rows.useTemporaryData(false);
+    }
+    function decorateStepEl(removeClass, addClass) {
+      var stepEl = goog.dom.getElement(last);
+      goog.dom.classlist.addRemove(stepEl, removeClass, addClass);
+      goog.style.scrollIntoContainerView(stepEl, that.rows.getElement());
+    }
 
   });
 
