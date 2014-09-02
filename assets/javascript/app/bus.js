@@ -27,20 +27,19 @@ app.bus.scenario.preview = function(scenario, opt_interval) {
     });
   });
   executor.on('fail', function(e) {
-    error = e;
     app.bus.scenario.publish('fail', {
       scenario: scenario,
       error: e,
       stack: e.stack
     });
   });
-  executor.on('end', function() {
-    if (error) {
-      res.json({error: error, stack: error.stack});
-    } else {
-      res.json({success: true});
-    }
-  });
+  // executor.on('end', function() {
+  //   if (error) {
+  //     res.json({error: error, stack: error.stack});
+  //   } else {
+  //     res.json({success: true});
+  //   }
+  // });
 };
 
 }); // goog.scope

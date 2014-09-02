@@ -5,7 +5,7 @@
     "../assets/javascript/app",
     "../assets/thirdparty/soyutils_usegoog.js"
   ],
-  "mode": "ADVANCED",
+  "mode": "SIMPLE",
   "level": "VERBOSE",
   "externs": [
     "../assets/javascript/externs.js",

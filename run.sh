@@ -47,7 +47,7 @@ PLOVR_PATH=node_modules/plovr/bin/plovr
 
 
 cleanup_lib() {
-    mkdir ${LIBS_DIR} > /dev/null 2>&1
+    mkdir -P ${LIBS_DIR} > /dev/null 2>&1
 }
 
 setup_plovr() {
@@ -56,9 +56,19 @@ setup_plovr() {
 }
 
 setup_closurelibrary() {
+    PWD=`pwd`
     rm -rf ${CLOSURELIBRARY_DIR}
     mkdir -p $LIBS_DIR
-    (cd ${LIBS_DIR} && wget ${CLOSURELIBRARY_REMOTE_ZIP} && unzip master.zip && mv closure-library-master closure-library && rm master.zip)
+    cd ${LIBS_DIR}
+    wget ${CLOSURELIBRARY_REMOTE_ZIP} --no-check-certificate
+    if [ -f master.zip]; then
+        unzip master.zip
+    else
+        unzip master
+    fi
+    mv closure-library-master closure-library
+    rm master.zip master > /dev/null 2>&1
+    cd $PWD
 }
 
 setup_closurestylesheets() {
@@ -138,14 +148,14 @@ case $1 in
         cleanup_lib
         # setup_plovr
         setup_closurelibrary
-        setup_selenium
+        # setup_selenium
         # setup_solr
         # setup_closurestylesheets
         # setup_closuretemplates
         # setup_closurecompiler
         ;;
     cleanup_lib) cleanup_lib;;
-    # setup_plovr) setup_plovr;;
+    setup_plovr) setup_plovr;;
     setup_closurelibrary) setup_closurelibrary;;
     setup_closurestylesheets) setup_closurestylesheets;;
     setup_closuretemplates) setup_closuretemplates;;

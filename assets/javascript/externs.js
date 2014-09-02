@@ -1,4 +1,6 @@
 
+var require = function(str) {};
+
 var module = {};
 module.exports;
 

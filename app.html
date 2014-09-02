@@ -52,9 +52,16 @@
     <script src="assets/thirdparty/slickgrid/slick.groupitemmetadataprovider.js"></script>
     <script src="assets/thirdparty/slickgrid/slick.remotemodel.js"></script>
 
-    <script src="http://localhost:9810/compile?id=carbuncle&mode=whitespace&pretty-print=true"></script>
-    <!-- <script src="/carbuncle/main-min.js"></script> -->
-
+    <script>
+      (function() {
+        console.log(require)
+        var node = document.createElement('script');
+        node.setAttribute('src', 'production' ?
+            'assets/javascript/main-min.js' :
+            'http://localhost:9810/compile?id=carbuncle&mode=whitespace&pretty-print=true');
+        document.body.appendChild(node);
+      })();
+    </script>
 
   </body>
 </html>

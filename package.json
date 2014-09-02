@@ -5,32 +5,24 @@
   "description": "a Sails application",
   "dependencies": {
     "closure": "^1.0.3",
-    "ejs": "0.8.4",
-    "fortune": "^0.2.4",
-    "grunt": "0.4.1",
-    "http-proxy": "^1.2.0",
     "nedb": "^0.11.0",
-    "optimist": "0.3.4",
     "q": "^1.0.1",
     "q-io": "^1.11.3",
-    "sails": "0.9.16",
-    "sails-disk": "~0.9.0",
     "selenium-webdriver": "^2.42.1",
     "underscore": "^1.6.0",
     "underscore.string": "^2.3.3"
   },
-  "devDependency": {
-    "plovr": "*"
+  "devDependencies": {
+    "plovr": "~1.0.0"
   },
   "scripts": {
     "start": "node app.js",
-    "debug": "node-dev app.js"
+    "postinstall": "./run.sh setup; ./run.sh build"
   },
   "main": "app.html",
   "repository": "",
-  "author": "",
-  "license": "",
-
+  "author": "piglovesyou",
+  "license": "GPL",
   "window": {
     "min_width": 800,
     "min_height": 600
