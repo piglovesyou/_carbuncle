@@ -6,20 +6,19 @@ var Executor = require('../api/services/carbuncle').Executor;
 
 describe('carbuncle.js', function() {
 
-  global.options = new Options({ site: 'http://yan-yan-yahuoku.com' });
+  global.options = new Options({ site: 'http://www.google.com' });
 
   describe('Passing Executor', function() {
     this.timeout(5000);
     it('should pass', function(done) {
       var passed;
       var seed = {
-      	title: 'xxx',
-      	entries: [
-      		{title: 'open website', mode: 'action', type: 'open', text: '/'},
-      		{title: 'remove extra tag', mode: 'action', type: 'click', css: '.button-tag .button-remove'},
-      		{title: 'input search text', mode: 'action', type: 'input', css: 'body:nth-child(2) div.body:nth-child(2) div.frame.app-frame-selected div.tag-input div.tag-input-leftcontent:nth-child(2) input.tag-input-textbox', text: 'AKB' + webdriver.Key.ENTER},
-      		{title: 'verify whether any item was loaded', mode: 'verify', type: 'contains', css: 'body:nth-child(2) div.body:nth-child(2) div.frame.app-frame-selected div.goog-splitpane:nth-child(2) div.goog-splitpane-first-container div.goog-list.pane-list.goog-splitpane-first-container div.goog-list-container:nth-child(2) div.pure-g.pane-list-item.goog-list-item div.pure-u-18-24:nth-child(2) div.pane-list-item-title', text: 'AKB'}
-      	]
+        title: 'Passing Executor Example',
+        entries: [
+          {title: 'open website', mode: 'action', type: 'open', text: '/'},
+          {title: 'input search text', mode: 'action', type: 'input', css: '#gbqfq', text: 'ゴミメガネ' + webdriver.Key.ENTER},
+          {title: 'verify whether any item was loaded', mode: 'verify', type: 'contains', css: '#ires', text: '本間'}
+        ]
       };
       var executor = new Executor(seed.entries);
       executor.on('before', function(entry) { console.log('before ' + entry.title + ' ...') });
@@ -31,18 +30,18 @@ describe('carbuncle.js', function() {
       });
     });
   });
+
   describe('Failing Executor', function() {
     this.timeout(5000);
     it('should fail', function(done) {
       var passed;
       var seed = {
-      	title: 'xxx',
-      	entries: [
-      		{title: 'open website', mode: 'action', type: 'open', text: '/'},
-      		{title: 'remove extra tag', mode: 'action', type: 'click', css: '.button-tag .button-remove'},
-      		{title: 'input search text', mode: 'action', type: 'input', css: 'body:nth-child(2) div.body:nth-child(2) div.frame.app-frame-selected div.tag-input div.tag-input-leftcontent:nth-child(2) input.tag-input-textbox', text: 'AKB' + webdriver.Key.ENTER},
-      		{title: 'verify whether any item was loaded', mode: 'verify', type: 'contains', css: 'xxxxxx', text: 'AKB'}
-      	]
+        title: 'Failing Executor Example',
+        entries: [
+          {title: 'open website', mode: 'action', type: 'open', text: '/'},
+          {title: 'input search text', mode: 'action', type: 'input', css: '#gbqfq', text: 'm' + webdriver.Key.ENTER},
+          {title: 'verify whether any item was loaded', mode: 'verify', type: 'contains', css: '#ires', text: '本間'}
+        ]
       };
       var executor = new Executor(seed.entries);
       executor.on('before', function(entry) { console.log('before ' + entry.title + ' ...') });
@@ -54,4 +53,5 @@ describe('carbuncle.js', function() {
       });
     });
   });
+
 });

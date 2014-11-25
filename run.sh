@@ -39,11 +39,12 @@ CLOSURECOMPILER_DIR=${LIBS_DIR}closure-compiler/
 CLOSURECOMPILER_REMOTE_DIR=http://dl.google.com/closure-compiler/
 CLOSURECOMPILER_ZIP=compiler-latest.zip
 
-SELENIUM_JAR=selenium-server-standalone-2.42.2.jar
-SELENIUM_REMOTE_JAR=http://selenium-release.storage.googleapis.com/2.42/${SELENIUM_JAR}
+SELENIUM_JAR=selenium-server-standalone-2.44.0.jar
+SELENIUM_REMOTE_JAR=http://selenium-release.storage.googleapis.com/2.44/${SELENIUM_JAR}
 SELENIUM_DIR=${LIBS_DIR}selenium/
 
 PLOVR_PATH=node_modules/plovr/bin/plovr
+
 
 
 cleanup_lib() {

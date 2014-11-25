@@ -58,7 +58,6 @@ module.exports = {
   },
 
   index: function (req, res) {
-    console.log(global.options);
     res.view('home/index', {
       site: global.options.site
     });
