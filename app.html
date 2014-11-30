@@ -55,7 +55,7 @@
     <script>
       (function() {
         var node = document.createElement('script');
-        node.setAttribute('src', 'production' ?
+        node.setAttribute('src', process.env.NODE_ENV === 'production' ?
             'assets/javascript/main-min.js' :
             'http://localhost:9810/compile?id=carbuncle&mode=whitespace&pretty-print=true');
         document.body.appendChild(node);
