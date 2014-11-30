@@ -6,7 +6,7 @@ goog.require('goog.pubsub.PubSub');
 
 goog.scope(function() {
 
-var Executor = require('./api/services/carbuncle').Executor;
+var Executor = require('./src/services/carbuncle').Executor;
 
 app.bus = {};
 
