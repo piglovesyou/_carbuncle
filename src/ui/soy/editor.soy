@@ -1,0 +1,88 @@
+{namespace app.soy.editor}
+
+
+/***/
+{template .createDom}
+  <div class="editor"></div>
+{/template}
+
+/**
+ * @param id
+ * @param? title
+ * @param? css
+ * @param? mode
+ * @param? type
+ * @param? text
+ *
+ * @param? isEdit
+ */
+{template .renderContent}
+
+  <form id="editor-form" class="editor-form pure-form" action="javascript:void(0)">
+    <div class="pure-g">
+
+      <input name="entry-id" class="entry-id" type="hidden" value="{$id}" />
+
+      <div class="pure-u-1" style="margin-bottom: .4em;">
+        <input name="entry-title" class="entry-title pure-u-11-24" value="{$title?:''}" type="text" placeholder="ステップのタイトル" />
+        {sp}
+        <textarea class="entry-css pure-u-1-2" name="entry-css" rows="1" placeholder="CSSセレクタ">
+          {$css?:''}
+        </textarea>
+      </div>
+
+      <div class="pure-u-1">
+
+        <a class="selector-button pure-button-crimson pure-button" href="#">
+          <i class="fa fa-location-arrow fa-flip-horizontal fa-lg"></i>
+          {sp}要素を選択
+        </a>
+        {sp}
+
+        <select name="entry-mode" class="entry-mode">
+          <option value="action" {if $mode == 'action'}selected{/if}>アクション</option>
+          <option value="verify" {if $mode == 'verify'}selected{/if}>ベリファイ</option>
+        </select>
+        {sp}
+
+        <select name="entry-type" class="entry-type entry-type-action"{if $mode != 'action'}disabled{/if}>
+          <option value="click" {if $type == 'click'}selected{/if}>クリック</option>
+          <option value="input" {if $type == 'input'}selected{/if}>入力</option>
+          <option value="open" {if $type == 'open'}selected{/if}>ページを開く</option>
+          <option value="screenshot" {if $type == 'screenshot'}selected{/if}>撮影</option>
+        </select>
+        {sp}
+
+        <select name="entry-type" class="entry-type entry-type-verify"{if $mode != 'verify'}disabled{/if}>
+          <option value="contains"   {if $type == 'contains'}selected{/if}>を含む</option>
+          <option value="startswith" {if $type == 'startswith'}selected{/if}>で始まる</option>
+          <option value="endswith"   {if $type == 'endswith'}selected{/if}>で終わる</option>
+          <option value="equal"      {if $type == 'equal'}selected{/if}>と一致</option>
+        </select>
+        {sp}
+
+        <input name="entry-text" class="entry-text" value="{$text?:''}" type="text" placeholder="テキスト" />
+        {sp}
+
+        <button class="append-button pure-button pure-button-primary">
+          {if $isEdit}
+            <i class="fa fa-edit"></i>
+            {sp}
+            ステップを編集
+          {else}
+            <i class="fa fa-plus"></i>
+            {sp}
+            ステップを追加
+          {/if}
+          {$isEdit ? '' : ''}</button>
+        {if $isEdit}
+          {sp}<a class="quit-edit-button" title="quit editing" href="javascript:void(0)">やめる</a>
+        {/if}
+
+      </div>
+
+    </div>
+
+  </form>
+
+{/template}

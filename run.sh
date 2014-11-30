@@ -39,15 +39,16 @@ CLOSURECOMPILER_DIR=${LIBS_DIR}closure-compiler/
 CLOSURECOMPILER_REMOTE_DIR=http://dl.google.com/closure-compiler/
 CLOSURECOMPILER_ZIP=compiler-latest.zip
 
-SELENIUM_JAR=selenium-server-standalone-2.42.2.jar
-SELENIUM_REMOTE_JAR=http://selenium-release.storage.googleapis.com/2.42/${SELENIUM_JAR}
+SELENIUM_JAR=selenium-server-standalone-2.44.0.jar
+SELENIUM_REMOTE_JAR=http://selenium-release.storage.googleapis.com/2.44/${SELENIUM_JAR}
 SELENIUM_DIR=${LIBS_DIR}selenium/
 
 PLOVR_PATH=node_modules/plovr/bin/plovr
 
 
+
 cleanup_lib() {
-    mkdir ${LIBS_DIR} > /dev/null 2>&1
+    mkdir -P ${LIBS_DIR} > /dev/null 2>&1
 }
 
 setup_plovr() {
@@ -56,9 +57,19 @@ setup_plovr() {
 }
 
 setup_closurelibrary() {
+    PWD=`pwd`
     rm -rf ${CLOSURELIBRARY_DIR}
     mkdir -p $LIBS_DIR
-    (cd ${LIBS_DIR} && wget ${CLOSURELIBRARY_REMOTE_ZIP} && unzip master.zip && mv closure-library-master closure-library && rm master.zip)
+    cd ${LIBS_DIR}
+    wget ${CLOSURELIBRARY_REMOTE_ZIP} --no-check-certificate
+    if [ -f master.zip]; then
+        unzip master.zip
+    else
+        unzip master
+    fi
+    mv closure-library-master closure-library
+    rm master.zip master > /dev/null 2>&1
+    cd $PWD
 }
 
 setup_closurestylesheets() {
@@ -138,14 +149,14 @@ case $1 in
         cleanup_lib
         # setup_plovr
         setup_closurelibrary
-        setup_selenium
+        # setup_selenium
         # setup_solr
         # setup_closurestylesheets
         # setup_closuretemplates
         # setup_closurecompiler
         ;;
     cleanup_lib) cleanup_lib;;
-    # setup_plovr) setup_plovr;;
+    setup_plovr) setup_plovr;;
     setup_closurelibrary) setup_closurelibrary;;
     setup_closurestylesheets) setup_closurestylesheets;;
     setup_closuretemplates) setup_closuretemplates;;
@@ -155,9 +166,9 @@ case $1 in
 
     soyweb) $PLOVR_PATH soyweb --dir ./public;;
 
-    serve) $PLOVR_PATH serve plovr-main.json plovr-sandbox.json;;
+    serve) $PLOVR_PATH serve plovr/main.json plovr/sandbox.json;;
 
-    build) $PLOVR_PATH build plovr-main.json;;
+    build) $PLOVR_PATH build plovr/main.json;;
 
     extract_msg) extract_msg;;
 

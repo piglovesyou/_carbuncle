@@ -1,0 +1,6 @@
+{
+  "id": "carbuncle-sandbox",
+  "inherits": "./base.json",
+  "inputs": "../assets/carbuncle/sandbox.js",
+  "output-file": "../assets/carbuncle/sandbox-min.js"
+}

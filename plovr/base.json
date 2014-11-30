@@ -1,0 +1,15 @@
+{
+  "debug": false,
+  "paths": [
+    "../src/ui"
+  ],
+  "mode": "SIMPLE",
+  "level": "VERBOSE",
+  "externs": [
+    "../assets/javascript/externs.js"
+  ],
+  "checks": {
+    "externsValidation": "OFF"
+  }
+}
+

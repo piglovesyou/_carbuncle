@@ -1,7 +1,7 @@
 .tmp
 /node_modules
 /libs
-/assets/carbuncle/main-min.js
-/assets/carbuncle/sandbox-min.js
+/assets/javascript/main-min.js
+/assets/javascript/sandbox-min.js
 test.js
 npm-debug.log
