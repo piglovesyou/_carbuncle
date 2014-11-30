@@ -1,4 +1,6 @@
 /**
+ * @deprecated No to use socket.io anymore
+ *
  * CarbuncleController
  *
  * @module      :: Controller

@@ -54,6 +54,8 @@
 
     <script>
       (function() {
+        global.nwGui = require('nw.gui');
+
         var node = document.createElement('script');
         node.setAttribute('src', process.env.NODE_ENV === 'production' ?
             'assets/javascript/main-min.js' :

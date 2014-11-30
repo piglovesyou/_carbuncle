@@ -86,6 +86,7 @@ app.Scenario.prototype.enterDocument = function() {
     });
 
     app.bus.scenario.subscribe('fail', function(data) {
+      console.error(data);
       decorateStepEl(null, 'scenario-entry-fail');
       end();
     });

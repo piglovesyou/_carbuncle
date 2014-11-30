@@ -1,4 +1,7 @@
 var assert = require('assert');
+var FS = require('fs');
+var Path = require('path');
+var mkdirp = require('mkdirp');
 var webdriver = require('selenium-webdriver');
 global.goog = require('closure').Closure({ CLOSURE_BASE_PATH: 'libs/closure-library/closure/goog/' });
 goog.require('goog.string');
@@ -73,6 +76,7 @@ var executionMap = {
   action: {
     open: actionOpen,
     click: actionClick,
+    screenshot: actionScreenshot,
     input: actionInput
   },
   verify: {
@@ -94,6 +98,20 @@ function actionClick(context, css) {
     return context.find(css).click().then(function() {
       return context;
     });
+  });
+}
+function actionScreenshot(context, css) {
+  var dir = Path.resolve(global.nwGui.App.dataPath, 'screenshot');
+  return Q.nfcall(mkdirp, dir)
+  .then(function() {
+    return context.screenshot();
+  })
+  .invoke('replace', /^data:image\/png;base64,/, '')
+  .then(function(data) {
+    return Q.ninvoke(FS, 'writeFile', Path.resolve(dir, '__filename.png'), data, 'base64');
+  })
+  .then(function() {
+    return context;
   });
 }
 function actionInput(context, css, input) {
@@ -139,6 +157,9 @@ Context.prototype.find = function(css) {
 };
 Context.prototype.quit = function() {
   return this.driver_.quit();
+};
+Context.prototype.screenshot = function() {
+  return this.driver_.takeScreenshot();
 };
 
 
