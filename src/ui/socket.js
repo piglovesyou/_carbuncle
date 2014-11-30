@@ -1,4 +1,7 @@
 
+/**
+ * @deprecated Not any more
+ */
 goog.provide('app.socket');
 
 goog.require('goog.Promise');

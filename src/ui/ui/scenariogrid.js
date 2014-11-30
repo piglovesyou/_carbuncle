@@ -1,6 +1,5 @@
 
 goog.provide('app.ui.ScenarioGrid');
-goog.require('app.socket');
 goog.require('app.ui.SlickGrid');
 
 
@@ -64,11 +63,13 @@ app.ui.ScenarioGrid.prototype.enterDocument = function() {
     }
   });
 
-  app.socket().then(function(socket) {
-    socket.get('/carbuncle/scenario', function(res) {
-      that.slickgrid.setData(res);
-      that.slickgrid.render();
-    });
-  });
+  // TODO
+  //
+  // app.socket().then(function(socket) {
+  //   socket.get('/carbuncle/scenario', function(res) {
+  //     that.slickgrid.setData(res);
+  //     that.slickgrid.render();
+  //   });
+  // });
 
 };

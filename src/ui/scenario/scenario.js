@@ -6,7 +6,6 @@ goog.require('app.dao');
 goog.require('app.dom');
 goog.require('app.mask');
 goog.require('app.scenario.BlockSelector');
-goog.require('app.socket');
 goog.require('app.soy.scenario');
 goog.require('app.ui.Rows');
 goog.require('goog.Delay');
@@ -173,25 +172,7 @@ app.Scenario.prototype.handleClick = function(e) {
 
     app.mask.focus(this.getElement());
     app.mask.hide();
-    app.bus.scenario.preview(that.collectScenario(), 800)
-
-    // app.socket().then(function(socket) {
-
-      // that.makeButtonsEnabled(false);
-      // var params = that.collectScenario();
-      // goog.mixin(params, { 'delay': 800 });
-
-
-      // that.makeButtonsEnabled(true);
-
-      // TODO: carbuncle executor
-      // socket.post('/carbuncle/carbuncle/call', params, function(res) {
-      //   app.mask.hide();
-      //   that.makeButtonsEnabled(true);
-      // });
-
-    // }, null, this);
-
+    app.bus.scenario.preview(that.collectScenario(), 800);
 
   } else if (goog.dom.classes.has(et, 'scenario-footer-create')) {
     this.rows.data.clear();

@@ -1,6 +1,7 @@
 
 goog.provide('app.Toolbar');
 
+goog.require('app.bus');
 goog.require('app.soy.toolbar');
 goog.require('goog.Delay');
 goog.require('goog.ui.Component');
@@ -31,24 +32,22 @@ app.Toolbar.prototype.enterDocument = function() {
     goog.soy.renderElement(that.getElement(), app.soy.toolbar.content);
   }, 10000, this);
 
-  app.socket().then(function(socket) {
-    socket.on('before', function(data) {
-      goog.mixin(data, { situation: 'before' });
-      goog.soy.renderElement(that.getElement(),
-          app.soy.toolbar.content, /** @type {ObjectInterface.Json.Progress} */(data));
-    });
-    socket.on('pass', function(data) {
-      goog.mixin(data, { situation: 'pass' });
-      goog.soy.renderElement(that.getElement(),
-          app.soy.toolbar.content, /** @type {ObjectInterface.Json.Progress} */(data));
-      clearTimer.start();
-    });
-    socket.on('fail', function(data) {
-      goog.mixin(data, { situation: 'fail' });
-      goog.soy.renderElement(that.getElement(),
-          app.soy.toolbar.content, /** @type {ObjectInterface.Json.Progress} */(data));
-      clearTimer.start();
-    });
+  app.bus.scenario.subscribe('before', function(data) {
+    goog.mixin(data, { situation: 'before' });
+    goog.soy.renderElement(that.getElement(),
+        app.soy.toolbar.content, /** @type {ObjectInterface.Json.Progress} */(data));
+  });
+  app.bus.scenario.subscribe('pass', function(data) {
+    goog.mixin(data, { situation: 'pass' });
+    goog.soy.renderElement(that.getElement(),
+        app.soy.toolbar.content, /** @type {ObjectInterface.Json.Progress} */(data));
+    clearTimer.start();
+  });
+  app.bus.scenario.subscribe('fail', function(data) {
+    goog.mixin(data, { situation: 'fail' });
+    goog.soy.renderElement(that.getElement(),
+        app.soy.toolbar.content, /** @type {ObjectInterface.Json.Progress} */(data));
+    clearTimer.start();
   });
 };
 
