@@ -17,6 +17,7 @@ Carbuncle はコードが書けない方でも短時間で自動テストを増�
  - Node
  - node-webkit (nw command)
  - java
+ - chromedriver
 
 
 起動/Get it Move
