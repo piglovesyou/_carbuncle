@@ -1,15 +1,13 @@
 {
   "debug": false,
-  "closure-library": "../libs/closure-library/closure/goog",
+  // "closure-library": "../libs/closure-library/closure/goog",
   "paths": [
-    "../assets/javascript/app",
-    "../assets/thirdparty/soyutils_usegoog.js"
+    "../app"
   ],
   "mode": "SIMPLE",
   "level": "VERBOSE",
   "externs": [
     "../assets/javascript/externs.js"
-    // , "../assets/thirdparty/closure-compiler-externs"
   ],
   "checks": {
     "externsValidation": "OFF"
