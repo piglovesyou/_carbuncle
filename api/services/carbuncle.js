@@ -87,9 +87,7 @@ var executionMap = {
 
 
 function actionOpen(context, noUse, url) {
-  var u = Url.parse(url);
-  var dest = global.options.site + (u.pathname || '');
-  return context.open(dest);
+  return context.open(Url.parse(url).href);
 }
 function actionClick(context, css) {
   return context.wait(css).then(function() {
