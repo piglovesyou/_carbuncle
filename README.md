@@ -1,7 +1,10 @@
 Carbuncle
 ===================
 
-ウェブGUI をテストするツールです。/ Web GUI Test Builder.
+ウェブGUIテストを増やすツールです。/ Web GUI Test Builder.
+
+
+<p align="center"><img width="600px" src="/assets/image/image.png" /></p>
 
 Selenium テストには２つの問題があります。１つはテストを増やすのが大変なこと。コードが書けないと増やせませんし、Selenium Builder もコードを吐きますので結局コードを保守することになります。２つめは捨てにくいことです。時間をかけて増やしたGUI自動テストや自社サービス用ページライブラリを簡単に捨てられますか？ もしそれが製品の UI の仕様変更の足かせになっているのだとしたら良くないことです。/ Selenium Testing has two problems. It is hard to build for person who don't write code. Selenium Builder helps it though, it generates scripts so it's still hard for them to maintain. Second, to abandon those scripts makes us pain even if we have to change the current UI because it took a lot of time.
 
