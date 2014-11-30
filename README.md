@@ -31,11 +31,6 @@ $ NODE_ENV=production nw .
 やること/TODO
 --
 
-
-
-やること/TODO
---
-
 まだぜんぜん使えません。/Still shit, it works though.
 
  - 永続化の方法をローカルとリモートで選べるように（jugglingdb?）
