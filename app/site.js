@@ -47,6 +47,9 @@ app.Site.prototype.enable = function(enable) {
   }
 };
 
+/**
+ * @return {HTMLIFrameElement}
+ */
 app.Site.prototype.getIframe = function() {
   return this.getElementByClass('iframe-iframe');
 };
@@ -170,8 +173,9 @@ app.Site.prototype.enterDocument = function() {
   var eh = this.getHandler();
   eh.listen(this.getElementByClass('iframe-locationbar'),
       'submit', this.handleLocationbarSubmit);
-  eh.listen(this.getIframe(), 'load', function() {
-    // TODO: apply new url to iframe-locationbar-text
+  eh.listen(this.getIframe(), 'load', function(e) {
+    goog.dom.forms.setValue(that.getElementByClass('iframe-locationbar-text'),
+        this.getIframe().contentWindow.location.href);
   });
 
   this.initializeResources_();
