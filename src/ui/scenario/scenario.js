@@ -33,13 +33,6 @@ app.Scenario = function(opt_domHelper) {
 };
 goog.inherits(app.Scenario, goog.ui.Component);
 
-/**
- * @enum {string}
- */
-app.Scenario.EventTarget = {
-  EDIT_ENTRY: 'editentry'
-};
-
 /** @inheritDoc */
 app.Scenario.prototype.enterDocument = function() {
   goog.base(this, 'enterDocument');
@@ -86,7 +79,7 @@ app.Scenario.prototype.enterDocument = function() {
     });
 
     app.bus.scenario.subscribe('fail', function(data) {
-      console.error(data);
+      console.error(data.stack);
       decorateStepEl(null, 'scenario-entry-fail');
       end();
     });

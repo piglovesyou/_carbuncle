@@ -6,6 +6,7 @@ var webdriver = require('selenium-webdriver');
 global.goog = require('closure').Closure({ CLOSURE_BASE_PATH: 'libs/closure-library/closure/goog/' });
 goog.require('goog.string');
 var Q = require('q');
+Q.longStackSupport = true;
 var util = require('util');
 var EventEmitter = require('events').EventEmitter;
 var Url = require('url');
@@ -61,7 +62,7 @@ Executor.prototype.scheduleEntries_ = function(entries) {
         });
       } else {
         that.emit('before', e);
-        return executionMap[e.mode][e.type](context, e.css, e.text);
+        return executionMap[e.mode][e.type](context, e);
       }
     }).delay(that.interval);
   }, Q());
@@ -70,7 +71,7 @@ Executor.prototype.scheduleEntries_ = function(entries) {
 
 
 /**
- * executionMap[mode][type](css, text)
+ * executionMap[mode][type](entry)
  */
 var executionMap = {
   action: {
@@ -90,40 +91,41 @@ var executionMap = {
 
 
 
-function actionOpen(context, noUse, url) {
-  return context.open(Url.parse(url).href);
+function actionOpen(context, entry) {
+  return context.open(Url.parse(entry.text).href);
 }
-function actionClick(context, css) {
-  return context.wait(css).then(function() {
-    return context.find(css).click().then(function() {
+function actionClick(context, entry) {
+  return context.wait(entry.css).then(function() {
+    return context.find(entry.css).click().then(function() {
       return context;
     });
   });
 }
-function actionScreenshot(context, css) {
+function actionScreenshot(context, entry) {
   var dir = Path.resolve(global.nwGui.App.dataPath, 'screenshot');
+  var file = Path.resolve(dir, (entry.text || 'yeah') + '.png');
   return Q.nfcall(mkdirp, dir)
   .then(function() {
     return context.screenshot();
   })
   .invoke('replace', /^data:image\/png;base64,/, '')
   .then(function(data) {
-    return Q.ninvoke(FS, 'writeFile', Path.resolve(dir, '__filename.png'), data, 'base64');
+    return Q.ninvoke(FS, 'writeFile', file, data, 'base64');
   })
   .then(function() {
     return context;
   });
 }
-function actionInput(context, css, input) {
-  return context.wait(css).then(function() {
-    return context.find(css).sendKeys(replaceMetaKey(input));
+function actionInput(context, entry) {
+  return context.wait(entry.css).then(function() {
+    return context.find(entry.css).sendKeys(replaceMetaKey(entry.text));
   });
 }
-function verify(type, context, css, text) {
+function verify(type, context, entry) {
   var method = mapVerifyMethod(type);
-  return context.wait(css).then(function() {
-    return context.find(css).getText().then(function(v) {
-      assert(method(v, text));
+  return context.wait(entry.css).then(function() {
+    return context.find(entry.css).getText().then(function(v) {
+      assert(method(v, entry.text));
     });
   });
 }
