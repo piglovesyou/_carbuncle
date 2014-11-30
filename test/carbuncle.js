@@ -15,7 +15,7 @@ describe('carbuncle.js', function() {
       var seed = {
         title: 'Passing Executor Example',
         entries: [
-          {title: 'open website', mode: 'action', type: 'open', text: '/'},
+          {title: 'open website', mode: 'action', type: 'open', text: 'http://www.google.com/'},
           {title: 'input search text', mode: 'action', type: 'input', css: '#gbqfq', text: 'ゴミメガネ' + webdriver.Key.ENTER},
           {title: 'verify whether any item was loaded', mode: 'verify', type: 'contains', css: '#ires', text: '本間'}
         ]
@@ -38,7 +38,7 @@ describe('carbuncle.js', function() {
       var seed = {
         title: 'Failing Executor Example',
         entries: [
-          {title: 'open website', mode: 'action', type: 'open', text: '/'},
+          {title: 'open website', mode: 'action', type: 'open', text: 'http://www.google.com/'},
           {title: 'input search text', mode: 'action', type: 'input', css: '#gbqfq', text: 'm' + webdriver.Key.ENTER},
           {title: 'verify whether any item was loaded', mode: 'verify', type: 'contains', css: '#ires', text: '本間'}
         ]
