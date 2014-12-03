@@ -24,7 +24,7 @@
   "author": "piglovesyou",
   "license": "GPL",
   "window": {
-    "min_width": 800,
+    "min_width": 1024,
     "min_height": 600
   }
 }

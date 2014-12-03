@@ -25,6 +25,11 @@ app.Editor.prototype.createDom = function() {
 };
 
 /**
+ * @type {Object}
+ */
+app.Editor.prototype.lastData_;
+
+/**
  * @param {Object=} opt_data .
  */
 app.Editor.prototype.draw = function(opt_data) {
@@ -41,7 +46,7 @@ app.Editor.prototype.draw = function(opt_data) {
   }
 
   goog.soy.renderElement(this.getElement(), app.soy.editor.renderContent, data);
-  this.applyDependencyVisibility();
+  this.lastData_ = data;
 };
 
 /** @inheritDoc */
@@ -89,7 +94,9 @@ app.Editor.prototype.handleSelectChange = function(e) {
   if (!selectEl.tagName == goog.dom.TagName.SELECT) {
     return;
   }
-  this.applyDependencyVisibility();
+  // Update the last data and reuse it.
+  goog.object.extend(this.lastData_, this.collectValues());
+  this.applyDependencyVisibility(this.lastData_);
 };
 
 app.Editor.prototype.handleClick = function(e) {
@@ -113,23 +120,9 @@ app.Editor.prototype.handleSelectorTextKey = function(e) {
 };
 
 /***/
-app.Editor.prototype.applyDependencyVisibility = function() {
-  switch (goog.dom.forms.getValue(this.getElementByClass('entry-mode'))) {
-    case 'action':
-      goog.dom.forms.setDisabled(this.getElementByClass('entry-type-action'), false);
-      goog.dom.forms.setDisabled(this.getElementByClass('entry-type-verify'), true);
-      if (goog.dom.forms.getValue(this.getElementByClass('entry-type-action')) == 'click') {
-        goog.dom.forms.setDisabled(this.getElementByClass('entry-text'), true);
-      } else {
-        goog.dom.forms.setDisabled(this.getElementByClass('entry-text'), false);
-      }
-      break;
-    case 'verify':
-      goog.dom.forms.setDisabled(this.getElementByClass('entry-type-action'), true);
-      goog.dom.forms.setDisabled(this.getElementByClass('entry-type-verify'), false);
-      goog.dom.forms.setDisabled(this.getElementByClass('entry-text'), false);
-      break;
-  }
+app.Editor.prototype.applyDependencyVisibility = function(data) {
+  goog.dom.replaceNode(goog.soy.renderAsElement(app.soy.editor.bottomInputs, data),
+      this.getElementByClass('editor-bottominputs'));
 };
 
 /** @inheritDoc */
@@ -138,7 +131,6 @@ app.Editor.prototype.disposeInternal = function() {
 };
 
 /**
- * TODO* use this
  */
 app.Editor.prototype.collectValues = function() {
   var map = goog.dom.forms.getFormDataMap(/** @type {HTMLFormElement} */(this.getElementByClass('editor-form')));
