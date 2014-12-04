@@ -81,17 +81,29 @@ app.Site.prototype.buildSelector = function(targetNode) {
   var node = targetNode;
   do {
     var builder = [];
-    builder.push(node.tagName.toLowerCase());
-    // TODO: It depends on each application to use DOM id because it can be a unique id.
-    // builder.push(node.id ? '#' + node.id : '');
-    builder.push(node.className ? '.' + node.className.split(' ').join('.') : '');
-    var tmpIndex = this.getChildIndex(node);
-    if (tmpIndex > 0) {
-      builder.push(':nth-child(' + (tmpIndex + 1) + ')');
+
+    // First push tagName for readability.
+    if (node.tagName !== goog.dom.TagName.DIV) {
+      builder.push(node.tagName.toLowerCase());
     }
-    rv.push(builder.join(''));
+
+    // Try DOM ID
+    var id = node.id && '#' + node.id;
+    if (id && this.isElementExists(id)) {
+      builder.push(id);
+      rv.push(builder.join(''));
+      break; // Assume the id is always unique in the webpage.
+    } else {
+      builder.push(node.className ? '.' + node.className.split(' ').join('.') : '');
+      var tmpIndex = this.getChildIndex(node);
+      if (tmpIndex > 0) {
+        builder.push(':nth-child(' + (tmpIndex + 1) + ')');
+      }
+      rv.push(builder.join(''));
+    }
   } while ((node = node.parentNode) && node && node.tagName && node.tagName.toLowerCase() != 'html');
   rv.reverse();
+  // console.log(',,,', rv.join(' '));
   if (this.getDocument().querySelector(rv.join(' ')) !== targetNode) {
     return null;
   }
