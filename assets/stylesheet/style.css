@@ -172,6 +172,28 @@ a:hover {
   display: none;
 }
 
+.editor-topinputs {
+  margin-bottom: .5em;
+  display: flex;
+}
+.editor-topinputs > input,
+.editor-topinputs > textarea {
+  flex: 1;
+}
+.editor-bottominputs {
+  display: flex
+}
+.editor-bottominputs-inputs {
+  flex: 1;
+  display: flex
+}
+.editor-topinputs > input,
+.editor-bottominputs-inputs > a,
+.editor-bottominputs-inputs > select,
+.editor-bottominputs-inputs > input {
+  margin-right: .5em;
+}
+
 
 
 .scenario {

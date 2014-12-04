@@ -16,19 +16,15 @@
 {template .renderContent}
 
   <form id="editor-form" class="editor-form pure-form" action="javascript:void(0)">
-    <div class="pure-g">
+    <input name="entry-id" class="entry-id" type="hidden" value="{$id}" />
 
-      <input name="entry-id" class="entry-id" type="hidden" value="{$id}" />
-
-      <div class="pure-u-1" style="margin-bottom: .4em;">
-        <input name="entry-title" class="entry-title pure-u-11-24" value="{$title?:''}" type="text" placeholder="ステップのタイトル" />
-        {sp}
-        <textarea class="entry-css pure-u-1-2" name="entry-css" rows="1" placeholder="CSSセレクタ">
-          {$css?:''}
-        </textarea>
-      </div>
-
+    <div class="editor-topinputs">
+      <input name="entry-title" class="entry-title" value="{$title?:''}" type="text" placeholder="ステップのタイトル" />
+      <textarea class="entry-css" name="entry-css" rows="1" placeholder="CSSセレクタ">
+        {$css?:''}
+      </textarea>
     </div>
+
 
     {call .bottomInputs data="all" /}
 
@@ -44,65 +40,67 @@
  * @param? isEdit
  */
 {template .bottomInputs}
-  <div class="pure-u-1 editor-bottominputs">
+  <div class="editor-bottominputs">
 
-    <a class="selector-button pure-button-crimson pure-button" href="#">
-      <i class="fa fa-location-arrow fa-flip-horizontal fa-lg"></i>
-      {sp}要素を選択
-    </a>
-    {sp}
+    <div class="editor-bottominputs-inputs">
 
-    <select name="entry-mode" class="entry-mode">
-      <option value="action" {if $mode == 'action'}selected{/if}>アクション</option>
-      <option value="verify" {if $mode == 'verify'}selected{/if}>ベリファイ</option>
-    </select>
-    {sp}
+      <a class="selector-button pure-button-crimson pure-button" href="#">
+        <i class="fa fa-location-arrow fa-flip-horizontal fa-lg"></i>
+        {sp}要素を選択
+      </a>
 
-    <select name="entry-type" class="entry-type entry-type-action"{if $mode != 'action'}disabled{/if}>
-      <option value="click" {if $type == 'click'}selected{/if}>クリック</option>
-      <option value="input" {if $type == 'input'}selected{/if}>入力</option>
-      <option value="open" {if $type == 'open'}selected{/if}>ページを開く</option>
-      <option value="screenshot" {if $type == 'screenshot'}selected{/if}>撮影</option>
-    </select>
-    {sp}
+      <select name="entry-mode" class="entry-mode">
+        <option value="action" {if $mode == 'action'}selected{/if}>アクション</option>
+        <option value="verify" {if $mode == 'verify'}selected{/if}>ベリファイ</option>
+      </select>
 
-    <select name="entry-type" class="entry-type entry-type-verify"{if $mode != 'verify'}disabled{/if}>
-      <option value="contains"   {if $type == 'contains'}selected{/if}>を含む</option>
-      <option value="startswith" {if $type == 'startswith'}selected{/if}>で始まる</option>
-      <option value="endswith"   {if $type == 'endswith'}selected{/if}>で終わる</option>
-      <option value="equal"      {if $type == 'equal'}selected{/if}>と一致</option>
-    </select>
-    {sp}
+      <select name="entry-type" class="entry-type entry-type-action"{if $mode != 'action'}disabled{/if}>
+        <option value="click" {if $type == 'click'}selected{/if}>クリック</option>
+        <option value="input" {if $type == 'input'}selected{/if}>入力</option>
+        <option value="open" {if $type == 'open'}selected{/if}>ページを開く</option>
+        <option value="screenshot" {if $type == 'screenshot'}selected{/if}>撮影</option>
+      </select>
 
-    {let $textPlaceHolder}
-      {if $mode == 'verify'}確認文字列
-      {elseif $type == 'input'}入力文字列
-      {elseif $type == 'open'}ページURL
-      {/if}
-    {/let}
-    <input name="entry-text"
-           class="entry-text"
-           value="{$text?:''}"
-           type="text"
-           placeholder="{$textPlaceHolder}"
-           {if $mode == 'action' and ($type == 'click' or $type == 'screenshot')} disabled{/if}
-    />
-    {sp}
+      <select name="entry-type" class="entry-type entry-type-verify"{if $mode != 'verify'}disabled{/if}>
+        <option value="contains"   {if $type == 'contains'}selected{/if}>を含む</option>
+        <option value="startswith" {if $type == 'startswith'}selected{/if}>で始まる</option>
+        <option value="endswith"   {if $type == 'endswith'}selected{/if}>で終わる</option>
+        <option value="equal"      {if $type == 'equal'}selected{/if}>と一致</option>
+      </select>
 
-    <button class="append-button pure-button {if $isEdit}pure-button-darkgreen{else}pure-button-primary{/if}">
+      {let $textPlaceHolder}
+        {if $mode == 'verify'}確認文字列
+        {elseif $type == 'input'}入力文字列
+        {elseif $type == 'open'}ページURL
+        {/if}
+      {/let}
+      <input style="flex:1"
+             name="entry-text"
+             class="entry-text"
+             value="{$text?:''}"
+             type="text"
+             placeholder="{$textPlaceHolder}"
+             {if $mode == 'action' and ($type == 'click' or $type == 'screenshot')} disabled{/if}
+      />
+
+    </div>
+
+    <div>
+      <button class="append-button pure-button {if $isEdit}pure-button-darkgreen{else}pure-button-primary{/if}">
+        {if $isEdit}
+          <i class="fa fa-edit"></i>
+          {sp}
+          ステップを編集
+        {else}
+          <i class="fa fa-plus"></i>
+          {sp}
+          ステップを追加
+        {/if}
+        {$isEdit ? '' : ''}</button>
       {if $isEdit}
-        <i class="fa fa-edit"></i>
-        {sp}
-        ステップを編集
-      {else}
-        <i class="fa fa-plus"></i>
-        {sp}
-        ステップを追加
+        <a class="quit-edit-button" title="quit editing" href="javascript:void(0)" style="margin-left:.5em;">やめる</a>
       {/if}
-      {$isEdit ? '' : ''}</button>
-    {if $isEdit}
-      {sp}<a class="quit-edit-button" title="quit editing" href="javascript:void(0)">やめる</a>
-    {/if}
+    </div>
 
   </div>
 {/template}
