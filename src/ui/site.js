@@ -51,7 +51,7 @@ app.Site.prototype.enable = function(enable) {
  * @return {HTMLIFrameElement}
  */
 app.Site.prototype.getIframe = function() {
-  return this.getElementByClass('iframe-iframe');
+  return /** @type {HTMLIFrameElement} */(this.getElementByClass('iframe-iframe'));
 };
 
 app.Site.prototype.getDocument = function() {

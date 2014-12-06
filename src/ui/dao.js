@@ -28,6 +28,9 @@ app.dao.scenario = function() {
   return app.dao.promise_('scenario');
 };
 
+/**
+ * @suppress {undefinedNames}
+ */
 app.dao.promise_ = function(dbName) {
   var path = require('path');
   var dataPath = require('nw.gui').App.dataPath;
