@@ -9,7 +9,6 @@ goog.require('app.scenario.BlockSelector');
 goog.require('app.soy.scenario');
 goog.require('app.ui.Rows');
 goog.require('goog.Delay');
-goog.require('goog.dom.classes');
 goog.require('goog.dom.classlist');
 goog.require('goog.dom.dataset');
 goog.require('goog.soy');
@@ -142,7 +141,7 @@ app.Scenario.prototype.handleClick = function(e) {
   var et = /** @type {Element} */(e.target);
   var that = this;
 
-  if (goog.dom.classes.has(et, 'scenario-entry-edithook')) {
+  if (goog.dom.classlist.contains(et, 'scenario-entry-edithook')) {
     var entry = this.getEntryFromEventTarget(et);
     if (entry) {
       this.dispatchEvent({
@@ -153,7 +152,7 @@ app.Scenario.prototype.handleClick = function(e) {
     return;
   }
 
-  if (goog.dom.classes.has(et, 'scenario-entry-deletehook')) {
+  if (goog.dom.classlist.contains(et, 'scenario-entry-deletehook')) {
     var entry = this.getEntryFromEventTarget(et);
     if (entry) {
       this.rows.data.remove(entry);
@@ -162,25 +161,25 @@ app.Scenario.prototype.handleClick = function(e) {
     return;
   }
 
-  if (goog.dom.classes.has(et, 'scenario-footer-preview')) {
+  if (goog.dom.classlist.contains(et, 'scenario-footer-preview')) {
 
     app.mask.focus(this.getElement());
     app.mask.hide();
     app.bus.scenario.preview(that.collectScenario(), 800);
 
-  } else if (goog.dom.classes.has(et, 'scenario-footer-create')) {
+  } else if (goog.dom.classlist.contains(et, 'scenario-footer-create')) {
     this.rows.data.clear();
     this.rows.redraw();
     goog.soy.renderElement(this.getElementByClass('scenario-header'), app.soy.scenario.headerContent);
     goog.soy.renderElement(this.getElementByClass('scenario-body'), app.soy.scenario.bodyContent);
     goog.soy.renderElement(this.getElementByClass('scenario-footer'), app.soy.scenario.footerContent);
 
-  } else if (goog.dom.classes.has(et, 'scenario-body-insertblock')) {
+  } else if (goog.dom.classlist.contains(et, 'scenario-body-insertblock')) {
     if (this.blockSelector) return;
     this.addChild(this.blockSelector = new app.scenario.BlockSelector);
     this.blockSelector.show(true);
 
-  } else if (goog.dom.classes.has(et, 'scenario-footer-save')) {
+  } else if (goog.dom.classlist.contains(et, 'scenario-footer-save')) {
     this.makeButtonsEnabled(false);
     app.dao.scenario().then(function(scenario) {
       scenario.upsertById(that.collectScenario(), function(err, doc) {

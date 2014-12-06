@@ -33,7 +33,7 @@ app.ui.Rows.prototype.setData = function(data) {
 app.ui.Rows.prototype.createDom = function() {
   goog.base(this, 'createDom');
 
-  goog.dom.classes.add(this.getElement(), 'ui-rows');
+  goog.dom.classlist.add(this.getElement(), 'ui-rows');
 };
 
 /** @inheritDoc */
