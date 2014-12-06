@@ -1,4 +1,4 @@
-Carbuncle
+Carbuncle [![Build Status](https://travis-ci.org/piglovesyou/carbuncle.svg?branch=master)](https://travis-ci.org/piglovesyou/carbuncle)
 ===================
 
 ウェブGUIテストを増やすツールです。/ Web GUI Test Builder.
