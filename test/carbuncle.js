@@ -2,7 +2,7 @@
 var assert = require('assert');
 var Options = require('../helpers').Options;
 var webdriver = require('selenium-webdriver');
-var Executor = require('../api/services/carbuncle').Executor;
+var Executor = require('../src/services/carbuncle').Executor;
 
 describe('carbuncle.js', function() {
 

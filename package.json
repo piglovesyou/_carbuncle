@@ -13,10 +13,12 @@
     "underscore.string": "^2.3.3"
   },
   "devDependencies": {
+    "mocha": "^2.0.1",
     "plovr": "1.0.0"
   },
   "scripts": {
     "start": "node app.js",
+    "test": "./node_modules/mocha/bin/mocha",
     "postinstall": "./run.sh setup; ./run.sh build"
   },
   "main": "app.html",
