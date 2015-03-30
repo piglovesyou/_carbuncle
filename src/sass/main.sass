@@ -1,0 +1,115 @@
+
+$fa-font-path: "./fonts"
+
+// http://imperavi.com/kube/css/labels
+$gray: #565d64
+$gray-darker: darken($gray, 30%)
+$gray-dark: darken($gray, 10%)
+$gray-light: lighten($gray, 10%)
+$gray-lighter: lighten($gray, 30%)
+
+$font-size-base: 16px
+
+$brand-primary:         darken(#2575ed, 6.5%)
+$brand-success:         #2c9f42
+$brand-info:            #2575ed
+$brand-warning:         #ffc800
+$brand-danger:          #de2c3b
+
+$border-radius-base: 0
+$border-radius-large: 2
+$border-radius-small: 0
+
+$btn-default-color: $gray-dark
+$btn-default-bg: #e0e3e5
+$btn-default-border: darken(#e0e3e5, 5%)
+
+$grid-gutter-width: 8px
+
+$input-color-placeholder: $gray-lighter
+
+$navbar-default-bg: transparent
+$navbar-default-brand-color: $gray
+$navbar-default-color: $gray
+$navbar-default-link-color: $gray
+$navbar-margin-bottom: 0
+
+
+@import _bootstrap
+@import font-awesome
+
+
+body,
+html
+  width: 100%
+  height: 100%
+
+body,
+.app-index,
+.bottom-content,
+.iframe
+  flex: 1
+  display: flex
+
+body,
+.app-index,
+.iframe
+  flex-direction: column
+
+
+.iframe
+  $border-color: #999
+  border-top: 3px $border-color solid
+  border-right: 3px $border-color solid
+.iframe--isSelectingElement
+  position: relative
+  z-index: 2
+.iframe__form
+  display: flex
+  height: 34px
+  > input[type="text"]
+    flex: 1
+.iframe__iframe
+  flex: 1
+  border: 0
+  background-color: #fff
+
+.navbar
+  border: none
+  border-bottom: 1px #ccc solid
+.navbar-brand
+  min-width: 5em
+  text-align: center
+
+.editor
+  padding: 16px 24px
+  background: whitesmoke
+  .form-group:last-child
+    margin-bottom: 0
+.editor-topinputs
+  input[type="text"]
+    vertical-align: top
+
+.editor-bottominputs .btn
+  float: left
+  margin-left: $grid-gutter-width / 2
+  margin-right: $grid-gutter-width / 2
+
+.scenario
+  border-top: 1px #ccc solid
+  display: flex
+  flex-direction: column
+  width: 40%
+  max-width: 480px
+
+.scenario__body
+  flex: 1
+
+.mask
+  position: absolute
+  width: 100%
+  height: 100%
+  background-color: rgba(0,0,0,.1)
+  top: 0
+  left: 0
+  z-index: 1

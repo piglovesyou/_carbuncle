@@ -186,11 +186,12 @@ app.Site.prototype.enterDocument = function() {
   eh.listen(this.getElementByClass('iframe-locationbar'),
       'submit', this.handleLocationbarSubmit);
   eh.listen(this.getIframe(), 'load', function(e) {
-    goog.dom.forms.setValue(that.getElementByClass('iframe-locationbar-text'),
-        this.getIframe().contentWindow.location.href);
+    var url = this.getIframe().contentWindow.location.href;
+    goog.dom.forms.setValue(that.getElementByClass('iframe-locationbar-text'), url);
+    goog.global.localStorage.setItem('last-iframe-url', url);
   });
 
-  this.initializeResources_();
+  // this.initializeResources_();
 
   this.pixel.render(); // Append to document.body
 

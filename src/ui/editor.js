@@ -123,6 +123,12 @@ app.Editor.prototype.handleSelectorTextKey = function(e) {
 app.Editor.prototype.applyDependencyVisibility = function(data) {
   goog.dom.replaceNode(goog.soy.renderAsElement(app.soy.editor.bottomInputs, data),
       this.getElementByClass('editor-bottominputs'));
+  if (data.mode == 'action' && data.type == 'open') {
+    var url = /** @type {string} */(goog.global.localStorage.getItem('last-iframe-url'));
+    if (url) {
+      goog.dom.forms.setValue(this.getElementByClass('entry-text'), url);
+    }
+  }
 };
 
 /** @inheritDoc */

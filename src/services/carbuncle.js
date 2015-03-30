@@ -139,7 +139,7 @@ function verify(type, context, entry) {
 function Context() {
   Object.defineProperty(this, 'driver_', {
     value: new webdriver.Builder().
-        withCapabilities(webdriver.Capabilities.chrome()).
+        withCapabilities(webdriver.Capabilities.phantomjs()).
         build()
   });
   this.driver_.manage().window().setSize(800, 600);

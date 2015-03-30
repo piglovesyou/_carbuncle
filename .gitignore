@@ -5,3 +5,8 @@
 /assets/javascript/sandbox-min.js
 test.js
 npm-debug.log
+.sass-cache
+phantomjsdriver.log
+bower_components
+dist/css
+dist/*.js
