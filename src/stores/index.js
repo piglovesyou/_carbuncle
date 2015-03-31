@@ -1,14 +1,14 @@
 
 var Dispatcher = require('../dispatcher');
 var EventEmitter = require('events').EventEmitter;
-var {Actions} = require('../constants');
 var assign = require('object-assign');
 var Q = require('q');
 Q.longStackSupport = true;
 var CHANGE_EVENT = 'change';
 
 var _store = {
-  count: 0
+  url: '',
+  isSelectingElement: false
 };
 
 
@@ -25,11 +25,6 @@ var Store = assign({}, EventEmitter.prototype, {
 
   removeChangeListener(callback) {
     this.removeListener(CHANGE_EVENT, callback);
-  },
-
-  increment() {
-    _store.count++;
-    this.emit(CHANGE_EVENT);
   }
 
 });
@@ -37,7 +32,13 @@ module.exports = Store;
 
 Dispatcher.register(function(action) {
   switch(action.type) {
-    case Actions.CHECKAS:
+    case 'locationSubmit':
+      _store.url = action.url;
+      Store.emit(CHANGE_EVENT, { url: _store.url });
+      break;
+    case 'selectElement':
+      _store.isSelectingElement = action.select;
+      Store.emit(CHANGE_EVENT, { isSelectingElement: _store.isSelectingElement });
       break;
   }
 });

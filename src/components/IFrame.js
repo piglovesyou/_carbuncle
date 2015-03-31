@@ -1,14 +1,27 @@
 
 var React = require('react');
-var {HistoryLocation} = require('react-router');
-var Path = require('path');
+// var {HistoryLocation} = require('react-router');
+// var Path = require('path');
+var Actions = require('../actions');
 
-var Link = React.createClass({
+var IFrame = React.createClass({
 
-  getInitialState() {
-    return {
-      url: ''
-    };
+  componentDidMount() {
+    this.updateEventHandlerIfNeeded();
+  },
+  componentDidUpdate() {
+    this.updateEventHandlerIfNeeded();
+  },
+
+  updateEventHandlerIfNeeded() {
+    var d = goog.dom.getFrameContentDocument(this.refs.iframe.getDOMNode());
+    if (this.props.isSelectingElement) {
+      d.addEventListener('click', this.onIframeClick);
+      d.addEventListener('mousemove', this.onIframeMove);
+    } else {
+      d.removeEventListener('click', this.onIframeClick);
+      d.removeEventListener('mousemove', this.onIframeMove);
+    }
   },
 
   render() {
@@ -18,25 +31,27 @@ var Link = React.createClass({
           <input type="text" ref="url" placeholder="URLを入力"/>
           <button className="btn">Go</button>
         </form>
-        <iframe className="iframe__iframe" src={this.state.url}></iframe>
+        <iframe ref="iframe"
+                className="iframe__iframe"
+                src={this.props.url}
+        ></iframe>
       </div>
     );
   },
 
+  onIframeClick(e) {
+    console.log(e);
+  },
+
+  onIframeMove(e) {
+    console.log(e);
+  },
+
   onSubmit(e) {
     e.preventDefault();
-    e.stopPropagation();
-    this.setState({
-      url: this.refs.url.getDOMNode().value
-    });
+    Actions.locationSubmit(
+        this.refs.url.getDOMNode().value);
   }
 
 });
-module.exports = Link;
-
-function pushState(path) {
-  return function(e) {
-    e.preventDefault();
-    HistoryLocation.push(Path.join(__dirname, path));
-  };
-}
+module.exports = IFrame;

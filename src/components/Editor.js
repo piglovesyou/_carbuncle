@@ -1,4 +1,5 @@
 var React = require('react');
+var Actions = require('../actions');
 
 var Editor = React.createClass({
 
@@ -38,7 +39,7 @@ var Editor = React.createClass({
                 this.state.type === 'input' ? '文字列' :
                 this.state.type === 'open' ? 'ページURL' : null;
     out.push(
-      <a className="selector-button btn btn-danger" href="#" onClick={this.props.onStartSelectElement}>
+      <a className="selector-button btn btn-danger" href="#" onClick={this.onStartSelectElement}>
         <i className="fa fa-location-arrow fa-flip-horizontal fa-lg"></i>
         &nbsp;要素を選択
       </a>
@@ -105,7 +106,13 @@ var Editor = React.createClass({
       mode: goog.dom.forms.getValue(this.refs['entry-mode'].getDOMNode()),
       type: goog.dom.forms.getValue(this.refs['entry-type'].getDOMNode())
     });
+  },
+
+  onStartSelectElement(e) {
+    e.preventDefault();
+    Actions.selectElement(true);
   }
+
 });
 
 module.exports = Editor;

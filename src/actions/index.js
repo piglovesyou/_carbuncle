@@ -1,10 +1,19 @@
 
 
-var store = require('../stores');
+var Dispatcher = require('../dispatcher');
 
 
 module.exports = {
-  increment() {
-    store.increment();
+  locationSubmit(url) {
+    Dispatcher.dispatch({
+      type: 'locationSubmit',
+      url: url
+    });
+  },
+  selectElement(select) {
+    Dispatcher.dispatch({
+      type: 'selectElement',
+      select: select
+    });
   }
 };
