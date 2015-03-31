@@ -8,7 +8,9 @@ var CHANGE_EVENT = 'change';
 
 var _store = {
   url: '',
-  isSelectingElement: false
+  isSelectingElement: false,
+  targetElementBounds: null,
+  selectedIframeElementData: null
 };
 
 
@@ -34,11 +36,24 @@ Dispatcher.register(function(action) {
   switch(action.type) {
     case 'locationSubmit':
       _store.url = action.url;
-      Store.emit(CHANGE_EVENT, { url: _store.url });
+      Store.emit(CHANGE_EVENT);
       break;
     case 'selectElement':
       _store.isSelectingElement = action.select;
-      Store.emit(CHANGE_EVENT, { isSelectingElement: _store.isSelectingElement });
+      if (!action.select) {
+        _store.targetElementBounds = null;
+      }
+      Store.emit(CHANGE_EVENT);
+      break;
+    case 'mouseMove':
+      _store.targetElementBounds = action.bounds;
+      Store.emit(CHANGE_EVENT);
+      break;
+    case 'selectIFrameElement':
+      _store.isSelectingElement = false;
+      _store.targetElementBounds = null;
+      _store.selectedIframeElementData = action.selectedIframeElementData;
+      Store.emit(CHANGE_EVENT);
       break;
   }
 });

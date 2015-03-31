@@ -15,5 +15,18 @@ module.exports = {
       type: 'selectElement',
       select: select
     });
+  },
+  mouseMove(bounds) {
+    Dispatcher.dispatch({
+      type: 'mouseMove',
+      bounds: bounds
+    });
+  },
+  selectIFrameElement(selectedIframeElementData) {
+    Dispatcher.dispatch({
+      type: 'selectIFrameElement',
+      selectedIframeElementData: selectedIframeElementData
+    });
   }
+
 };

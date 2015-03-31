@@ -18,10 +18,22 @@ var Editor = React.createClass({
           <input type="hidden" />
           <div className="editor-topinputs form-group">
             <div className="col-xs-5">
-              <input name="entry-title" className="entry-title form-control" value={this.state.title || ''} type="text" placeholder="ステップのタイトル" />
+              <input ref="entry-title"
+                     name="entry-title"
+                     className="entry-title form-control"
+                     defaultValue={this.props.roughTitle}
+                     value={this.props.roughTitle}
+                     type="text"
+                     placeholder="ステップのタイトル"
+                      />
             </div>
             <div className="col-xs-7">
-              <textarea className="entry-css form-control" name="entry-css" rows="1" placeholder="CSSセレクタ" defaultValue={this.state.css || ''}></textarea>
+              <textarea className="entry-css form-control"
+                        name="entry-css"
+                        rows="1"
+                        placeholder="CSSセレクタ"
+                        defaultValue={this.props.selectorText}
+                        value={this.props.selectorText}></textarea>
             </div>
           </div>
           <div className="editor-bottominputs form-group">
@@ -39,14 +51,14 @@ var Editor = React.createClass({
                 this.state.type === 'input' ? '文字列' :
                 this.state.type === 'open' ? 'ページURL' : null;
     out.push(
-      <a className="selector-button btn btn-danger" href="#" onClick={this.onStartSelectElement}>
+      <a className="selector-button btn btn-danger" href="#" onClick={this.onStartSelectElement} key={out.length}>
         <i className="fa fa-location-arrow fa-flip-horizontal fa-lg"></i>
         &nbsp;要素を選択
       </a>
     );
     out.push(
-      <div className="col-xs-2">
-        <select name="entry-mode" ref="entry-mode" className="entry-mode form-control" onChange={this.onChange}>
+      <div className="col-xs-2" key={out.length}>
+        <select name="entry-mode" ref="entry-mode" className="entry-mode form-control" onChange={this.onSelectChange}>
           <option value="action" defaultValue={this.state.mode === 'action'}>アクション</option>
           <option value="verify" defaultValue={this.state.mode === 'verify'}>ベリファイ</option>
         </select>
@@ -54,8 +66,8 @@ var Editor = React.createClass({
     );
     if (this.state.mode === 'action') {
       out.push(
-        <div className="col-xs-2">
-          <select name="entry-type" ref="entry-type" className="entry-type entry-type-action form-control" onChange={this.onChange}>
+        <div className="col-xs-2" key={out.length}>
+          <select name="entry-type" ref="entry-type" className="entry-type entry-type-action form-control" onChange={this.onSelectChange}>
             <option value="click" defaultValue={this.state.type === 'click'}>クリック</option>
             <option value="input" defaultValue={this.state.type === 'input'}>入力</option>
             <option value="open" defaultValue={this.state.type === 'open'}>ページを開く</option>
@@ -65,7 +77,7 @@ var Editor = React.createClass({
       );
     } else {
       out.push(
-        <div className="col-xs-2">
+        <div className="col-xs-2" key={out.length}>
           <select name="entry-type" ref="entry-type" className="entry-type entry-type-verify form-control">
             <option value="contains" defaultValue={this.state.type === 'contains'}>を含む</option>
             <option value="startswith" defaultValue={this.state.type === 'startswith'}>で始まる</option>
@@ -77,7 +89,7 @@ var Editor = React.createClass({
     }
     if (textPlaceHolder) {
       out.push(
-        <div className="col-xs-4">
+        <div className="col-xs-4" key={out.length}>
           <input name="entry-text" ref="entry-text"
                  className="entry-text form-control"
                  value={this.state.text || ''}
@@ -88,7 +100,7 @@ var Editor = React.createClass({
       );
     }
     out.push(
-      <button className={'append-button btn ' + (this.state.isEdit ? 'btn-success' : 'btn-primary')}>
+      <button className={'append-button btn ' + (this.state.isEdit ? 'btn-success' : 'btn-primary')} key={out.length}>
         あああ
       </button>
     );
@@ -96,12 +108,17 @@ var Editor = React.createClass({
       <a className="quit-edit-button btn btn-link"
          title="quit editing"
          href="#"
+         key={out.length}
       >やめる</a>
     );
     return out;
   },
 
-  onChange() {
+  onTitleChange() {
+    this.refs['entry-title'].getDOMNode();
+  },
+
+  onSelectChange() {
     this.setState({
       mode: goog.dom.forms.getValue(this.refs['entry-mode'].getDOMNode()),
       type: goog.dom.forms.getValue(this.refs['entry-type'].getDOMNode())

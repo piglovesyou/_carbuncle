@@ -17,10 +17,6 @@ goog.require('goog.ui.Component');
 
 
 
-console.log(require);
-
-
-
 /**
  * @constructor
  * @extends goog.ui.Component

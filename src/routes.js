@@ -29,8 +29,6 @@ var NotFound = React.createClass({
   }
 });
 
-console.log(__dirname)
-
 module.exports = (
   <Route handler={RootApp}>
     <Route handler={Index} name="index" path={Path.resolve(__dirname, 'index')} />
