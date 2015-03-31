@@ -25,6 +25,9 @@ var IFrame = React.createClass({
     }
   },
 
+  componentWillReceiveProps(props) {
+  },
+
   render() {
     return (
       <div className={'iframe ' + (this.props.cssModifier ? 'iframe--' + this.props.cssModifier : '')}>

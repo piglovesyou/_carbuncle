@@ -5,10 +5,19 @@ var Editor = React.createClass({
 
   getInitialState() {
     return {
+      title: '',
+      css: '',
       id: '',
       mode: 'action',
       type: 'click'
     };
+  },
+
+  componentWillReceiveProps(props) {
+    var state = {};
+    if (props.roughTitle) state.title = props.roughTitle;
+    if (props.selectorText) state.css = props.selectorText;
+    this.setState(state);
   },
 
   render() {
@@ -21,24 +30,23 @@ var Editor = React.createClass({
               <input ref="entry-title"
                      name="entry-title"
                      className="entry-title form-control"
-                     defaultValue={this.props.roughTitle}
-                     value={this.props.roughTitle}
+                     value={this.state.title}
+                     onChange={this.onTitleChange}
                      type="text"
-                     placeholder="ステップのタイトル"
-                      />
+                     placeholder="ステップのタイトル" />
             </div>
             <div className="col-xs-7">
-              <textarea className="entry-css form-control"
+              <textarea ref="entry-css"
+                        className="entry-css form-control"
                         name="entry-css"
                         rows="1"
                         placeholder="CSSセレクタ"
-                        defaultValue={this.props.selectorText}
-                        value={this.props.selectorText}></textarea>
+                        value={this.state.css}
+                        onChange={this.onCssChange}></textarea>
             </div>
           </div>
           <div className="editor-bottominputs form-group">
             {this.renderPulldowns_()}
-
           </div>
         </form>
       </div>
@@ -115,7 +123,17 @@ var Editor = React.createClass({
   },
 
   onTitleChange() {
-    this.refs['entry-title'].getDOMNode();
+    this.setState({
+      title: this.refs['entry-title'].getDOMNode().value
+    });
+  },
+
+  onCssChange() {
+    // TODO: Action.changeCss()
+    console.log(this.refs['entry-css'].getDOMNode().value)
+    this.setState({
+      css: this.refs['entry-css'].getDOMNode().value
+    });
   },
 
   onSelectChange() {
@@ -127,7 +145,7 @@ var Editor = React.createClass({
 
   onStartSelectElement(e) {
     e.preventDefault();
-    Actions.selectElement(true);
+    Actions.enableSelectElement(true);
   }
 
 });

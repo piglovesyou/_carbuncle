@@ -38,9 +38,9 @@ Dispatcher.register(function(action) {
       _store.url = action.url;
       Store.emit(CHANGE_EVENT);
       break;
-    case 'selectElement':
-      _store.isSelectingElement = action.select;
-      if (!action.select) {
+    case 'enableSelectElement':
+      _store.isSelectingElement = action.enable;
+      if (action.select) {
         _store.targetElementBounds = null;
       }
       Store.emit(CHANGE_EVENT);
@@ -51,7 +51,6 @@ Dispatcher.register(function(action) {
       break;
     case 'selectIFrameElement':
       _store.isSelectingElement = false;
-      _store.targetElementBounds = null;
       _store.selectedIframeElementData = action.selectedIframeElementData;
       Store.emit(CHANGE_EVENT);
       break;

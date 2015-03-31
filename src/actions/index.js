@@ -10,10 +10,10 @@ module.exports = {
       url: url
     });
   },
-  selectElement(select) {
+  enableSelectElement(enable) {
     Dispatcher.dispatch({
-      type: 'selectElement',
-      select: select
+      type: 'enableSelectElement',
+      enable: enable
     });
   },
   mouseMove(bounds) {

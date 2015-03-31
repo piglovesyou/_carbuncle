@@ -42,13 +42,9 @@ var Index = React.createClass({
     );
   },
 
-  onTitleChange(e) {
-    console.log(e)
-  },
-
   onMaskCancelled(e) {
     e.preventDefault();
-    Actions.selectElement(false);
+    Actions.enableSelectElement(false);
   }
 
 });
