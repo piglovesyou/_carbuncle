@@ -1,5 +1,4 @@
 
-var _mixins = require('./_mixins');
 var React = require('react');
 var Link = require('../components/Link');
 
@@ -13,8 +12,6 @@ var Index = React.createClass({
       count: store.count
     };
   },
-
-  mixins: [_mixins],
 
   render() {
     return (

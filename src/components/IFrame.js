@@ -25,12 +25,9 @@ var IFrame = React.createClass({
     }
   },
 
-  componentWillReceiveProps(props) {
-  },
-
   render() {
     return (
-      <div className={'iframe ' + (this.props.cssModifier ? 'iframe--' + this.props.cssModifier : '')}>
+      <div className={'iframe' + (this.props.isSelectingElement ? ' iframe--isSelectingElement' : '')}>
         <form className="iframe__form" onSubmit={this.onSubmit} action="">
           <input type="text" ref="url" placeholder="URLを入力" defaultValue={this.props.url} />
           <button className="btn">Go</button>
@@ -48,8 +45,9 @@ var IFrame = React.createClass({
     e.preventDefault();
     Actions.selectIFrameElement({
       element: e.target,
-      selectorText: this.buildSelector(e.target),
-      roughTitle: goog.dom.getTextContent(e.target)
+      css: this.buildSelector(e.target),
+      title: goog.dom.getTextContent(e.target),
+      mode: 'action'
     });
   },
 

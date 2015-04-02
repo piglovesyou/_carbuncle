@@ -9,8 +9,7 @@ var CHANGE_EVENT = 'change';
 var _store = {
   url: '',
   isSelectingElement: false,
-  targetElementBounds: null,
-  selectedIframeElementData: null
+  targetElementBounds: null
 };
 
 
@@ -51,8 +50,7 @@ Dispatcher.register(function(action) {
       break;
     case 'selectIFrameElement':
       _store.isSelectingElement = false;
-      _store.selectedIframeElementData = action.selectedIframeElementData;
-      Store.emit(CHANGE_EVENT);
+      Store.emit(CHANGE_EVENT, {editorState: action.selectedIframeElementData});
       break;
   }
 });

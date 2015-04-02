@@ -27,6 +27,14 @@ module.exports = {
       type: 'selectIFrameElement',
       selectedIframeElementData: selectedIframeElementData
     });
+  },
+
+
+  editorChange(state) {
+    Dispatcher.dispatch({
+      type: 'editorChange',
+      state
+    });
   }
 
 };

@@ -3,22 +3,22 @@ var Actions = require('../actions');
 
 var Editor = React.createClass({
 
-  getInitialState() {
-    return {
-      title: '',
-      css: '',
-      id: '',
-      mode: 'action',
-      type: 'click'
-    };
-  },
+  // getInitialState() {
+  //   return {
+  //     title: '',
+  //     css: '',
+  //     id: '',
+  //     mode: 'action',
+  //     type: 'click'
+  //   };
+  // },
 
-  componentWillReceiveProps(props) {
-    var state = {};
-    if (props.roughTitle) state.title = props.roughTitle;
-    if (props.selectorText) state.css = props.selectorText;
-    this.setState(state);
-  },
+  // componentWillReceiveProps(props) {
+  //   var state = {};
+  //   if (props.roughTitle) state.title = props.roughTitle;
+  //   if (props.selectorText) state.css = props.selectorText;
+  //   this.setState(state);
+  // },
 
   render() {
     return (
@@ -30,7 +30,7 @@ var Editor = React.createClass({
               <input ref="entry-title"
                      name="entry-title"
                      className="entry-title form-control"
-                     value={this.state.title}
+                     value={this.props.title}
                      onChange={this.onTitleChange}
                      type="text"
                      placeholder="ステップのタイトル" />
@@ -41,7 +41,7 @@ var Editor = React.createClass({
                         name="entry-css"
                         rows="1"
                         placeholder="CSSセレクタ"
-                        value={this.state.css}
+                        value={this.props.css}
                         onChange={this.onCssChange}></textarea>
             </div>
           </div>
@@ -55,9 +55,9 @@ var Editor = React.createClass({
 
   renderPulldowns_() {
     var out = [];
-    var textPlaceHolder = this.state.mode === 'verify' ? '文字列' :
-                this.state.type === 'input' ? '文字列' :
-                this.state.type === 'open' ? 'ページURL' : null;
+    var textPlaceHolder = this.props.mode === 'verify' ? '文字列' :
+                this.props.type === 'input' ? '文字列' :
+                this.props.type === 'open' ? 'ページURL' : null;
     out.push(
       <a className="selector-button btn btn-danger" href="#" onClick={this.onStartSelectElement} key={out.length}>
         <i className="fa fa-location-arrow fa-flip-horizontal fa-lg"></i>
@@ -67,19 +67,19 @@ var Editor = React.createClass({
     out.push(
       <div className="col-xs-2" key={out.length}>
         <select name="entry-mode" ref="entry-mode" className="entry-mode form-control" onChange={this.onSelectChange}>
-          <option value="action" defaultValue={this.state.mode === 'action'}>アクション</option>
-          <option value="verify" defaultValue={this.state.mode === 'verify'}>ベリファイ</option>
+          <option value="action" defaultValue={this.props.mode === 'action'}>アクション</option>
+          <option value="verify" defaultValue={this.props.mode === 'verify'}>ベリファイ</option>
         </select>
       </div>
     );
-    if (this.state.mode === 'action') {
+    if (this.props.mode === 'action') {
       out.push(
         <div className="col-xs-2" key={out.length}>
           <select name="entry-type" ref="entry-type" className="entry-type entry-type-action form-control" onChange={this.onSelectChange}>
-            <option value="click" defaultValue={this.state.type === 'click'}>クリック</option>
-            <option value="input" defaultValue={this.state.type === 'input'}>入力</option>
-            <option value="open" defaultValue={this.state.type === 'open'}>ページを開く</option>
-            <option value="screenshot" defaultValue={this.state.type === 'screenshot'}>撮影</option>
+            <option value="click" defaultValue={this.props.type === 'click'}>クリック</option>
+            <option value="input" defaultValue={this.props.type === 'input'}>入力</option>
+            <option value="open" defaultValue={this.props.type === 'open'}>ページを開く</option>
+            <option value="screenshot" defaultValue={this.props.type === 'screenshot'}>撮影</option>
           </select>
         </div>
       );
@@ -87,10 +87,10 @@ var Editor = React.createClass({
       out.push(
         <div className="col-xs-2" key={out.length}>
           <select name="entry-type" ref="entry-type" className="entry-type entry-type-verify form-control">
-            <option value="contains" defaultValue={this.state.type === 'contains'}>を含む</option>
-            <option value="startswith" defaultValue={this.state.type === 'startswith'}>で始まる</option>
-            <option value="endswith" defaultValue={this.state.type === 'endswith'}>で終わる</option>
-            <option value="equal" defaultValue={this.state.type === 'equal'}>と一致</option>
+            <option value="contains" defaultValue={this.props.type === 'contains'}>を含む</option>
+            <option value="startswith" defaultValue={this.props.type === 'startswith'}>で始まる</option>
+            <option value="endswith" defaultValue={this.props.type === 'endswith'}>で終わる</option>
+            <option value="equal" defaultValue={this.props.type === 'equal'}>と一致</option>
           </select>
         </div>
       );
@@ -100,15 +100,15 @@ var Editor = React.createClass({
         <div className="col-xs-4" key={out.length}>
           <input name="entry-text" ref="entry-text"
                  className="entry-text form-control"
-                 value={this.state.text || ''}
+                 value={this.props.text || ''}
                  type="text"
                  placeholder={textPlaceHolder}
-                 disabled={this.state.mode === 'action' && (this.state.type === 'click' || this.state.type === 'screenshot')} />
+                 disabled={this.props.mode === 'action' && (this.props.type === 'click' || this.props.type === 'screenshot')} />
         </div>
       );
     }
     out.push(
-      <button className={'append-button btn ' + (this.state.isEdit ? 'btn-success' : 'btn-primary')} key={out.length}>
+      <button className={'append-button btn ' + (this.props.isEdit ? 'btn-success' : 'btn-primary')} key={out.length}>
         あああ
       </button>
     );
@@ -122,22 +122,23 @@ var Editor = React.createClass({
     return out;
   },
 
+  onChange() {
+  },
+
   onTitleChange() {
-    this.setState({
+    Actions.editorChange({
       title: this.refs['entry-title'].getDOMNode().value
     });
   },
 
   onCssChange() {
-    // TODO: Action.changeCss()
-    console.log(this.refs['entry-css'].getDOMNode().value)
-    this.setState({
+    Actions.editorChange({
       css: this.refs['entry-css'].getDOMNode().value
     });
   },
 
   onSelectChange() {
-    this.setState({
+    Actions.editorChange({
       mode: goog.dom.forms.getValue(this.refs['entry-mode'].getDOMNode()),
       type: goog.dom.forms.getValue(this.refs['entry-type'].getDOMNode())
     });
