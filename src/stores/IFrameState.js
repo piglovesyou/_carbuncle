@@ -20,11 +20,9 @@ module.exports = IFrameState;
 
 
 
-Dispatcher.register(function(action) {
-  switch (action.type) {
-    case 'editorChange':
-      _.extend(_store, action.state);
-      IFrameState.emit(CHANGE_EVENT);
-      break;
-  }
+IFrameState.dispatcherToken = Dispatcher.register(function(action) {
+  // switch (action.type) {
+  //   case 'editorChange':
+  //     break;
+  // }
 });

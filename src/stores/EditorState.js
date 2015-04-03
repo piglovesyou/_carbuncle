@@ -24,11 +24,19 @@ module.exports = EditorState;
 
 
 
-Dispatcher.register(function(action) {
+EditorState.dispatcherToken = Dispatcher.register(function(action) {
   switch (action.type) {
+    case 'locationSubmit':
+      _.extend(_store, {
+        css: '',
+        mode: 'action',
+        type: 'open'
+      });
+      EditorState.emit(CHANGE_EVENT);
+      break;
     case 'editorChange':
       _.extend(_store, action.state);
-      EditorState.emit(CHANGE_EVENT);
+      EditorState.emit(CHANGE_EVENT, {editorState: action.state});
       break;
   }
 });

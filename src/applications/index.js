@@ -16,34 +16,69 @@ var _ = require('underscore');
 var Index = React.createClass({
 
   componentDidMount() {
-    Store.addChangeListener(this._onChange);
-    EditorState.addChangeListener(this._onChange);
-    IFrameState.addChangeListener(this._onChange);
+    Store.addChangeListener(this.onAppStateChange);
+    EditorState.addChangeListener(this.onEditorStateChange);
+    IFrameState.addChangeListener(this.onIFrameStateChange);
   },
 
   componentWillUnmount() {
-    Store.removeChangeListener(this._onChange);
-    EditorState.removeChangeListener(this._onChange);
-    IFrameState.removeChangeListener(this._onChange);
+    Store.removeChangeListener(this.onAppStateChange);
+    EditorState.removeChangeListener(this.onEditorStateChange);
+    IFrameState.removeChangeListener(this.onIFrameStateChange);
   },
 
   getInitialState() {
-    return this.createState();
-  },
-
-  _onChange(primal) {
-    this.setState(this.createState(primal));
-  },
-
-  createState(primal) {
     var store = Store.get();
-    return _.extend({
+    return {
       isSelectingElement: store.isSelectingElement,
       targetElementBounds: store.targetElementBounds,
       editorState: EditorState.get(),
       iframeState: IFrameState.get()
-    }, primal || {});
+    };
   },
+
+  onAppStateChange(primal) {
+    var store = Store.get();
+    this.setState(_.extend({
+      isSelectingElement: store.isSelectingElement,
+      targetElementBounds: store.targetElementBounds,
+      editorState: EditorState.get(),
+      iframeState: IFrameState.get()
+    }, primal || {}));
+  },
+
+  onEditorStateChange(primal) {
+    if (primal && primal.editorState && primal.editorState.css) {
+      return this.setState({
+        targetElementBounds: this.refs.iframe.getBoundsOfCss(primal.editorState.css)
+      });
+    }
+    this.setState({
+      editorState: EditorState.get()
+    });
+  },
+
+  onIFrameStateChange() {
+    return {
+      iframeState: IFrameState.get()
+    };
+  },
+
+  // createState(primal) {
+  //   var store = Store.get();
+  //   if (primal && primal.editorState && primal.editorState.css) {
+  //     // Editor Css is manually changed by a user
+  //     return {
+  //       targetElementBounds: this.refs.iframe.getBoundsOfCss(primal.editorState.css)
+  //     };
+  //   }
+  //   return _.extend({
+  //     isSelectingElement: store.isSelectingElement,
+  //     targetElementBounds: store.targetElementBounds,
+  //     editorState: EditorState.get(),
+  //     iframeState: IFrameState.get()
+  //   }, primal || {});
+  // },
 
   render() {
     return (
@@ -51,7 +86,8 @@ var Index = React.createClass({
         <Nav />
         <Editor {...this.state.editorState} />
         <div className="bottom-content">
-          <IFrame {...this.state.iframeState}
+          <IFrame ref="iframe"
+                  {...this.state.iframeState}
                   isSelectingElement={this.state.isSelectingElement}
           ></IFrame>
           <Scenario></Scenario>

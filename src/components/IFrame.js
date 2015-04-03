@@ -29,7 +29,10 @@ var IFrame = React.createClass({
     return (
       <div className={'iframe' + (this.props.isSelectingElement ? ' iframe--isSelectingElement' : '')}>
         <form className="iframe__form" onSubmit={this.onSubmit} action="">
-          <input type="text" ref="url" placeholder="URLを入力" defaultValue={this.props.url} />
+          <input type="text"
+                 ref="url"
+                 placeholder="URLを入力"
+                 defaultValue={this.props.url} />
           <button className="btn">Go</button>
         </form>
         <iframe ref="iframe"
@@ -52,19 +55,31 @@ var IFrame = React.createClass({
   },
 
   onIframeMove(e) {
-    var et = e.target;
+    Actions.mouseMove(this.getBoundsOfElement(e.target));
+  },
+
+  getBoundsOfElement(element) {
     var iframePos = this.getPosition();
-    var pos = goog.style.getPageOffset(et);
-    Actions.mouseMove(_.extend({
+    var pos = goog.style.getPageOffset(element);
+    return _.extend({
       x: iframePos.x + pos.x,
       y: iframePos.y + pos.y
-    }, goog.style.getBorderBoxSize(et)));
+    }, goog.style.getBorderBoxSize(element));
+  },
+
+  getBoundsOfCss(css) {
+    var element = this.querySelectorSafely(css);
+    if (element) {
+      return this.getBoundsOfElement(element);
+    }
+    return null;
   },
 
   onSubmit(e) {
     e.preventDefault();
-    Actions.locationSubmit(
-        this.refs.url.getDOMNode().value);
+    Actions.locationSubmit({
+      url: this.refs.url.getDOMNode().value
+    });
   },
 
   getPosition() {
@@ -92,7 +107,7 @@ var IFrame = React.createClass({
 
       // Try DOM ID
       var id = node.id && '#' + node.id;
-      if (id && this.isElementExists(id)) {
+      if (id && this.querySelectorSafely(id)) {
         builder.push(id);
         rv.push(builder.join(''));
         break; // Assume the id is always unique in the webpage.
@@ -112,9 +127,9 @@ var IFrame = React.createClass({
     return rv.join(' ');
   },
 
-  isElementExists(css) {
+  querySelectorSafely(css) {
     try {
-      return !!this.getDocument().querySelector(css);
+      return this.getDocument().querySelector(css);
     } catch (e) {}
     return false;
   },

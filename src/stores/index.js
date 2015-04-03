@@ -5,6 +5,8 @@ var assign = require('object-assign');
 var Q = require('q');
 Q.longStackSupport = true;
 var CHANGE_EVENT = 'change';
+var _ = require('underscore');
+var EditorState = require('./EditorState');
 
 var _store = {
   url: '',
@@ -31,12 +33,14 @@ var Store = assign({}, EventEmitter.prototype, {
 });
 module.exports = Store;
 
-Dispatcher.register(function(action) {
+Store.dispatcherToken = Dispatcher.register(function(action) {
   switch(action.type) {
     case 'locationSubmit':
-      _store.url = action.url;
+      _.extend(_store, action.state);
+      Dispatcher.waitFor([EditorState.dispatcherToken]);
       Store.emit(CHANGE_EVENT);
       break;
+
     case 'enableSelectElement':
       _store.isSelectingElement = action.enable;
       if (action.select) {
@@ -44,10 +48,12 @@ Dispatcher.register(function(action) {
       }
       Store.emit(CHANGE_EVENT);
       break;
+
     case 'mouseMove':
-      _store.targetElementBounds = action.bounds;
+      _store.targetElementBounds = action.targetElementBounds;
       Store.emit(CHANGE_EVENT);
       break;
+
     case 'selectIFrameElement':
       _store.isSelectingElement = false;
       Store.emit(CHANGE_EVENT, {editorState: action.selectedIframeElementData});

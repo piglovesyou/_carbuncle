@@ -16,10 +16,10 @@ module.exports = {
       enable: enable
     });
   },
-  mouseMove(bounds) {
+  mouseMove(targetElementBounds) {
     Dispatcher.dispatch({
       type: 'mouseMove',
-      bounds: bounds
+      targetElementBounds
     });
   },
   selectIFrameElement(selectedIframeElementData) {
