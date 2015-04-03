@@ -11,6 +11,7 @@ var Pixel = require('../components/Pixel');
 var Store = require('../stores');
 var EditorState = require('../stores/EditorState');
 var IFrameState = require('../stores/IFrameState');
+var ScenarioState = require('../stores/ScenarioState');
 var _ = require('underscore');
 
 var Index = React.createClass({
@@ -19,21 +20,25 @@ var Index = React.createClass({
     Store.addChangeListener(this.onAppStateChange);
     EditorState.addChangeListener(this.onEditorStateChange);
     IFrameState.addChangeListener(this.onIFrameStateChange);
+    ScenarioState.addChangeListener(this.onScenarioStateChange);
   },
 
   componentWillUnmount() {
     Store.removeChangeListener(this.onAppStateChange);
     EditorState.removeChangeListener(this.onEditorStateChange);
     IFrameState.removeChangeListener(this.onIFrameStateChange);
+    ScenarioState.removeChangeListener(this.onScenarioStateChange);
   },
 
   getInitialState() {
     var store = Store.get();
+    console.log(',,,,,,,', ScenarioState.get())
     return {
       isSelectingElement: store.isSelectingElement,
       targetElementBounds: store.targetElementBounds,
       editorState: EditorState.get(),
-      iframeState: IFrameState.get()
+      iframeState: IFrameState.get(),
+      scenarioState: ScenarioState.get()
     };
   },
 
@@ -65,6 +70,12 @@ var Index = React.createClass({
     };
   },
 
+  onScenarioStateChange() {
+    return {
+      scenarioState: ScenarioState.get()
+    };
+  },
+
   // createState(primal) {
   //   var store = Store.get();
   //   if (primal && primal.editorState && primal.editorState.css) {
@@ -82,6 +93,7 @@ var Index = React.createClass({
   // },
 
   render() {
+    console.log('gggggg', this.state.scenarioState)
     return (
       <div className="app-index">
         <Nav />
@@ -91,7 +103,8 @@ var Index = React.createClass({
                   {...this.state.iframeState}
                   isSelectingElement={this.state.isSelectingElement}
           ></IFrame>
-          <Scenario></Scenario>
+          <Scenario ref="scenario"
+                    {...this.state.scenarioState}></Scenario>
         </div>
         {this.state.isSelectingElement ? <Mask onCancel={this.onMaskCancelled} /> : null}
         {this.state.targetElementBounds ? <Pixel {...this.state.targetElementBounds} /> : null}

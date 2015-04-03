@@ -35,6 +35,13 @@ module.exports = {
       type: 'editorChange',
       state
     });
+  },
+
+  editorSubmit(data) {
+    Dispatcher.dispatch({
+      type: 'editorSubmit',
+      data
+    });
   }
 
 };
