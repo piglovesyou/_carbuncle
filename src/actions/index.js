@@ -4,10 +4,10 @@ var Dispatcher = require('../dispatcher');
 
 
 module.exports = {
-  locationSubmit(url) {
+  locationSubmit(state) {
     Dispatcher.dispatch({
       type: 'locationSubmit',
-      url: url
+      state
     });
   },
   enableSelectElement(enable) {
@@ -25,7 +25,7 @@ module.exports = {
   selectIFrameElement(selectedIframeElementData) {
     Dispatcher.dispatch({
       type: 'selectIFrameElement',
-      selectedIframeElementData: selectedIframeElementData
+      selectedIframeElementData
     });
   },
 

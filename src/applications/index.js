@@ -49,6 +49,7 @@ var Index = React.createClass({
 
   onEditorStateChange(primal) {
     if (primal && primal.editorState && primal.editorState.css) {
+      // Ideally this should be resolved in store phase
       return this.setState({
         targetElementBounds: this.refs.iframe.getBoundsOfCss(primal.editorState.css)
       });

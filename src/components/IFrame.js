@@ -32,7 +32,8 @@ var IFrame = React.createClass({
           <input type="text"
                  ref="url"
                  placeholder="URLを入力"
-                 defaultValue={this.props.url} />
+                 defaultValue={this.props.url}
+                 />
           <button className="btn">Go</button>
         </form>
         <iframe ref="iframe"
@@ -48,8 +49,8 @@ var IFrame = React.createClass({
     e.preventDefault();
     Actions.selectIFrameElement({
       element: e.target,
-      css: this.buildSelector(e.target),
       title: goog.dom.getTextContent(e.target),
+      css: this.buildSelector(e.target),
       mode: 'action'
     });
   },

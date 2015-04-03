@@ -103,7 +103,6 @@ app.Site.prototype.buildSelector = function(targetNode) {
     }
   } while ((node = node.parentNode) && node && node.tagName && node.tagName.toLowerCase() != 'html');
   rv.reverse();
-  // console.log(',,,', rv.join(' '));
   if (this.getDocument().querySelector(rv.join(' ')) !== targetNode) {
     return null;
   }
