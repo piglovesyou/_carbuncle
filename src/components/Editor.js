@@ -127,19 +127,19 @@ var Editor = React.createClass({
 
   onTitleChange() {
     Actions.editorChange({
-      title: this.refs['entry-title'].getDOMNode().value
+      title: goog.dom.forms.getValue(this.refs['entry-title'].getDOMNode())
     });
   },
 
   onCssChange() {
     Actions.editorChange({
-      css: this.refs['entry-css'].getDOMNode().value
+      css: goog.dom.forms.getValue(this.refs['entry-css'].getDOMNode())
     });
   },
 
   onTextChange() {
     Actions.editorChange({
-      css: this.refs['entry-text'].getDOMNode().value
+      text: goog.dom.forms.getValue(this.refs['entry-text'].getDOMNode())
     });
   },
 
@@ -152,6 +152,13 @@ var Editor = React.createClass({
 
   onSubmit(e) {
     e.preventDefault();
+    Actions.editorSubmit({
+      title: goog.dom.forms.getValue(this.refs['entry-title'].getDOMNode()),
+      css: goog.dom.forms.getValue(this.refs['entry-css'].getDOMNode()),
+      text: goog.dom.forms.getValue(this.refs['entry-text'].getDOMNode()),
+      mode: goog.dom.forms.getValue(this.refs['entry-mode'].getDOMNode()),
+      type: goog.dom.forms.getValue(this.refs['entry-type'].getDOMNode())
+    });
   },
 
   onStartSelectElement(e) {
