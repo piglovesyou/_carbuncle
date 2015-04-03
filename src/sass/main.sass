@@ -81,7 +81,7 @@ body,
   border: none
   border-bottom: 1px #ccc solid
 .navbar-brand
-  min-width: 5em
+  min-width: 6em
   text-align: center
 
 .editor
@@ -98,15 +98,87 @@ body,
   margin-left: $grid-gutter-width / 2
   margin-right: $grid-gutter-width / 2
 
-.scenario
+// .scenario
+//   border-top: 1px #ccc solid
+//   display: flex
+//   flex-direction: column
+//   width: 40%
+//   max-width: 480px
+// 
+// .scenario__body
+//   flex: 1
+
+.scenario 
   border-top: 1px #ccc solid
+  width: 40%
   display: flex
   flex-direction: column
-  width: 40%
-  max-width: 480px
+  position: relative
+  background: white
 
-.scenario__body
+.scenario__header 
+  padding: .8em 1.2em .8em
+
+.scenario__header .helptext 
+  padding-left: .6em
+
+.scenario__header .pure-form
+  display: flex 
+.scenario__header .scenario__title
+  flex: 1 
+.scenario__footer 
+  padding: 1em 1.2em
+  text-align: right
+
+.scenario__body 
   flex: 1
+  border-top: 1px #ccc solid
+  border-bottom: 1px #ccc solid
+  margin-left: 1.2em
+  margin-right: 1.2em
+  padding: 0 .6em
+  overflow: auto
+
+.scenario__body-insertblock-wrap 
+  padding: 1em 0 2em
+  text-align: center
+
+.scenario__body-insertblock 
+  display: inline-block
+  margin: -1em
+  padding: 1em
+  text-align: center
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .mask
   position: absolute

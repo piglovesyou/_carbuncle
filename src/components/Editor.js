@@ -109,17 +109,19 @@ var Editor = React.createClass({
       );
     }
     out.push(
-      <button className={'append-button btn ' + (this.props.isEdit ? 'btn-success' : 'btn-primary')} key={out.length}>
-        あああ
+      <button className={'append-button btn' + (this.props.isEdit ? ' btn-success' : ' btn-primary')} key={out.length}>
+        {(this.props.isEdit ? '編集' : '作成')}
       </button>
     );
-    out.push(
-      <a className="quit-edit-button btn btn-link"
-         title="quit editing"
-         href="#"
-         key={out.length}
-      >やめる</a>
-    );
+    if (this.props.isEdit) {
+      out.push(
+        <a className="quit-edit-button btn btn-link"
+           title="quit editing"
+           href="#"
+           key={out.length}
+        >やめる</a>
+      );
+    }
     return out;
   },
 
