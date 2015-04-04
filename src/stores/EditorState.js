@@ -5,9 +5,7 @@ var assign = require('object-assign');
 var _ = require('underscore');
 var {CHANGE_EVENT} = require('../constants');
 
-
-
-var _store = {
+var DEFAULT_STATE = {
   title: '',
   css: '',
   id: '',
@@ -15,6 +13,8 @@ var _store = {
   type: 'click',
   text: ''
 };
+
+var _store = goog.object.clone(DEFAULT_STATE);
 
 var EditorState = assign({}, EventEmitter.prototype, {
   get() {

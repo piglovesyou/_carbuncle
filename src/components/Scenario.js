@@ -7,11 +7,20 @@ var Actions = require('../actions');
 var Entry = React.createClass({
   render() {
     return (
-      <div id={this.props.id} data-id={this.props.id} key={this.props.id} className={'scenario-entry scenario-entry--' + this.props.mode} title={this.props.css}>
+      <div id={this.props.id}
+           data-id={this.props.id}
+           key={this.props.id}
+           className={'scenario-entry scenario-entry--' + this.props.mode}
+           title={this.props.css}>
         <div className="scenario-entry__right">
-          {this.props.mode !== 'block' ? <a className="scenario-entry__edithook" href="">edit</a> : null}
+          {this.props.mode !== 'block' ?
+              <a className="scenario-entry__edithook"
+                 onClick={this.onEditClick}
+                 href="#">edit</a> : null}
           {this.props.mode !== 'block' ? <br /> : null}
-          <a className="scenario-entry__deletehook" onClick={this.onDeleteClick} href="#">del</a>
+          <a className="scenario-entry__deletehook"
+             onClick={this.onDeleteClick}
+             href="#">del</a>
         </div>
         <div className="scenario-entry__title">{this.props.title}</div>
         <div className="scenario-entry__meta">
@@ -21,6 +30,10 @@ var Entry = React.createClass({
         </div>
       </div>
     );
+  },
+  onEditClick(e) {
+    e.preventDefault();
+    e.stopPropagation();
   },
   onDeleteClick(e) {
     e.preventDefault();
