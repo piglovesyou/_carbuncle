@@ -37,10 +37,17 @@ module.exports = {
     });
   },
 
-  editorSubmit(data) {
+  insertEntry(entry) {
     Dispatcher.dispatch({
-      type: 'editorSubmit',
-      data
+      type: 'insertEntry',
+      entry
+    });
+  },
+
+  editEntry(entry) {
+    Dispatcher.dispatch({
+      type: 'editEntry',
+      entry
     });
   }
 

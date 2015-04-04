@@ -14,7 +14,6 @@ var Path = require('path');
 
 var Scenario = React.createClass({
   render() {
-    console.log(777, this.props.isBlock);
     return (
       <div className="scenario">
         <div className="scenario__header">
@@ -26,11 +25,10 @@ var Scenario = React.createClass({
                    title="シナリオのタイトル"
                    placeholder="シナリオのタイトル"
                    />
-            <label for="scenario__block" className="helptext" title="ブロックは他のシナリオのステップにすることができます">
+            <label htmlFor="scenario__block" className="helptext" title="ブロックは他のシナリオのステップにすることができます">
               <input className="scenario__block"
                      id="scenario__block"
                      type="checkbox"
-                     style={{'vertical-align': 'middle'}}
                      checked={!!this.props.isBlock}
                />
               ブロック
@@ -41,13 +39,14 @@ var Scenario = React.createClass({
           <div className="scenario__body-container">
             {this.props.entries.map(entry => {
               return (
-                <div id={entry.id} data-id={entry.id} className={'scenario-entry scenario-entry--' + entry.mode} title={entry.css}>
-                  <div className="scenario-entry--left">
-                    (entry.mode === 'block' ? <a className="scenario-entry--edithook" href="">edit</a> : null)
-                    <a className="scenario-entry--deletehook" href="">del</a>
+                <div id={entry.id} data-id={entry.id} key={entry.id} className={'scenario-entry scenario-entry--' + entry.mode} title={entry.css}>
+                  <div className="scenario-entry__right">
+                    {entry.mode !== 'block' ? <a className="scenario-entry__edithook" href="">edit</a> : null}
+                    {entry.mode !== 'block' ? <br /> : null}
+                    <a className="scenario-entry__deletehook" href="">del</a>
                   </div>
-                  {entry.title}
-                  <div className="scenario-entry--meta">
+                  <div className="scenario-entry__title">{entry.title}</div>
+                  <div className="scenario-entry__meta">
                     {entry.mode}
                     {entry.type ? ', ' + entry.type : ''}
                     {entry.text ? ', ' + entry.text : ''}
@@ -74,10 +73,3 @@ var Scenario = React.createClass({
   }
 });
 module.exports = Scenario;
-
-function pushState(path) {
-  return function(e) {
-    e.preventDefault();
-    HistoryLocation.push(Path.join(__dirname, path));
-  };
-}

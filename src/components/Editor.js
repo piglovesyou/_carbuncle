@@ -10,7 +10,6 @@ var Editor = React.createClass({
               className="editor-form form-horizontal"
               onSubmit={this.onSubmit}
               >
-          <input type="hidden" />
           <div className="editor-topinputs form-group">
             <div className="col-xs-5">
               <input ref="entry-title"
@@ -139,7 +138,7 @@ var Editor = React.createClass({
 
   onTextChange() {
     Actions.editorChange({
-      text: goog.dom.forms.getValue(this.refs['entry-text'].getDOMNode())
+      text: this.refs['entry-text'] ? goog.dom.forms.getValue(this.refs['entry-text'].getDOMNode()) : null
     });
   },
 
@@ -152,12 +151,13 @@ var Editor = React.createClass({
 
   onSubmit(e) {
     e.preventDefault();
-    Actions.editorSubmit({
+    (this.props.isEdit ? Actions.editEntry : Actions.insertEntry)({
+      id: this.props.isEdit ? this.props.id : null,
       title: goog.dom.forms.getValue(this.refs['entry-title'].getDOMNode()),
       css: goog.dom.forms.getValue(this.refs['entry-css'].getDOMNode()),
-      text: goog.dom.forms.getValue(this.refs['entry-text'].getDOMNode()),
       mode: goog.dom.forms.getValue(this.refs['entry-mode'].getDOMNode()),
-      type: goog.dom.forms.getValue(this.refs['entry-type'].getDOMNode())
+      type: goog.dom.forms.getValue(this.refs['entry-type'].getDOMNode()),
+      text: this.refs['entry-text'] ? goog.dom.forms.getValue(this.refs['entry-text'].getDOMNode()) : null
     });
   },
 

@@ -87,6 +87,8 @@ body,
 .editor
   padding: 16px 24px
   background: whitesmoke
+  .form-group
+    margin-bottom: 8px
   .form-group:last-child
     margin-bottom: 0
 .editor-topinputs
@@ -104,11 +106,11 @@ body,
 //   flex-direction: column
 //   width: 40%
 //   max-width: 480px
-// 
+//
 // .scenario__body
 //   flex: 1
 
-.scenario 
+.scenario
   border-top: 1px #ccc solid
   width: 40%
   display: flex
@@ -116,21 +118,21 @@ body,
   position: relative
   background: white
 
-.scenario__header 
+.scenario__header
   padding: .8em 1.2em .8em
 
-.scenario__header .helptext 
+.scenario__header .helptext
   padding-left: .6em
 
 .scenario__header .pure-form
-  display: flex 
+  display: flex
 .scenario__header .scenario__title
-  flex: 1 
-.scenario__footer 
+  flex: 1
+.scenario__footer
   padding: 1em 1.2em
   text-align: right
 
-.scenario__body 
+.scenario__body
   flex: 1
   border-top: 1px #ccc solid
   border-bottom: 1px #ccc solid
@@ -138,12 +140,13 @@ body,
   margin-right: 1.2em
   padding: 0 .6em
   overflow: auto
-
-.scenario__body-insertblock-wrap 
+// .scenario__block
+//   vertical-align: middle
+.scenario__body-insertblock-wrap
   padding: 1em 0 2em
   text-align: center
 
-.scenario__body-insertblock 
+.scenario__body-insertblock
   display: inline-block
   margin: -1em
   padding: 1em
@@ -154,6 +157,43 @@ body,
 
 
 
+
+
+.scenario-entry
+  padding: 10px
+  border-bottom: 1px #d3d3d3 solid
+  font-size: 85%
+
+// .scenario-entry--action
+.scenario-entry--verify
+  background: lemonchiffon
+.scenario-entry--block
+  background: thistle
+
+.scenario-entry--doing
+  background: darkgreen
+.scenario-entry--done
+  background: limegreen
+.scenario-entry--fail
+  background: crimson
+.scenario-entry--done:first-of-type
+  margin-top: 0
+.scenario-entry--fail,
+.scenario-entry--fail a,
+.scenario-entry--fail .scenario-entry-meta,
+.scenario-entry--done,
+.scenario-entry--done a,
+.scenario-entry--done .scenario-entry-meta,
+.scenario-entry--doing,
+.scenario-entry--doing a,
+.scenario-entry--doing .scenario-entry-meta
+  color: white
+
+.scenario-entry__right
+  float: right
+.scenario-entry__meta
+  color: gray
+  clear: both
 
 
 

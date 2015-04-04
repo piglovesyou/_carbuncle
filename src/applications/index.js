@@ -32,7 +32,6 @@ var Index = React.createClass({
 
   getInitialState() {
     var store = Store.get();
-    console.log(',,,,,,,', ScenarioState.get())
     return {
       isSelectingElement: store.isSelectingElement,
       targetElementBounds: store.targetElementBounds,
@@ -65,15 +64,15 @@ var Index = React.createClass({
   },
 
   onIFrameStateChange() {
-    return {
+    this.setState({
       iframeState: IFrameState.get()
-    };
+    });
   },
 
   onScenarioStateChange() {
-    return {
+    this.setState({
       scenarioState: ScenarioState.get()
-    };
+    });
   },
 
   // createState(primal) {
@@ -93,7 +92,6 @@ var Index = React.createClass({
   // },
 
   render() {
-    console.log('gggggg', this.state.scenarioState)
     return (
       <div className="app-index">
         <Nav />
