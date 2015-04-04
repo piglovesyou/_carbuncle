@@ -166,28 +166,28 @@ body,
 
 // .scenario-entry--action
 .scenario-entry--verify
-  background: lemonchiffon
+  background: $state-warning-bg
 .scenario-entry--block
-  background: thistle
+  background: $brand-primary
 
 .scenario-entry--doing
-  background: darkgreen
+  background: $state-success-text
 .scenario-entry--done
-  background: limegreen
+  background: $state-success-bg
 .scenario-entry--fail
-  background: crimson
-.scenario-entry--done:first-of-type
-  margin-top: 0
-.scenario-entry--fail,
-.scenario-entry--fail a,
-.scenario-entry--fail .scenario-entry-meta,
+  background: $state-danger-text
+.scenario-entry--doing,
+.scenario-entry--doing a,
+.scenario-entry--doing .scenario-entry-meta,
 .scenario-entry--done,
 .scenario-entry--done a,
 .scenario-entry--done .scenario-entry-meta,
-.scenario-entry--doing,
-.scenario-entry--doing a,
-.scenario-entry--doing .scenario-entry-meta
+.scenario-entry--fail,
+.scenario-entry--fail a,
+.scenario-entry--fail .scenario-entry-meta
   color: white
+.scenario-entry--done:first-of-type
+  margin-top: 0
 
 .scenario-entry__right
   float: right
