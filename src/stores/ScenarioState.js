@@ -39,8 +39,6 @@ ScenarioState.dispatcherToken = Dispatcher.register(function(action) {
 
 function generateUID(entry) {
   var md5 = new goog.crypt.Md5();
-  md5.update(Date.now());
-  md5.update(entry.title);
-  md5.update(!!entry.isBlock);
+  md5.update(String(Date.now()) + entry.css + entry.mode + entry.type);
   return goog.crypt.byteArrayToHex(md5.digest());
 }
