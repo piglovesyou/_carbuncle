@@ -11,7 +11,6 @@ goog.require('goog.style');
 goog.require('goog.crypt');
 goog.require('goog.crypt.Md5');
 
-goog.exportSymbol('goog.object.extend', goog.object.extend);
 goog.exportSymbol('goog.object.clone', goog.object.clone);
 goog.exportSymbol('goog.dom.forms.getValue', goog.dom.forms.getValue);
 goog.exportSymbol('goog.dom.getFrameContentDocument', goog.dom.getFrameContentDocument);

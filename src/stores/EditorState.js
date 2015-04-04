@@ -53,8 +53,13 @@ EditorState.dispatcherToken = Dispatcher.register(function(action) {
       EditorState.emit(CHANGE_EVENT);
       break;
 
+    case 'insertEntry':
+      _.extend(_store, DEFAULT_STATE);
+      EditorState.emit(CHANGE_EVENT);
+      break;
+
     case 'startEditEntry':
-      goog.object.extend(_store, DEFAULT_STATE, action.entry, {
+      _.extend(_store, DEFAULT_STATE, action.entry, {
         isEdit: true
       });
       EditorState.emit(CHANGE_EVENT);

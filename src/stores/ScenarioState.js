@@ -4,6 +4,7 @@ var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 var _ = require('underscore');
 var {CHANGE_EVENT} = require('../constants');
+var EditorState = require('./EditorState');
 
 
 
@@ -29,6 +30,7 @@ ScenarioState.dispatcherToken = Dispatcher.register(function(action) {
       // TODO
       break;
     case 'insertEntry':
+      Dispatcher.waitFor([EditorState.dispatcherToken]);
       action.entry.id = generateUID(action.entry);
       _store.entries.push(action.entry);
       ScenarioState.emit(CHANGE_EVENT);
