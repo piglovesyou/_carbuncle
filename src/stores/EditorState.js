@@ -44,15 +44,26 @@ EditorState.dispatcherToken = Dispatcher.register(function(action) {
       break;
 
     case 'selectIFrameElement':
-      _store.title = action.selectedIframeElementData.title;
-      _store.css = action.selectedIframeElementData.css;
-      _store.mode = action.selectedIframeElementData.mode;
+      _.extend(_store, DEFAULT_STATE, action.selectedIframeElementData);
       if (_store.type !== 'click' || _store.type !== 'input') {
         _store.type = 'click';
       }
       EditorState.emit(CHANGE_EVENT);
       break;
 
+    case 'deleteEntry':
+      if (_store.id === action.id) {
+        _.extend(_store, DEFAULT_STATE);
+        EditorState.emit(CHANGE_EVENT);
+      }
+      break;
+
+    case 'editEntry':
+      _.extend(_store, DEFAULT_STATE);
+      EditorState.emit(CHANGE_EVENT);
+      break;
+
+    case 'cancelEdit':
     case 'insertEntry':
       _.extend(_store, DEFAULT_STATE);
       EditorState.emit(CHANGE_EVENT);

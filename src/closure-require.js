@@ -24,3 +24,4 @@ goog.exportSymbol('goog.crypt.Md5.prototype.update', goog.crypt.Md5.prototype.up
 goog.exportSymbol('goog.crypt.Md5.prototype.digest', goog.crypt.Md5.prototype.digest);
 goog.exportSymbol('goog.crypt.byteArrayToHex', goog.crypt.byteArrayToHex);
 goog.exportSymbol('goog.array.removeIf', goog.array.removeIf);
+goog.exportSymbol('goog.array.findIndex', goog.array.findIndex);

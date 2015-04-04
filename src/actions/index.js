@@ -58,6 +58,13 @@ module.exports = {
     });
   },
 
+  cancelEdit(id) {
+    Dispatcher.dispatch({
+      type: 'startEditEntry',
+      id
+    });
+  },
+
   startEditEntry(entry) {
     Dispatcher.dispatch({
       type: 'startEditEntry',

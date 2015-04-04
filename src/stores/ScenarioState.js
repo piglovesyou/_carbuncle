@@ -27,10 +27,13 @@ module.exports = ScenarioState;
 ScenarioState.dispatcherToken = Dispatcher.register(function(action) {
   switch (action.type) {
     case 'editEntry':
-      // TODO
+      var i = goog.array.findIndex(_store.entries, entry => action.entry.id === entry.id);
+      if (i < 0) {
+        throw new Error('something wrong with editEntry@ScenarioState');
+      }
+      _store.entries.splice(i, 1, action.entry);
       break;
     case 'insertEntry':
-      Dispatcher.waitFor([EditorState.dispatcherToken]);
       action.entry.id = generateUID(action.entry);
       _store.entries.push(action.entry);
       ScenarioState.emit(CHANGE_EVENT);
@@ -38,7 +41,7 @@ ScenarioState.dispatcherToken = Dispatcher.register(function(action) {
     case 'deleteEntry':
       var deleted = goog.array.removeIf(_store.entries, entry => action.id === entry.id);
       if (!deleted) {
-        throw new Error('something wrong with deleteEntry');
+        throw new Error('something wrong with deleteEntry@ScenarioState');
       }
       ScenarioState.emit(CHANGE_EVENT);
       break;

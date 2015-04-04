@@ -1,5 +1,6 @@
 var React = require('react');
 var Actions = require('../actions');
+var assert = require('assert');
 
 var Editor = React.createClass({
 
@@ -118,10 +119,16 @@ var Editor = React.createClass({
            title="quit editing"
            href="#"
            key={out.length}
+           onClick={this.onCancelClick}
         >やめる</a>
       );
     }
     return out;
+  },
+
+  onCancelClick(e) {
+    assert(this.props.isEdit);
+    Actions.cancelEdit(this.props.id);
   },
 
   onTitleChange() {

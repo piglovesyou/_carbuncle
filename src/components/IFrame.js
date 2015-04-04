@@ -48,7 +48,6 @@ var IFrame = React.createClass({
     e.stopPropagation();
     e.preventDefault();
     Actions.selectIFrameElement({
-      element: e.target,
       title: goog.dom.getTextContent(e.target),
       css: this.buildSelector(e.target),
       mode: 'action'
