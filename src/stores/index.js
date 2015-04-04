@@ -4,7 +4,7 @@ var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 var Q = require('q');
 Q.longStackSupport = true;
-var CHANGE_EVENT = 'change';
+var {CHANGE_EVENT} = require('../constants');
 // var _ = require('underscore');
 // var EditorState = require('./EditorState');
 

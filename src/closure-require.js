@@ -3,6 +3,7 @@
  * @fileoverview I need Closure Library for an utility.
  */
 
+goog.require('goog.array');
 goog.require('goog.dom');
 goog.require('goog.dom.forms');
 goog.require('goog.style');
@@ -20,3 +21,4 @@ goog.exportSymbol('goog.crypt.Md5', goog.crypt.Md5);
 goog.exportSymbol('goog.crypt.Md5.prototype.update', goog.crypt.Md5.prototype.update);
 goog.exportSymbol('goog.crypt.Md5.prototype.digest', goog.crypt.Md5.prototype.digest);
 goog.exportSymbol('goog.crypt.byteArrayToHex', goog.crypt.byteArrayToHex);
+goog.exportSymbol('goog.array.removeIf', goog.array.removeIf);

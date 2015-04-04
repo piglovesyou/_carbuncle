@@ -49,6 +49,13 @@ module.exports = {
       type: 'editEntry',
       entry
     });
+  },
+
+  deleteEntry(id) {
+    Dispatcher.dispatch({
+      type: 'deleteEntry',
+      id
+    });
   }
 
 };

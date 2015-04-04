@@ -2,15 +2,32 @@
 var React = require('react');
 var {HistoryLocation} = require('react-router');
 var Path = require('path');
+var Actions = require('../actions');
 
-// var Item = React.createClass({
-//   render() {
-//     return (
-//       <div className="scenario__item">
-//       </div>
-//     );
-//   }
-// });
+var Entry = React.createClass({
+  render() {
+    return (
+      <div id={this.props.id} data-id={this.props.id} key={this.props.id} className={'scenario-entry scenario-entry--' + this.props.mode} title={this.props.css}>
+        <div className="scenario-entry__right">
+          {this.props.mode !== 'block' ? <a className="scenario-entry__edithook" href="">edit</a> : null}
+          {this.props.mode !== 'block' ? <br /> : null}
+          <a className="scenario-entry__deletehook" onClick={this.onDeleteClick} href="#">del</a>
+        </div>
+        <div className="scenario-entry__title">{this.props.title}</div>
+        <div className="scenario-entry__meta">
+          {this.props.mode}
+          {this.props.type ? ', ' + this.props.type : ''}
+          {this.props.text ? ', ' + this.props.text : ''}
+        </div>
+      </div>
+    );
+  },
+  onDeleteClick(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    Actions.deleteEntry(this.props.id);
+  }
+});
 
 var Scenario = React.createClass({
   render() {
@@ -37,23 +54,7 @@ var Scenario = React.createClass({
         </div>
         <div className="scenario__body">
           <div className="scenario__body-container">
-            {this.props.entries.map(entry => {
-              return (
-                <div id={entry.id} data-id={entry.id} key={entry.id} className={'scenario-entry scenario-entry--' + entry.mode} title={entry.css}>
-                  <div className="scenario-entry__right">
-                    {entry.mode !== 'block' ? <a className="scenario-entry__edithook" href="">edit</a> : null}
-                    {entry.mode !== 'block' ? <br /> : null}
-                    <a className="scenario-entry__deletehook" href="">del</a>
-                  </div>
-                  <div className="scenario-entry__title">{entry.title}</div>
-                  <div className="scenario-entry__meta">
-                    {entry.mode}
-                    {entry.type ? ', ' + entry.type : ''}
-                    {entry.text ? ', ' + entry.text : ''}
-                  </div>
-                </div>
-              );
-            })}
+            {this.props.entries.map(entry => <Entry {...entry} />)}
           </div>
           <div className="scenario__body-insertblock-wrap">
             <a className="scenario__body-insertblock" href="">

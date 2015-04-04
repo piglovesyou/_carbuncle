@@ -3,7 +3,7 @@ var Dispatcher = require('../dispatcher');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 var _ = require('underscore');
-var CHANGE_EVENT = 'change';
+var {CHANGE_EVENT} = require('../constants');
 var EditorState = require('./EditorState');
 var Store = require('./index');
 
