@@ -34,6 +34,7 @@ var Entry = React.createClass({
   onEditClick(e) {
     e.preventDefault();
     e.stopPropagation();
+    Actions.startEditEntry(this.props);
   },
   onDeleteClick(e) {
     e.preventDefault();

@@ -11,7 +11,8 @@ var DEFAULT_STATE = {
   id: '',
   mode: 'action',
   type: 'click',
-  text: ''
+  text: '',
+  isEdit: false
 };
 
 var _store = goog.object.clone(DEFAULT_STATE);
@@ -49,6 +50,13 @@ EditorState.dispatcherToken = Dispatcher.register(function(action) {
       if (_store.type !== 'click' || _store.type !== 'input') {
         _store.type = 'click';
       }
+      EditorState.emit(CHANGE_EVENT);
+      break;
+
+    case 'startEditEntry':
+      goog.object.extend(_store, DEFAULT_STATE, action.entry, {
+        isEdit: true
+      });
       EditorState.emit(CHANGE_EVENT);
       break;
   }
