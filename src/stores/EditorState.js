@@ -44,7 +44,7 @@ EditorState.dispatcherToken = Dispatcher.register(function(action) {
       break;
 
     case 'selectIFrameElement':
-      _.extend(_store, DEFAULT_STATE, action.selectedIframeElementData);
+      _.extend(_store, action.selectedIframeElementData);
       if (_store.type !== 'click' || _store.type !== 'input') {
         _store.type = 'click';
       }
