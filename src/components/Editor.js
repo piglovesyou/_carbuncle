@@ -6,7 +6,7 @@ var Editor = React.createClass({
 
   render() {
     return (
-      <div className="editor">
+      <div className={'editor' + (this.props.isEdit ? ' editor--isedit' : '')}>
         <form action=""
               className="editor-form form-horizontal"
               onSubmit={this.onSubmit}

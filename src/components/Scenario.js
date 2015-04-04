@@ -57,10 +57,12 @@ var Scenario = React.createClass({
                    placeholder="シナリオのタイトル"
                    />
             <label htmlFor="scenario__block" className="helptext" title="ブロックは他のシナリオのステップにすることができます">
-              <input className="scenario__block"
+              <input ref="scenario__block"
+                     className="scenario__block"
                      id="scenario__block"
                      type="checkbox"
                      checked={!!this.props.isBlock}
+                     onChange={this.onBlockChange}
                />
               ブロック
             </label>
@@ -85,6 +87,14 @@ var Scenario = React.createClass({
 
       </div>
     );
+  },
+
+  onBlockChange(e) {
+    e.preventDefault(e);
+    Actions.changeScenario({
+      isBlock: goog.dom.forms.getValue(this.refs['scenario__block'].getDOMNode())
+    });
   }
+
 });
 module.exports = Scenario;

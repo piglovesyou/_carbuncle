@@ -33,16 +33,23 @@ ScenarioState.dispatcherToken = Dispatcher.register(function(action) {
       }
       _store.entries.splice(i, 1, action.entry);
       break;
+
     case 'insertEntry':
       action.entry.id = generateUID(action.entry);
       _store.entries.push(action.entry);
       ScenarioState.emit(CHANGE_EVENT);
       break;
+
     case 'deleteEntry':
       var deleted = goog.array.removeIf(_store.entries, entry => action.id === entry.id);
       if (!deleted) {
         throw new Error('something wrong with deleteEntry@ScenarioState');
       }
+      ScenarioState.emit(CHANGE_EVENT);
+      break;
+
+    case 'changeScenario':
+      _.extend(_store, action.scenario);
       ScenarioState.emit(CHANGE_EVENT);
       break;
   }

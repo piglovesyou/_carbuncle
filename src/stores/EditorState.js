@@ -53,20 +53,14 @@ EditorState.dispatcherToken = Dispatcher.register(function(action) {
 
     case 'deleteEntry':
       if (_store.id === action.id) {
-        _.extend(_store, DEFAULT_STATE);
-        EditorState.emit(CHANGE_EVENT);
+        restore();
       }
       break;
 
     case 'editEntry':
-      _.extend(_store, DEFAULT_STATE);
-      EditorState.emit(CHANGE_EVENT);
-      break;
-
     case 'cancelEdit':
     case 'insertEntry':
-      _.extend(_store, DEFAULT_STATE);
-      EditorState.emit(CHANGE_EVENT);
+      restore();
       break;
 
     case 'startEditEntry':
@@ -77,3 +71,8 @@ EditorState.dispatcherToken = Dispatcher.register(function(action) {
       break;
   }
 });
+
+function restore() {
+  _.extend(_store, DEFAULT_STATE);
+  EditorState.emit(CHANGE_EVENT);
+}

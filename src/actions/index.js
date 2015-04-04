@@ -10,12 +10,14 @@ module.exports = {
       state
     });
   },
+
   enableSelectElement(enable) {
     Dispatcher.dispatch({
       type: 'enableSelectElement',
       enable: enable
     });
   },
+
   mouseMove(targetElementBounds) {
     Dispatcher.dispatch({
       type: 'mouseMove',
@@ -28,7 +30,6 @@ module.exports = {
       selectedIframeElementData
     });
   },
-
 
   editorChange(state) {
     Dispatcher.dispatch({
@@ -60,7 +61,7 @@ module.exports = {
 
   cancelEdit(id) {
     Dispatcher.dispatch({
-      type: 'startEditEntry',
+      type: 'cancelEdit',
       id
     });
   },
@@ -69,6 +70,13 @@ module.exports = {
     Dispatcher.dispatch({
       type: 'startEditEntry',
       entry
+    });
+  },
+
+  changeScenario(scenario) {
+    Dispatcher.dispatch({
+      type: 'changeScenario',
+      scenario
     });
   }
 
