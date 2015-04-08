@@ -24,7 +24,7 @@ module.exports = IFrameState;
 
 IFrameState.dispatcherToken = Dispatcher.register(function(action) {
   switch(action.type) {
-    case 'locationSubmit':
+    case 'locationChange':
       _.extend(_store, action.state);
       Dispatcher.waitFor([EditorState.dispatcherToken]);
       Store.emit(CHANGE_EVENT, action.state);

@@ -8,16 +8,22 @@ var _ = require('underscore');
 var IFrame = React.createClass({
 
   componentDidMount() {
-    this.updateEventHandlerIfNeeded();
+    this.enableSelectingEvent(this.props.isSelectingElement);
+    this.refs.iframe.getDOMNode().addEventListener('load', this.onLoad);
   },
 
   componentDidUpdate() {
-    this.updateEventHandlerIfNeeded();
+    this.enableSelectingEvent(this.props.isSelectingElement);
   },
 
-  updateEventHandlerIfNeeded() {
+  componentDidUnmount() {
+    this.enableSelectingEvent(false);
+    this.refs.iframe.getDOMNode().removeEventListener('load', this.onLoad);
+  },
+
+  enableSelectingEvent(enable) {
     var d = this.getDocument();
-    if (this.props.isSelectingElement) {
+    if (enable) {
       d.addEventListener('click', this.onIframeClick, true);
       d.addEventListener('mousemove', this.onIframeMove, true);
     } else {
@@ -77,8 +83,16 @@ var IFrame = React.createClass({
 
   onSubmit(e) {
     e.preventDefault();
-    Actions.locationSubmit({
+    Actions.locationChange({
       url: this.refs.url.getDOMNode().value
+    });
+  },
+
+  onLoad(e) {
+    e.preventDefault();
+    Actions.locationChange({
+      url: this.refs.url.getDOMNode().value,
+      title: this.getDocument().title
     });
   },
 

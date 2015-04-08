@@ -4,9 +4,9 @@ var Dispatcher = require('../dispatcher');
 
 
 module.exports = {
-  locationSubmit(state) {
+  locationChange(state) {
     Dispatcher.dispatch({
-      type: 'locationSubmit',
+      type: 'locationChange',
       state
     });
   },
