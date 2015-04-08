@@ -27,6 +27,7 @@ $btn-default-border: darken(#e0e3e5, 5%)
 $grid-gutter-width: 8px
 
 $input-color-placeholder: $gray-lighter
+$input-border: $gray-lighter
 
 $navbar-default-bg: transparent
 $navbar-default-brand-color: $gray
@@ -37,6 +38,21 @@ $navbar-margin-bottom: 0
 
 @import _bootstrap
 @import font-awesome
+
+
+$layout-border-color: $gray-lighter
+
+
+.form-control
+  border-color: transparent transparent $input-border
+  box-shadow: none
+  background-color: transparent
+  &:hover
+    background: $state-warning-bg
+  &:focus
+    @include box-shadow(inset 0 1px 1px rgba(0,0,0,.075))
+    @include form-control-focus
+    background-color: $input-bg
 
 
 body,
@@ -79,7 +95,7 @@ body,
 
 .navbar
   border: none
-  border-bottom: 1px #ccc solid
+  border-bottom: 1px $layout-border-color solid
 .navbar-brand
   min-width: 6em
   text-align: center
@@ -102,18 +118,8 @@ body,
   margin-left: $grid-gutter-width / 2
   margin-right: $grid-gutter-width / 2
 
-// .scenario
-//   border-top: 1px #ccc solid
-//   display: flex
-//   flex-direction: column
-//   width: 40%
-//   max-width: 480px
-//
-// .scenario__body
-//   flex: 1
-
 .scenario
-  border-top: 1px #ccc solid
+  border-top: 1px $gray-lighter solid
   width: 40%
   display: flex
   flex-direction: column
@@ -134,8 +140,8 @@ body,
 
 .scenario__body
   flex: 1
-  border-top: 1px #ccc solid
-  border-bottom: 1px #ccc solid
+  border-top: 1px $layout-border-color solid
+  border-bottom: 1px $layout-border-color solid
   margin-left: 1.2em
   margin-right: 1.2em
   padding: 0 .6em
