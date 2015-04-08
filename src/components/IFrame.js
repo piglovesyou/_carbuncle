@@ -10,6 +10,7 @@ var IFrame = React.createClass({
   componentDidMount() {
     this.updateEventHandlerIfNeeded();
   },
+
   componentDidUpdate() {
     this.updateEventHandlerIfNeeded();
   },

@@ -1,7 +1,5 @@
 
 var React = require('react');
-var {HistoryLocation} = require('react-router');
-var Path = require('path');
 var Actions = require('../actions');
 
 var Entry = React.createClass({
@@ -9,7 +7,6 @@ var Entry = React.createClass({
     return (
       <div id={this.props.id}
            data-id={this.props.id}
-           key={this.props.id}
            className={'scenario-entry scenario-entry--' + this.props.mode}
            title={this.props.css}>
         <div className="scenario-entry__right">
@@ -22,7 +19,10 @@ var Entry = React.createClass({
              onClick={this.onDeleteClick}
              href="#">del</a>
         </div>
-        <div className="scenario-entry__title">{this.props.title}</div>
+        <div className="scenario-entry__title">
+          {this.renderIcon()}
+          {this.props.title}
+        </div>
         <div className="scenario-entry__meta">
           {this.props.mode}
           {this.props.type ? ', ' + this.props.type : ''}
@@ -40,6 +40,25 @@ var Entry = React.createClass({
     e.preventDefault();
     e.stopPropagation();
     Actions.deleteEntry(this.props.id);
+  },
+  renderIcon() {
+    var iconKey;
+    if (this.props.mode === 'action') {
+      switch(this.props.type) {
+        case 'click': iconKey = 'bullseye'; break;
+        case 'input': iconKey = 'pencil'; break;
+        case 'open': iconKey = 'globe'; break;
+        case 'screenshot': iconKey = 'camera'; break;
+      }
+    } else if (this.props.mode === 'verify') {
+      iconKey = 'check-square-o';
+    } else if (this.props.mode === 'block') {
+      iconKey = 'cube';
+    }
+    if (iconKey) {
+      return <i className={'fa fa-' + iconKey}></i>;
+    }
+    return null;
   }
 });
 
@@ -70,7 +89,7 @@ var Scenario = React.createClass({
         </div>
         <div className="scenario__body">
           <div className="scenario__body-container">
-            {this.props.entries.map(entry => <Entry {...entry} />)}
+            {this.props.entries.map(entry => <Entry {...entry} key={entry.id} />)}
           </div>
           <div className="scenario__body-insertblock-wrap">
             <a className="scenario__body-insertblock" href="">

@@ -24,6 +24,7 @@ module.exports = {
       targetElementBounds
     });
   },
+
   selectIFrameElement(selectedIframeElementData) {
     Dispatcher.dispatch({
       type: 'selectIFrameElement',

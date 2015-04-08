@@ -110,7 +110,7 @@ var Editor = React.createClass({
     }
     out.push(
       <button className={'append-button btn' + (this.props.isEdit ? ' btn-success' : ' btn-primary')} key={out.length}>
-        {(this.props.isEdit ? '編集' : '作成')}
+        {(this.props.isEdit ? '編集' : '追加')}
       </button>
     );
     if (this.props.isEdit) {
@@ -126,7 +126,7 @@ var Editor = React.createClass({
     return out;
   },
 
-  onCancelClick(e) {
+  onCancelClick() {
     assert(this.props.isEdit);
     Actions.cancelEdit(this.props.id);
   },
