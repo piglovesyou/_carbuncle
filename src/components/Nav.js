@@ -1,4 +1,5 @@
 var React = require('react');
+var {Link} = require('react-router');
 
 var Nav = React.createClass({
   render() {
@@ -6,12 +7,12 @@ var Nav = React.createClass({
       <nav className="navbar navbar-default">
         <div className="container-fluid">
           <div className="navbar-header">
-            <a className="navbar-brand" href="#">Carbuncle</a>
+            <Link to="/" className="navbar-brand">Carbuncle</Link>
           </div>
           <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul className="nav navbar-nav">
-              <li className="active"><a href="#">Link</a></li>
-              <li><a href="#">Link</a></li>
+              <li><Link to="/">Main</Link></li>
+              <li><Link to="setting">Setting</Link></li>
             </ul>
 
             <ul className="nav navbar-nav navbar-right">

@@ -75,25 +75,9 @@ var Index = React.createClass({
     });
   },
 
-  // createState(primal) {
-  //   var store = Store.get();
-  //   if (primal && primal.editorState && primal.editorState.css) {
-  //     // Editor Css is manually changed by a user
-  //     return {
-  //       targetElementBounds: this.refs.iframe.getBoundsOfCss(primal.editorState.css)
-  //     };
-  //   }
-  //   return _.extend({
-  //     isSelectingElement: store.isSelectingElement,
-  //     targetElementBounds: store.targetElementBounds,
-  //     editorState: EditorState.get(),
-  //     iframeState: IFrameState.get()
-  //   }, primal || {});
-  // },
-
   render() {
     return (
-      <div className="app-index">
+      <div className="app-root app-root--index">
         <Nav />
         <Editor {...this.state.editorState} />
         <div className="bottom-content">

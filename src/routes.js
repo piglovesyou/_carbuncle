@@ -31,9 +31,8 @@ var NotFound = React.createClass({
 
 module.exports = (
   <Route handler={RootApp}>
-    <Route handler={Index} name="index" path={Path.resolve(__dirname, 'index')} />
-    <Route handler={Index} name="landed" path={Path.resolve(__dirname, 'index.html')} />
-    <Route handler={Setting} name="setting" path={Path.resolve(__dirname, 'setting')} />
+    <Route handler={Index} name="index" path={Path.resolve(__dirname, '/')} />
+    <Route handler={Setting} name="setting" path={Path.resolve(__dirname, '/setting')} />
     <NotFoundRoute handler={NotFound} />
   </Route>
 );
