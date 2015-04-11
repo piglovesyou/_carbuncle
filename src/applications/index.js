@@ -1,4 +1,5 @@
 
+var _ = require('underscore');
 var React = require('react');
 var Actions = require('../actions');
 var Nav = require('../components/Nav');
@@ -12,7 +13,8 @@ var Store = require('../stores');
 var EditorState = require('../stores/EditorState');
 var IFrameState = require('../stores/IFrameState');
 var ScenarioState = require('../stores/ScenarioState');
-var _ = require('underscore');
+var Setting = require('../stores/Setting');
+
 
 var Index = React.createClass({
 

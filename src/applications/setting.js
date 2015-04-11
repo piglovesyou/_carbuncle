@@ -1,6 +1,8 @@
 
 var React = require('react');
 var Nav = require('../components/Nav');
+var Actions = require('../actions');
+var assert = require('assert');
 
 var Setting = React.createClass({
 
@@ -64,7 +66,12 @@ var Setting = React.createClass({
   },
 
   onChange(e) {
-    console.log(e);
+    var form = {};
+    var name = e.target.id;
+    var value = goog.dom.forms.getValue(e.target);
+    assert(~['database', 'username', 'password'].indexOf(name));
+    form[name] = value;
+    Actions.changeSetting(form);
   }
 
 });

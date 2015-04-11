@@ -10,11 +10,11 @@
     global.window = window;
     global.document = document;
     global.navigator = navigator;
-    global.nw = {
-      gui: require('nw.gui')
-    };
+    global.nw = { gui: require('nw.gui') };
+
+    require('node-jsx').install({ harmony: true });
     require('./closure-require');
-    require('./bundle');
+    require('../src/main');
   </script>
 </body>
 </html>

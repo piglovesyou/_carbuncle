@@ -79,6 +79,13 @@ module.exports = {
       type: 'changeScenario',
       scenario
     });
+  },
+
+  changeSetting(form) {
+    Dispatcher.dispatch({
+      type: 'changeSetting',
+      form
+    });
   }
 
 };
