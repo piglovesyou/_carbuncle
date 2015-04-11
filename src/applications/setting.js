@@ -2,9 +2,26 @@
 var React = require('react');
 var Nav = require('../components/Nav');
 var Actions = require('../actions');
-var assert = require('assert');
+var SettingState = require('../stores/SettingState');
 
 var Setting = React.createClass({
+
+  componentDidMount() {
+    SettingState.addChangeListener(this.onStateChange);
+    SettingState.authenticate();
+  },
+
+  componentWillUnmount() {
+    SettingState.removeChangeListener(this.onStateChange);
+  },
+
+  getInitialState() {
+    return SettingState.get();
+  },
+
+  onStateChange() {
+    this.setState(SettingState.get());
+  },
 
   render() {
     return (
@@ -20,13 +37,14 @@ var Setting = React.createClass({
                 <div className="col-xs-7">
                   <input className="form-control"
                          type="text"
+                         ref="database"
                          id="database"
-                         placeholder="mongodb://127.0.0.1:27017/dbname"
-                         defaultValue="mongodb://127.0.0.1:27017/carbuncle"
+                         placeholder="mongodb://127.0.0.1:27017/name"
+                         defaultValue={window.localStorage.database}
                          onChange={this.onChange} />
                 </div>
                 <div className="col-xs-2">
-                  <i className="fa fa-check"></i>
+                  {this.createOkOrNgIcon(this.state.databaseConnected)}
                 </div>
               </div>
 
@@ -35,12 +53,14 @@ var Setting = React.createClass({
                 <div className="col-xs-7">
                   <input className="form-control"
                          type="text"
+                         ref="username"
                          id="username"
-                         placeholder="piglovesyou"
+                         placeholder="Username"
+                         defaultValue={window.localStorage.username}
                          onChange={this.onChange} />
                 </div>
                 <div className="col-xs-2">
-                  <i className="fa fa-check"></i>
+                  {this.createOkOrNgIcon(this.state.authenticated)}
                 </div>
               </div>
 
@@ -49,12 +69,14 @@ var Setting = React.createClass({
                 <div className="col-xs-7">
                   <input className="form-control"
                          type="text"
+                         ref="password"
                          id="password"
+                         defaultValue={window.localStorage.password}
                          placeholder="●●●●●●●"
                          onChange={this.onChange} />
                 </div>
                 <div className="col-xs-2">
-                  <i className="fa fa-close"></i>
+                  {this.createOkOrNgIcon(this.state.authenticated)}
                 </div>
               </div>
 
@@ -65,13 +87,18 @@ var Setting = React.createClass({
     );
   },
 
+  createOkOrNgIcon(ok) {
+    return ok === true ? <i className="fa fa-check"></i> :
+           ok === false ? <i className="fa fa-close"></i> : null;
+  },
+
   onChange(e) {
-    var form = {};
-    var name = e.target.id;
-    var value = goog.dom.forms.getValue(e.target);
-    assert(~['database', 'username', 'password'].indexOf(name));
-    form[name] = value;
-    Actions.changeSetting(form);
+    e.preventDefault();
+    Actions.changeSetting({
+      database: goog.dom.forms.getValue(this.refs.database.getDOMNode()),
+      username: goog.dom.forms.getValue(this.refs.username.getDOMNode()),
+      password: goog.dom.forms.getValue(this.refs.password.getDOMNode())
+    });
   }
 
 });
