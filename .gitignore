@@ -10,3 +10,4 @@ phantomjsdriver.log
 bower_components
 dist/css
 dist/*.js
+t.js

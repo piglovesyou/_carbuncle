@@ -10,6 +10,7 @@ goog.require('goog.dom.forms');
 goog.require('goog.style');
 goog.require('goog.crypt');
 goog.require('goog.crypt.Md5');
+goog.require('goog.string');
 
 goog.exportSymbol('goog.object.clone', goog.object.clone);
 goog.exportSymbol('goog.dom.forms.getValue', goog.dom.forms.getValue);
@@ -25,3 +26,7 @@ goog.exportSymbol('goog.crypt.Md5.prototype.digest', goog.crypt.Md5.prototype.di
 goog.exportSymbol('goog.crypt.byteArrayToHex', goog.crypt.byteArrayToHex);
 goog.exportSymbol('goog.array.removeIf', goog.array.removeIf);
 goog.exportSymbol('goog.array.findIndex', goog.array.findIndex);
+goog.exportSymbol('goog.string.equal', goog.string.equal);
+goog.exportSymbol('goog.string.contains', goog.string.contains);
+goog.exportSymbol('goog.string.startsWith', goog.string.startsWith);
+goog.exportSymbol('goog.string.endsWith', goog.string.endsWith);

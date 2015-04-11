@@ -3,8 +3,8 @@ var FS = require('fs');
 var Path = require('path');
 var mkdirp = require('mkdirp');
 var webdriver = require('selenium-webdriver');
-global.goog = require('closure').Closure({ CLOSURE_BASE_PATH: 'libs/closure-library/closure/goog/' });
-goog.require('goog.string');
+// global.goog = require('closure').Closure({ CLOSURE_BASE_PATH: 'libs/closure-library/closure/goog/' });
+// goog.require('goog.string');
 var Q = require('q');
 Q.longStackSupport = true;
 var util = require('util');
@@ -13,7 +13,7 @@ var Url = require('url');
 
 
 
-module.exports.Executor = Executor;
+module.exports = Executor;
 
 
 
@@ -132,15 +132,15 @@ function verify(type, context, entry) {
 
 
 
-
 /**
  * @constructor
  */
 function Context() {
   Object.defineProperty(this, 'driver_', {
-    value: new webdriver.Builder().
-        withCapabilities(webdriver.Capabilities.phantomjs()).
-        build()
+    value: new webdriver.Builder()
+        // withCapabilities(webdriver.Capabilities.phantomjs()).
+        .withCapabilities(webdriver.Capabilities.chrome())
+        .build()
   });
   this.driver_.manage().window().setSize(800, 600);
   Object.seal(this);

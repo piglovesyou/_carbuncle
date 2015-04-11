@@ -99,9 +99,15 @@ var Scenario = React.createClass({
           </div>
         </div>
         <div className="scenario__footer">
-          <a className={'btn btn-success scenario__footer-preview' + (this.props.disabled ? ' btn-disabled' : '')} href="">試す</a>&nbsp;
-          <a className={'btn btn-danger scenario__footer-create' + (this.props.disabled ? ' btn-disabled' : '')} href="">新規</a>&nbsp;
-          <a className={'btn btn-primary scenario__footer-save' + (this.props.disabled ? ' btn-disabled' : '')} href="">保存</a>
+          <a onClick={!this.props.disabled ? this.onPreviewClick : function(){}}
+             className={'btn btn-success scenario__footer-preview' + (this.props.disabled ? ' btn-disabled' : '')}
+             href="#">試す</a>&nbsp;
+          <a onClick={!this.props.disabled ? this.onPreviewClick : function(){}}
+             className={'btn btn-danger scenario__footer-create' + (this.props.disabled ? ' btn-disabled' : '')}
+             href="">新規</a>&nbsp;
+          <a onClick={!this.props.disabled ? this.onPreviewClick : function(){}}
+             className={'btn btn-primary scenario__footer-save' + (this.props.disabled ? ' btn-disabled' : '')}
+             href="">保存</a>
         </div>
 
       </div>
@@ -113,6 +119,10 @@ var Scenario = React.createClass({
     Actions.changeScenario({
       isBlock: goog.dom.forms.getValue(this.refs['scenario__block'].getDOMNode())
     });
+  },
+
+  onPreviewClick() {
+    Actions.preview();
   }
 
 });

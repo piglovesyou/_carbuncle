@@ -5,6 +5,7 @@ var assign = require('object-assign');
 var _ = require('underscore');
 var {CHANGE_EVENT} = require('../constants');
 var EditorState = require('./EditorState');
+var Executor = require('../core/Executor');
 
 
 
@@ -51,6 +52,14 @@ ScenarioState.dispatcherToken = Dispatcher.register(function(action) {
     case 'changeScenario':
       _.extend(_store, action.scenario);
       ScenarioState.emit(CHANGE_EVENT);
+      break;
+
+    case 'preview':
+      var executor = new Executor(_store.entries);
+      executor.on('before', entry => console.log('before', entry))
+      executor.on('pass', entry => console.log('before', entry))
+      executor.on('fail', entry => console.log('before', entry))
+
       break;
   }
 });

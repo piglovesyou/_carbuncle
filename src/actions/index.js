@@ -86,6 +86,12 @@ module.exports = {
       type: 'changeSetting',
       form
     });
+  },
+
+  preview() {
+    Dispatcher.dispatch({
+      type: 'preview'
+    });
   }
 
 };
