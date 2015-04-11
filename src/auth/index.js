@@ -2,6 +2,7 @@
 var Q = require('q');
 Q.longStackSupport = true;
 var {MongoClient} = require('mongodb');
+var _ = require('underscore');
 
 
 
@@ -12,16 +13,17 @@ module.exports = {
 
 
 
-var _store = global.window.localStorage;
-
 var database = null;
-var lastDatabaseUri = null;
+var authenticated = false;
+var lastState = getState();
+
 function connectDatabase() {
-  if (database && lastDatabaseUri === _store.database) {
+  var state = getState();
+  if (database && lastState.database === state.database) {
     return Q(database);
   } else {
-    lastDatabaseUri = _store.database;
-    return Q.nfcall(MongoClient.connect, _store.database, {'native_parser': true, options: { w: 1 }})
+    lastState = state;
+    return Q.nfcall(MongoClient.connect, state.database, {'native_parser': true, options: { w: 1 }})
     .then(d => {
       console.log('Newly connected to a database');
       database = d;
@@ -35,11 +37,29 @@ function connectDatabase() {
 }
 
 function authenticate() {
-  return connectDatabase()
-  .then(db => {
-    return Q.ninvoke(db,
-        'authenticate',
-        _store.username || '',
-        _store.password || '');
-  });
+  var state = getState();
+  if (database && authenticated && _.isEqual(lastState, state)) {
+    return Q(database);
+  } else {
+    return connectDatabase()
+    .then(db => {
+      return Q.ninvoke(db, 'authenticate', state.username || '', state.password || '')
+      .then(() => {
+        authenticated = true;
+        return database;
+      })
+      .catch(err => {
+        authenticated = false;
+        throw err;
+      });
+    });
+  }
+}
+
+function getState() {
+  return {
+    database: global.window.localStorage.database,
+    username: global.window.localStorage.username,
+    password: global.window.localStorage.password
+  };
 }

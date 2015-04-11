@@ -45,10 +45,13 @@ EditorState.dispatcherToken = Dispatcher.register(function(action) {
       break;
 
     case 'selectIFrameElement':
+      var elementRef = action.selectedIframeElementData.elementRef;
+      delete action.selectedIframeElementData.elementRef;
       _.extend(_store, action.selectedIframeElementData);
       if (_store.mode === 'action' && (_store.type !== 'click' || _store.type !== 'input')) {
-        _store.type = 'click';
+        _store.type = candidateType(elementRef);
       }
+      _store.text = '';
       EditorState.emit(CHANGE_EVENT);
       break;
 
@@ -72,6 +75,31 @@ EditorState.dispatcherToken = Dispatcher.register(function(action) {
       break;
   }
 });
+
+function candidateType(el) {
+  var type = el.type; // Assume it's "input".
+  if (type == null) {
+    return 'click';
+  }
+  switch (type.toLowerCase()) {
+    case 'color':
+    case 'date':
+    case 'datetime':
+    case 'datetime-local':
+    case 'email':
+    case 'month':
+    case 'number':
+    case 'password':
+    case 'tel':
+    case 'text':
+    case 'textarea':
+    case 'time':
+    case 'url':
+    case 'week':
+      return 'input';
+  }
+  return 'click';
+}
 
 function restore() {
   _.extend(_store, DEFAULT_STATE);
