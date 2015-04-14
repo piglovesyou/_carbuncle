@@ -5,3 +5,4 @@ var routes = require('./routes');
 Router.run(routes, function (Handler) {
   React.render(<Handler />, document.body);
 });
+

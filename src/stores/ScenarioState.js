@@ -55,10 +55,13 @@ ScenarioState.dispatcherToken = Dispatcher.register(function(action) {
       break;
 
     case 'preview':
-      var executor = new Executor(_store.entries);
-      executor.on('before', entry => console.log('before', entry))
-      executor.on('pass', entry => console.log('before', entry))
-      executor.on('fail', entry => console.log('before', entry))
+
+      setTimeout(() => { // I don't know why I need this. Obviously it's nw's bug.
+        var executor = new Executor(_store.entries);
+        executor.on('before', entry => console.log('before', entry))
+        executor.on('pass', entry => console.log('before', entry))
+        executor.on('fail', entry => console.log('before', entry))
+      }, 0);
 
       break;
   }
