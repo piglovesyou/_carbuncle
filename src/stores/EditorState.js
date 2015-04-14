@@ -44,6 +44,9 @@ EditorState.dispatcherToken = Dispatcher.register(function(action) {
       EditorState.emit(CHANGE_EVENT, {editorState: action.state});
       break;
 
+    case 'iframeScroll':
+      EditorState.emit(CHANGE_EVENT, {editorState: EditorState.get()});
+
     case 'selectIFrameElement':
       var elementRef = action.selectedIframeElementData.elementRef;
       delete action.selectedIframeElementData.elementRef;

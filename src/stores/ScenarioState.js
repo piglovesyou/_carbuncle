@@ -57,7 +57,7 @@ ScenarioState.dispatcherToken = Dispatcher.register(function(action) {
     case 'preview':
 
       setTimeout(() => { // I don't know why I need this. Obviously it's nw's bug.
-        var executor = new Executor(_store.entries);
+        var executor = new Executor(_store.entries, 400);
         executor.on('before', entry => console.log('before', entry))
         executor.on('pass', entry => console.log('before', entry))
         executor.on('fail', entry => console.log('before', entry))

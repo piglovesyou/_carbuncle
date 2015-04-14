@@ -84,6 +84,7 @@ var IFrame = React.createClass({
 
   onSubmit(e) {
     e.preventDefault();
+    this.getDocument().removeEventListener('scroll', this.onScroll);
     Actions.locationChange({
       url: this.refs.url.getDOMNode().value
     });
@@ -91,10 +92,15 @@ var IFrame = React.createClass({
 
   onLoad(e) {
     e.preventDefault();
+    this.getDocument().addEventListener('scroll', this.onScroll);
     Actions.locationChange({
       url: this.refs.url.getDOMNode().value,
       title: this.getDocument().title
     });
+  },
+
+  onScroll(e) {
+    Actions.iframeScroll();
   },
 
   getPosition() {

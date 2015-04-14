@@ -92,6 +92,12 @@ module.exports = {
     Dispatcher.dispatch({
       type: 'preview'
     });
-  }
+  },
+
+  iframeScroll() {
+    Dispatcher.dispatch({
+      type: 'iframeScroll'
+    });
+  },
 
 };
