@@ -100,4 +100,10 @@ module.exports = {
     });
   },
 
+  saveScenario() {
+    Dispatcher.dispatch({
+      type: 'saveScenario'
+    });
+  }
+
 };

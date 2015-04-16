@@ -8,7 +8,8 @@ var _ = require('underscore');
 
 module.exports = {
   connectDatabase,
-  authenticate
+  authenticate,
+  getDB
 };
 
 
@@ -16,6 +17,10 @@ module.exports = {
 var database = null;
 var authenticated = false;
 var lastState = getState();
+
+function getDB() {
+  return authenticate();
+}
 
 function connectDatabase() {
   var state = getState();

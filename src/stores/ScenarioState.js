@@ -6,15 +6,23 @@ var _ = require('underscore');
 var {CHANGE_EVENT} = require('../constants');
 var EditorState = require('./EditorState');
 var Executor = require('../core/Executor');
+var Persist = require('../persist');
 
 
 
-var _store = {
-  id: '',
-  title: '',
-  entries: [],
-  isBlock: true//false
-};
+var _store;
+try {
+  _store = JSON.parse(window.localStorage.lastScenarioStore);
+} catch(e) {
+  _store = {
+    _id: undefined,
+    title: '',
+    entries: [],
+    isBlock: false
+  };
+}
+
+
 
 var ScenarioState = assign({}, EventEmitter.prototype, {
   get() {
@@ -22,6 +30,10 @@ var ScenarioState = assign({}, EventEmitter.prototype, {
   }
 }, require('./_mixins'));
 module.exports = ScenarioState;
+
+ScenarioState.on(CHANGE_EVENT, () => {
+  window.localStorage.lastScenarioStore = JSON.stringify(_store);
+});
 
 
 
@@ -61,8 +73,18 @@ ScenarioState.dispatcherToken = Dispatcher.register(function(action) {
         executor.on('before', entry => console.log('before', entry))
         executor.on('pass', entry => console.log('before', entry))
         executor.on('fail', entry => console.log('before', entry))
-      }, 0);
+      }, 50);
 
+      break;
+    case 'saveScenario':
+      Persist.saveScenario(ScenarioState.get())
+      .then(function() {
+        // TODO
+        console.log('-------', arguments);
+      })
+      .catch(function() {
+        console.log('xxx', arguments);
+      })
       break;
   }
 });
