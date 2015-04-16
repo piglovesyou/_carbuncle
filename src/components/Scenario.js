@@ -69,11 +69,13 @@ var Scenario = React.createClass({
         <div className="scenario__header">
           <form action="" className="pure-form">
             <input className="scenario__id" type="hidden"
-                   value={this.props.id || null} />
+                   value={this.props._id || null} />
             <input className="scenario__title form-control"
+                   ref="scenario__title"
                    type="text"
                    title="シナリオのタイトル"
                    placeholder="シナリオのタイトル"
+                   onChange={this.onChange}
                    />
             <label htmlFor="scenario__block" className="helptext" title="ブロックは他のシナリオのステップにすることができます">
               <input ref="scenario__block"
@@ -81,7 +83,7 @@ var Scenario = React.createClass({
                      id="scenario__block"
                      type="checkbox"
                      checked={!!this.props.isBlock}
-                     onChange={this.onBlockChange}
+                     onChange={this.onChange}
                />
               ブロック
             </label>
@@ -105,7 +107,7 @@ var Scenario = React.createClass({
           <a onClick={!this.props.disabled ? this.onPreviewClick : function(){}}
              className={'btn btn-danger scenario__footer-create' + (this.props.disabled ? ' btn-disabled' : '')}
              href="">新規</a>&nbsp;
-          <a onClick={!this.props.disabled ? this.onPreviewClick : function(){}}
+          <a onClick={!this.props.disabled ? this.onSaveClick : function(){}}
              className={'btn btn-primary scenario__footer-save' + (this.props.disabled ? ' btn-disabled' : '')}
              href="">保存</a>
         </div>
@@ -114,10 +116,16 @@ var Scenario = React.createClass({
     );
   },
 
-  onBlockChange(e) {
+  onSaveClick(e) {
+    e.preventDefault(e);
+    Actions.saveScenario();
+  },
+
+  onChange(e) {
     e.preventDefault(e);
     Actions.changeScenario({
-      isBlock: goog.dom.forms.getValue(this.refs['scenario__block'].getDOMNode())
+      title: goog.dom.forms.getValue(this.refs['scenario__title'].getDOMNode()),
+      isBlock: goog.dom.forms.getValue(this.refs['scenario__block'].getDOMNode()),
     });
   },
 
