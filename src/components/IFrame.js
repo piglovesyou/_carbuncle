@@ -94,7 +94,7 @@ var IFrame = React.createClass({
     e.preventDefault();
     this.getDocument().addEventListener('scroll', this.onScroll);
     Actions.locationChange({
-      url: this.refs.url.getDOMNode().value,
+      url: this.refs.iframe.getDOMNode().contentWindow.location.href,
       title: this.getDocument().title
     });
   },

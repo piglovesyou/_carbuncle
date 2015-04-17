@@ -103,13 +103,13 @@ var Scenario = React.createClass({
         <div className="scenario__footer">
           <a onClick={!this.props.disabled ? this.onPreviewClick : function(){}}
              className={'btn btn-success scenario__footer-preview' + (this.props.disabled ? ' btn-disabled' : '')}
-             href="#">試す</a>&nbsp;
+             href="#"><i className="fa fa-rocket"></i> 試す</a>&nbsp;
           <a onClick={!this.props.disabled ? this.onPreviewClick : function(){}}
              className={'btn btn-danger scenario__footer-create' + (this.props.disabled ? ' btn-disabled' : '')}
-             href="">新規</a>&nbsp;
-          <a onClick={!this.props.disabled ? this.onSaveClick : function(){}}
+             href="#"><i className="fa fa-file-text"></i> 新規</a>&nbsp;
+          <a onClick={!this.props.disabled ? this.onPreviewClick : function(){}}
              className={'btn btn-primary scenario__footer-save' + (this.props.disabled ? ' btn-disabled' : '')}
-             href="">保存</a>
+             href="#"><i className="fa fa-hdd-o"></i> 保存</a>
         </div>
 
       </div>
