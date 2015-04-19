@@ -10,6 +10,8 @@ var IFrame = React.createClass({
   componentDidMount() {
     this.enableSelectingEvent(this.props.isSelectingElement);
     this.refs.iframe.getDOMNode().addEventListener('load', this.onLoad);
+    this.refs.iframe.getDOMNode().setAttribute('nwdisable', 'nwdisable');
+    this.refs.iframe.getDOMNode().setAttribute('nwfaketop', 'nwfaketop');
   },
 
   componentDidUpdate() {
