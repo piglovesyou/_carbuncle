@@ -26,16 +26,20 @@ var ScenariosStore = assign({}, EventEmitter.prototype, {
 
   sync(page) {
     var skip = PER_PAGE * page;
-    var limit = _store.total < 0 ? PER_PAGE : _store.total - skip;
+    var limit = _store.total < 0 ? PER_PAGE : Math.min(_store.total - skip, PER_PAGE);
     var range = _.range(skip, limit);
-    if (range.every(i => !!_store.list[i] && !_store.list[i]['@expired'])) return;
+    if (_store.total >= 0 &&
+        range.every(i =>
+          !!_store.list[i] &&
+          !_store.list[i]['@expired'])) {
+      return;
+    }
     return Persist.getScenarios(page)
     .then(data => {
       _store.total = data.total;
       data.docs.forEach((doc, i) => {
         _store.map[doc._id] = _store.list[data.skip + i] = doc;
       });
-      console.log('before emit');
       ScenariosStore.emit(CHANGE_EVENT);
     });
   }

@@ -135,7 +135,10 @@ var IFrame = React.createClass({
         rv.push(builder.join(''));
         break; // Assume the id is always unique in the webpage.
       } else {
-        builder.push(node.className ? '.' + node.className.split(' ').join('.') : '');
+        var className = goog.string.collapseWhitespace(node.className);
+        if (!goog.string.isEmptyOrWhitespace(className)) {
+          builder.push('.' + className.split(' ').join('.'));
+        }
         var tmpIndex = this.getChildIndex(node);
         if (tmpIndex > 0) {
           builder.push(':nth-child(' + (tmpIndex + 1) + ')');

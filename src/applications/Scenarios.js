@@ -13,8 +13,16 @@ var Scenarios = React.createClass({
     return this.createState();
   },
 
+  // componentWillMount() {
+  // },
+
   componentDidMount() {
     ScenariosStore.addChangeListener(this.onChange);
+    this.syncPage();
+  },
+
+  componentWillUpdate() {
+    this.syncPage();
   },
 
   componentDidUnmount() {
@@ -37,7 +45,6 @@ var Scenarios = React.createClass({
   },
 
   render() {
-    this.syncPage();
     var columns = [
       {id: 'title', label: 'title', formatter: row => row.title },
       {id: 'entries', label: 'entries', formatter: row => {
@@ -53,7 +60,7 @@ var Scenarios = React.createClass({
       }},
       {id: 'buttons', label: '', formatter: row => {
         return [
-          <button className="btn btn-danger" onClick={Actions.deleteScenario.bind(null, row)}>delete</button>
+          <button className="btn btn-xs btn-danger" onClick={Actions.deleteScenario.bind(null, row)}>delete</button>
         ];
       }}
     ];
