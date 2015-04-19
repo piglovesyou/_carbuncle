@@ -75,6 +75,7 @@ var Scenario = React.createClass({
                    type="text"
                    title="シナリオのタイトル"
                    placeholder="シナリオのタイトル"
+                   value={this.props.title}
                    onChange={this.onChange}
                    />
             <label htmlFor="scenario__block" className="helptext" title="ブロックは他のシナリオのステップにすることができます">
@@ -125,7 +126,7 @@ var Scenario = React.createClass({
     e.preventDefault(e);
     Actions.changeScenario({
       title: goog.dom.forms.getValue(this.refs['scenario__title'].getDOMNode()),
-      isBlock: goog.dom.forms.getValue(this.refs['scenario__block'].getDOMNode()),
+      isBlock: goog.dom.forms.getValue(this.refs['scenario__block'].getDOMNode())
     });
   },
 

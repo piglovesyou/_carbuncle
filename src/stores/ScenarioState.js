@@ -4,15 +4,20 @@ var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 var _ = require('underscore');
 var {CHANGE_EVENT} = require('../constants');
-var EditorState = require('./EditorState');
+// var EditorState = require('./EditorState');
 var Executor = require('../core/Executor');
 var Persist = require('../persist');
+var ScenariosStore = require('./ScenariosStore');
+var {ObjectID} = require('mongodb');
 
 
 
 var _store;
 try {
   _store = JSON.parse(window.localStorage.lastScenarioStore);
+  if (_.isString(_store._id)) {
+    _store._id = new ObjectID(_store._id);
+  }
 } catch(e) {
   _store = {
     _id: undefined,
@@ -77,12 +82,14 @@ ScenarioState.dispatcherToken = Dispatcher.register(function(action) {
 
       break;
     case 'saveScenario':
+      Dispatcher.waitFor([ScenariosStore.dispatcherToken]);
       Persist.saveScenario(ScenarioState.get())
-      .then(function() {
+      .then(() => {
         // TODO
         console.log('-------', arguments);
+        ScenarioState.emit(CHANGE_EVENT);
       })
-      .catch(function() {
+      .catch(() => {
         console.log('xxx', arguments);
       })
       break;

@@ -1,8 +1,9 @@
 var React = require('react');
 var _ = require('underscore');
-var Link = require('./Link');
+// var Link = require('./Link');
+var {Link} = require('react-router');
 
-var perPage = 20; // TODO: Const
+var PER_PAGE = 20; // TODO: Const
 
 var Table = React.createClass({
 
@@ -10,9 +11,9 @@ var Table = React.createClass({
 
   render() {
 
-    var start = (this.props.currPage - 1) * perPage;
-    var end = Math.min(start + perPage, this.props.total);
-    var rows = this.props.rows.slice(start, end);
+    var start = (this.props.currPage) * PER_PAGE;
+    var end = Math.min(start + PER_PAGE, this.props.total);
+    var rows = this.props.rows.slice(start, end).filter(row => row);
 
     return (
       <div className={'paged-table ' + (this.props.cssModifier ? 'paged-table--' + this.props.cssModifier : '')}>
@@ -20,20 +21,22 @@ var Table = React.createClass({
           <thead>
             <tr>
               {_.map(this.props.columns, column =>
-                <th onClick={column.onClick} className={getCellCssName(column, true)} key={column.id}>{column.label}</th>)}
+                <th onClick={column.onClick || function(){}}
+                    className={getCellCssName(column, true)}
+                    key={column.id}>{column.label}</th>)}
             </tr>
           </thead>
         </table>
         <div className="paged-table__canvas">
           <table className="table table-hover">
             <tbody>
-              {rows.map((row, i) =>
-                <tr key={(this.props.currPage * perPage - 1) + i}>
+              {rows.length ? rows.map((row, i) =>
+                <tr key={(this.props.currPage * PER_PAGE - 1) + i}>
                   {_.map(this.props.columns, column =>
                     <td className={getCellCssName(column)} key={column.id}>{column.formatter.call(this, row)}</td>
                   )}
                 </tr>
-              )}
+              ) : <tr className="active"><td className="text-center"><em>No scenario stored.</em></td></tr>}
             </tbody>
           </table>
         </div>
@@ -43,9 +46,9 @@ var Table = React.createClass({
   },
 
   renderPagination() {
-    if (this.props.total <= perPage) return;
+    if (this.props.total <= PER_PAGE) return;
     var margin = 5; // TODO: Const
-    var maxPage = Math.ceil(this.props.total / perPage);
+    var maxPage = Math.ceil(this.props.total / PER_PAGE);
     var isLeftEdge = this.props.currPage === 1;
     var isRightEdge = this.props.currPage === maxPage;
     var rangeStart = Math.max(1, this.props.currPage - margin);
@@ -53,26 +56,26 @@ var Table = React.createClass({
     var leftskip;
     var rightskip;
     if (rangeStart > 1) {
-      leftskip = <li><Link path={this.props.pageUrlBuilder(rangeStart - 1)}>...</Link></li>;
+      leftskip = <li><Link to={this.props.urlBase} query={{page: rangeStart - 1}}>...</Link></li>;
     }
     if (rangeEnd < maxPage) {
-      rightskip = <li><Link path={this.props.pageUrlBuilder(rangeEnd + 1)}>...</Link></li>;
+      rightskip = <li><Link to={this.props.urlBase} query={{page: rangeEnd + 1}}>...</Link></li>;
     }
     return (
       <nav className="text-center">
         <ul className="pagination">
           <li className={isLeftEdge ? 'disabled' : null}>
-            <Link path={this.props.pageUrlBuilder(1)}>&laquo;</Link>
+            <Link to={this.props.urlBase} query={{page: 1}}>&laquo;</Link>
           </li>
           {leftskip}
           {_.map(_.range(rangeStart, rangeEnd + 1), page =>
             <li key={page} className={this.props.currPage === page ? 'active' : null}>
-              <Link path={this.props.pageUrlBuilder(page)}>{page}</Link>
+              <Link to={this.props.urlBase} query={{page: page}}>{page}</Link>
             </li>
           )}
           {rightskip}
           <li className={isRightEdge ? 'disabled' : null}>
-            <Link path={this.props.pageUrlBuilder(maxPage)}>&raquo;</Link>
+            <Link to={this.props.urlBase} query={{page: maxPage}}>&raquo;</Link>
           </li>
         </ul>
       </nav>

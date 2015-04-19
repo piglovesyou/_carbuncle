@@ -8,8 +8,7 @@ var _ = require('underscore');
 
 module.exports = {
   connectDatabase,
-  authenticate,
-  getDB
+  authenticate
 };
 
 
@@ -18,17 +17,13 @@ var database = null;
 var authenticated = false;
 var lastState = getState();
 
-function getDB() {
-  return authenticate();
-}
-
 function connectDatabase() {
   var state = getState();
   if (database && lastState.database === state.database) {
     return Q(database);
   } else {
     lastState = state;
-    return Q.nfcall(MongoClient.connect, state.database, {'native_parser': true, options: { w: 1 }})
+    return Q.nfcall(MongoClient.connect, state.database, {'native_parser': true})
     .then(d => {
       console.log('Newly connected to a database');
       database = d;

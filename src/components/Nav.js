@@ -12,6 +12,7 @@ var Nav = React.createClass({
           <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul className="nav navbar-nav">
               <li><Link to="/">Main</Link></li>
+              <li><Link to="scenarios">Scenarios</Link></li>
               <li><Link to="setting">Setting</Link></li>
             </ul>
 
