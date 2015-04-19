@@ -6,10 +6,18 @@ var PER_PAGE = 20;
 
 module.exports = {
   saveScenario,
+  deleteScenario,
   getScenarios
 };
 
 
+
+function deleteScenario(id) {
+  return getScenariosCollection()
+  .then(scenarios => {
+    return Q.ninvoke(scenarios, 'deleteOne', { _id: id })
+  });
+}
 
 function getScenarios(page) {
   var skip = PER_PAGE * page;

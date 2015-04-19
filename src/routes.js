@@ -6,8 +6,8 @@ var {
   RouteHandler
 } = Router;
 var Index = require('./applications');
-var Setting = require('./applications/setting');
-var Scenarios = require('./applications/scenarios');
+var Setting = require('./applications/Setting');
+var Scenarios = require('./applications/Scenarios');
 var Path = require('path');
 
 

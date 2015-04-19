@@ -17,6 +17,7 @@ goog.exportSymbol('goog.dom.forms.getValue', goog.dom.forms.getValue);
 goog.exportSymbol('goog.dom.getFrameContentDocument', goog.dom.getFrameContentDocument);
 goog.exportSymbol('goog.dom.getChildren', goog.dom.getChildren);
 goog.exportSymbol('goog.dom.getTextContent', goog.dom.getTextContent);
+goog.exportSymbol('goog.style.getContainerOffsetToScrollInto', goog.style.getContainerOffsetToScrollInto);
 goog.exportSymbol('goog.style.getPageOffset', goog.style.getPageOffset);
 goog.exportSymbol('goog.style.getViewportPageOffset', goog.style.getViewportPageOffset);
 goog.exportSymbol('goog.style.getBorderBoxSize', goog.style.getBorderBoxSize);
@@ -26,7 +27,7 @@ goog.exportSymbol('goog.crypt.Md5.prototype.digest', goog.crypt.Md5.prototype.di
 goog.exportSymbol('goog.crypt.byteArrayToHex', goog.crypt.byteArrayToHex);
 goog.exportSymbol('goog.array.removeIf', goog.array.removeIf);
 goog.exportSymbol('goog.array.findIndex', goog.array.findIndex);
-goog.exportSymbol('goog.string.equal', goog.string.equal);
+// goog.exportSymbol('goog.string.equal', goog.string.equal);
 goog.exportSymbol('goog.string.contains', goog.string.contains);
 goog.exportSymbol('goog.string.startsWith', goog.string.startsWith);
 goog.exportSymbol('goog.string.endsWith', goog.string.endsWith);

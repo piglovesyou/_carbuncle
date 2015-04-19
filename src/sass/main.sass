@@ -189,21 +189,15 @@ body,
   background: $brand-primary
 
 .scenario-entry--doing
-  background: $state-success-text
+  background: darkgreen
 .scenario-entry--done
-  background: $state-success-bg
+  background: limegreen
 .scenario-entry--fail
-  background: $state-danger-text
-.scenario-entry--doing,
-.scenario-entry--doing a,
-.scenario-entry--doing .scenario-entry-meta,
-.scenario-entry--done,
-.scenario-entry--done a,
-.scenario-entry--done .scenario-entry-meta,
-.scenario-entry--fail,
-.scenario-entry--fail a,
-.scenario-entry--fail .scenario-entry-meta
-  color: white
+  background: crimson
+.scenario-entry--doing *,
+.scenario-entry--done *,
+.scenario-entry--fail *
+  color: white !important
 .scenario-entry--done:first-of-type
   margin-top: 0
 
@@ -212,7 +206,8 @@ body,
 .scenario-entry__meta
   color: gray
   clear: both
-.scenario-entry__title .fa
+.scenario-entry__title .fa,
+.app-root--scenarios .cell--entries .fa
   font-size: 160%
   vertical-align: middle
   margin-right: 4px
@@ -226,6 +221,12 @@ body,
 
 
 
+.paged-table--scenarios .cell--title
+  width: 30%
+.paged-table--scenarios .cell--buttons
+  width: 20%
+.paged-table--scenarios__entry
+  display: inline-block
 
 
 

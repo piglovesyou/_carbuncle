@@ -104,6 +104,19 @@ module.exports = {
     Dispatcher.dispatch({
       type: 'saveScenario'
     });
+  },
+
+  deleteScenario(scenario) {
+    Dispatcher.dispatch({
+      type: 'deleteScenario',
+      scenario
+    });
+  },
+
+  newScenario() {
+    Dispatcher.dispatch({
+      type: 'newScenario'
+    });
   }
 
 };

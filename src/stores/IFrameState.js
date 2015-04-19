@@ -10,7 +10,7 @@ var Store = require('./index');
 
 
 var _store = {
-  url: 'http://www.yahoo.co.jp'
+  url: ''//http://www.yahoo.co.jp'
 };
 
 var IFrameState = assign({}, EventEmitter.prototype, {

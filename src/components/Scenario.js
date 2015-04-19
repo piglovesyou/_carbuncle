@@ -1,13 +1,14 @@
 
 var React = require('react');
 var Actions = require('../actions');
+var helper = require('./helper');
 
 var Entry = React.createClass({
   render() {
     return (
       <div id={this.props.id}
            data-id={this.props.id}
-           className={'scenario-entry scenario-entry--' + this.props.mode}
+           className={this.createClassNames()}
            title={this.props.css}>
         <div className="scenario-entry__right">
           {this.props.mode !== 'block' ?
@@ -20,7 +21,7 @@ var Entry = React.createClass({
              href="#">del</a>
         </div>
         <div className="scenario-entry__title">
-          {this.renderIcon()}
+          {helper.renderIcon(this.props.mode, this.props.type)}
           {this.props.title}
         </div>
         <div className="scenario-entry__meta">
@@ -31,6 +32,12 @@ var Entry = React.createClass({
       </div>
     );
   },
+  createClassNames() {
+    var rv = 'scenario-entry';
+    if (this.props.mode) rv += ' scenario-entry--' + this.props.mode;
+    if (this.props['@executingState']) rv += ' scenario-entry--' + this.props['@executingState'];
+    return rv;
+  },
   onEditClick(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -40,29 +47,17 @@ var Entry = React.createClass({
     e.preventDefault();
     e.stopPropagation();
     Actions.deleteEntry(this.props.id);
-  },
-  renderIcon() {
-    var iconKey;
-    if (this.props.mode === 'action') {
-      switch(this.props.type) {
-        case 'click': iconKey = 'bullseye'; break;
-        case 'input': iconKey = 'pencil'; break;
-        case 'open': iconKey = 'globe'; break;
-        case 'screenshot': iconKey = 'camera'; break;
-      }
-    } else if (this.props.mode === 'verify') {
-      iconKey = 'check-square-o';
-    } else if (this.props.mode === 'block') {
-      iconKey = 'cube';
-    }
-    if (iconKey) {
-      return <i className={'fa fa-' + iconKey}></i>;
-    }
-    return null;
   }
 });
 
 var Scenario = React.createClass({
+  componentDidUpdate() {
+    var container = this.refs['body'].getDOMNode();
+    var doing = container.querySelector('.scenario-entry--doing');
+    if (doing) {
+      container.scrollTop = goog.style.getContainerOffsetToScrollInto(doing, container, true).y;
+    }
+  },
   render() {
     return (
       <div className="scenario">
@@ -90,10 +85,8 @@ var Scenario = React.createClass({
             </label>
           </form>
         </div>
-        <div className="scenario__body">
-          <div className="scenario__body-container">
-            {this.props.entries.map(entry => <Entry {...entry} key={entry.id} />)}
-          </div>
+        <div className="scenario__body" ref="body">
+          {this.props.entries.map(entry => <Entry {...entry} key={entry.id} />)}
           <div className="scenario__body-insertblock-wrap">
             <a className="scenario__body-insertblock" href="">
               <i className="fa fa-plus"></i>
@@ -105,10 +98,10 @@ var Scenario = React.createClass({
           <a onClick={!this.props.disabled ? this.onPreviewClick : function(){}}
              className={'btn btn-success scenario__footer-preview' + (this.props.disabled ? ' btn-disabled' : '')}
              href="#"><i className="fa fa-rocket"></i> 試す</a>&nbsp;
-          <a onClick={!this.props.disabled ? this.onPreviewClick : function(){}}
+          <a onClick={!this.props.disabled ? this.onNewClick : function(){}}
              className={'btn btn-danger scenario__footer-create' + (this.props.disabled ? ' btn-disabled' : '')}
              href="#"><i className="fa fa-file-text"></i> 新規</a>&nbsp;
-          <a onClick={!this.props.disabled ? this.onPreviewClick : function(){}}
+          <a onClick={!this.props.disabled ? this.onSaveClick : function(){}}
              className={'btn btn-primary scenario__footer-save' + (this.props.disabled ? ' btn-disabled' : '')}
              href="#"><i className="fa fa-hdd-o"></i> 保存</a>
         </div>
@@ -120,6 +113,11 @@ var Scenario = React.createClass({
   onSaveClick(e) {
     e.preventDefault(e);
     Actions.saveScenario();
+  },
+
+  onNewClick(e) {
+    e.preventDefault(e);
+    Actions.newScenario();
   },
 
   onChange(e) {

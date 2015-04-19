@@ -13,11 +13,20 @@ var {ObjectID} = require('mongodb');
 
 
 var _store;
+var _default = {
+  _id: undefined,
+  title: '',
+  entries: [],
+  isBlock: false
+};
+restoreCache();
+
 try {
   _store = JSON.parse(window.localStorage.lastScenarioStore);
   if (_.isString(_store._id)) {
     _store._id = new ObjectID(_store._id);
   }
+  resetExecutingState();
 } catch(e) {
   _store = {
     _id: undefined,
@@ -35,6 +44,8 @@ var ScenarioState = assign({}, EventEmitter.prototype, {
   }
 }, require('./_mixins'));
 module.exports = ScenarioState;
+
+resetExecutingState();
 
 ScenarioState.on(CHANGE_EVENT, () => {
   window.localStorage.lastScenarioStore = JSON.stringify(_store);
@@ -75,15 +86,35 @@ ScenarioState.dispatcherToken = Dispatcher.register(function(action) {
 
       setTimeout(() => { // I don't know why I need this. Obviously it's nw's bug.
         var executor = new Executor(_store.entries, 400);
-        executor.on('before', entry => console.log('before', entry))
-        executor.on('pass', entry => console.log('before', entry))
-        executor.on('fail', entry => console.log('before', entry))
+        resetExecutingState();
+        ScenarioState.emit(CHANGE_EVENT);
+        var last;
+        executor.on('before', entry => {
+          if (last) last['@executingState'] = 'done';
+          last = entry;
+          entry['@executingState'] = 'doing';
+          ScenarioState.emit(CHANGE_EVENT);
+        });
+        executor.on('pass', () => {
+          if (last) last['@executingState'] = 'done';
+          ScenarioState.emit(CHANGE_EVENT);
+        });
+        executor.on('fail', () => {
+          if (last) last['@executingState'] = 'fail';
+          ScenarioState.emit(CHANGE_EVENT);
+        });
+        executor.on('end', () => {
+          setTimeout(() => {
+            resetExecutingState();
+            ScenarioState.emit(CHANGE_EVENT);
+          }, 30 * 1000);
+        });
       }, 50);
-
       break;
+
     case 'saveScenario':
       Dispatcher.waitFor([ScenariosStore.dispatcherToken]);
-      Persist.saveScenario(ScenarioState.get())
+      Persist.saveScenario(_store)
       .then(() => {
         // TODO
         console.log('-------', arguments);
@@ -91,15 +122,37 @@ ScenarioState.dispatcherToken = Dispatcher.register(function(action) {
       })
       .catch(() => {
         console.log('xxx', arguments);
-      })
+      });
+      break;
+
+    case 'deleteScenario':
+      var scenario = action.scenario;
+      if (_store._id !== scenario._id) {
+        return;
+      }
+      restoreCache();
+      break;
+
+    case 'newScenario':
+      restoreCache();
+      ScenarioState.emit(CHANGE_EVENT);
       break;
   }
 });
 
 
 
+function resetExecutingState() {
+  _store.entries.forEach(entry => delete entry['@executingState']);
+}
+
 function generateUID(entry) {
   var md5 = new goog.crypt.Md5();
   md5.update(String(Date.now()) + entry.css + entry.mode + entry.type);
   return goog.crypt.byteArrayToHex(md5.digest());
+}
+
+function restoreCache() {
+  _store = {};
+  _.each(_default, (v, k) => _store[k] = _.clone(v));
 }

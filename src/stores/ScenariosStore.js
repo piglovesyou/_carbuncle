@@ -5,7 +5,7 @@ var assign = require('object-assign');
 var _ = require('underscore');
 var {CHANGE_EVENT} = require('../constants');
 var Persist = require('../persist');
-var ScenarioState = require('./ScenarioState');
+// var ScenarioState = require('./ScenarioState');
 
 var PER_PAGE = 20;
 
@@ -46,6 +46,19 @@ ScenariosStore.dispatcherToken = Dispatcher.register(function(action) {
   switch (action.type) {
     case 'saveScenario':
       restoreCache();
+      break;
+
+    case 'deleteScenario':
+      // TODO: Update total
+      var {scenario} = action;
+      Persist.deleteScenario(scenario._id)
+      .then(() => {
+        if (goog.array.removeIf(_store.list, s => String(s._id) === String(scenario._id))) {
+          delete _store.map[scenario._id];
+          _store.total = Math.max(_store.total - 1, 0);
+          ScenariosStore.emit(CHANGE_EVENT);
+        }
+      });
       break;
   }
 });

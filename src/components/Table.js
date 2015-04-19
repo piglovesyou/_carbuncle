@@ -29,20 +29,29 @@ var Table = React.createClass({
         </table>
         <div className="paged-table__canvas">
           <table className="table table-hover">
-            <tbody>
-              {rows.length ? rows.map((row, i) =>
-                <tr key={(this.props.currPage * PER_PAGE - 1) + i}>
-                  {_.map(this.props.columns, column =>
-                    <td className={getCellCssName(column)} key={column.id}>{column.formatter.call(this, row)}</td>
-                  )}
-                </tr>
-              ) : <tr className="active"><td className="text-center"><em>No scenario stored.</em></td></tr>}
-            </tbody>
+            <tbody>{this.renderRows()}</tbody>
           </table>
         </div>
         {this.renderPagination()}
       </div>
     );
+  },
+
+  renderRows() {
+    if (this.props.total >= 0) {
+      if (this.props.rows.length) {
+        return this.props.rows.map((row, i) =>
+          (<tr key={(this.props.currPage * PER_PAGE - 1) + i}>
+            {_.map(this.props.columns, column =>
+              <td className={getCellCssName(column)} key={column.id}>{column.formatter.call(this, row)}</td>
+            )}
+          </tr>)
+        );
+      } else {
+        return <tr className="active"><td className="text-center"><em>No document stored.</em></td></tr>;
+      }
+    }
+    return [];
   },
 
   renderPagination() {
