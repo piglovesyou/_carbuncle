@@ -1,6 +1,6 @@
 var Q = require('q');
 Q.longStackSupport = true;
-var Auth = require('../auth');
+var Auth = require('./auth');
 
 var PER_PAGE = 20;
 
