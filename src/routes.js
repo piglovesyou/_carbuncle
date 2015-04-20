@@ -7,7 +7,7 @@ var {
 } = Router;
 var Index = require('./applications');
 var Setting = require('./applications/Setting');
-var Scenarios = require('./applications/Scenarios');
+var ScenarioList = require('./applications/ScenarioList');
 var Path = require('path');
 
 
@@ -33,7 +33,7 @@ var NotFound = React.createClass({
 module.exports = (
   <Route handler={RootApp}>
     <Route handler={Index} name="index" path={Path.resolve(__dirname, '/')} />
-    <Route handler={Scenarios} name="scenarios" path={Path.resolve(__dirname, '/scenarios')} />
+    <Route handler={ScenarioList} name="scenario-list" path={Path.resolve(__dirname, '/scenario-list')} />
     <Route handler={Setting} name="setting" path={Path.resolve(__dirname, '/setting')} />
     <NotFoundRoute handler={NotFound} />
   </Route>

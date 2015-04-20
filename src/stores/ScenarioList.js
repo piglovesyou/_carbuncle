@@ -19,7 +19,7 @@ var _default = {
 };
 restoreCache();
 
-var ScenariosStore = assign({}, EventEmitter.prototype, {
+var ScenarioList = assign({}, EventEmitter.prototype, {
   get() {
     return _store;
   },
@@ -40,13 +40,13 @@ var ScenariosStore = assign({}, EventEmitter.prototype, {
       data.docs.forEach((doc, i) => {
         _store.map[doc._id] = _store.list[data.skip + i] = doc;
       });
-      ScenariosStore.emit(CHANGE_EVENT);
+      ScenarioList.emit(CHANGE_EVENT);
     });
   }
 }, require('./_mixins'));
-module.exports = ScenariosStore;
+module.exports = ScenarioList;
 
-ScenariosStore.dispatcherToken = Dispatcher.register(function(action) {
+ScenarioList.dispatcherToken = Dispatcher.register(function(action) {
   switch (action.type) {
     case 'saveScenario':
       restoreCache();
@@ -60,7 +60,7 @@ ScenariosStore.dispatcherToken = Dispatcher.register(function(action) {
         if (goog.array.removeIf(_store.list, s => String(s._id) === String(scenario._id))) {
           delete _store.map[scenario._id];
           _store.total = Math.max(_store.total - 1, 0);
-          ScenariosStore.emit(CHANGE_EVENT);
+          ScenarioList.emit(CHANGE_EVENT);
         }
       });
       break;

@@ -7,7 +7,7 @@ var Actions = require('../actions');
 var ScenarioList = require('../stores/ScenarioList');
 var componentHelper = require('../components/helper');
 
-var ScenarioList = React.createClass({
+var ScenarioListApp = React.createClass({
 
   getInitialState() {
     return this.createState();
@@ -84,4 +84,4 @@ var ScenarioList = React.createClass({
 
 });
 
-module.exports = ScenarioList;
+module.exports = ScenarioListApp;

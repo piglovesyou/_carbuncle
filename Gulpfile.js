@@ -4,13 +4,7 @@ var sass = require('gulp-ruby-sass');
 var autoprefix = require('gulp-autoprefixer');
 var notify = require('gulp-notify');
 var Path = require('path');
-var uglify = require('gulp-uglify');
-var streamify = require('gulp-streamify');
-
-// Super thanks: http://truongtx.me/2014/08/06/using-watchify-with-gulp-for-fast-browserify-build/
-var browserify = require('browserify');
-var source = require('vinyl-source-stream');
-var watchify = require('watchify');
+var plovr = require('gulp-plovr');
 
 
 
@@ -18,30 +12,26 @@ var config = {
   sassPath: './src/sass',
   uiEntryPoint: './src/main.js',
   bowerPath: './bower_components',
-  deployPath: './dist'
+  deployPath: './dist',
+  plovrConfig: './plovr.json'
 };
 
 
 
 // Main Tasks
-gulp.task('default', ['icons', 'css', 'js']);
-gulp.task('js', browserifyShare.bind(null, false));
-gulp.task('css', css);
-gulp.task('watch', ['icons', 'watch-js', 'watch-sass']);
-
-
-
-gulp.task('watch-js', browserifyShare.bind(null, true));
-
+gulp.task('default', ['icons', 'css', 'closure-require']);
+gulp.task('watch', ['closure-require', 'css'], watch);
 gulp.task('watch-sass', ['css'], watchSass);
+gulp.task('closure-require', closureRequire);
+gulp.task('icons', icons);
+gulp.task('css', css);
 
-gulp.task('icons', function() {
-  return gulp.src([
-    config.bowerPath + '/bootstrap-sass-official/assets/fonts/bootstrap/**.*',
-    config.bowerPath + '/fontawesome/fonts/**.*'
-  ])
-  .pipe(gulp.dest(Path.join(config.deployPath, 'css/fonts')));
-});
+
+
+function watch() {
+  gulp.watch(['./src/**/*.js'], ['closure-require']);
+  gulp.watch([Path.resolve(config.sassPath, '**/*.sass')], ['css']);
+}
 
 function watchSass() {
   gulp.watch(config.sassPath + '/**/*.sass', ['css']);
@@ -64,27 +54,17 @@ function css() {
   .pipe(gulp.dest(Path.join(config.deployPath, 'css')));
 }
 
-function browserifyShare(watch) {
-  var b = browserify({
-    cache: {},
-    packageCache: {},
-    fullPaths: true,
-    detectGlobals: false
-  });
-  if (watch) {
-    b = watchify(b);
-    b.on('update', function() {
-      bundleShare(b);
-    });
-  }
-  b.add(config.uiEntryPoint);
-  bundleShare(b);
-  function bundleShare(b) {
-    b = b.bundle().pipe(source('bundle.js'));
-    if (!watch) {
-      b.pipe(streamify(uglify()));
-    }
-    b.pipe(gulp.dest(config.deployPath));
-  }
+function icons() {
+  return gulp.src([
+    config.bowerPath + '/bootstrap-sass-official/assets/fonts/bootstrap/**.*',
+    config.bowerPath + '/fontawesome/fonts/**.*'
+  ])
+  .pipe(gulp.dest(Path.join(config.deployPath, 'css/fonts')));
 }
 
+function closureRequire() {
+  gulp.src([config.plovrConfig])
+  .pipe(plovr({
+    debug: false
+  }));
+}
