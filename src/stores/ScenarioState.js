@@ -17,7 +17,8 @@ var _default = {
   _id: undefined,
   title: '',
   entries: [],
-  isBlock: false
+  isBlock: false,
+  updatedBy: null
 };
 restoreCache();
 
@@ -110,6 +111,10 @@ ScenarioState.dispatcherToken = Dispatcher.register(function(action) {
           }, 30 * 1000);
         });
       }, 50);
+      break;
+
+    case 'startEditScenario':
+      _.each(action.scenario, (v, k) => _store[k] = _.clone(v));
       break;
 
     case 'saveScenario':

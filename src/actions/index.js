@@ -1,6 +1,7 @@
 
-
 var Dispatcher = require('../dispatcher');
+var {HashLocation} = require('react-router');
+
 
 
 module.exports = {
@@ -111,6 +112,14 @@ module.exports = {
       type: 'deleteScenario',
       scenario
     });
+  },
+
+  startEditScenario(scenario) {
+    Dispatcher.dispatch({
+      type: 'startEditScenario',
+      scenario
+    });
+    HashLocation.push('/');
   },
 
   newScenario() {

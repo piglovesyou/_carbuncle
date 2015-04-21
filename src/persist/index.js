@@ -14,9 +14,8 @@ module.exports = {
 
 function deleteScenario(id) {
   return getScenariosCollection()
-  .then(scenarios => {
-    return Q.ninvoke(scenarios, 'deleteOne', { _id: id })
-  });
+  .then(scenarios =>
+    Q.ninvoke(scenarios, 'deleteOne', { _id: id }));
 }
 
 function getScenarios(page) {
@@ -38,6 +37,7 @@ function getScenarios(page) {
 function saveScenario(scenario) {
   return getScenariosCollection()
   .then(scenarios => {
+    scenario.updatedBy = global.window.localStorage.username;
     if (scenario._id) {
       return Q.ninvoke(scenarios, 'updateOne', {_id: scenario._id}, scenario, {upsert: true});
     } else {

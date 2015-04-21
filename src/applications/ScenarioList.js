@@ -13,9 +13,6 @@ var ScenarioListApp = React.createClass({
     return this.createState();
   },
 
-  // componentWillMount() {
-  // },
-
   componentDidMount() {
     ScenarioList.addChangeListener(this.onChange);
     this.syncPage();
@@ -46,29 +43,16 @@ var ScenarioListApp = React.createClass({
 
   render() {
     var columns = [
-      {id: 'title', label: 'title', formatter: row => row.title },
-      {id: 'entries', label: 'entries', formatter: row => {
-        if (!row.entries) return null;
-        return row.entries.map(entry => {
-          var tooltip = entry.title + (entry.title && entry.css ? '\n\n' : '') + entry.css;
-          return (
-            <div className="paged-table--scenario-list__entry" title={tooltip}>
-              {componentHelper.renderIcon(entry.mode, entry.type)}
-            </div>
-          );
-        });
-      }},
-      {id: 'buttons', label: '', formatter: row => {
-        return [
-          <button className="btn btn-xs btn-danger" onClick={Actions.deleteScenario.bind(null, row)}>delete</button>
-        ];
-      }}
+      {id: 'title', label: 'title', formatter: row => row.title},
+      {id: 'entries', label: 'entries', formatter: this.renderEntries},
+      {id: 'updated-by', label: 'updated by', formatter: row => row.updatedBy},
+      {id: 'buttons', label: '', formatter: this.renderButtons}
     ];
     return (
       <div className="app-root app-root--scenario-list">
         <Nav />
         <div className="layout-scrolable">
-          <div className="container" style={{width: 800}}>
+          <div className="container">
             <h2 className="app-root__pagetitle">ScenarioList</h2>
             <Table cssModifier="scenario-list"
                    currPage={this.state.page || 0}
@@ -80,6 +64,29 @@ var ScenarioListApp = React.createClass({
         </div>
       </div>
     );
+  },
+
+  renderEntries(row) {
+    if (!row.entries) return null;
+    return row.entries.map(entry => {
+      var tooltip = entry.title + (entry.title && entry.css ? '\n\n' : '') + entry.css;
+      return (
+        <div className="paged-table--scenario-list__entry" title={tooltip}>
+          {componentHelper.renderIcon(entry.mode, entry.type)}
+        </div>
+      );
+    });
+  },
+
+  renderButtons(row) {
+    return [
+      <button className="btn btn-xs btn-danger" onClick={Actions.deleteScenario.bind(null, row)}>delete</button>,
+      <button className="btn btn-xs btn-success" onClick={this.startToEditScenario.bind(this, row)}>edit</button>
+    ];
+  },
+
+  startToEditScenario(row) {
+    Actions.startEditScenario(row);
   }
 
 });
