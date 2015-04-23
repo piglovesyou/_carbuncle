@@ -5,6 +5,7 @@
   "scripts": {
     "postinstall": "mkdir -p public/{js,css}; bower install;",
     "watch-sass": "gulp watch-sass",
+    "plovr": "plovr build plovr.json",
     "build": "gulp",
     "test": "eslint src && gulp"
   },

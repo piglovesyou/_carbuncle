@@ -8,7 +8,6 @@ var {
 var Index = require('./applications');
 var Setting = require('./applications/Setting');
 var ScenarioList = require('./applications/ScenarioList');
-var Path = require('path');
 
 
 
@@ -32,9 +31,9 @@ var NotFound = React.createClass({
 
 module.exports = (
   <Route handler={RootApp}>
-    <Route handler={Index} name="index" path={Path.resolve(__dirname, '/')} />
-    <Route handler={ScenarioList} name="scenario-list" path={Path.resolve(__dirname, '/scenario-list')} />
-    <Route handler={Setting} name="setting" path={Path.resolve(__dirname, '/setting')} />
+    <Route handler={Index} name="index" path="/" />
+    <Route handler={ScenarioList} name="scenario-list" path="scenario-list" />
+    <Route handler={Setting} name="setting" path="setting" />
     <NotFoundRoute handler={NotFound} />
   </Route>
 );

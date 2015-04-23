@@ -28,8 +28,8 @@ var Setting = React.createClass({
       <div className="app-root app-root--setting">
         <Nav />
         <div className="layout-scrolable">
-          <div className="container" style={{width: 800}}>
-            <h2 className="app-root__pagetitle">Setting</h2>
+          <div className="container">
+            <h2 className="app-root__pagetitle">個人設定</h2>
             <form action="#" className="form-horizontal">
 
               <div className="form-group">

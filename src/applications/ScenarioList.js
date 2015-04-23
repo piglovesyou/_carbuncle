@@ -53,7 +53,7 @@ var ScenarioListApp = React.createClass({
         <Nav />
         <div className="layout-scrolable">
           <div className="container">
-            <h2 className="app-root__pagetitle">ScenarioList</h2>
+            <h2 className="app-root__pagetitle">シナリオ一覧</h2>
             <Table cssModifier="scenario-list"
                    currPage={this.state.page || 0}
                    total={this.state.total}
@@ -80,8 +80,8 @@ var ScenarioListApp = React.createClass({
 
   renderButtons(row) {
     return [
-      <button className="btn btn-xs btn-danger" onClick={Actions.deleteScenario.bind(null, row)}>delete</button>,
-      <button className="btn btn-xs btn-success" onClick={this.startToEditScenario.bind(this, row)}>edit</button>
+      <button className="btn btn-xs btn-success" onClick={this.startToEditScenario.bind(this, row)}>view</button>,
+      <button className="btn btn-xs btn-danger" onClick={Actions.deleteScenario.bind(null, row)}>delete</button>
     ];
   },
 
