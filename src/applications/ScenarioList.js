@@ -6,7 +6,8 @@ var Table = require('../components/Table');
 var Actions = require('../actions');
 var ScenarioList = require('../stores/ScenarioList');
 var componentHelper = require('../components/helper');
-var GriddleWrapper = require('../components/GriddleWrapper');
+var ScenarioListComponent = require('../components/ScenarioList');
+var {PER_PAGE} = require('../constants');
 
 
 
@@ -40,24 +41,18 @@ var ScenarioListApp = React.createClass({
     ScenarioList.sync(+this.getQuery().page || 0);
   },
 
-  mixins: [State],
-
   onChange() {
     this.setState(this.createState());
   },
 
   createState() {
-    var page = +this.getQuery().page || 0;
-    return _.extend({page}, ScenarioList.get());
+    return ScenarioList.get();
   },
 
+  mixins: [State],
+
   render() {
-    var columns = [
-      {id: 'title', label: 'title', formatter: row => row.title},
-      {id: 'entries', label: 'entries', formatter: this.renderEntries},
-      {id: 'updated-by', label: 'updated by', formatter: row => row.updatedBy},
-      {id: 'buttons', label: '', formatter: this.renderButtons}
-    ];
+    var currentPage = +this.getQuery().page || 0;
     return (
       <div className="app-root app-root--scenario-list">
         <Nav />
@@ -65,15 +60,12 @@ var ScenarioListApp = React.createClass({
           <div className="container">
             <h2 className="app-root__pagetitle">シナリオ一覧</h2>
 
-            <GriddleWrapper cssModifier="scenario-list"
-                externalCurrentPage={this.state.page} />
+            <ScenarioListComponent cssModifier="scenario-list"
+                results={this.state.list.slice(currentPage * PER_PAGE, currentPage * PER_PAGE + PER_PAGE)}
+                currentPage={currentPage}
+                maxPage={Math.ceil(this.state.total / PER_PAGE)}
+                 />
 
-            <Table cssModifier="scenario-list"
-                   currPage={this.state.page || 0}
-                   total={this.state.total}
-                   columns={columns}
-                   rows={this.state.list}
-                   urlBase={'/scenario-list'}></Table>
           </div>
         </div>
       </div>

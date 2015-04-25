@@ -76,49 +76,47 @@ var ExternalSwapiComponent = React.createClass({
     mixins: [Navigation, State],
     getInitialState: function(){
       var initial = {
-        "results": [],
-        "currentPage": 1,
-        "maxPages": 0,
-        "externalResultsPerPage": 20,
         "externalSortColumn": null,
         "externalSortAscending": true,
-        "results": []
       };
       return initial;
     },
     componentWillMount: function(){
     },
     componentDidMount: function(){
-      this.getExternalData();
+      // this.getExternalData();
     },
-    getExternalData: function(page){
-      var that = this;
-      page = page || 0;
-      Persist.getScenarios(page)
-      .then(data=> {
-        console.log(data.page)
-        this.setState({
-          results: data.docs,
-          currentPage: data.page,
-          maxPages: Math.ceil(data.total / data.limit)
-        });
-      });
-    },
+    // getExternalData: function(page){
+    //   var that = this;
+    //   page = page || 0;
+    //   Persist.getScenarios(page)
+    //   .then(data=> {
+    //     console.log(data.page)
+    //     this.setState({
+    //     });
+    //   });
+    // },
     setPage: function(index){
-      var page = goog.math.clamp(index, 0, this.state.maxPages);
+      var page = goog.math.clamp(index, 0, this.props.maxPage);
       this.transitionTo('scenario-list', {}, {page})
     },
     setPageSize: function(size){
     },
     render: function(){
       return <Griddle gridClassName={'paged-table paged-table--' + this.props.cssModifier} useExternal={true} externalSetPage={this.setPage} enableSort={false}
-        columns={Columns}
-        columnMetadata={ColumnMetadata}
-        externalSetPageSize={this.setPageSize} externalMaxPage={this.state.maxPages}
-        externalChangeSort={function(){}} externalSetFilter={function(){}}
-        externalCurrentPage={this.state.currentPage} results={this.state.results} tableClassName="table" resultsPerPage={this.state.externalResultsPerPage}
-        externalSortColumn={this.state.externalSortColumn} externalSortAscending={this.state.externalSortAscending}
-        useGriddleStyles={false} />
+          columns={Columns}
+          columnMetadata={ColumnMetadata}
+          externalSetPageSize={this.setPageSize}
+          externalMaxPage={this.props.maxPage}
+          externalChangeSort={function(){}}
+          externalSetFilter={function(){}}
+          externalCurrentPage={this.props.currentPage}
+          results={this.props.results}
+          tableClassName="table"
+          resultsPerPage={PER_PAGE}
+          externalSortColumn={this.state.externalSortColumn}
+          externalSortAscending={this.state.externalSortAscending}
+          useGriddleStyles={false} />
     }
 });
 

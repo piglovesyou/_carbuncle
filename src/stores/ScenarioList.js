@@ -24,7 +24,7 @@ var ScenarioList = assign({}, EventEmitter.prototype, {
   sync(page) {
     var skip = PER_PAGE * page;
     var limit = _store.total < 0 ? PER_PAGE : Math.min(_store.total - skip, PER_PAGE);
-    var range = _.range(skip, limit);
+    var range = _.range(skip, skip + limit);
     if (_store.total >= 0 &&
         range.every(i =>
           !!_store.list[i] &&
