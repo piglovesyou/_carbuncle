@@ -3,7 +3,7 @@ var _ = require('underscore');
 // var Link = require('./Link');
 var {Link} = require('react-router');
 
-var PER_PAGE = 20; // TODO: Const
+var {PER_PAGE} = require('../constants');
 
 var Table = React.createClass({
 

@@ -3,11 +3,8 @@ var Dispatcher = require('../dispatcher');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 var _ = require('underscore');
-var {CHANGE_EVENT} = require('../constants');
+var {CHANGE_EVENT, PER_PAGE} = require('../constants');
 var Persist = require('../persist');
-// var ScenarioState = require('./ScenarioState');
-
-var PER_PAGE = 20;
 
 
 

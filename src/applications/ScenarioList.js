@@ -6,6 +6,16 @@ var Table = require('../components/Table');
 var Actions = require('../actions');
 var ScenarioList = require('../stores/ScenarioList');
 var componentHelper = require('../components/helper');
+var GriddleWrapper = require('../components/GriddleWrapper');
+
+
+
+var faked = [
+  {id: 0, title: 'yeah'},
+  {id: 1, title: 'yeah'},
+  {id: 2, title: 'ohh'},
+  {id: 3, title: 'yeah'},
+];
 
 var ScenarioListApp = React.createClass({
 
@@ -54,6 +64,10 @@ var ScenarioListApp = React.createClass({
         <div className="layout-scrolable">
           <div className="container">
             <h2 className="app-root__pagetitle">シナリオ一覧</h2>
+
+            <GriddleWrapper cssModifier="scenario-list"
+                externalCurrentPage={this.state.page} />
+
             <Table cssModifier="scenario-list"
                    currPage={this.state.page || 0}
                    total={this.state.total}

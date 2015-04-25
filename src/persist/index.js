@@ -2,7 +2,7 @@ var Q = require('q');
 Q.longStackSupport = true;
 var Auth = require('./auth');
 
-var PER_PAGE = 20;
+var {PER_PAGE} = require('../constants');
 
 module.exports = {
   saveScenario,

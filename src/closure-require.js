@@ -33,3 +33,4 @@ goog.exportSymbol('goog.string.startsWith', goog.string.startsWith);
 goog.exportSymbol('goog.string.endsWith', goog.string.endsWith);
 goog.exportSymbol('goog.string.collapseWhitespace', goog.string.collapseWhitespace);
 goog.exportSymbol('goog.string.isEmptyOrWhitespace', goog.string.isEmptyOrWhitespace);
+goog.exportSymbol('goog.math.clamp', goog.math.clamp);

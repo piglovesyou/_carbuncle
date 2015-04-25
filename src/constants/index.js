@@ -1,9 +1,9 @@
-var CHANGE_EVENT = 'change';
 var MongoErrorCode = {
   AUTH_FAILED: 18
 };
 
 module.exports = {
-  CHANGE_EVENT,
-  MongoErrorCode
+  CHANGE_EVENT: 'change',
+  MongoErrorCode,
+  PER_PAGE: 10
 };
