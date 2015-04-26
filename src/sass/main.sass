@@ -8,7 +8,9 @@ $gray-dark: darken($gray, 10%)
 $gray-light: lighten($gray, 10%)
 $gray-lighter: lighten($gray, 30%)
 
-$font-size-base: 16px
+$font-size-base: 14px
+$font-size-large:         ceil(($font-size-base * 1.25))
+$font-size-h2:            $font-size-large
 
 $brand-primary:         darken(#2575ed, 6.5%)
 $brand-success:         #2c9f42
@@ -294,6 +296,8 @@ $pixelWidth: 1px
     color: $brand-success
   .fa-close
     color: $brand-danger
+  label.control-label:last-of-type
+    text-align: left
 
 
 

@@ -43,9 +43,9 @@ var Setting = React.createClass({
                          defaultValue={window.localStorage.database}
                          onChange={this.onChange} />
                 </div>
-                <div className="col-xs-2">
+                <label className="col-xs-2 control-label" htmlFor="database">
                   {this.createOkOrNgIcon(this.state.databaseConnected)}
-                </div>
+                </label>
               </div>
 
               <div className="form-group">
@@ -59,9 +59,9 @@ var Setting = React.createClass({
                          defaultValue={window.localStorage.username}
                          onChange={this.onChange} />
                 </div>
-                <div className="col-xs-2">
+                <label className="col-xs-2 control-label" htmlFor="username">
                   {this.createOkOrNgIcon(this.state.authenticated)}
-                </div>
+                </label>
               </div>
 
               <div className="form-group">
@@ -75,9 +75,9 @@ var Setting = React.createClass({
                          placeholder="●●●●●●●"
                          onChange={this.onChange} />
                 </div>
-                <div className="col-xs-2">
+                <label className="col-xs-2 control-label" htmlFor="password">
                   {this.createOkOrNgIcon(this.state.authenticated)}
-                </div>
+                </label>
               </div>
 
             </form>
