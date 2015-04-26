@@ -114,7 +114,7 @@ ScenarioState.dispatcherToken = Dispatcher.register(function(action) {
       break;
 
     case 'startEditScenario':
-      _.each(action.scenario, (v, k) => _store[k] = _.clone(v));
+      _store = _.clone(action.scenario);
       break;
 
     case 'saveScenario':

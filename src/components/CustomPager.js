@@ -12,14 +12,10 @@ var OtherPager = React.createClass({
       'currentPage': 0
     };
   },
-  // pageChange: () => {
-  //   this.props.setPage();
-  //   this.props.setPage(parseInt(event.target.getAttribute("data-value")));
-  // },
   render: function(){
     var pageCount = this.props.maxPage;
     var pageEnd = pageCount - 1;
-    if (pageEnd <= 0) return;
+    if (pageEnd < 0) return null;
     var margin = 5; // TODO: Const
     var isLeftEdge = this.props.currentPage === 0;
     var isRightEdge = this.props.currentPage === pageEnd;

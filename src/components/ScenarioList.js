@@ -10,7 +10,7 @@ var CustomPager = require('../components/CustomPager');
 
 var Entries = React.createClass({
   render() {
-    if (!this.props.data) return null;
+    if (!this.props.data) return <div></div>;
     return (
       <div>
         {this.props.data.map(entry => {

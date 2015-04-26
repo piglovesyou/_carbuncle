@@ -1,11 +1,7 @@
-// var _ = require('underscore');
 var React = require('react');
 var Nav = require('../components/Nav');
 var {State} = require('react-router');
-// var Table = require('../components/Table');
-var Actions = require('../actions');
 var ScenarioList = require('../stores/ScenarioList');
-var componentHelper = require('../components/helper');
 var ScenarioListComponent = require('../components/ScenarioList');
 var {PER_PAGE} = require('../constants');
 
@@ -64,29 +60,6 @@ var ScenarioListApp = React.createClass({
         </div>
       </div>
     );
-  },
-
-  renderEntries(row) {
-    if (!row.entries) return null;
-    return row.entries.map(entry => {
-      var tooltip = entry.title + (entry.title && entry.css ? '\n\n' : '') + entry.css;
-      return (
-        <div className="paged-table--scenario-list__entry" title={tooltip}>
-          {componentHelper.renderIcon(entry.mode, entry.type)}
-        </div>
-      );
-    });
-  },
-
-  renderButtons(row) {
-    return [
-      <button className="btn btn-xs btn-success" onClick={this.startToEditScenario.bind(this, row)}>view</button>,
-      <button className="btn btn-xs btn-danger" onClick={Actions.deleteScenario.bind(null, row)}>delete</button>
-    ];
-  },
-
-  startToEditScenario(row) {
-    Actions.startEditScenario(row);
   }
 
 });

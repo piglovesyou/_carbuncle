@@ -18,7 +18,7 @@ restoreCache();
 
 var ScenarioList = assign({}, EventEmitter.prototype, {
   get() {
-    return _store;
+    return _.clone(_store);
   },
 
   sync(page) {
