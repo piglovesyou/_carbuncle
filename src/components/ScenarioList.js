@@ -4,10 +4,7 @@ var {PER_PAGE} = require('../constants');
 var {Navigation, State} = require('react-router');
 var componentHelper = require('../components/helper');
 var Actions = require('../actions');
-
-
-
-var Persist = require('../persist');
+var CustomPager = require('../components/CustomPager');
 
 
 
@@ -25,7 +22,7 @@ var Entries = React.createClass({
           );
         })}
       </div>
-    )
+    );
   }
 });
 
@@ -38,19 +35,17 @@ var Buttons = React.createClass({
   }
 });
 
-var Columns = ["title", "entries", "updatedBy", "buttons"];
+var Columns = ['title', 'entries', 'updatedBy', 'buttons'];
 var ColumnMetadata = [
   {
     'columnName': 'title',
     'displayName': 'タイトル',
-    // 'locked': true,
     'visible': true,
     'cssClassName': 'cell cell--title'
   },
   {
     'columnName': 'entries',
     'displayName': 'ステップ',
-    // 'locked': true,
     'visible': true,
     'customComponent': Entries,
     'cssClassName': 'cell cell--entries'
@@ -58,66 +53,52 @@ var ColumnMetadata = [
   {
     'columnName': 'updatedBy',
     'displayName': '更新者',
-    // 'locked': true,
     'visible': true,
     'cssClassName': 'cell cell--updatedBy'
   },
   {
     'columnName': 'buttons',
     'displayName': '',
-    // 'locked': true,
     'visible': true,
     'customComponent': Buttons,
     'cssClassName': 'cell cell--buttons'
-  },
+  }
 ];
 
-var ExternalSwapiComponent = React.createClass({
+var ScenarioList = React.createClass({
     mixins: [Navigation, State],
     getInitialState: function(){
       var initial = {
-        "externalSortColumn": null,
-        "externalSortAscending": true,
+        'externalSortColumn': null,
+        'externalSortAscending': true
       };
       return initial;
     },
-    componentWillMount: function(){
-    },
-    componentDidMount: function(){
-      // this.getExternalData();
-    },
-    // getExternalData: function(page){
-    //   var that = this;
-    //   page = page || 0;
-    //   Persist.getScenarios(page)
-    //   .then(data=> {
-    //     console.log(data.page)
-    //     this.setState({
-    //     });
-    //   });
-    // },
     setPage: function(index){
       var page = goog.math.clamp(index, 0, this.props.maxPage);
-      this.transitionTo('scenario-list', {}, {page})
+      this.transitionTo('scenario-list', {}, {page});
     },
-    setPageSize: function(size){
+    setPageSize: function() {
     },
     render: function(){
       return <Griddle gridClassName={'paged-table paged-table--' + this.props.cssModifier} useExternal={true} externalSetPage={this.setPage} enableSort={false}
           columns={Columns}
           columnMetadata={ColumnMetadata}
-          externalSetPageSize={this.setPageSize}
           externalMaxPage={this.props.maxPage}
           externalChangeSort={function(){}}
           externalSetFilter={function(){}}
           externalCurrentPage={this.props.currentPage}
+          externalSetPageSize={this.setPageSize}
           results={this.props.results}
           tableClassName="table"
           resultsPerPage={PER_PAGE}
           externalSortColumn={this.state.externalSortColumn}
           externalSortAscending={this.state.externalSortAscending}
-          useGriddleStyles={false} />
+          useGriddleStyles={false}
+          useCustomPagerComponent={true}
+          customPagerComponent={CustomPager}
+          urlBase={this.props.urlBase} />;
     }
 });
 
-module.exports = ExternalSwapiComponent;
+module.exports = ScenarioList;

@@ -1,8 +1,8 @@
-var _ = require('underscore');
+// var _ = require('underscore');
 var React = require('react');
 var Nav = require('../components/Nav');
 var {State} = require('react-router');
-var Table = require('../components/Table');
+// var Table = require('../components/Table');
 var Actions = require('../actions');
 var ScenarioList = require('../stores/ScenarioList');
 var componentHelper = require('../components/helper');
@@ -10,13 +10,6 @@ var ScenarioListComponent = require('../components/ScenarioList');
 var {PER_PAGE} = require('../constants');
 
 
-
-var faked = [
-  {id: 0, title: 'yeah'},
-  {id: 1, title: 'yeah'},
-  {id: 2, title: 'ohh'},
-  {id: 3, title: 'yeah'},
-];
 
 var ScenarioListApp = React.createClass({
 
@@ -64,6 +57,7 @@ var ScenarioListApp = React.createClass({
                 results={this.state.list.slice(currentPage * PER_PAGE, currentPage * PER_PAGE + PER_PAGE)}
                 currentPage={currentPage}
                 maxPage={Math.ceil(this.state.total / PER_PAGE)}
+                urlBase="scenario-list"
                  />
 
           </div>
