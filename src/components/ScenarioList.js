@@ -6,6 +6,7 @@ var componentHelper = require('../components/helper');
 var Actions = require('../actions');
 var ScenarioList = require('../stores/ScenarioList');
 var CustomPager = require('./CustomPager');
+var _ = require('underscore');
 
 
 
@@ -69,7 +70,9 @@ var ColumnMetadata = [
 var ScenarioListComponent = React.createClass({
 
     getInitialState() {
-      return this.createState();
+      return _.extend({
+        currentPage: 0
+      }, this.createState());
     },
 
     componentDidMount() {
@@ -77,7 +80,7 @@ var ScenarioListComponent = React.createClass({
       this.syncPage();
     },
 
-    componentWillUpdate() {
+    componentDidUpdate() {
       this.syncPage();
     },
 
@@ -86,7 +89,7 @@ var ScenarioListComponent = React.createClass({
     },
 
     syncPage() {
-      ScenarioList.sync(+this.getQuery().page || 0);
+      ScenarioList.sync(this.state.currentPage);
     },
 
     onChange() {
@@ -100,8 +103,8 @@ var ScenarioListComponent = React.createClass({
     mixins: [Navigation, State],
 
     setPage: function(index){
-      var page = goog.math.clamp(index, 0, this.getMaxPage());
-      this.transitionTo('scenario-list', {}, {page});
+      var currentPage = goog.math.clamp(index, 0, this.getMaxPage());
+      this.setState({ currentPage });
     },
     setPageSize: function() {
     },
@@ -109,16 +112,18 @@ var ScenarioListComponent = React.createClass({
       return Math.ceil(this.state.total / PER_PAGE);
     },
     render: function(){
-      var currentPage = +this.getQuery().page || 0;
-      return <Griddle gridClassName={'paged-table paged-table--' + this.props.cssModifier} useExternal={true} externalSetPage={this.setPage} enableSort={false}
+      return <Griddle gridClassName={'paged-table paged-table--' + this.props.cssModifier}
+          enableSort={false}
           columns={Columns}
           columnMetadata={ColumnMetadata}
+          useExternal={true}
+          externalSetPage={this.setPage}
           externalMaxPage={this.getMaxPage()}
           externalChangeSort={function(){}}
           externalSetFilter={function(){}}
-          externalCurrentPage={this.props.currentPage}
+          externalCurrentPage={this.state.currentPage}
           externalSetPageSize={this.setPageSize}
-          results={this.state.list.slice(currentPage * PER_PAGE, currentPage * PER_PAGE + PER_PAGE)}
+          results={this.state.list.slice(this.state.currentPage * PER_PAGE, this.state.currentPage * PER_PAGE + PER_PAGE)}
           tableClassName="table"
           resultsPerPage={PER_PAGE}
           externalSortColumn={null}

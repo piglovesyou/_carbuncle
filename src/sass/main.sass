@@ -1,7 +1,22 @@
 
 $fa-font-path: "./fonts"
 
+
+
 // http://imperavi.com/kube/css/labels
+$state-success-text:             #0f0f0f
+$state-success-bg:               #d5ecd9
+$state-success-border:           darken(adjust-hue($state-success-bg, -10), 5%)
+$state-info-text:                #0f0f0f
+$state-info-bg:                  #d3e3fb
+$state-info-border:              darken(adjust-hue($state-info-bg, -10), 7%)
+$state-warning-text:             #0f0f0f
+$state-warning-bg:               #fff4cc
+$state-warning-border:           darken(adjust-hue($state-warning-bg, -10), 5%)
+$state-danger-text:              #0f0f0f
+$state-danger-bg:                #f8d5d8
+$state-danger-border:            darken(adjust-hue($state-danger-bg, -10), 5%)
+
 $gray: #565d64
 $gray-darker: darken($gray, 30%)
 $gray-dark: darken($gray, 10%)
@@ -26,6 +41,8 @@ $border-radius-small: 0
 $btn-default-color: $gray-dark
 $btn-default-bg: #e0e3e5
 $btn-default-border: darken(#e0e3e5, 5%)
+
+
 
 $grid-gutter-width: 8px
 
@@ -67,7 +84,8 @@ $effeckt-modal-transition-duration: 400ms
     flex: 1
     overflow: auto
 .effeckt-modal-overlay
-  background-color: rgba(255,255,255,.97)
+  // background-color: rgba(255,255,255,.97)
+  background-color: $state-info-bg
   @extend .fa
   @extend .fa-close
   &:before
@@ -76,6 +94,10 @@ $effeckt-modal-transition-duration: 400ms
     top: 32px
     right: 32px
     font-size: 200%
+// .table>thead>tr>th
+//   border-bottom: none
+.table>tbody+tbody
+  border-top: none
 
 
 
@@ -345,8 +367,9 @@ $pixelWidth: 1px
 .griddle-body
   position: relative
   padding-bottom: 65px
-  min-height: 486px
+  min-height: 493px
   .footer-container
+    border-top: none
     padding: 0
 .griddle-footer
   position: absolute
