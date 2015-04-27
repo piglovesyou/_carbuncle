@@ -11,6 +11,7 @@ goog.require('goog.style');
 goog.require('goog.crypt');
 goog.require('goog.crypt.Md5');
 goog.require('goog.string');
+goog.require('goog.dom.classlist');
 
 goog.exportSymbol('goog.object.clone', goog.object.clone);
 goog.exportSymbol('goog.dom.forms.getValue', goog.dom.forms.getValue);
@@ -34,3 +35,4 @@ goog.exportSymbol('goog.string.endsWith', goog.string.endsWith);
 goog.exportSymbol('goog.string.collapseWhitespace', goog.string.collapseWhitespace);
 goog.exportSymbol('goog.string.isEmptyOrWhitespace', goog.string.isEmptyOrWhitespace);
 goog.exportSymbol('goog.math.clamp', goog.math.clamp);
+goog.exportSymbol('goog.dom.classlist.contains', goog.dom.classlist.contains);

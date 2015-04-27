@@ -289,6 +289,16 @@ body,
 
 
 .paged-table--scenario-list
+  .standard-row
+    &:hover
+      cursor: pointer
+      background-color: $brand-primary
+      & .cell,
+      & + .standard-row .cell
+        border-color: transparent
+      .cell,
+      .fa
+        color: white
   .cell--title
     width: 240px
   .cell--buttons
@@ -297,6 +307,9 @@ body,
     .btn
       margin-left: 8px
       width: 4em
+      &.fa
+        width: auto
+        min-height: 1.6em
   .cell--updated-by
     width: 160px
 

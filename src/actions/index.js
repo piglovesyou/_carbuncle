@@ -1,4 +1,3 @@
-
 var Dispatcher = require('../dispatcher');
 var {HashLocation} = require('react-router');
 

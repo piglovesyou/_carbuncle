@@ -56,6 +56,10 @@ ScenarioState.on(CHANGE_EVENT, () => {
 
 ScenarioState.dispatcherToken = Dispatcher.register(function(action) {
   switch (action.type) {
+    case 'selectBlock':
+      console.log('--', action.blockData);
+      break;
+
     case 'editEntry':
       var i = goog.array.findIndex(_store.entries, entry => action.entry.id === entry.id);
       if (i < 0) {

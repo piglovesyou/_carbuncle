@@ -11,7 +11,12 @@ var SelectBlockModal = React.createClass({
           <div className="effeckt-content effeckt-modal" id="effeckt-modal">
             <h3>ブロックを選択...</h3>
             <div className="effeckt-modal-content">
-              {this.props.shown ? <ScenarioListComponent cssModifier="scenario-list" /> : null}
+              {this.props.shown ?
+                <ScenarioListComponent
+                    cssModifier="scenario-list"
+                    onClickRow={this.onClickRow}
+                    />
+              : null}
             </div>
           </div>
         </div>
@@ -22,6 +27,11 @@ var SelectBlockModal = React.createClass({
         ></div>
       </div>
     );
+  },
+
+  onClickRow(e, rowData) {
+    Actions.insertEntry(rowData);
+    Actions.startBlockSelect(false);
   },
 
   onCancelClick(e) {
