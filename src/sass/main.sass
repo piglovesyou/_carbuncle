@@ -50,7 +50,7 @@ $input-color-placeholder: $gray-lighter
 $input-border: $gray-lighter
 $input-border-focus: lighten($brand-info, 10%) // TODO
 
-$navbar-default-bg: transparent
+// $navbar-default-bg: transparent
 $navbar-default-brand-color: $gray
 $navbar-default-color: $gray
 $navbar-default-link-color: $gray
@@ -84,8 +84,7 @@ $effeckt-modal-transition-duration: 400ms
     flex: 1
     overflow: auto
 .effeckt-modal-overlay
-  // background-color: rgba(255,255,255,.97)
-  background-color: $state-info-bg
+  background-color: rgba(255,255,255,.97)
   @extend .fa
   @extend .fa-close
   &:before
@@ -105,6 +104,8 @@ $layout-border-color: $gray-lighter
 
 
 /* Overwrite bootstrap style */
+.navbar-default
+  background-color: white
 .form-control
   border-color: transparent transparent $input-border
   box-shadow: none
@@ -366,8 +367,7 @@ $pixelWidth: 1px
 
 .griddle-body
   position: relative
-  padding-bottom: 65px
-  min-height: 493px
+  min-height: 480px
   .footer-container
     border-top: none
     padding: 0
