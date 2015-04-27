@@ -126,6 +126,12 @@ module.exports = {
     Dispatcher.dispatch({
       type: 'newScenario'
     });
+  },
+
+  startBlockSelect(enable) {
+    Dispatcher.dispatch({
+      type: 'startBlockSelect', enable
+    });
   }
 
 };

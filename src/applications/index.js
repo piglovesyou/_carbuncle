@@ -8,6 +8,7 @@ var IFrame = require('../components/IFrame');
 var Scenario = require('../components/Scenario');
 var Mask = require('../components/Mask');
 var Pixel = require('../components/Pixel');
+var SelectBlockModal = require('../components/SelectBlockModal');
 
 var Store = require('../stores');
 var EditorState = require('../stores/EditorState');
@@ -46,6 +47,7 @@ var Index = React.createClass({
     var store = Store.get();
     this.setState(_.extend({
       isSelectingElement: store.isSelectingElement,
+      isSelectingBlock: store.isSelectingBlock,
       targetElementBounds: store.targetElementBounds,
       editorState: EditorState.get(),
       iframeState: IFrameState.get()
@@ -92,16 +94,7 @@ var Index = React.createClass({
         {this.state.isSelectingElement ? <Mask onCancel={this.onMaskCancelled} /> : null}
         {this.state.targetElementBounds ? <Pixel {...this.state.targetElementBounds} /> : null}
 
-        <div className="effeckt-wrap effeckt-modal-wrap from-below" id="effeckt-modal-wrap">
-          <div className="effeckt-content effeckt-modal" id="effeckt-modal">
-            <h3>Modal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal Dialog</h3>
-            <div className="effeckt-modal-content">
-              <p>This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.</p>
-              <button className="effeckt-modal-close">Close me!</button>
-            </div>
-          </div>
-        </div>
-        <div className="effeckt-overlay effeckt-modal-overlay" id="effeckt-modal-overlay" data-effeckt-dismiss="modal"></div>
+        <SelectBlockModal shown={this.state.isSelectingBlock} />
 
       </div>
     );

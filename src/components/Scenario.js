@@ -92,7 +92,7 @@ var Scenario = React.createClass({
         <div className="scenario__body" ref="body">
           {this.props.entries.map(entry => <Entry {...entry} key={entry.id} />)}
           <div className="scenario__body-insertblock-wrap">
-            <a className="scenario__body-insertblock" href="">
+            <a className="scenario__body-insertblock" href="#" onClick={this.onBlockSelectClick}>
               <i className="fa fa-plus"></i>
               ブロックを挿入
             </a>
@@ -114,6 +114,11 @@ var Scenario = React.createClass({
     );
   },
 
+  onBlockSelectClick(e) {
+    e.preventDefault();
+    Actions.startBlockSelect(true);
+  },
+
   onSaveClick(e) {
     e.preventDefault(e);
     Actions.saveScenario();
@@ -124,8 +129,7 @@ var Scenario = React.createClass({
     Actions.newScenario();
   },
 
-  onBlockChange(e) {
-    // e.preventDefault(e);
+  onBlockChange() {
     Actions.changeScenario({
       isBlock: goog.dom.forms.getValue(this.refs['scenario__block'].getDOMNode())
     });

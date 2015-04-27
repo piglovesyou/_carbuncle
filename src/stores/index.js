@@ -10,6 +10,7 @@ var {CHANGE_EVENT} = require('../constants');
 
 var _store = {
   isSelectingElement: false,
+  isSelectingBlock: false,
   targetElementBounds: null
 };
 
@@ -34,6 +35,11 @@ module.exports = Store;
 
 Store.dispatcherToken = Dispatcher.register(function(action) {
   switch(action.type) {
+
+    case 'startBlockSelect':
+      _store.isSelectingBlock = action.enable;
+      Store.emit(CHANGE_EVENT);
+      break;
 
     case 'enableSelectElement':
       _store.isSelectingElement = action.enable;
