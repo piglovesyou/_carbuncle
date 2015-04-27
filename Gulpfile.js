@@ -43,7 +43,8 @@ function css() {
     loadPath: [
       config.sassPath,
       Path.join(config.bowerPath, 'bootstrap-sass-official/assets/stylesheets'),
-      Path.join(config.bowerPath, 'fontawesome/scss')
+      Path.join(config.bowerPath, 'fontawesome/scss'),
+      './node_modules/'
     ],
     'sourcemap=none': true
   })

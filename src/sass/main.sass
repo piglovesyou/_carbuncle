@@ -43,6 +43,31 @@ $navbar-margin-bottom: 0
 @import font-awesome
 
 
+
+
+$effeckt-modal-min-width: 0
+$effeckt-modal-max-width: none
+@import Effeckt/scss/_variables
+@import Effeckt/scss/_global
+@import Effeckt/scss/effeckt
+// @import Effeckt/scss/_variables
+// @import Effeckt/scss/modules/modal
+.effeckt-modal-wrap
+  transform: none
+  top: 36px
+  right: 36px
+  bottom: 36px
+  left: 36px
+.effeckt-modal
+  transition-timing-function: ease
+  animation-timing-function: ease
+
+.effeckt-modal-overlay
+  background-color: rgba(255,255,255,.8)
+
+
+
+
 $layout-border-color: $gray-lighter
 
 
