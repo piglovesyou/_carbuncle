@@ -4,7 +4,8 @@ var {PER_PAGE} = require('../constants');
 var {Navigation, State} = require('react-router');
 var componentHelper = require('../components/helper');
 var Actions = require('../actions');
-var CustomPager = require('../components/CustomPager');
+var ScenarioList = require('../stores/ScenarioList');
+var CustomPager = require('./CustomPager');
 
 
 
@@ -65,40 +66,67 @@ var ColumnMetadata = [
   }
 ];
 
-var ScenarioList = React.createClass({
-    mixins: [Navigation, State],
-    getInitialState: function(){
-      var initial = {
-        'externalSortColumn': null,
-        'externalSortAscending': true
-      };
-      return initial;
+var ScenarioListComponent = React.createClass({
+
+    getInitialState() {
+      return this.createState();
     },
+
+    componentDidMount() {
+      ScenarioList.addChangeListener(this.onChange);
+      this.syncPage();
+    },
+
+    componentWillUpdate() {
+      this.syncPage();
+    },
+
+    componentDidUnmount() {
+      ScenarioList.removeChangeListener(this.onChange);
+    },
+
+    syncPage() {
+      ScenarioList.sync(+this.getQuery().page || 0);
+    },
+
+    onChange() {
+      this.setState(this.createState());
+    },
+
+    createState() {
+      return ScenarioList.get();
+    },
+
+    mixins: [Navigation, State],
+
     setPage: function(index){
-      var page = goog.math.clamp(index, 0, this.props.maxPage);
+      var page = goog.math.clamp(index, 0, this.getMaxPage());
       this.transitionTo('scenario-list', {}, {page});
     },
     setPageSize: function() {
     },
+    getMaxPage() {
+      return Math.ceil(this.state.total / PER_PAGE);
+    },
     render: function(){
+      var currentPage = +this.getQuery().page || 0;
       return <Griddle gridClassName={'paged-table paged-table--' + this.props.cssModifier} useExternal={true} externalSetPage={this.setPage} enableSort={false}
           columns={Columns}
           columnMetadata={ColumnMetadata}
-          externalMaxPage={this.props.maxPage}
+          externalMaxPage={this.getMaxPage()}
           externalChangeSort={function(){}}
           externalSetFilter={function(){}}
           externalCurrentPage={this.props.currentPage}
           externalSetPageSize={this.setPageSize}
-          results={this.props.results}
+          results={this.state.list.slice(currentPage * PER_PAGE, currentPage * PER_PAGE + PER_PAGE)}
           tableClassName="table"
           resultsPerPage={PER_PAGE}
-          externalSortColumn={this.state.externalSortColumn}
-          externalSortAscending={this.state.externalSortAscending}
+          externalSortColumn={null}
+          externalSortAscending={true}
           useGriddleStyles={false}
           useCustomPagerComponent={true}
-          customPagerComponent={CustomPager}
-          urlBase={this.props.urlBase} />;
+          customPagerComponent={CustomPager} />;
     }
 });
 
-module.exports = ScenarioList;
+module.exports = ScenarioListComponent;

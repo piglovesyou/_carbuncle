@@ -1,5 +1,6 @@
 var React = require('react');
 var Actions = require('../actions');
+var ScenarioListComponent = require('../components/ScenarioList');
 
 var SelectBlockModal = React.createClass({
   render() {
@@ -8,10 +9,9 @@ var SelectBlockModal = React.createClass({
         <div className={'effeckt-wrap effeckt-modal-wrap from-below' +
             (this.props.shown ? ' effeckt-show' : '')} id="effeckt-modal-wrap">
           <div className="effeckt-content effeckt-modal" id="effeckt-modal">
-            <h3>Modal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal DialogModal Dialog</h3>
+            <h3>ブロックを選択...</h3>
             <div className="effeckt-modal-content">
-              <p>This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.This is a modal window.</p>
-              <button className="effeckt-modal-close">Close me!</button>
+              {this.props.shown ? <ScenarioListComponent cssModifier="scenario-list" /> : null}
             </div>
           </div>
         </div>
