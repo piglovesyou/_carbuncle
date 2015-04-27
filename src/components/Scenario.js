@@ -62,27 +62,31 @@ var Scenario = React.createClass({
     return (
       <div className="scenario">
         <div className="scenario__header">
-          <form action="" className="pure-form">
+          <form action="" className="form-horizontal">
             <input className="scenario__id" type="hidden"
                    value={this.props._id || null} />
-            <input className="scenario__title form-control"
-                   ref="scenario__title"
-                   type="text"
-                   title="シナリオのタイトル"
-                   placeholder="シナリオのタイトル"
-                   value={this.props.title}
-                   onChange={this.onChange}
-                   />
-            <label htmlFor="scenario__block" className="helptext" title="ブロックは他のシナリオのステップにすることができます">
-              <input ref="scenario__block"
-                     className="scenario__block"
-                     id="scenario__block"
-                     type="checkbox"
-                     checked={!!this.props.isBlock}
-                     onChange={this.onChange}
-               />
-              ブロック
-            </label>
+            <div className="form-group">
+              <div className="col-xs-10">
+                <input className="scenario__title form-control"
+                       ref="scenario__title"
+                       type="text"
+                       title="シナリオのタイトル"
+                       placeholder="シナリオのタイトル"
+                       value={this.props.title}
+                       onChange={this.onChange}
+                       />
+              </div>
+              <label htmlFor="scenario__block" className="control-label col-xs-2" title="ブロックは他のシナリオのステップにすることができます">
+                <input ref="scenario__block"
+                       className="scenario__block"
+                       id="scenario__block"
+                       type="checkbox"
+                       checked={!!this.props.isBlock}
+                       onChange={this.onBlockChange}
+                 />
+                ブロック
+              </label>
+            </div>
           </form>
         </div>
         <div className="scenario__body" ref="body">
@@ -118,6 +122,13 @@ var Scenario = React.createClass({
   onNewClick(e) {
     e.preventDefault(e);
     Actions.newScenario();
+  },
+
+  onBlockChange(e) {
+    // e.preventDefault(e);
+    Actions.changeScenario({
+      isBlock: goog.dom.forms.getValue(this.refs['scenario__block'].getDOMNode())
+    });
   },
 
   onChange(e) {
