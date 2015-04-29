@@ -29,7 +29,7 @@ var SelectBlockModal = React.createClass({
     );
   },
 
-  onClickRow(e, rowData) {
+  onClickRow(rowData) {
     Actions.insertEntry(rowData);
     Actions.startBlockSelect(false);
   },

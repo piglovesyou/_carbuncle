@@ -18,14 +18,14 @@ function deleteScenario(id) {
     Q.ninvoke(scenarios, 'deleteOne', { _id: id }));
 }
 
-function getScenarios(page) {
+function getScenarios(page, filter) {
   var skip = PER_PAGE * page;
   var limit = PER_PAGE;
   return getScenariosCollection()
   .then(scenarios => {
     return Q.all([
-      Q.ninvoke(scenarios, 'count'),
-      Q.ninvoke(scenarios.find().skip(skip).limit(limit), 'toArray')
+      Q.ninvoke(scenarios, 'count', filter),
+      Q.ninvoke(scenarios.find(filter).skip(skip).limit(limit), 'toArray')
     ])
     .then(result => {
       var [total, docs] = result;

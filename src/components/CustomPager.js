@@ -37,7 +37,7 @@ var OtherPager = React.createClass({
       <nav className="text-center">
         <ul className="pagination">
           <li className={isLeftEdge ? 'disabled' : null}>
-            <a href="#" onClick={goTo.bind(this, 0)}>&laquo;</a>
+            <a href="#" onClick={goTo.bind(this, 0)} className="fa fa-angle-double-left"></a>
           </li>
           {leftskip}
           {_.map(_.range(rangeStart, rangeEnd + 1), page =>
@@ -47,7 +47,7 @@ var OtherPager = React.createClass({
           )}
           {rightskip}
           <li className={isRightEdge ? 'disabled' : null}>
-            <a href="#" onClick={goTo.bind(this, pageEnd)}>&raquo;</a>
+            <a href="#" onClick={goTo.bind(this, pageEnd)} className="fa fa-angle-double-right"></a>
           </li>
         </ul>
       </nav>

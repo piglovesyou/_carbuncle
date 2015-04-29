@@ -56,6 +56,11 @@ $navbar-default-color: $gray
 $navbar-default-link-color: $gray
 $navbar-margin-bottom: 0
 
+$pagination-border: transparent
+$pagination-hover-border: transparent
+$pagination-disabled-border: transparent
+$pagination-hover-color: $gray-light
+
 
 @import _bootstrap
 @import font-awesome
@@ -290,8 +295,12 @@ body,
 
 .paged-table--scenario-list
   .standard-row
+    cursor: pointer
+    .fa-trash
+      visibility: hidden
     &:hover
-      cursor: pointer
+      .fa-trash
+        visibility: visible
       background-color: $brand-primary
       & .cell,
       & + .standard-row .cell
@@ -305,6 +314,7 @@ body,
     width: 160px
     text-align: right
     .btn
+      color: $btn-default-color
       margin-left: 8px
       width: 4em
       &.fa

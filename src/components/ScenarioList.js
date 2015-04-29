@@ -33,9 +33,13 @@ var Entries = React.createClass({
 var Buttons = React.createClass({
   render() {
     return (<div>
-      <button className="btn btn-xs btn-success" onClick={Actions.startEditScenario.bind(this, this.props.rowData)}>view</button>
-      <button className="btn btn-xs btn-danger fa fa-trash" onClick={Actions.deleteScenario.bind(null, this.props.rowData)}></button>
+      <button className="btn btn-xs btn-link fa fa-trash" onClick={this.onDeleteClick}></button>
     </div>);
+  },
+  onDeleteClick(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    Actions.deleteScenario(this.props.rowData);
   }
 });
 
@@ -150,7 +154,7 @@ var ScenarioListComponent = React.createClass({
         var rowData = this.getSlicedList()[index];
         assert(rowData);
         if (this.props.onClickRow) {
-          this.props.onClickRow(e, rowData);
+          this.props.onClickRow(rowData);
         }
       }
     }
