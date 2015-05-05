@@ -12,6 +12,7 @@ goog.require('goog.crypt');
 goog.require('goog.crypt.Md5');
 goog.require('goog.string');
 goog.require('goog.dom.classlist');
+goog.require('goog.string.linkify');
 
 goog.exportSymbol('goog.object.clone', goog.object.clone);
 goog.exportSymbol('goog.dom.forms.getValue', goog.dom.forms.getValue);
@@ -29,6 +30,7 @@ goog.exportSymbol('goog.crypt.byteArrayToHex', goog.crypt.byteArrayToHex);
 goog.exportSymbol('goog.array.removeIf', goog.array.removeIf);
 goog.exportSymbol('goog.array.findIndex', goog.array.findIndex);
 // goog.exportSymbol('goog.string.equal', goog.string.equal);
+goog.exportSymbol('goog.string.truncate', goog.string.truncate);
 goog.exportSymbol('goog.string.contains', goog.string.contains);
 goog.exportSymbol('goog.string.startsWith', goog.string.startsWith);
 goog.exportSymbol('goog.string.endsWith', goog.string.endsWith);
@@ -36,3 +38,4 @@ goog.exportSymbol('goog.string.collapseWhitespace', goog.string.collapseWhitespa
 goog.exportSymbol('goog.string.isEmptyOrWhitespace', goog.string.isEmptyOrWhitespace);
 goog.exportSymbol('goog.math.clamp', goog.math.clamp);
 goog.exportSymbol('goog.dom.classlist.contains', goog.dom.classlist.contains);
+goog.exportSymbol('goog.string.linkify.findFirstUrl', goog.string.linkify.findFirstUrl);

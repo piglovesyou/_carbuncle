@@ -20,17 +20,33 @@ var Entry = React.createClass({
              onClick={this.onDeleteClick}
              href="#">del</a>
         </div>
-        <div className="scenario-entry__title">
+        <div className="scenario-entry__title" title={this.props.title}>
           {helper.renderIcon(this.props.mode, this.props.type)}
-          {this.props.title}
+          {goog.string.truncate(this.props.title, 20)}
         </div>
         <div className="scenario-entry__meta">
-          {this.props.mode}
-          {this.props.type ? ', ' + this.props.type : ''}
-          {this.props.text ? ', ' + this.props.text : ''}
+          {this.renderMeta()}
         </div>
       </div>
     );
+  },
+  renderMeta() {
+    var rv = [<span>{this.props.type}</span>];
+    if (this.props.mode === 'action' &&
+        this.props.type === 'open' &&
+        goog.string.linkify.findFirstUrl(this.props.text)) {
+      rv.push(<a href="#"
+                 onClick={this.onUrlClick}>{this.props.text}</a>);
+    } else {
+      rv.push(<span>{this.props.text}</span>);
+    }
+    return rv;
+  },
+  onUrlClick(e) {
+    e.preventDefault();
+    Actions.locationChange({
+      url: this.props.text
+    });
   },
   createClassNames() {
     var rv = 'scenario-entry';
