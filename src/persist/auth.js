@@ -3,6 +3,7 @@ var Q = require('q');
 Q.longStackSupport = true;
 var {MongoClient} = require('mongodb');
 var _ = require('underscore');
+var Actions = require('../actions');
 
 
 
@@ -36,7 +37,16 @@ function connectDatabase() {
         console.info('Closeing connection...');
         database = null;
       });
+      Actions.notify({ active: false });
       return d;
+    })
+    .catch(err => {
+      Actions.notify({
+        type: 'danger',
+        icon: 'unlink',
+        message: 'データベースが見つかりません'
+      });
+      throw err;
     });
   }
 }
@@ -51,10 +61,17 @@ function authenticate() {
       return Q.ninvoke(db, 'authenticate', state.username || '', state.password || '')
       .then(() => {
         authenticated = true;
+        Actions.notify({ active: false });
         return database;
       })
       .catch(err => {
+        console.log(err.stack)
         authenticated = false;
+        Actions.notify({
+          type: 'danger',
+          icon: 'user-times',
+          message: 'ユーザー認証に失敗しました'
+        });
         throw err;
       });
     });

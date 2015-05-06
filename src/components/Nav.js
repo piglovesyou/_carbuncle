@@ -18,9 +18,10 @@ var Notification = React.createClass({
   },
   render() {
     var icon = this.state.icon ? <i className={"fa fa-" + this.state.icon}></i> : null
+    var message = goog.string.truncate(this.state.message || '', 20);
     var content = this.state.linkUrl ?
-        <Link to={this.state.linkUrl} className="alert">{icon} {this.state.message}</Link> :
-        <span className={'alert' + (this.state.type ? ' alert-' + this.state.type : '')}>{icon} {this.state.message}</span>;
+        <Link to={this.state.linkUrl} className="alert">{icon} {message}</Link> :
+        <span className={'alert' + (this.state.type ? ' alert-' + this.state.type : '')}>{icon} {message}</span>;
     return (
       <li className={'navbar__notification' + (this.state.active ? ' active' : '')}
           onClick={this.state.active ? this.onNotifyClick : function(){}}>
@@ -53,16 +54,6 @@ var Nav = React.createClass({
             </ul>
             <ul className="nav navbar-nav navbar-right">
               <Notification />
-              <li className="dropdown">
-                <a href="#" className="dropdown-toggle">user1 <span className="caret"></span></a>
-                <ul className="dropdown-menu" role="menu">
-                  <li><a href="#">Action</a></li>
-                  <li><a href="#">Another action</a></li>
-                  <li><a href="#">Something else here</a></li>
-                  <li className="divider"></li>
-                  <li><a href="#">Separated link</a></li>
-                </ul>
-              </li>
             </ul>
           </div>
         </div>

@@ -10,6 +10,7 @@ var Persist = require('../persist');
 var ScenarioList = require('./ScenarioList');
 var {ObjectID} = require('mongodb');
 var Actions = require('../actions');
+var ComponentHelper = require('../components/helper');
 
 
 
@@ -55,6 +56,7 @@ ScenarioState.on(CHANGE_EVENT, () => {
 
 
 
+var previewResetTimer;
 ScenarioState.dispatcherToken = Dispatcher.register(function(action) {
   switch (action.type) {
     case 'selectBlock':
@@ -91,19 +93,20 @@ ScenarioState.dispatcherToken = Dispatcher.register(function(action) {
 
     case 'preview':
 
-      setTimeout(() => { // I don't know why I need this. Obviously it's nw's bug.
-        var executor = new Executor(_store.entries, 400);
+      previewResetTimer = setTimeout(() => { // I don't know why I need this. Obviously it's nw's bug.
+        var executor = new Executor(_store.entries, 100);
         resetExecutingState();
         ScenarioState.emit(CHANGE_EVENT);
         var last;
         executor.on('before', entry => {
           if (last) last['@executingState'] = 'done';
-          last = entry;
           entry['@executingState'] = 'doing';
           ScenarioState.emit(CHANGE_EVENT);
           Actions.notify({
-            message: (last.title || '') + '...'
+            icon: ComponentHelper.getIconKey(entry.mode, entry.type),
+            message: (entry.title || '') + '...'
           });
+          last = entry;
         });
         executor.on('pass', () => {
           if (last) last['@executingState'] = 'done';
@@ -120,11 +123,11 @@ ScenarioState.dispatcherToken = Dispatcher.register(function(action) {
           Actions.notify({
             type: 'danger',
             icon: 'frown-o',
-            message: (_store.title ? _store.title + 'が' : '') + '失敗しました'
+            message: (_store.title ? 'シナリオ「' + _store.title + '」が' : '') + '失敗しました'
           });
         });
         executor.on('end', () => {
-          setTimeout(() => {
+          previewResetTimer = setTimeout(() => {
             resetExecutingState();
             ScenarioState.emit(CHANGE_EVENT);
           }, 3 * 1000);
@@ -165,6 +168,7 @@ ScenarioState.dispatcherToken = Dispatcher.register(function(action) {
 
 
 function resetExecutingState() {
+  clearTimeout(previewResetTimer);
   _store.entries.forEach(entry => delete entry['@executingState']);
 }
 

@@ -29,9 +29,8 @@ module.exports = EditorState;
 EditorState.dispatcherToken = Dispatcher.register(function(action) {
   switch (action.type) {
     case 'locationChange':
-      _.extend(_store, {
+      _store = _.extend({}, DEFAULT_STATE, {
         title: action.state.title,
-        css: '',
         mode: 'action',
         type: 'open',
         text: action.state.url

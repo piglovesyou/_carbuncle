@@ -68,7 +68,7 @@ var Setting = React.createClass({
                 <label className="col-xs-3 control-label" htmlFor="password">パスワード</label>
                 <div className="col-xs-7">
                   <input className="form-control"
-                         type="text"
+                         type="password"
                          ref="password"
                          id="password"
                          defaultValue={window.localStorage.password}

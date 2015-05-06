@@ -1,23 +1,27 @@
 var React = require('react');
 
-module.exports = { renderIcon };
+module.exports = { renderIcon, getIconKey };
 
 function renderIcon(mode, type) {
-  var iconKey;
-  if (mode === 'action') {
-    switch(type) {
-      case 'click': iconKey = 'bullseye'; break;
-      case 'input': iconKey = 'pencil'; break;
-      case 'open': iconKey = 'globe'; break;
-      case 'screenshot': iconKey = 'camera'; break;
-    }
-  } else if (mode === 'verify') {
-    iconKey = 'check-square-o';
-  } else if (mode === 'block') {
-    iconKey = 'cube';
-  }
+  var iconKey = getIconKey(mode, type);
   if (iconKey) {
     return <i className={'fa fa-' + iconKey}></i>;
   }
   return null;
+}
+
+function getIconKey(mode, type) {
+  if (mode === 'action') {
+    switch(type) {
+      case 'click': return 'bullseye';
+      case 'input': return 'pencil';
+      case 'open': return 'globe';
+      case 'screenshot': return 'camera';
+    }
+  } else if (mode === 'verify') {
+    return 'check-square-o';
+  } else if (mode === 'block') {
+    return 'cube';
+  }
+  return undefined;
 }
