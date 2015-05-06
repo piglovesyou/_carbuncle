@@ -58,6 +58,7 @@ ScenarioState.on(CHANGE_EVENT, () => {
 ScenarioState.dispatcherToken = Dispatcher.register(function(action) {
   switch (action.type) {
     case 'selectBlock':
+      // TODO
       console.log('--', action.blockData);
       break;
 
@@ -100,20 +101,33 @@ ScenarioState.dispatcherToken = Dispatcher.register(function(action) {
           last = entry;
           entry['@executingState'] = 'doing';
           ScenarioState.emit(CHANGE_EVENT);
+          Actions.notify({
+            message: (last.title || '') + '...'
+          });
         });
         executor.on('pass', () => {
           if (last) last['@executingState'] = 'done';
           ScenarioState.emit(CHANGE_EVENT);
+          Actions.notify({
+            type: 'success',
+            icon: 'smile-o',
+            message: (_store.title ? 'シナリオ「' + _store.title + '」が' : '') + '成功しました'
+          });
         });
         executor.on('fail', () => {
           if (last) last['@executingState'] = 'fail';
           ScenarioState.emit(CHANGE_EVENT);
+          Actions.notify({
+            type: 'danger',
+            icon: 'frown-o',
+            message: (_store.title ? _store.title + 'が' : '') + '失敗しました'
+          });
         });
         executor.on('end', () => {
           setTimeout(() => {
             resetExecutingState();
             ScenarioState.emit(CHANGE_EVENT);
-          }, 30 * 1000);
+          }, 3 * 1000);
         });
       }, 50);
       break;
@@ -129,7 +143,7 @@ ScenarioState.dispatcherToken = Dispatcher.register(function(action) {
         ScenarioState.emit(CHANGE_EVENT);
       })
       .catch(err => {
-        console.log('xxx', err.stack);
+        console.error('xxx', err.stack);
       });
       break;
 

@@ -30,10 +30,10 @@ function connectDatabase() {
     lastState = state;
     return Q.nfcall(MongoClient.connect, state.database, {'native_parser': true})
     .then(d => {
-      console.log('Newly connected to a database');
+      console.info('Newly connected to a database');
       database = d;
       d.once('close', () => {
-        console.log('Closeing...');
+        console.info('Closeing connection...');
         database = null;
       });
       return d;

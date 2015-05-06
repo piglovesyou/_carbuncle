@@ -44,7 +44,7 @@ function saveScenario(scenario) {
       .then(rv => {
         Actions.notify({
           icon: 'check',
-          message: 'シナリオを保存しました',
+          message: 'シナリオ' + (scenario.title ? '「' + goog.string.truncate(scenario.title, 20) + '」' : '') + 'を保存しました',
           type: 'info'
         });
         return rv;

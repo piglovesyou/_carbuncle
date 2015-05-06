@@ -47,5 +47,4 @@ function restore() {
   // To show fading message
   _store.active = false;
   NotifyState.emit(CHANGE_EVENT);
-  setTimeout(() => _.extend(_store, DEFAULT_STATE)); // Defer so that notification beautifully faded out
 }

@@ -78,7 +78,7 @@ var Scenario = React.createClass({
     return (
       <div className="scenario">
         <div className="scenario__header">
-          <form action="" className="form-horizontal">
+          <form action="" className="form-horizontal" onSubmit={this.onSave}>
             <input className="scenario__id" type="hidden"
                    value={this.props._id || null} />
             <div className="form-group">
@@ -121,7 +121,7 @@ var Scenario = React.createClass({
           <a onClick={!this.props.disabled ? this.onNewClick : function(){}}
              className={'btn btn-danger scenario__footer-create' + (this.props.disabled ? ' btn-disabled' : '')}
              href="#"><i className="fa fa-file-text"></i> 新規</a>&nbsp;
-          <a onClick={!this.props.disabled ? this.onSaveClick : function(){}}
+          <a onClick={!this.props.disabled ? this.onSave : function(){}}
              className={'btn btn-primary scenario__footer-save' + (this.props.disabled ? ' btn-disabled' : '')}
              href="#"><i className="fa fa-hdd-o"></i> 保存</a>
         </div>
@@ -135,7 +135,7 @@ var Scenario = React.createClass({
     Actions.startBlockSelect(true);
   },
 
-  onSaveClick(e) {
+  onSave(e) {
     e.preventDefault(e);
     Actions.saveScenario();
   },
