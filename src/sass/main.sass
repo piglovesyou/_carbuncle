@@ -191,6 +191,21 @@ body,
 .navbar-brand
   min-width: 6em
   text-align: center
+.navbar__notification
+  transition: visibility .2s, opacity .2s linear
+  visibility: hidden
+  opacity: 0
+  &.active
+    visibility: visible
+    opacity: 1
+  .alert
+    padding: 8px
+  padding-top: 10px
+  padding-bottom: 10px
+  line-height: $line-height-computed
+  @media (min-width: $grid-float-breakpoint)
+    padding-top: $navbar-padding-vertical
+    padding-bottom: $navbar-padding-vertical
 
 .editor
   padding: 16px 24px
@@ -325,6 +340,10 @@ body,
       color: $btn-default-color
       margin-left: 8px
       width: 4em
+      &:hover
+        text-decoration: none
+        background-color: white
+        color: $brand-primary
       &.fa
         width: auto
         min-height: 1.6em

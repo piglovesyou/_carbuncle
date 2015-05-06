@@ -1,8 +1,22 @@
 var React = require('react');
 var {Link, State} = require('react-router');
+var NotifyState = require('../stores/NotifyState');
+var Actions = require('../actions');
 
 var Nav = React.createClass({
   mixins: [State],
+  getInitialState() {
+    return NotifyState.get();
+  },
+  componentDidMount() {
+    NotifyState.addChangeListener(this.onChange);
+  },
+  componentWillUnmount() {
+    NotifyState.removeChangeListener(this.onChange);
+  },
+  onChange() {
+    this.setState(NotifyState.get());
+  },
   render() {
     var currentPathName = this.getPathname();
     return (
@@ -17,8 +31,8 @@ var Nav = React.createClass({
               <li className={currentPathName === '/scenario-list' ? 'active' : ''}><Link to="/scenario-list">一覧</Link></li>
               <li className={currentPathName === '/setting' ? 'active' : ''}><Link to="/setting">設定</Link></li>
             </ul>
-
             <ul className="nav navbar-nav navbar-right">
+              {this.renderNotify()}
               <li className="dropdown">
                 <a href="#" className="dropdown-toggle">user1 <span className="caret"></span></a>
                 <ul className="dropdown-menu" role="menu">
@@ -34,6 +48,23 @@ var Nav = React.createClass({
         </div>
       </nav>
     );
+  },
+  renderNotify() {
+    var icon = this.state.icon ? <i className={"fa fa-" + this.state.icon}></i> : null
+    var content = this.state.linkUrl ?
+        <Link to={this.state.linkUrl} className="alert">{icon} {this.state.message}</Link> :
+        <span className={'alert' + (this.state.type ? ' alert-' + this.state.type : '')}>{icon} {this.state.message}</span>;
+    return (
+      <li className={'navbar__notification' + (this.state.active ? ' active' : '')}
+          onClick={this.state.active ? onNotifyClick : function(){}}>
+        {content}
+      </li>
+    );
+    function onNotifyClick() {
+      Actions.notify({
+        active: false
+      });
+    }
   }
 });
 

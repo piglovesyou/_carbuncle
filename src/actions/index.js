@@ -131,6 +131,12 @@ module.exports = {
     Dispatcher.dispatch({
       type: 'startBlockSelect', enable
     });
+  },
+
+  notify(notifyData) {
+    Dispatcher.dispatch({
+      type: 'notify', notifyData
+    });
   }
 
 };

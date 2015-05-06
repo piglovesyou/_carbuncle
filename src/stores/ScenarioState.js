@@ -9,6 +9,7 @@ var Executor = require('../core/Executor');
 var Persist = require('../persist');
 var ScenarioList = require('./ScenarioList');
 var {ObjectID} = require('mongodb');
+var Actions = require('../actions');
 
 
 
@@ -125,12 +126,10 @@ ScenarioState.dispatcherToken = Dispatcher.register(function(action) {
       Dispatcher.waitFor([ScenarioList.dispatcherToken]);
       Persist.saveScenario(_store)
       .then(() => {
-        // TODO
-        console.log('-------', arguments);
         ScenarioState.emit(CHANGE_EVENT);
       })
-      .catch(() => {
-        console.log('xxx', arguments);
+      .catch(err => {
+        console.log('xxx', err.stack);
       });
       break;
 

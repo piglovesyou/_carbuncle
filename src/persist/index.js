@@ -1,6 +1,7 @@
 var Q = require('q');
 Q.longStackSupport = true;
 var Auth = require('./auth');
+var Actions = require('../actions');
 
 var {PER_PAGE} = require('../constants');
 
@@ -39,7 +40,15 @@ function saveScenario(scenario) {
   .then(scenarios => {
     scenario.updatedBy = global.window.localStorage.username;
     if (scenario._id) {
-      return Q.ninvoke(scenarios, 'updateOne', {_id: scenario._id}, scenario, {upsert: true});
+      return Q.ninvoke(scenarios, 'updateOne', {_id: scenario._id}, scenario, {upsert: true})
+      .then(rv => {
+        Actions.notify({
+          icon: 'check',
+          message: 'シナリオを保存しました',
+          type: 'info'
+        });
+        return rv;
+      });
     } else {
       return Q.ninvoke(scenarios, 'insertOne', scenario);
     }
