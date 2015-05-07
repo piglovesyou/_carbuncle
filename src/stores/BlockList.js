@@ -1,3 +1,10 @@
 var ScenarioListBase = require('./ScenarioListBase');
 
-module.exports = new ScenarioListBase();
+class BlockList extends ScenarioListBase {
+  constructor() {
+    super();
+    this.filter = {isBlock: true};
+  }
+}
+
+module.exports = new BlockList();

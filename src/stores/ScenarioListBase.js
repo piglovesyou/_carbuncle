@@ -16,6 +16,7 @@ class ScenarioListBase extends Base {
   constructor() {
     super();
     this.restoreCache();
+    this.filter = null;
   }
   dispatcherHandler_(action) {
     switch (action.type) {
@@ -46,7 +47,7 @@ class ScenarioListBase extends Base {
           !this.store_.list[i]['@expired'])) {
       return;
     }
-    return Persist.getScenarios(page)
+    return Persist.getScenarios(page, this.filter)
     .then(data => {
       this.store_.total = data.total;
       data.docs.forEach((doc, i) => {

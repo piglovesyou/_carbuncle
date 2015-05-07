@@ -24,6 +24,7 @@ function getScenarios(page, filter) {
   var limit = PER_PAGE;
   return getScenariosCollection()
   .then(scenarios => {
+    console.log('xxxxx', filter)
     return Q.all([
       Q.ninvoke(scenarios, 'count', filter),
       Q.ninvoke(scenarios.find(filter).skip(skip).limit(limit), 'toArray')

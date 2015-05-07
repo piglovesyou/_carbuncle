@@ -55,14 +55,14 @@ class EditorState extends Base {
 
       case 'deleteEntry':
         if (this.store_.id === action.id) {
-          restore();
+          this.restore();
         }
         break;
 
       case 'editEntry':
       case 'cancelEdit':
       case 'insertEntry':
-        restore();
+        this.restore();
         break;
 
       case 'startEditEntry':

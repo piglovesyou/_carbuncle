@@ -19,8 +19,8 @@ var Entries = React.createClass({
         {this.props.data.map(entry => {
           var tooltip = entry.title + (entry.title && entry.css ? '\n\n' : '') + entry.css;
           return (
-            <div className="paged-table--scenario-list__entry" title={tooltip}>
-              {componentHelper.renderIcon(entry.mode, entry.type)}
+            <div className="paged-table--scenario-list__entry" title={tooltip} key={entry._id}>
+              {componentHelper.renderIcon(entry.isBlock, entry.mode, entry.type)}
             </div>
           );
         })}

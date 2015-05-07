@@ -21,7 +21,7 @@ var Entry = React.createClass({
              href="#">del</a>
         </div>
         <div className="scenario-entry__title" title={this.props.title}>
-          {helper.renderIcon(this.props.mode, this.props.type)}
+          {helper.renderIcon(this.props.isBlock, this.props.mode, this.props.type)}
           {goog.string.truncate(this.props.title, 20)}
         </div>
         <div className="scenario-entry__meta">
@@ -147,7 +147,7 @@ var Scenario = React.createClass({
 
   onBlockChange() {
     Actions.changeScenario({
-      isBlock: goog.dom.forms.getValue(this.refs['scenario__block'].getDOMNode())
+      isBlock: !!goog.dom.forms.getValue(this.refs['scenario__block'].getDOMNode())
     });
   },
 
@@ -155,7 +155,7 @@ var Scenario = React.createClass({
     e.preventDefault(e);
     Actions.changeScenario({
       title: goog.dom.forms.getValue(this.refs['scenario__title'].getDOMNode()),
-      isBlock: goog.dom.forms.getValue(this.refs['scenario__block'].getDOMNode())
+      isBlock: !!goog.dom.forms.getValue(this.refs['scenario__block'].getDOMNode())
     });
   },
 

@@ -86,7 +86,7 @@ class ScenarioState extends Base {
           entry['@executingState'] = 'doing';
           this.emit(CHANGE_EVENT);
           Actions.notify({
-            icon: ComponentHelper.getIconKey(entry.mode, entry.type),
+            icon: ComponentHelper.getIconKey(entry.isBlock, entry.mode, entry.type),
             message: (entry.title || '') + '...'
           });
           last = entry;
