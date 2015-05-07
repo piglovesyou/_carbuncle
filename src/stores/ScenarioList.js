@@ -18,9 +18,9 @@ class ScenarioList extends EventEmitter {
   constructor() {
     super();
     this.restoreCache();
-    this.dispatcherToken = Dispatcher.register(this._dispatcherHandler.bind(this));
+    this.dispatcherToken = Dispatcher.register(this.dispatcherHandler_.bind(this));
   }
-  _dispatcherHandler(action) {
+  dispatcherHandler_(action) {
     switch (action.type) {
       case 'saveScenario':
         this.restoreCache();
@@ -30,9 +30,9 @@ class ScenarioList extends EventEmitter {
         var {scenario} = action;
         Persist.deleteScenario(scenario._id)
         .then(() => {
-          if (goog.array.removeIf(this._store.list, s => String(s._id) === String(scenario._id))) {
-            delete this._store.map[scenario._id];
-            this._store.total = Math.max(this._store.total - 1, 0);
+          if (goog.array.removeIf(this.store_.list, s => String(s._id) === String(scenario._id))) {
+            delete this.store_.map[scenario._id];
+            this.store_.total = Math.max(this.store_.total - 1, 0);
             this.emit(CHANGE_EVENT);
           }
         });
@@ -40,23 +40,23 @@ class ScenarioList extends EventEmitter {
     }
   }
   get() {
-    return _.clone(this._store);
+    return _.clone(this.store_);
   }
   sync(page) {
     var skip = PER_PAGE * page;
-    var limit = this._store.total < 0 ? PER_PAGE : Math.min(this._store.total - skip, PER_PAGE);
+    var limit = this.store_.total < 0 ? PER_PAGE : Math.min(this.store_.total - skip, PER_PAGE);
     var range = _.range(skip, skip + limit);
-    if (this._store.total >= 0 &&
+    if (this.store_.total >= 0 &&
         range.every(i =>
-          !!this._store.list[i] &&
-          !this._store.list[i]['@expired'])) {
+          !!this.store_.list[i] &&
+          !this.store_.list[i]['@expired'])) {
       return;
     }
     return Persist.getScenarios(page)
     .then(data => {
-      this._store.total = data.total;
+      this.store_.total = data.total;
       data.docs.forEach((doc, i) => {
-        this._store.map[doc._id] = this._store.list[data.skip + i] = doc;
+        this.store_.map[doc._id] = this.store_.list[data.skip + i] = doc;
       });
       this.emit(CHANGE_EVENT);
     });
@@ -68,7 +68,7 @@ class ScenarioList extends EventEmitter {
     this.removeListener(CHANGE_EVENT, callback);
   }
   restoreCache() {
-    this._store = _.clone(DEFAULT_STORE);
+    this.store_ = _.clone(DEFAULT_STORE);
   }
 }
 

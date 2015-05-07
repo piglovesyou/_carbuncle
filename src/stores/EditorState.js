@@ -15,13 +15,13 @@ var DEFAULT_STATE = {
   isEdit: false
 };
 
-var _store = goog.object.clone(DEFAULT_STATE);
+var store_ = goog.object.clone(DEFAULT_STATE);
 
 var EditorState = assign({}, EventEmitter.prototype, {
   get() {
-    return _store;
+    return store_;
   }
-}, require('./_mixins'));
+}, require('./mixins_'));
 module.exports = EditorState;
 
 
@@ -29,7 +29,7 @@ module.exports = EditorState;
 EditorState.dispatcherToken = Dispatcher.register(function(action) {
   switch (action.type) {
     case 'locationChange':
-      _store = _.extend({}, DEFAULT_STATE, {
+      store_ = _.extend({}, DEFAULT_STATE, {
         title: action.state.title,
         mode: 'action',
         type: 'open',
@@ -39,7 +39,7 @@ EditorState.dispatcherToken = Dispatcher.register(function(action) {
       break;
 
     case 'editorChange':
-      _.extend(_store, action.state);
+      _.extend(store_, action.state);
       EditorState.emit(CHANGE_EVENT, {editorState: action.state});
       break;
 
@@ -50,16 +50,16 @@ EditorState.dispatcherToken = Dispatcher.register(function(action) {
     case 'selectIFrameElement':
       var elementRef = action.selectedIframeElementData.elementRef;
       delete action.selectedIframeElementData.elementRef;
-      _.extend(_store, action.selectedIframeElementData);
-      if (_store.mode === 'action' && (_store.type !== 'click' || _store.type !== 'input')) {
-        _store.type = candidateType(elementRef);
+      _.extend(store_, action.selectedIframeElementData);
+      if (store_.mode === 'action' && (store_.type !== 'click' || store_.type !== 'input')) {
+        store_.type = candidateType(elementRef);
       }
-      _store.text = '';
+      store_.text = '';
       EditorState.emit(CHANGE_EVENT);
       break;
 
     case 'deleteEntry':
-      if (_store.id === action.id) {
+      if (store_.id === action.id) {
         restore();
       }
       break;
@@ -71,7 +71,7 @@ EditorState.dispatcherToken = Dispatcher.register(function(action) {
       break;
 
     case 'startEditEntry':
-      _.extend(_store, DEFAULT_STATE, action.entry, {
+      _.extend(store_, DEFAULT_STATE, action.entry, {
         isEdit: true
       });
       EditorState.emit(CHANGE_EVENT);
@@ -105,6 +105,6 @@ function candidateType(el) {
 }
 
 function restore() {
-  _.extend(_store, DEFAULT_STATE);
+  _.extend(store_, DEFAULT_STATE);
   EditorState.emit(CHANGE_EVENT);
 }

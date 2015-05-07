@@ -14,8 +14,8 @@ var ComponentHelper = require('../components/helper');
 
 
 
-var _store;
-var _default = {
+var store_;
+var default_ = {
   _id: undefined,
   title: '',
   entries: [],
@@ -25,13 +25,13 @@ var _default = {
 restoreCache();
 
 try {
-  _store = JSON.parse(window.localStorage.lastScenarioStore);
-  if (_.isString(_store._id)) {
-    _store._id = new ObjectID(_store._id);
+  store_ = JSON.parse(window.localStorage.lastScenarioStore);
+  if (_.isString(store_._id)) {
+    store_._id = new ObjectID(store_._id);
   }
   resetExecutingState();
 } catch(e) {
-  _store = {
+  store_ = {
     _id: undefined,
     title: '',
     entries: [],
@@ -43,15 +43,15 @@ try {
 
 var ScenarioState = assign({}, EventEmitter.prototype, {
   get() {
-    return _store;
+    return store_;
   }
-}, require('./_mixins'));
+}, require('./mixins_'));
 module.exports = ScenarioState;
 
 resetExecutingState();
 
 ScenarioState.on(CHANGE_EVENT, () => {
-  window.localStorage.lastScenarioStore = JSON.stringify(_store);
+  window.localStorage.lastScenarioStore = JSON.stringify(store_);
 });
 
 
@@ -65,21 +65,21 @@ ScenarioState.dispatcherToken = Dispatcher.register(function(action) {
       break;
 
     case 'editEntry':
-      var i = goog.array.findIndex(_store.entries, entry => action.entry.id === entry.id);
+      var i = goog.array.findIndex(store_.entries, entry => action.entry.id === entry.id);
       if (i < 0) {
         throw new Error('something wrong with editEntry@ScenarioState');
       }
-      _store.entries.splice(i, 1, action.entry);
+      store_.entries.splice(i, 1, action.entry);
       break;
 
     case 'insertEntry':
       action.entry.id = generateUID(action.entry);
-      _store.entries.push(action.entry);
+      store_.entries.push(action.entry);
       ScenarioState.emit(CHANGE_EVENT);
       break;
 
     case 'deleteEntry':
-      var deleted = goog.array.removeIf(_store.entries, entry => action.id === entry.id);
+      var deleted = goog.array.removeIf(store_.entries, entry => action.id === entry.id);
       if (!deleted) {
         throw new Error('something wrong with deleteEntry@ScenarioState');
       }
@@ -87,14 +87,14 @@ ScenarioState.dispatcherToken = Dispatcher.register(function(action) {
       break;
 
     case 'changeScenario':
-      _.extend(_store, action.scenario);
+      _.extend(store_, action.scenario);
       ScenarioState.emit(CHANGE_EVENT);
       break;
 
     case 'preview':
 
       previewResetTimer = setTimeout(() => { // I don't know why I need this. Obviously it's nw's bug.
-        var executor = new Executor(_store.entries, 100);
+        var executor = new Executor(store_.entries, 100);
         resetExecutingState();
         ScenarioState.emit(CHANGE_EVENT);
         var last;
@@ -114,7 +114,7 @@ ScenarioState.dispatcherToken = Dispatcher.register(function(action) {
           Actions.notify({
             type: 'success',
             icon: 'smile-o',
-            message: (_store.title ? 'シナリオ「' + _store.title + '」が' : '') + '成功しました'
+            message: (store_.title ? 'シナリオ「' + store_.title + '」が' : '') + '成功しました'
           });
         });
         executor.on('fail', () => {
@@ -123,7 +123,7 @@ ScenarioState.dispatcherToken = Dispatcher.register(function(action) {
           Actions.notify({
             type: 'danger',
             icon: 'frown-o',
-            message: (_store.title ? 'シナリオ「' + _store.title + '」が' : '') + '失敗しました'
+            message: (store_.title ? 'シナリオ「' + store_.title + '」が' : '') + '失敗しました'
           });
         });
         executor.on('end', () => {
@@ -136,12 +136,12 @@ ScenarioState.dispatcherToken = Dispatcher.register(function(action) {
       break;
 
     case 'startEditScenario':
-      _store = _.clone(action.scenario);
+      store_ = _.clone(action.scenario);
       break;
 
     case 'saveScenario':
       Dispatcher.waitFor([ScenarioList.dispatcherToken]);
-      Persist.saveScenario(_store)
+      Persist.saveScenario(store_)
       .then(() => {
         ScenarioState.emit(CHANGE_EVENT);
       })
@@ -152,7 +152,7 @@ ScenarioState.dispatcherToken = Dispatcher.register(function(action) {
 
     case 'deleteScenario':
       var scenario = action.scenario;
-      if (_store._id !== scenario._id) {
+      if (store_._id !== scenario._id) {
         return;
       }
       restoreCache();
@@ -169,7 +169,7 @@ ScenarioState.dispatcherToken = Dispatcher.register(function(action) {
 
 function resetExecutingState() {
   clearTimeout(previewResetTimer);
-  _store.entries.forEach(entry => delete entry['@executingState']);
+  store_.entries.forEach(entry => delete entry['@executingState']);
 }
 
 function generateUID(entry) {
@@ -179,6 +179,6 @@ function generateUID(entry) {
 }
 
 function restoreCache() {
-  _store = {};
-  _.each(_default, (v, k) => _store[k] = _.clone(v));
+  store_ = {};
+  _.each(default_, (v, k) => store_[k] = _.clone(v));
 }

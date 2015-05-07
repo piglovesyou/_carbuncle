@@ -9,15 +9,15 @@ var Store = require('./index');
 
 
 
-var _store = {
+var store_ = {
   url: ''//http://www.yahoo.co.jp'
 };
 
 var IFrameState = assign({}, EventEmitter.prototype, {
   get() {
-    return _store;
+    return store_;
   }
-}, require('./_mixins'));
+}, require('./mixins_'));
 module.exports = IFrameState;
 
 
@@ -25,7 +25,7 @@ module.exports = IFrameState;
 IFrameState.dispatcherToken = Dispatcher.register(function(action) {
   switch(action.type) {
     case 'locationChange':
-      _.extend(_store, action.state);
+      _.extend(store_, action.state);
       Dispatcher.waitFor([EditorState.dispatcherToken]);
       Store.emit(CHANGE_EVENT, action.state);
       break;

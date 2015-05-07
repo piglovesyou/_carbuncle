@@ -9,17 +9,17 @@ var {CHANGE_EVENT, MongoErrorCode} = require('../constants');
 
 
 
-var _store = {
+var store_ = {
   databaseConnected: null,
   authenticated: null
 };
 
 var SettingState = assign({}, EventEmitter.prototype, {
   get() {
-    return _store;
+    return store_;
   },
   authenticate
-}, require('./_mixins'));
+}, require('./mixins_'));
 module.exports = SettingState;
 
 
@@ -38,18 +38,18 @@ SettingState.dispatcherToken = Dispatcher.register(function(action) {
 function authenticate() {
   Auth.authenticate()
   .then(() => {
-    _store.databaseConnected = true;
-    _store.authenticated = true;
+    store_.databaseConnected = true;
+    store_.authenticated = true;
     return SettingState.emit(CHANGE_EVENT);
   })
   .catch(err => {
     if (!err.code) {
-      _store.databaseConnected = false;
-      _store.authenticated = false;
+      store_.databaseConnected = false;
+      store_.authenticated = false;
       return SettingState.emit(CHANGE_EVENT);
     } else if (err.code === MongoErrorCode.AUTH_FAILED) {
-      _store.databaseConnected = true;
-      _store.authenticated = false;
+      store_.databaseConnected = true;
+      store_.authenticated = false;
       return SettingState.emit(CHANGE_EVENT);
     }
     throw new Error('catch this!', err);

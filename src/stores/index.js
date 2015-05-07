@@ -8,7 +8,7 @@ var {CHANGE_EVENT} = require('../constants');
 // var _ = require('underscore');
 // var EditorState = require('./EditorState');
 
-var _store = {
+var store_ = {
   isSelectingElement: false,
   isSelectingBlock: false,
   targetElementBounds: null
@@ -19,7 +19,7 @@ var _store = {
 var Store = assign({}, EventEmitter.prototype, {
 
   get() {
-    return _store;
+    return store_;
   },
 
   addChangeListener(callback) {
@@ -37,25 +37,25 @@ Store.dispatcherToken = Dispatcher.register(function(action) {
   switch(action.type) {
 
     case 'startBlockSelect':
-      _store.isSelectingBlock = action.enable;
+      store_.isSelectingBlock = action.enable;
       Store.emit(CHANGE_EVENT);
       break;
 
     case 'enableSelectElement':
-      _store.isSelectingElement = action.enable;
+      store_.isSelectingElement = action.enable;
       if (action.select) {
-        _store.targetElementBounds = null;
+        store_.targetElementBounds = null;
       }
       Store.emit(CHANGE_EVENT);
       break;
 
     case 'mouseMove':
-      _store.targetElementBounds = action.targetElementBounds;
+      store_.targetElementBounds = action.targetElementBounds;
       Store.emit(CHANGE_EVENT);
       break;
 
     case 'selectIFrameElement':
-      _store.isSelectingElement = false;
+      store_.isSelectingElement = false;
       break;
   }
 });

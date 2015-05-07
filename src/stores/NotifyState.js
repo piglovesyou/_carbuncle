@@ -13,13 +13,13 @@ var DEFAULT_STATE = {
   type: null // warning, danger, info..
 };
 
-var _store = goog.object.clone(DEFAULT_STATE);
+var store_ = goog.object.clone(DEFAULT_STATE);
 
 var NotifyState = assign({}, EventEmitter.prototype, {
   get() {
-    return _store;
+    return store_;
   }
-}, require('./_mixins'));
+}, require('./mixins_'));
 module.exports = NotifyState;
 
 
@@ -28,12 +28,12 @@ var timerId;
 NotifyState.dispatcherToken = Dispatcher.register(function(action) {
   switch (action.type) {
     case 'notify':
-      _store = action.notifyData;
-      if (_store.active === false) {
+      store_ = action.notifyData;
+      if (store_.active === false) {
         restore();
         return;
       }
-      _store.active = true;
+      store_.active = true;
       clearTimeout(timerId);
       timerId = setTimeout(restore, TIMEOUT);
       NotifyState.emit(CHANGE_EVENT);
@@ -45,6 +45,6 @@ function restore() {
   clearTimeout(timerId);
   timerId = null;
   // To show fading message
-  _store.active = false;
+  store_.active = false;
   NotifyState.emit(CHANGE_EVENT);
 }
