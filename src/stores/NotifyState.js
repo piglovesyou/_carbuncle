@@ -13,38 +13,46 @@ var DEFAULT_STATE = {
   type: null // warning, danger, info..
 };
 
-var store_ = goog.object.clone(DEFAULT_STATE);
 
-var NotifyState = assign({}, EventEmitter.prototype, {
+
+class NotifyState extends EventEmitter {
+  constructor() {
+    super();
+    this.store_ = _.clone(DEFAULT_STATE);
+    this.dispatcherToken = Dispatcher.register(this.dispatcherHandler_.bind(this));
+    this.timerId;
+  }
   get() {
-    return store_;
+    return this.store_;
   }
-}, require('./mixins_'));
-module.exports = NotifyState;
-
-
-
-var timerId;
-NotifyState.dispatcherToken = Dispatcher.register(function(action) {
-  switch (action.type) {
-    case 'notify':
-      store_ = action.notifyData;
-      if (store_.active === false) {
-        restore();
-        return;
-      }
-      store_.active = true;
-      clearTimeout(timerId);
-      timerId = setTimeout(restore, TIMEOUT);
-      NotifyState.emit(CHANGE_EVENT);
-      break;
+  dispatcherHandler_(action) {
+    switch (action.type) {
+      case 'notify':
+        this.store_ = action.notifyData;
+        if (this.store_.active === false) {
+          this.restore();
+          return;
+        }
+        this.store_.active = true;
+        clearTimeout(this.timerId);
+        this.timerId = setTimeout(this.restore.bind(this), TIMEOUT);
+        this.emit(CHANGE_EVENT);
+        break;
+    }
   }
-});
-
-function restore() {
-  clearTimeout(timerId);
-  timerId = null;
-  // To show fading message
-  store_.active = false;
-  NotifyState.emit(CHANGE_EVENT);
+  addChangeListener(callback) {
+    this.on(CHANGE_EVENT, callback);
+  }
+  removeChangeListener(callback) {
+    this.removeListener(CHANGE_EVENT, callback);
+  }
+  restore() {
+    clearTimeout(this.timerId);
+    this.timerId = null;
+    // To show fading message
+    this.store_.active = false;
+    this.emit(CHANGE_EVENT);
+  }
 }
+
+module.exports = new NotifyState();
