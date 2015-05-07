@@ -15,96 +15,77 @@ var DEFAULT_STATE = {
   isEdit: false
 };
 
-var store_ = goog.object.clone(DEFAULT_STATE);
-
-var EditorState = assign({}, EventEmitter.prototype, {
+class EditorState extends EventEmitter {
+  constructor() {
+    super();
+    this.store_ = _.clone(DEFAULT_STATE);
+    this.dispatcherToken = Dispatcher.register(this.dispatcherHandler_.bind(this));
+  }
   get() {
-    return store_;
+    return this.store_;
   }
-}, require('./mixins_'));
-module.exports = EditorState;
+  dispatcherHandler_(action) {
+    switch (action.type) {
+      case 'locationChange':
+        this.store_ = _.extend({}, DEFAULT_STATE, {
+          title: action.state.title,
+          mode: 'action',
+          type: 'open',
+          text: action.state.url
+        });
+        this.emit(CHANGE_EVENT);
+        break;
 
+      case 'editorChange':
+        _.extend(this.store_, action.state);
+        this.emit(CHANGE_EVENT, {editorState: action.state});
+        break;
 
+      case 'iframeScroll':
+        this.emit(CHANGE_EVENT, {editorState: this.get()});
+        break;
 
-EditorState.dispatcherToken = Dispatcher.register(function(action) {
-  switch (action.type) {
-    case 'locationChange':
-      store_ = _.extend({}, DEFAULT_STATE, {
-        title: action.state.title,
-        mode: 'action',
-        type: 'open',
-        text: action.state.url
-      });
-      EditorState.emit(CHANGE_EVENT);
-      break;
+      case 'selectIFrameElement':
+        var elementRef = action.selectedIframeElementData.elementRef;
+        delete action.selectedIframeElementData.elementRef;
+        _.extend(this.store_, action.selectedIframeElementData);
+        if (this.store_.mode === 'action' && (this.store_.type !== 'click' || this.store_.type !== 'input')) {
+          this.store_.type = candidateType(elementRef);
+        }
+        this.store_.text = '';
+        this.emit(CHANGE_EVENT);
+        break;
 
-    case 'editorChange':
-      _.extend(store_, action.state);
-      EditorState.emit(CHANGE_EVENT, {editorState: action.state});
-      break;
+      case 'deleteEntry':
+        if (this.store_.id === action.id) {
+          restore();
+        }
+        break;
 
-    case 'iframeScroll':
-      EditorState.emit(CHANGE_EVENT, {editorState: EditorState.get()});
-      break;
-
-    case 'selectIFrameElement':
-      var elementRef = action.selectedIframeElementData.elementRef;
-      delete action.selectedIframeElementData.elementRef;
-      _.extend(store_, action.selectedIframeElementData);
-      if (store_.mode === 'action' && (store_.type !== 'click' || store_.type !== 'input')) {
-        store_.type = candidateType(elementRef);
-      }
-      store_.text = '';
-      EditorState.emit(CHANGE_EVENT);
-      break;
-
-    case 'deleteEntry':
-      if (store_.id === action.id) {
+      case 'editEntry':
+      case 'cancelEdit':
+      case 'insertEntry':
         restore();
-      }
-      break;
+        break;
 
-    case 'editEntry':
-    case 'cancelEdit':
-    case 'insertEntry':
-      restore();
-      break;
-
-    case 'startEditEntry':
-      _.extend(store_, DEFAULT_STATE, action.entry, {
-        isEdit: true
-      });
-      EditorState.emit(CHANGE_EVENT);
-      break;
+      case 'startEditEntry':
+        _.extend(this.store_, DEFAULT_STATE, action.entry, {
+          isEdit: true
+        });
+        this.emit(CHANGE_EVENT);
+        break;
+    }
   }
-});
-
-function candidateType(el) {
-  var type = el.type; // Assume it's "input".
-  if (type == null) {
-    return 'click';
+  addChangeListener(callback) {
+    this.on(CHANGE_EVENT, callback);
   }
-  switch (type.toLowerCase()) {
-    case 'color':
-    case 'date':
-    case 'datetime':
-    case 'datetime-local':
-    case 'email':
-    case 'month':
-    case 'number':
-    case 'password':
-    case 'tel':
-    case 'text':
-    case 'textarea':
-    case 'time':
-    case 'url':
-    case 'week':
-      return 'input';
+  removeChangeListener(callback) {
+    this.removeListener(CHANGE_EVENT, callback);
   }
-  return 'click';
+  restore() {
+    this.store_ = _.clone(DEFAULT_STATE);
+    this.emit(CHANGE_EVENT);
+  }
 }
 
-function restore() {
-  _.extend(store_, DEFAULT_STATE);
-  EditorState.emit(CHANGE_EVENT);
-}
+module.exports = new EditorState();
