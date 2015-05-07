@@ -1,6 +1,7 @@
 var React = require('react');
 var Actions = require('../actions');
 var ScenarioListComponent = require('../components/ScenarioList');
+var BlockList = require('../stores/BlockList');
 
 var SelectBlockModal = React.createClass({
   render() {
@@ -13,6 +14,7 @@ var SelectBlockModal = React.createClass({
             <div className="effeckt-modal-content">
               {this.props.shown ?
                 <ScenarioListComponent
+                    store={BlockList}
                     cssModifier="scenario-list"
                     onClickRow={this.onClickRow}
                     />

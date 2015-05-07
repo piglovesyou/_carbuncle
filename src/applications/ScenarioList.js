@@ -2,6 +2,7 @@ var React = require('react');
 var Nav = require('../components/Nav');
 var ScenarioListComponent = require('../components/ScenarioList');
 var Actions = require('../actions');
+var ScenarioList = require('../stores/ScenarioList');
 
 
 
@@ -16,6 +17,7 @@ var ScenarioListApp = React.createClass({
             <h2 className="app-root__pagetitle">シナリオ一覧</h2>
 
             <ScenarioListComponent
+                store={ScenarioList}
                 cssModifier="scenario-list"
                 onClickRow={Actions.startEditScenario.bind(this)}/>
 

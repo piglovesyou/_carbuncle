@@ -82,7 +82,7 @@ var Scenario = React.createClass({
             <input className="scenario__id" type="hidden"
                    value={this.props._id || null} />
             <div className="form-group">
-              <div className="col-xs-10">
+              <div className="col-xs-11">
                 <input className="scenario__title form-control"
                        ref="scenario__title"
                        type="text"
@@ -92,7 +92,7 @@ var Scenario = React.createClass({
                        onChange={this.onChange}
                        />
               </div>
-              <label htmlFor="scenario__block" className="control-label col-xs-2" title="ブロックは他のシナリオのステップにすることができます">
+              <label htmlFor="scenario__block" className="control-label col-xs-1" title="ブロックは他のシナリオのステップにすることができます">
                 <input ref="scenario__block"
                        className="scenario__block"
                        id="scenario__block"
@@ -100,7 +100,7 @@ var Scenario = React.createClass({
                        checked={!!this.props.isBlock}
                        onChange={this.onBlockChange}
                  />
-                ブロック
+                <i className="fa fa-cube"></i>
               </label>
             </div>
           </form>

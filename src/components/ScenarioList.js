@@ -5,7 +5,6 @@ var {PER_PAGE} = require('../constants');
 var {Navigation, State} = require('react-router');
 var componentHelper = require('../components/helper');
 var Actions = require('../actions');
-var ScenarioList = require('../stores/ScenarioList');
 var CustomPager = require('./CustomPager');
 var _ = require('underscore');
 var {getAncestorFromEventTargetByClass} = require('../tools/dom');
@@ -30,6 +29,14 @@ var Entries = React.createClass({
   }
 });
 
+var IsBlock = React.createClass({
+  render() {
+    return (<div>
+      {this.props.data ? <i className="fa fa-cube"></i> : ""}
+    </div>);
+  }
+});
+
 var Buttons = React.createClass({
   render() {
     return (<div>
@@ -43,7 +50,7 @@ var Buttons = React.createClass({
   }
 });
 
-var Columns = ['title', 'entries', 'updatedBy', 'buttons'];
+var Columns = ['title', 'entries', 'updatedBy', 'isBlock', 'buttons'];
 var ColumnMetadata = [
   {
     'columnName': 'title',
@@ -65,6 +72,13 @@ var ColumnMetadata = [
     'cssClassName': 'cell cell--updatedBy'
   },
   {
+    'columnName': 'isBlock',
+    'displayName': 'ブロック',
+    'visible': true,
+    'customComponent': IsBlock,
+    'cssClassName': 'cell cell--isBlock'
+  },
+  {
     'columnName': 'buttons',
     'displayName': '',
     'visible': true,
@@ -82,7 +96,7 @@ var ScenarioListComponent = React.createClass({
     },
 
     componentDidMount() {
-      ScenarioList.addChangeListener(this.onChange);
+      this.props.store.addChangeListener(this.onChange);
       this.syncPage();
     },
 
@@ -91,11 +105,11 @@ var ScenarioListComponent = React.createClass({
     },
 
     componentDidUnmount() {
-      ScenarioList.removeChangeListener(this.onChange);
+      this.props.store.removeChangeListener(this.onChange);
     },
 
     syncPage() {
-      ScenarioList.sync(this.state.currentPage);
+      this.props.store.sync(this.state.currentPage);
     },
 
     onChange() {
@@ -103,7 +117,7 @@ var ScenarioListComponent = React.createClass({
     },
 
     createState() {
-      return ScenarioList.get();
+      return this.props.store.get();
     },
 
     mixins: [Navigation, State],
