@@ -3,6 +3,7 @@ var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 var _ = require('underscore');
 var {CHANGE_EVENT} = require('../constants');
+var Base = require('./base');
 
 var TIMEOUT = 7 * 1000;
 var default_ = {
@@ -15,15 +16,11 @@ var default_ = {
 
 
 
-class NotifyState extends EventEmitter {
+class NotifyState extends Base {
   constructor() {
     super();
     this.store_ = _.clone(default_);
-    this.dispatcherToken = Dispatcher.register(this.dispatcherHandler_.bind(this));
-    this.timerId;
-  }
-  get() {
-    return this.store_;
+    this.timerId = null;
   }
   dispatcherHandler_(action) {
     switch (action.type) {
@@ -39,12 +36,6 @@ class NotifyState extends EventEmitter {
         this.emit(CHANGE_EVENT);
         break;
     }
-  }
-  addChangeListener(callback) {
-    this.on(CHANGE_EVENT, callback);
-  }
-  removeChangeListener(callback) {
-    this.removeListener(CHANGE_EVENT, callback);
   }
   restore() {
     clearTimeout(this.timerId);

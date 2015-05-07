@@ -1,4 +1,3 @@
-
 var Dispatcher = require('../dispatcher');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
@@ -11,6 +10,7 @@ var ScenarioList = require('./ScenarioList');
 var {ObjectID} = require('mongodb');
 var Actions = require('../actions');
 var ComponentHelper = require('../components/helper');
+var Base = require('./base');
 
 var default_ = {
   _id: undefined,
@@ -20,9 +20,7 @@ var default_ = {
   updatedBy: null
 };
 
-
-
-class ScenarioState extends EventEmitter {
+class ScenarioState extends Base {
   constructor() {
     super();
     this.restoreCache();
@@ -40,11 +38,7 @@ class ScenarioState extends EventEmitter {
         isBlock: false
       };
     }
-    this.dispatcherToken = Dispatcher.register(this.dispatcherHandler_.bind(this));
-    this.previewResetTimer;
-  }
-  get() {
-    return this.store_;
+    this.previewResetTimer = null;
   }
   dispatcherHandler_(action) {
     switch (action.type) {
@@ -160,12 +154,6 @@ class ScenarioState extends EventEmitter {
   resetExecutingState() {
     clearTimeout(this.previewResetTimer);
     this.store_.entries.forEach(entry => delete entry['@executingState']);
-  }
-  addChangeListener(callback) {
-    this.on(CHANGE_EVENT, callback);
-  }
-  removeChangeListener(callback) {
-    this.removeListener(CHANGE_EVENT, callback);
   }
 }
 

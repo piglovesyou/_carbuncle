@@ -23,11 +23,11 @@ class SettingState extends Base {
     switch (action.type) {
       case 'changeSetting':
         _.extend(window.localStorage, action.form);
-        this.authenticate_();
+        this.authenticate();
         break;
     }
   }
-  authenticate_() {
+  authenticate() {
     Auth.authenticate()
     .then(() => {
       this.store_.databaseConnected = true;

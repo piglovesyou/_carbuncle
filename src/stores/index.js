@@ -5,6 +5,7 @@ var Q = require('q');
 Q.longStackSupport = true;
 var {CHANGE_EVENT} = require('../constants');
 var _ = require('underscore');
+var Base = require('./base');
 
 var default_ = {
   isSelectingElement: false,
@@ -14,11 +15,10 @@ var default_ = {
 
 
 
-class Store extends EventEmitter {
+class Store extends Base {
   constructor() {
     super();
     this.store_ = _.clone(default_);
-    this.dispatcherToken = Dispatcher.register(this.dispatcherHandler_.bind(this));
   }
   dispatcherHandler_(action) {
     switch(action.type) {
@@ -45,15 +45,5 @@ class Store extends EventEmitter {
         break;
     }
   }
-  get() {
-    return this.store_;
-  }
-  addChangeListener(callback) {
-    this.on(CHANGE_EVENT, callback);
-  }
-  removeChangeListener(callback) {
-    this.removeListener(CHANGE_EVENT, callback);
-  }
-
 };
 module.exports = new Store;

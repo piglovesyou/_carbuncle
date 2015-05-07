@@ -4,6 +4,7 @@ var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 var _ = require('underscore');
 var {CHANGE_EVENT} = require('../constants');
+var Base = require('./base');
 
 var default_ = {
   title: '',
@@ -15,14 +16,10 @@ var default_ = {
   isEdit: false
 };
 
-class EditorState extends EventEmitter {
+class EditorState extends Base {
   constructor() {
     super();
     this.store_ = _.clone(default_);
-    this.dispatcherToken = Dispatcher.register(this.dispatcherHandler_.bind(this));
-  }
-  get() {
-    return this.store_;
   }
   dispatcherHandler_(action) {
     switch (action.type) {
@@ -75,12 +72,6 @@ class EditorState extends EventEmitter {
         this.emit(CHANGE_EVENT);
         break;
     }
-  }
-  addChangeListener(callback) {
-    this.on(CHANGE_EVENT, callback);
-  }
-  removeChangeListener(callback) {
-    this.removeListener(CHANGE_EVENT, callback);
   }
   restore() {
     this.store_ = _.clone(default_);
