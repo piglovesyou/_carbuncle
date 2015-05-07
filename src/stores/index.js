@@ -1,14 +1,12 @@
-
 var Dispatcher = require('../dispatcher');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 var Q = require('q');
 Q.longStackSupport = true;
 var {CHANGE_EVENT} = require('../constants');
-// var _ = require('underscore');
-// var EditorState = require('./EditorState');
+var _ = require('underscore');
 
-var store_ = {
+var default_ = {
   isSelectingElement: false,
   isSelectingBlock: false,
   targetElementBounds: null
@@ -16,46 +14,46 @@ var store_ = {
 
 
 
-var Store = assign({}, EventEmitter.prototype, {
+class Store extends EventEmitter {
+  constructor() {
+    super();
+    this.store_ = _.clone(default_);
+    this.dispatcherToken = Dispatcher.register(this.dispatcherHandler_.bind(this));
+  }
+  dispatcherHandler_(action) {
+    switch(action.type) {
+      case 'startBlockSelect':
+        this.store_.isSelectingBlock = action.enable;
+        this.emit(CHANGE_EVENT);
+        break;
 
+      case 'enableSelectElement':
+        this.store_.isSelectingElement = action.enable;
+        if (action.select) {
+          this.store_.targetElementBounds = null;
+        }
+        this.emit(CHANGE_EVENT);
+        break;
+
+      case 'mouseMove':
+        this.store_.targetElementBounds = action.targetElementBounds;
+        this.emit(CHANGE_EVENT);
+        break;
+
+      case 'selectIFrameElement':
+        this.store_.isSelectingElement = false;
+        break;
+    }
+  }
   get() {
-    return store_;
-  },
-
+    return this.store_;
+  }
   addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
-  },
-
+  }
   removeChangeListener(callback) {
     this.removeListener(CHANGE_EVENT, callback);
   }
 
-});
-module.exports = Store;
-
-Store.dispatcherToken = Dispatcher.register(function(action) {
-  switch(action.type) {
-
-    case 'startBlockSelect':
-      store_.isSelectingBlock = action.enable;
-      Store.emit(CHANGE_EVENT);
-      break;
-
-    case 'enableSelectElement':
-      store_.isSelectingElement = action.enable;
-      if (action.select) {
-        store_.targetElementBounds = null;
-      }
-      Store.emit(CHANGE_EVENT);
-      break;
-
-    case 'mouseMove':
-      store_.targetElementBounds = action.targetElementBounds;
-      Store.emit(CHANGE_EVENT);
-      break;
-
-    case 'selectIFrameElement':
-      store_.isSelectingElement = false;
-      break;
-  }
-});
+};
+module.exports = new Store;
