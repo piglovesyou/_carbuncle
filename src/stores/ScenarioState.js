@@ -11,6 +11,7 @@ var {ObjectID} = require('mongodb');
 var Actions = require('../actions');
 var ComponentHelper = require('../components/helper');
 var Base = require('./base');
+var {deepClone} = require('../tools/object');
 
 var default_ = {
   _id: undefined,
@@ -148,8 +149,7 @@ class ScenarioState extends Base {
     }
   }
   restoreCache() {
-    this.store_ = {};
-    _.each(default_, (v, k) => this.store_[k] = _.clone(v));
+    this.store_ = deepClone(default_);
   }
   resetExecutingState() {
     clearTimeout(this.previewResetTimer);

@@ -5,6 +5,7 @@ var _ = require('underscore');
 var {CHANGE_EVENT, PER_PAGE} = require('../constants');
 var Persist = require('../persist');
 var Base = require('./base');
+var {deepClone} = require('../tools/object');
 
 var default_ = {
   total: -1,
@@ -57,7 +58,7 @@ class ScenarioListBase extends Base {
     });
   }
   restoreCache() {
-    this.store_ = _.clone(default_);
+    this.store_ = deepClone(default_);
   }
 }
 

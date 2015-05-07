@@ -5,6 +5,7 @@ var assign = require('object-assign');
 var _ = require('underscore');
 var {CHANGE_EVENT} = require('../constants');
 var Base = require('./base');
+var {deepClone} = require('../tools/object');
 
 var default_ = {
   title: '',
@@ -74,7 +75,7 @@ class EditorState extends Base {
     }
   }
   restore() {
-    this.store_ = _.clone(default_);
+    this.store_ = deepClone(default_);
     this.emit(CHANGE_EVENT);
   }
 }
