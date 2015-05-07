@@ -5,7 +5,7 @@ var _ = require('underscore');
 var {CHANGE_EVENT} = require('../constants');
 
 var TIMEOUT = 7 * 1000;
-var DEFAULT_STATE = {
+var default_ = {
   active: false,
   icon: null,
   message: '', // If not empty, show notification
@@ -18,7 +18,7 @@ var DEFAULT_STATE = {
 class NotifyState extends EventEmitter {
   constructor() {
     super();
-    this.store_ = _.clone(DEFAULT_STATE);
+    this.store_ = _.clone(default_);
     this.dispatcherToken = Dispatcher.register(this.dispatcherHandler_.bind(this));
     this.timerId;
   }

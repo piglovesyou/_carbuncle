@@ -5,7 +5,7 @@ var assign = require('object-assign');
 var _ = require('underscore');
 var {CHANGE_EVENT} = require('../constants');
 
-var DEFAULT_STATE = {
+var default_ = {
   title: '',
   css: '',
   id: '',
@@ -18,7 +18,7 @@ var DEFAULT_STATE = {
 class EditorState extends EventEmitter {
   constructor() {
     super();
-    this.store_ = _.clone(DEFAULT_STATE);
+    this.store_ = _.clone(default_);
     this.dispatcherToken = Dispatcher.register(this.dispatcherHandler_.bind(this));
   }
   get() {
@@ -27,7 +27,7 @@ class EditorState extends EventEmitter {
   dispatcherHandler_(action) {
     switch (action.type) {
       case 'locationChange':
-        this.store_ = _.extend({}, DEFAULT_STATE, {
+        this.store_ = _.extend({}, default_, {
           title: action.state.title,
           mode: 'action',
           type: 'open',
@@ -69,7 +69,7 @@ class EditorState extends EventEmitter {
         break;
 
       case 'startEditEntry':
-        _.extend(this.store_, DEFAULT_STATE, action.entry, {
+        _.extend(this.store_, default_, action.entry, {
           isEdit: true
         });
         this.emit(CHANGE_EVENT);
@@ -83,7 +83,7 @@ class EditorState extends EventEmitter {
     this.removeListener(CHANGE_EVENT, callback);
   }
   restore() {
-    this.store_ = _.clone(DEFAULT_STATE);
+    this.store_ = _.clone(default_);
     this.emit(CHANGE_EVENT);
   }
 }

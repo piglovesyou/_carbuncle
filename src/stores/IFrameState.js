@@ -7,7 +7,7 @@ var {CHANGE_EVENT} = require('../constants');
 var EditorState = require('./EditorState');
 var Store = require('./index');
 
-var DEFAULT_STATE = {
+var default_ = {
   url: ''
 };
 
@@ -16,7 +16,7 @@ var DEFAULT_STATE = {
 class IFrameState extends EventEmitter {
   constructor() {
     super();
-    this.store_ = _.clone(DEFAULT_STATE);
+    this.store_ = _.clone(default_);
     this.dispatcherToken = Dispatcher.register(this.dispatcherHandler_.bind(this));
   }
   get() {
