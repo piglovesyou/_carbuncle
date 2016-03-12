@@ -47,9 +47,9 @@ const Nav = React.createClass({
           </div>
           <div className='collapse navbar-collapse' id='bs-example-navbar-collapse-1'>
             <ul className='nav navbar-nav'>
-              <li><Link to='/' activeClassName="active">つくる</Link></li>
-              <li><Link to='/scenario-list' activeClassName="active">一覧</Link></li>
-              <li><Link to='/setting' activeClassName="active">設定</Link></li>
+              <li><Link to='/' activeClassName='active'>つくる</Link></li>
+              <li><Link to='/scenario-list' activeClassName='active'>一覧</Link></li>
+              <li><Link to='/setting' activeClassName='active'>設定</Link></li>
             </ul>
             <ul className='nav navbar-nav navbar-right'>
               <Notification />
