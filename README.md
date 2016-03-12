@@ -3,4 +3,4 @@ Carbuncle
 
 License
 ---------
-All Right Reserved
+Apache License Version 2.0
