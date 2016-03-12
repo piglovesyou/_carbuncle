@@ -1,4 +1,4 @@
-var ScenarioListBase = require('./ScenarioListBase');
+const ScenarioListBase = require('./ScenarioListBase');
 
 class BlockList extends ScenarioListBase {
   constructor() {

@@ -1,11 +1,11 @@
 
-var React = require('react');
+const React = require('react');
 // var {HistoryLocation} = require('react-router');
 // var Path = require('path');
-var Actions = require('../actions');
-var _ = require('underscore');
+const Actions = require('../actions');
+const _ = require('underscore');
 
-var IFrame = React.createClass({
+const IFrame = React.createClass({
 
   componentDidMount() {
     this.enableSelectingEvent(this.props.isSelectingElement);
@@ -37,16 +37,16 @@ var IFrame = React.createClass({
   render() {
     return (
       <div className={'iframe' + (this.props.isSelectingElement ? ' iframe--isSelectingElement' : '')}>
-        <form className="iframe__form" onSubmit={this.onSubmit} action="">
-          <input type="text"
-                 ref="url"
-                 placeholder="URLを入力"
+        <form className='iframe__form' onSubmit={this.onSubmit} action=''>
+          <input type='text'
+                 ref='url'
+                 placeholder='URLを入力'
                  defaultValue={this.props.url}
                  />
-          <button className="btn">Go</button>
+          <button className='btn'>Go</button>
         </form>
-        <iframe ref="iframe"
-                className="iframe__iframe"
+        <iframe ref='iframe'
+                className='iframe__iframe'
                 src={this.props.url}
         ></iframe>
       </div>

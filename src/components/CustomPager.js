@@ -1,10 +1,10 @@
-var _ = require('underscore');
-var React = require('react');
+const _ = require('underscore');
+const React = require('react');
 // var {PER_PAGE} = require('../constants');
 // var {Link} = require('react-router');
 
-var OtherPager = React.createClass({
-  getDefaultProps: function(){
+const OtherPager = React.createClass({
+  getDefaultProps: function() {
     return {
       'maxPage': 0,
       'nextText': '',
@@ -12,7 +12,7 @@ var OtherPager = React.createClass({
       'currentPage': 0
     };
   },
-  render: function(){
+  render: function() {
     var pageCount = this.props.maxPage;
     var pageEnd = pageCount - 1;
     if (pageEnd <= 0) return <div></div>;
@@ -25,29 +25,29 @@ var OtherPager = React.createClass({
     var rightskip;
     if (rangeStart > 1) {
       leftskip = <li>
-        <a href="#" onClick={goTo.bind(this, rangeStart - 1)}>...</a>
+        <a href='#' onClick={goTo.bind(this, rangeStart - 1)}>...</a>
       </li>;
     }
     if (rangeEnd < pageEnd) {
       rightskip = <li>
-        <a href="#" onClick={goTo.bind(this, rangeEnd + 1)}>...</a>
+        <a href='#' onClick={goTo.bind(this, rangeEnd + 1)}>...</a>
       </li>;
     }
     return (
-      <nav className="text-center">
-        <ul className="pagination">
+      <nav className='text-center'>
+        <ul className='pagination'>
           <li className={isLeftEdge ? 'disabled' : null}>
-            <a href="#" onClick={goTo.bind(this, 0)} className="fa fa-angle-double-left"></a>
+            <a href='#' onClick={goTo.bind(this, 0)} className='fa fa-angle-double-left'></a>
           </li>
           {leftskip}
           {_.map(_.range(rangeStart, rangeEnd + 1), page =>
             <li key={page} className={this.props.currentPage === page ? 'active' : null}>
-              <a href="#" onClick={goTo.bind(this, page)}>{page + 1}</a>
+              <a href='#' onClick={goTo.bind(this, page)}>{page + 1}</a>
             </li>
           )}
           {rightskip}
           <li className={isRightEdge ? 'disabled' : null}>
-            <a href="#" onClick={goTo.bind(this, pageEnd)} className="fa fa-angle-double-right"></a>
+            <a href='#' onClick={goTo.bind(this, pageEnd)} className='fa fa-angle-double-right'></a>
           </li>
         </ul>
       </nav>

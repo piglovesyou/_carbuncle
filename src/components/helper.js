@@ -1,4 +1,4 @@
-var React = require('react');
+const React = require('react');
 
 module.exports = { renderIcon, getIconKey };
 
@@ -11,14 +11,14 @@ function renderIcon(isBlock, mode, type) {
 }
 
 function getIconKey(isBlock, mode, type) {
-  if (!!isBlock) {
+  if (isBlock) {
     return 'cube';
   } else if (mode === 'action') {
-    switch(type) {
-      case 'click': return 'bullseye';
-      case 'input': return 'pencil';
-      case 'open': return 'globe';
-      case 'screenshot': return 'camera';
+    switch (type) {
+    case 'click': return 'bullseye';
+    case 'input': return 'pencil';
+    case 'open': return 'globe';
+    case 'screenshot': return 'camera';
     }
   } else if (mode === 'verify') {
     return 'check-square-o';

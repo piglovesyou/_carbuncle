@@ -1,26 +1,26 @@
 
-var React = require('react');
+const React = require('react');
 
-var Pixel = React.createClass({
+const Pixel = React.createClass({
 
   render() {
     return (
-      <div className="pixel" style={{
+      <div className='pixel' style={{
         top: this.props.y,
         left: this.props.x
       }} title={this.props.description}>
-        <div className="pixel__border pixel__border-top" style={{
+        <div className='pixel__border pixel__border-top' style={{
           width: this.props.width
         }}></div>
-        <div className="pixel__border pixel__border-right" style={{
+        <div className='pixel__border pixel__border-right' style={{
           left: this.props.width,
           height: this.props.height
         }}></div>
-        <div className="pixel__border pixel__border-bottom"style={{
+        <div className='pixel__border pixel__border-bottom'style={{
           width: this.props.width,
           top: this.props.height
         }}></div>
-        <div className="pixel__border pixel__border-left" style={{
+        <div className='pixel__border pixel__border-left' style={{
           height: this.props.height
         }}></div>
       </div>

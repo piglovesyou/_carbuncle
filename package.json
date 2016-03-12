@@ -15,6 +15,7 @@
     "Effeckt": "git://github.com/piglovesyou/Effeckt.css.git#placeholder-bug-patched",
     "bower": "^1.7.7",
     "eslint": "^2.4.0",
+    "eslint-plugin-react": "^4.2.1",
     "flux": "^2.1.1",
     "griddle-react": "^0.3.1",
     "gulp": "^3.9.1",
@@ -28,8 +29,10 @@
     "mongodb": "^2.1.7",
     "object-assign": "^4.0.1",
     "react": "^0.14.7",
+    "react-dom": "^0.14.7",
     "react-router": "^2.0.1",
     "selenium-webdriver": "^2.52.0",
+    "standard": "^6.0.8",
     "underscore": "^1.8.3",
     "webpack-stream": "^3.1.0"
   },

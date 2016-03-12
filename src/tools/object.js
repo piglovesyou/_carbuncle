@@ -1,4 +1,4 @@
-var _ = require('underscore');
+const _ = require('underscore');
 
 module.exports = {
   deepClone
@@ -11,7 +11,7 @@ function deepClone(obj) {
     return _.map(obj, deepClone);
   } else if (_.isObject(obj)) {
     var dest = {};
-    _.each(obj, (v, k) => dest[k] = deepClone(v));
+    _.each(obj, (v, k) => (dest[k] = deepClone(v)));
     return dest;
   }
   return obj;

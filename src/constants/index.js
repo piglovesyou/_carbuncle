@@ -1,4 +1,4 @@
-var MongoErrorCode = {
+const MongoErrorCode = {
   AUTH_FAILED: 18
 };
 

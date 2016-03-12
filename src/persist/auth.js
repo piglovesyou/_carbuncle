@@ -1,10 +1,9 @@
 
-var Q = require('q');
+const Q = require('q');
 Q.longStackSupport = true;
-var {MongoClient} = require('mongodb');
-var _ = require('underscore');
-var Actions = require('../actions');
-
+const {MongoClient} = require('mongodb');
+const _ = require('underscore');
+const Actions = require('../actions');
 
 
 module.exports = {
@@ -14,10 +13,9 @@ module.exports = {
 };
 
 
-
-var database = null;
-var authenticated = false;
-var lastState = getState();
+let database = null;
+let authenticated = false;
+let lastState = getState();
 
 function getDB() {
   return authenticate();
@@ -65,7 +63,7 @@ function authenticate() {
         return database;
       })
       .catch(err => {
-        console.log(err.stack)
+        console.log(err.stack);
         authenticated = false;
         Actions.notify({
           type: 'danger',

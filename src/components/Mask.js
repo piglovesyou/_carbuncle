@@ -1,11 +1,11 @@
 
-var React = require('react');
+const React = require('react');
 
-var Mask = React.createClass({
+const Mask = React.createClass({
 
   render() {
     return (
-      <div className="mask" onClick={this.props.onCancel}></div>
+      <div className='mask' onClick={this.props.onCancel}></div>
     );
   }
 

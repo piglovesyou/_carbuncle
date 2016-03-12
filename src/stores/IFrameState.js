@@ -1,14 +1,11 @@
 
-var Dispatcher = require('../dispatcher');
-var EventEmitter = require('events').EventEmitter;
-var assign = require('object-assign');
-var _ = require('underscore');
-var {CHANGE_EVENT} = require('../constants');
-var EditorState = require('./EditorState');
-var Store = require('./index');
-var Base = require('./base');
+const Dispatcher = require('../dispatcher');
+const _ = require('underscore');
+const {CHANGE_EVENT} = require('../constants');
+const EditorState = require('./EditorState');
+const Base = require('./base');
 
-var default_ = {
+const default_ = {
   url: ''
 };
 
@@ -18,12 +15,12 @@ class IFrameState extends Base {
     this.store_ = _.clone(default_);
   }
   dispatcherHandler_(action) {
-    switch(action.type) {
-      case 'locationChange':
-        _.extend(this.store_, action.state);
-        Dispatcher.waitFor([EditorState.dispatcherToken]);
-        this.emit(CHANGE_EVENT, action.state);
-        break;
+    switch (action.type) {
+    case 'locationChange':
+      _.extend(this.store_, action.state);
+      Dispatcher.waitFor([EditorState.dispatcherToken]);
+      this.emit(CHANGE_EVENT, action.state);
+      break;
     }
   }
 }

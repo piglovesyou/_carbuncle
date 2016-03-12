@@ -1,24 +1,23 @@
-var React = require('react');
-var Nav = require('../components/Nav');
-var ScenarioListComponent = require('../components/ScenarioList');
-var Actions = require('../actions');
-var ScenarioList = require('../stores/ScenarioList');
+const React = require('react');
+const Nav = require('../components/Nav');
+const ScenarioListComponent = require('../components/ScenarioList');
+const Actions = require('../actions');
+const ScenarioList = require('../stores/ScenarioList');
 
 
-
-var ScenarioListApp = React.createClass({
+const ScenarioListApp = React.createClass({
 
   render() {
     return (
-      <div className="app-root app-root--scenario-list">
+      <div className='app-root app-root--scenario-list'>
         <Nav />
-        <div className="layout-scrolable">
-          <div className="container">
-            <h2 className="app-root__pagetitle">シナリオ一覧</h2>
+        <div className='layout-scrolable'>
+          <div className='container'>
+            <h2 className='app-root__pagetitle'>シナリオ一覧</h2>
 
             <ScenarioListComponent
                 store={ScenarioList}
-                cssModifier="scenario-list"
+                cssModifier='scenario-list'
                 onClickRow={Actions.startEditScenario.bind(this)}/>
 
           </div>

@@ -1,13 +1,10 @@
-var Dispatcher = require('../dispatcher');
-var EventEmitter = require('events').EventEmitter;
-var assign = require('object-assign');
-var _ = require('underscore');
-var {CHANGE_EVENT, PER_PAGE} = require('../constants');
-var Persist = require('../persist');
-var Base = require('./base');
-var {deepClone} = require('../tools/object');
+const _ = require('underscore');
+const {CHANGE_EVENT, PER_PAGE} = require('../constants');
+const Persist = require('../persist');
+const Base = require('./base');
+const {deepClone} = require('../tools/object');
 
-var default_ = {
+const default_ = {
   total: -1,
   list: [],
   map: []
@@ -21,13 +18,13 @@ class ScenarioListBase extends Base {
   }
   dispatcherHandler_(action) {
     switch (action.type) {
-      case 'saveScenario':
-        this.restoreCache();
-        break;
-      case 'deleteScenario':
+    case 'saveScenario':
+      this.restoreCache();
+      break;
+    case 'deleteScenario':
         // TODO: Update total
-        var {scenario} = action;
-        Persist.deleteScenario(scenario._id)
+      var {scenario} = action;
+      Persist.deleteScenario(scenario._id)
         .then(() => {
           if (goog.array.removeIf(this.store_.list, s => String(s._id) === String(scenario._id))) {
             delete this.store_.map[scenario._id];
@@ -35,7 +32,7 @@ class ScenarioListBase extends Base {
             this.emit(CHANGE_EVENT);
           }
         });
-        break;
+      break;
     }
   }
   sync(page) {

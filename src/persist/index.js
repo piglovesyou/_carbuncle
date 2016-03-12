@@ -1,22 +1,28 @@
-var Q = require('q');
+const Q = require('q');
 Q.longStackSupport = true;
-var Auth = require('./auth');
-var Actions = require('../actions');
+const Auth = require('./auth');
+const Actions = require('../actions');
 
-var {PER_PAGE} = require('../constants');
+const {PER_PAGE} = require('../constants');
 
 module.exports = {
   saveScenario,
   deleteScenario,
-  getScenarios
+  getScenarios,
+  getScenario
 };
-
 
 
 function deleteScenario(id) {
   return getScenariosCollection()
   .then(scenarios =>
     Q.ninvoke(scenarios, 'deleteOne', { _id: id }));
+}
+
+function getScenario(id) {
+  return getScenariosCollection()
+  .then(scenarios =>
+    Q.ninvoke(scenarios, 'findOne', { _id: id }));
 }
 
 function getScenarios(page, filter) {

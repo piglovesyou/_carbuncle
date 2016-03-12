@@ -1,10 +1,10 @@
 
-var React = require('react');
-var Nav = require('../components/Nav');
-var Actions = require('../actions');
-var SettingState = require('../stores/SettingState');
+const React = require('react');
+const Nav = require('../components/Nav');
+const Actions = require('../actions');
+const SettingState = require('../stores/SettingState');
 
-var Setting = React.createClass({
+const Setting = React.createClass({
 
   componentDidMount() {
     SettingState.addChangeListener(this.onStateChange);
@@ -25,57 +25,57 @@ var Setting = React.createClass({
 
   render() {
     return (
-      <div className="app-root app-root--setting">
+      <div className='app-root app-root--setting'>
         <Nav />
-        <div className="layout-scrolable">
-          <div className="container">
-            <h2 className="app-root__pagetitle">個人設定</h2>
-            <form action="#" className="form-horizontal">
+        <div className='layout-scrolable'>
+          <div className='container'>
+            <h2 className='app-root__pagetitle'>個人設定</h2>
+            <form action='#' className='form-horizontal'>
 
-              <div className="form-group">
-                <label className="col-xs-3 control-label" htmlFor="database">データベース</label>
-                <div className="col-xs-7">
-                  <input className="form-control"
-                         type="text"
-                         ref="database"
-                         id="database"
-                         placeholder="mongodb://127.0.0.1:27017/name"
+              <div className='form-group'>
+                <label className='col-xs-3 control-label' htmlFor='database'>データベース</label>
+                <div className='col-xs-7'>
+                  <input className='form-control'
+                         type='text'
+                         ref='database'
+                         id='database'
+                         placeholder='mongodb://127.0.0.1:27017/name'
                          defaultValue={window.localStorage.database}
                          onChange={this.onChange} />
                 </div>
-                <label className="col-xs-2 control-label" htmlFor="database">
+                <label className='col-xs-2 control-label' htmlFor='database'>
                   {this.createOkOrNgIcon(this.state.databaseConnected)}
                 </label>
               </div>
 
-              <div className="form-group">
-                <label className="col-xs-3 control-label" htmlFor="username">ユーザー名</label>
-                <div className="col-xs-7">
-                  <input className="form-control"
-                         type="text"
-                         ref="username"
-                         id="username"
-                         placeholder="Username"
+              <div className='form-group'>
+                <label className='col-xs-3 control-label' htmlFor='username'>ユーザー名</label>
+                <div className='col-xs-7'>
+                  <input className='form-control'
+                         type='text'
+                         ref='username'
+                         id='username'
+                         placeholder='Username'
                          defaultValue={window.localStorage.username}
                          onChange={this.onChange} />
                 </div>
-                <label className="col-xs-2 control-label" htmlFor="username">
+                <label className='col-xs-2 control-label' htmlFor='username'>
                   {this.createOkOrNgIcon(this.state.authenticated)}
                 </label>
               </div>
 
-              <div className="form-group">
-                <label className="col-xs-3 control-label" htmlFor="password">パスワード</label>
-                <div className="col-xs-7">
-                  <input className="form-control"
-                         type="password"
-                         ref="password"
-                         id="password"
+              <div className='form-group'>
+                <label className='col-xs-3 control-label' htmlFor='password'>パスワード</label>
+                <div className='col-xs-7'>
+                  <input className='form-control'
+                         type='password'
+                         ref='password'
+                         id='password'
                          defaultValue={window.localStorage.password}
-                         placeholder="●●●●●●●"
+                         placeholder='●●●●●●●'
                          onChange={this.onChange} />
                 </div>
-                <label className="col-xs-2 control-label" htmlFor="password">
+                <label className='col-xs-2 control-label' htmlFor='password'>
                   {this.createOkOrNgIcon(this.state.authenticated)}
                 </label>
               </div>
@@ -88,8 +88,11 @@ var Setting = React.createClass({
   },
 
   createOkOrNgIcon(ok) {
-    return ok === true ? <i className="fa fa-check"></i> :
-           ok === false ? <i className="fa fa-close"></i> : null;
+    return ok === true
+        ? <i className='fa fa-check'></i>
+        : ok === false
+        ? <i className='fa fa-close'></i>
+        : null;
   },
 
   onChange(e) {

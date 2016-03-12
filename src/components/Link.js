@@ -1,9 +1,9 @@
 
-var React = require('react');
-var {HistoryLocation} = require('react-router');
-var Path = require('path');
+const React = require('react');
+const {HistoryLocation} = require('react-router');
+const Path = require('path');
 
-var Link = React.createClass({
+const Link = React.createClass({
   render() {
     return (
       <a href={this.props.href} onClick={pushState(this.props.href)}>

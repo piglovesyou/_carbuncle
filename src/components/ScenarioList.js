@@ -1,17 +1,16 @@
-var React = require('react');
-var assert = require('assert');
-var Griddle = require('griddle-react');
-var {PER_PAGE} = require('../constants');
-var {Navigation, State} = require('react-router');
-var componentHelper = require('../components/helper');
-var Actions = require('../actions');
-var CustomPager = require('./CustomPager');
-var _ = require('underscore');
-var {getAncestorFromEventTargetByClass} = require('../tools/dom');
+const React = require('react');
+const assert = require('assert');
+const Griddle = require('griddle-react');
+const {PER_PAGE} = require('../constants');
+const {Navigation, State} = require('react-router');
+const componentHelper = require('../components/helper');
+const Actions = require('../actions');
+const CustomPager = require('./CustomPager');
+const _ = require('underscore');
+const {getAncestorFromEventTargetByClass} = require('../tools/dom');
 
 
-
-var Entries = React.createClass({
+const Entries = React.createClass({
   render() {
     if (!this.props.data) return <div></div>;
     return (
@@ -19,7 +18,7 @@ var Entries = React.createClass({
         {this.props.data.map(entry => {
           var tooltip = entry.title + (entry.title && entry.css ? '\n\n' : '') + entry.css;
           return (
-            <div className="paged-table--scenario-list__entry" title={tooltip} key={entry._id}>
+            <div className='paged-table--scenario-list__entry' title={tooltip} key={entry._id}>
               {componentHelper.renderIcon(entry.isBlock, entry.mode, entry.type)}
             </div>
           );
@@ -29,18 +28,18 @@ var Entries = React.createClass({
   }
 });
 
-var IsBlock = React.createClass({
+const IsBlock = React.createClass({
   render() {
     return (<div>
-      {this.props.data ? <i className="fa fa-cube"></i> : ""}
+      {this.props.data ? <i className='fa fa-cube'></i> : ''}
     </div>);
   }
 });
 
-var Buttons = React.createClass({
+const Buttons = React.createClass({
   render() {
     return (<div>
-      <button className="btn btn-xs btn-link fa fa-trash" onClick={this.onDeleteClick}></button>
+      <button className='btn btn-xs btn-link fa fa-trash' onClick={this.onDeleteClick}></button>
     </div>);
   },
   onDeleteClick(e) {
@@ -50,8 +49,8 @@ var Buttons = React.createClass({
   }
 });
 
-var Columns = ['title', 'entries', 'updatedBy', 'isBlock', 'buttons'];
-var ColumnMetadata = [
+const Columns = ['title', 'entries', 'updatedBy', 'isBlock', 'buttons'];
+const ColumnMetadata = [
   {
     'columnName': 'title',
     'displayName': 'タイトル',
@@ -87,56 +86,56 @@ var ColumnMetadata = [
   }
 ];
 
-var ScenarioListComponent = React.createClass({
+const ScenarioListComponent = React.createClass({
 
-    getInitialState() {
-      return _.extend({
-        currentPage: 0
-      }, this.createState());
-    },
+  getInitialState() {
+    return _.extend({
+      currentPage: 0
+    }, this.createState());
+  },
 
-    componentDidMount() {
-      this.props.store.addChangeListener(this.onChange);
-      this.syncPage();
-    },
+  componentDidMount() {
+    this.props.store.addChangeListener(this.onChange);
+    this.syncPage();
+  },
 
-    componentDidUpdate() {
-      this.syncPage();
-    },
+  componentDidUpdate() {
+    this.syncPage();
+  },
 
-    componentDidUnmount() {
-      this.props.store.removeChangeListener(this.onChange);
-    },
+  componentDidUnmount() {
+    this.props.store.removeChangeListener(this.onChange);
+  },
 
-    syncPage() {
-      this.props.store.sync(this.state.currentPage);
-    },
+  syncPage() {
+    this.props.store.sync(this.state.currentPage);
+  },
 
-    onChange() {
-      this.setState(this.createState());
-    },
+  onChange() {
+    this.setState(this.createState());
+  },
 
-    createState() {
-      return this.props.store.get();
-    },
+  createState() {
+    return this.props.store.get();
+  },
 
-    mixins: [Navigation, State],
+  mixins: [Navigation, State],
 
-    setPage: function(index){
-      var currentPage = goog.math.clamp(index, 0, this.getMaxPage());
-      this.setState({ currentPage });
-    },
-    setPageSize: function() {
-    },
-    getMaxPage() {
-      return Math.ceil(this.state.total / PER_PAGE);
-    },
-    getSlicedList() {
-      return this.state.list.slice(this.state.currentPage * PER_PAGE, this.state.currentPage * PER_PAGE + PER_PAGE);
-    },
-    render: function(){
-      return (
-        <div ref="root" onClick={this.handleClick}>
+  setPage: function(index) {
+    var currentPage = goog.math.clamp(index, 0, this.getMaxPage());
+    this.setState({ currentPage });
+  },
+  setPageSize: function() {
+  },
+  getMaxPage() {
+    return Math.ceil(this.state.total / PER_PAGE);
+  },
+  getSlicedList() {
+    return this.state.list.slice(this.state.currentPage * PER_PAGE, this.state.currentPage * PER_PAGE + PER_PAGE);
+  },
+  render: function() {
+    return (
+        <div ref='root' onClick={this.handleClick}>
           <Griddle gridClassName={'paged-table paged-table--' + this.props.cssModifier}
             enableSort={false}
             columns={Columns}
@@ -144,12 +143,12 @@ var ScenarioListComponent = React.createClass({
             useExternal={true}
             externalSetPage={this.setPage}
             externalMaxPage={this.getMaxPage()}
-            externalChangeSort={function(){}}
-            externalSetFilter={function(){}}
+            externalChangeSort={function() {}}
+            externalSetFilter={function() {}}
             externalCurrentPage={this.state.currentPage}
             externalSetPageSize={this.setPageSize}
             results={this.getSlicedList()}
-            tableClassName="table"
+            tableClassName='table'
             resultsPerPage={PER_PAGE}
             externalSortColumn={null}
             externalSortAscending={true}
@@ -158,20 +157,20 @@ var ScenarioListComponent = React.createClass({
             customPagerComponent={CustomPager} />
         </div>
       );
-    },
-    handleClick(e) {
-      var rowEl;
-      if (rowEl = getAncestorFromEventTargetByClass(this.refs.root.getDOMNode(),
-          'standard-row', e.target)) {
-        var index = _.indexOf(rowEl.parentNode.childNodes, rowEl);
-        assert(index >= 0);
-        var rowData = this.getSlicedList()[index];
-        assert(rowData);
-        if (this.props.onClickRow) {
-          this.props.onClickRow(rowData);
-        }
+  },
+  handleClick(e) {
+    var rowEl = getAncestorFromEventTargetByClass(
+        this.refs.root.getDOMNode(), 'standard-row', e.target);
+    if (rowEl) {
+      var index = _.indexOf(rowEl.parentNode.childNodes, rowEl);
+      assert(index >= 0);
+      var rowData = this.getSlicedList()[index];
+      assert(rowData);
+      if (this.props.onClickRow) {
+        this.props.onClickRow(rowData);
       }
     }
+  }
 });
 
 module.exports = ScenarioListComponent;

@@ -1,6 +1,5 @@
-var Dispatcher = require('../dispatcher');
-var {HashLocation} = require('react-router');
-
+const Dispatcher = require('../dispatcher');
+const {HashLocation} = require('react-router');
 
 
 module.exports = {

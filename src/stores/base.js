@@ -1,11 +1,8 @@
 
-var Dispatcher = require('../dispatcher');
-var EventEmitter = require('events').EventEmitter;
-var assign = require('object-assign');
-var Auth = require('../persist/auth');
-var _ = require('underscore');
-var {CHANGE_EVENT, MongoErrorCode} = require('../constants');
-var assert = require('assert');
+const Dispatcher = require('../dispatcher');
+const EventEmitter = require('events').EventEmitter;
+const {CHANGE_EVENT} = require('../constants');
+const assert = require('assert');
 
 class Base extends EventEmitter {
   constructor() {

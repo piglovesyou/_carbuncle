@@ -1,20 +1,18 @@
-var assert = require('assert');
-var FS = require('fs');
-var Path = require('path');
-var mkdirp = require('mkdirp');
-var webdriver = require('selenium-webdriver');
-// global.goog = require('closure').Closure({ CLOSURE_BASE_PATH: 'libs/closure-library/closure/goog/' });
-// goog.require('goog.string');
-var Q = require('q');
+const assert = require('assert');
+const FS = require('fs');
+const Path = require('path');
+const Persist = require('../persist');
+const mkdirp = require('mkdirp');
+const webdriver = require('selenium-webdriver');
+const Q = require('q');
 Q.longStackSupport = true;
-var util = require('util');
-var EventEmitter = require('events').EventEmitter;
-var Url = require('url');
-
+const util = require('util');
+const EventEmitter = require('events').EventEmitter;
+const Url = require('url');
+const _ = require('underscore');
 
 
 module.exports = Executor;
-
 
 
 /**
@@ -24,7 +22,7 @@ function Executor(entries, opt_interval) {
   EventEmitter.call(this);
   Object.defineProperty(this, 'entries', { value: entries });
   Object.defineProperty(this, 'interval', { value: opt_interval || 0 });
-  Object.defineProperty(this, 'context', { value: new Context });
+  Object.defineProperty(this, 'context', { value: new Context() });
   Object.seal(this);
   this.execute_();
 }
@@ -40,7 +38,7 @@ Executor.prototype.execute_ = function() {
     that.emit('end');
     return context;
   })
-  .catch (function(e) {
+  .catch(function(e) {
     that.emit('fail', e);
     context.quit(); // Make sure to quit even if an error occures.
     that.emit('end', e);
@@ -53,8 +51,9 @@ Executor.prototype.scheduleEntries_ = function(entries) {
   var context = this.context;
   return entries.reduce(function(p, e) {
     return p.then(function() {
-      if (e.mode == 'block') {
-        return Scenario.findOne(e.id)
+      if (e.mode === 'block') {
+        // TODO
+        return Persist.findOne(e.id)
         .then(function(doc) {
           assert(doc.isBlock, 'Wrong scenario was stored as a block.');
           that.emit('before', _.extend(doc, e));
@@ -69,11 +68,10 @@ Executor.prototype.scheduleEntries_ = function(entries) {
 };
 
 
-
 /**
  * executionMap[mode][type](entry)
  */
-var executionMap = {
+const executionMap = {
   action: {
     open: actionOpen,
     click: actionClick,
@@ -87,8 +85,6 @@ var executionMap = {
     endsWith: verify.bind(null, 'endsWith')
   }
 };
-
-
 
 
 function actionOpen(context, entry) {
@@ -131,7 +127,6 @@ function verify(type, context, entry) {
 }
 
 
-
 /**
  * @constructor
  */
@@ -165,17 +160,16 @@ Context.prototype.screenshot = function() {
 };
 
 
-
-
 function mapVerifyMethod(type) {
   assert([
     'equal',
     'contains',
     'startsWith',
     'endsWith'
-  ].some(function(s) {return s == type}));
-  return type == 'equal' ?
-    function(text, v) { return text == v } : goog.string[type];
+  ].some(function(s) { return s === type; }));
+  return type === 'equal'
+      ? function(text, v) { return text === v; }
+      : goog.string[type];
 }
 function replaceMetaKey(input) {
   return input.replace(/(\{.*?\})/g, function(hit) {

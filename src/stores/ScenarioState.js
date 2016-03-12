@@ -1,19 +1,17 @@
-var Dispatcher = require('../dispatcher');
-var EventEmitter = require('events').EventEmitter;
-var assign = require('object-assign');
-var _ = require('underscore');
-var {CHANGE_EVENT} = require('../constants');
+const Dispatcher = require('../dispatcher');
+const _ = require('underscore');
+const {CHANGE_EVENT} = require('../constants');
 // var EditorState = require('./EditorState');
-var Executor = require('../core/Executor');
-var Persist = require('../persist');
-var ScenarioList = require('./ScenarioList');
-var {ObjectID} = require('mongodb');
-var Actions = require('../actions');
-var ComponentHelper = require('../components/helper');
-var Base = require('./base');
-var {deepClone} = require('../tools/object');
+const Executor = require('../core/Executor');
+const Persist = require('../persist');
+const ScenarioList = require('./ScenarioList');
+const {ObjectID} = require('mongodb');
+const Actions = require('../actions');
+const ComponentHelper = require('../components/helper');
+const Base = require('./base');
+const {deepClone} = require('../tools/object');
 
-var default_ = {
+const default_ = {
   _id: undefined,
   title: '',
   entries: [],
@@ -31,7 +29,7 @@ class ScenarioState extends Base {
         this.store_._id = new ObjectID(this.store_._id);
       }
       this.resetExecutingState();
-    } catch(e) {
+    } catch (e) {
       this.store_ = {
         _id: undefined,
         title: '',
@@ -158,8 +156,6 @@ class ScenarioState extends Base {
 }
 
 module.exports = new ScenarioState();
-
-
 
 function generateUID(entry) {
   var md5 = new goog.crypt.Md5();

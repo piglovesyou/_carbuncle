@@ -1,5 +1,5 @@
 
-var {CHANGE_EVENT} = require('../constants');
+const {CHANGE_EVENT} = require('../constants');
 
 module.exports = {
 

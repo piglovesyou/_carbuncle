@@ -1,21 +1,20 @@
-var _ = require('underscore');
-var React = require('react');
-var Actions = require('../actions');
-var Nav = require('../components/Nav');
-var Editor = require('../components/Editor');
-var IFrame = require('../components/IFrame');
-var Scenario = require('../components/Scenario');
-var Mask = require('../components/Mask');
-var Pixel = require('../components/Pixel');
-var SelectBlockModal = require('../components/SelectBlockModal');
+const _ = require('underscore');
+const React = require('react');
+const Actions = require('../actions');
+const Nav = require('../components/Nav');
+const Editor = require('../components/Editor');
+const IFrame = require('../components/IFrame');
+const Scenario = require('../components/Scenario');
+const Mask = require('../components/Mask');
+const Pixel = require('../components/Pixel');
+const SelectBlockModal = require('../components/SelectBlockModal');
 
-var Store = require('../stores');
-var EditorState = require('../stores/EditorState');
-var IFrameState = require('../stores/IFrameState');
-var ScenarioState = require('../stores/ScenarioState');
+const Store = require('../stores');
+const EditorState = require('../stores/EditorState');
+const IFrameState = require('../stores/IFrameState');
+const ScenarioState = require('../stores/ScenarioState');
 
-
-var Index = React.createClass({
+const Index = React.createClass({
 
   componentDidMount() {
     Store.addChangeListener(this.onAppStateChange);
@@ -79,15 +78,15 @@ var Index = React.createClass({
 
   render() {
     return (
-      <div className="app-root app-root--index">
+      <div className='app-root app-root--index'>
         <Nav />
         <Editor {...this.state.editorState} />
-        <div className="bottom-content">
-          <IFrame ref="iframe"
+        <div className='bottom-content'>
+          <IFrame ref='iframe'
                   {...this.state.iframeState}
                   isSelectingElement={this.state.isSelectingElement}
           ></IFrame>
-          <Scenario ref="scenario"
+          <Scenario ref='scenario'
                     {...this.state.scenarioState}></Scenario>
         </div>
         {this.state.isSelectingElement ? <Mask onCancel={this.onMaskCancelled} /> : null}

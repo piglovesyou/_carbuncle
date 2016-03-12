@@ -1,18 +1,12 @@
+const Auth = require('../persist/auth');
+const _ = require('underscore');
+const {CHANGE_EVENT, MongoErrorCode} = require('../constants');
+const Base = require('./base');
 
-var Dispatcher = require('../dispatcher');
-var EventEmitter = require('events').EventEmitter;
-var assign = require('object-assign');
-var Auth = require('../persist/auth');
-var _ = require('underscore');
-var {CHANGE_EVENT, MongoErrorCode} = require('../constants');
-var Base = require('./base');
-
-var default_ = {
+const default_ = {
   databaseConnected: null,
   authenticated: null
 };
-
-
 
 class SettingState extends Base {
   constructor() {
@@ -21,10 +15,10 @@ class SettingState extends Base {
   }
   dispatcherHandler_(action) {
     switch (action.type) {
-      case 'changeSetting':
-        _.extend(window.localStorage, action.form);
-        this.authenticate();
-        break;
+    case 'changeSetting':
+      _.extend(window.localStorage, action.form);
+      this.authenticate();
+      break;
     }
   }
   authenticate() {
