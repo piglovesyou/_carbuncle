@@ -1,0 +1,62 @@
+Carbancle - Browser Testing Desktop App
+
+- Concept
+  - Stop maintaining all the Selenium stuff
+    - Cost of browser testing is high
+      - If a team took the cost, they hesitate to improve UI and that can discourage improving their app
+      - Test cases should be easily created, modified and removed by various type of people
+    - A thing we can provide by combining all Selenium technology is too flexible
+      - What about an app that covers up 80% of usual cases with easy operation?
+  - Why Selenium Builder / Selenium IDE generates "script"?
+    - Which means that only programmers can make browser tests
+      - There are always non-programmers who help web engineering in an office
+      - Testing can be their post. They can be heroes
+    - Generated script will be a burden
+      - Script always has bugs which should be maintained
+      - Script is the most flexible form
+      - I think scripting is too much to operate webdriver in most cases
+    - Mainpoint is to control webdrivers
+      - Thankfully all webdrivers implements almost the same API
+      - So storing "commands" and "parameters" will be just fine
+        - Then we can cover up exceptional cases with using another way
+      - We can encapsulate controlling selenium within our new wrapper software
+  - Browser testing environment should provide more features
+    - Managing test cases
+      - Put tags on test cases and make them searchable
+        - With using "#xx" formula
+      - List/sort/filter test cases
+    - Enable running all/multiple test cases from GUI and CUI
+    - Sharing steps
+      - Common steps like "Open user settings" 
+    - Sharing locators
+      - Locators should be shared and easily replaced to all selectors
+      - It should be managed for each applications
+    - Users/Groups
+      - Who/When the test case is created/modified
+- Archtecture
+  - Idea 1
+    - nw.js that controls chromedriver
+    - When recording, nw.js launch google-chrome through chromedriver
+      - Embed recording script in a browser
+      - Send XHR when a user operates (click, input...)
+    - When playbacking
+      - Simply launch google-chrome and playback recorded steps
+    - pros: Simple to operate chrome by nw.js through chromedriver
+    - cons: Capturing user events is annoying
+      - Sending XHR could cause complicated bug
+      - Implementing is annoying
+  - Idea 2
+    - Node launch chromedriver
+    - chromedriver launch nw.js
+    - nw.js includes iframe
+    - iframe contains a target website
+    - When recording
+      - Capturing events through `iframe.contentWindow.Document`
+    - When playbacking
+      - Control nw.js itself through chromedriver
+  -  Persistence
+    - I'm planning to use Mongodb only because I know it a bit
+    - Database should be able to be shared from multiple clients
+- Any reusable code?
+  - In recording functionality, Selenium Builder depends on jQuery. I don't want jQuery. Also the source code is not so fascinating
+  - I read Selenium Builder and Selenium IDE. It's likely that I should reuse a part that manages steps as data in Selenium Builder.
