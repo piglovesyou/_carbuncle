@@ -39,7 +39,7 @@ const Notification = React.createClass({
 const Nav = React.createClass({
   mixins: [State],
   render() {
-    var currentPathName = this.getPathname();
+    const currentPathName = this.getPathname();
     return (
       <nav className='navbar navbar-default'>
         <div className='container-fluid'>

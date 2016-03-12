@@ -31,7 +31,7 @@ const Index = React.createClass({
   },
 
   getInitialState() {
-    var store = Store.get();
+    const store = Store.get();
     return {
       isSelectingElement: store.isSelectingElement,
       targetElementBounds: store.targetElementBounds,
@@ -42,7 +42,7 @@ const Index = React.createClass({
   },
 
   onAppStateChange(primal) {
-    var store = Store.get();
+    const store = Store.get();
     this.setState(_.extend({
       isSelectingElement: store.isSelectingElement,
       isSelectingBlock: store.isSelectingBlock,

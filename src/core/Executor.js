@@ -29,8 +29,8 @@ function Executor(entries, opt_interval) {
 util.inherits(Executor, EventEmitter);
 
 Executor.prototype.execute_ = function() {
-  var that = this;
-  var context = this.context;
+  const that = this;
+  const context = this.context;
   that.scheduleEntries_(this.entries)
   .then(function() {
     that.emit('pass');
@@ -47,8 +47,8 @@ Executor.prototype.execute_ = function() {
 };
 
 Executor.prototype.scheduleEntries_ = function(entries) {
-  var that = this;
-  var context = this.context;
+  const that = this;
+  const context = this.context;
   return entries.reduce(function(p, e) {
     return p.then(function() {
       if (e.mode === 'block') {
@@ -98,8 +98,8 @@ function actionClick(context, entry) {
   });
 }
 function actionScreenshot(context, entry) {
-  var dir = Path.resolve(global.nwGui.App.dataPath, 'screenshot');
-  var file = Path.resolve(dir, (entry.text || 'yeah') + '.png');
+  const dir = Path.resolve(global.nwGui.App.dataPath, 'screenshot');
+  const file = Path.resolve(dir, (entry.text || 'yeah') + '.png');
   return Q.nfcall(mkdirp, dir)
   .then(function() {
     return context.screenshot();
@@ -118,7 +118,7 @@ function actionInput(context, entry) {
   });
 }
 function verify(type, context, entry) {
-  var method = mapVerifyMethod(type);
+  const method = mapVerifyMethod(type);
   return context.wait(entry.css).then(function() {
     return context.find(entry.css).getText().then(function(v) {
       assert(method(v, entry.text));
@@ -144,7 +144,7 @@ Context.prototype.open = function(url) {
   return this.driver_.get(url);
 };
 Context.prototype.wait = function(selector) {
-  var that = this;
+  const that = this;
   return that.driver_.wait(function() {
     return that.driver_.isElementPresent(webdriver.By.css(selector));
   }, 1000);
@@ -173,7 +173,7 @@ function mapVerifyMethod(type) {
 }
 function replaceMetaKey(input) {
   return input.replace(/(\{.*?\})/g, function(hit) {
-    var content = hit.match(/\{(.*?)\}/);
+    const content = hit.match(/\{(.*?)\}/);
     if (content && webdriver.Key[content[1]]) {
       return webdriver.Key[content[1]];
     }

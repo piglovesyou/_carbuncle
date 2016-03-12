@@ -9,7 +9,8 @@
     "postinstall": "mkdir -p public/{js,css}; bower install;",
     "watch-sass": "gulp watch-sass",
     "build": "gulp",
-    "test": "eslint src && gulp"
+    "test": "eslint src && gulp",
+    "lint": "eslint src"
   },
   "devDependencies": {
     "Effeckt": "git://github.com/piglovesyou/Effeckt.css.git#placeholder-bug-patched",

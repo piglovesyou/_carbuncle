@@ -26,8 +26,8 @@ function getScenario(id) {
 }
 
 function getScenarios(page, filter) {
-  var skip = PER_PAGE * page;
-  var limit = PER_PAGE;
+  const skip = PER_PAGE * page;
+  const limit = PER_PAGE;
   return getScenariosCollection()
   .then(scenarios => {
     return Q.all([
@@ -35,7 +35,7 @@ function getScenarios(page, filter) {
       Q.ninvoke(scenarios.find(filter).skip(skip).limit(limit), 'toArray')
     ])
     .then(result => {
-      var [total, docs] = result;
+      const [total, docs] = result;
       return { docs, page, skip, limit, total };
     });
   });

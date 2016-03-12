@@ -32,7 +32,7 @@ const Entry = React.createClass({
     );
   },
   renderMeta() {
-    var rv = [<span>{this.props.type}</span>];
+    const rv = [<span>{this.props.type}</span>];
     if (this.props.mode === 'action' &&
         this.props.type === 'open' &&
         goog.string.linkify.findFirstUrl(this.props.text)) {
@@ -50,7 +50,7 @@ const Entry = React.createClass({
     });
   },
   createClassNames() {
-    var rv = 'scenario-entry';
+    let rv = 'scenario-entry';
     if (this.props.mode) rv += ' scenario-entry--' + this.props.mode;
     if (this.props['@executingState']) rv += ' scenario-entry--' + this.props['@executingState'];
     return rv;
@@ -69,8 +69,8 @@ const Entry = React.createClass({
 
 const Scenario = React.createClass({
   componentDidUpdate() {
-    var container = this.refs['body'].getDOMNode();
-    var doing = container.querySelector('.scenario-entry--doing');
+    const container = this.refs['body'].getDOMNode();
+    const doing = container.querySelector('.scenario-entry--doing');
     if (doing) {
       container.scrollTop = goog.style.getContainerOffsetToScrollInto(doing, container, true).y;
     }

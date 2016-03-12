@@ -22,7 +22,7 @@ function getDB() {
 }
 
 function connectDatabase() {
-  var state = getState();
+  const state = getState();
   if (database && lastState.database === state.database) {
     return Q(database);
   } else {
@@ -50,7 +50,7 @@ function connectDatabase() {
 }
 
 function authenticate() {
-  var state = getState();
+  const state = getState();
   if (database && authenticated && _.isEqual(lastState, state)) {
     return Q(database);
   } else {

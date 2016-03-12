@@ -10,7 +10,7 @@ function deepClone(obj) {
   } else if (_.isArray(obj)) {
     return _.map(obj, deepClone);
   } else if (_.isObject(obj)) {
-    var dest = {};
+    const dest = {};
     _.each(obj, (v, k) => (dest[k] = deepClone(v)));
     return dest;
   }

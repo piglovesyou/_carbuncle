@@ -3,7 +3,7 @@ const React = require('react');
 module.exports = { renderIcon, getIconKey };
 
 function renderIcon(isBlock, mode, type) {
-  var iconKey = getIconKey(isBlock, mode, type);
+  const iconKey = getIconKey(isBlock, mode, type);
   if (iconKey) {
     return <i className={'fa fa-' + iconKey}></i>;
   }

@@ -23,7 +23,7 @@ class ScenarioListBase extends Base {
       break;
     case 'deleteScenario':
         // TODO: Update total
-      var {scenario} = action;
+      const {scenario} = action;
       Persist.deleteScenario(scenario._id)
         .then(() => {
           if (goog.array.removeIf(this.store_.list, s => String(s._id) === String(scenario._id))) {
@@ -36,9 +36,9 @@ class ScenarioListBase extends Base {
     }
   }
   sync(page) {
-    var skip = PER_PAGE * page;
-    var limit = this.store_.total < 0 ? PER_PAGE : Math.min(this.store_.total - skip, PER_PAGE);
-    var range = _.range(skip, skip + limit);
+    const skip = PER_PAGE * page;
+    const limit = this.store_.total < 0 ? PER_PAGE : Math.min(this.store_.total - skip, PER_PAGE);
+    const range = _.range(skip, skip + limit);
     if (this.store_.total >= 0 &&
         range.every(i =>
           !!this.store_.list[i] &&

@@ -40,7 +40,7 @@ class EditorState extends Base {
       break;
 
     case 'selectIFrameElement':
-      // var elementRef = action.selectedIframeElementData.elementRef;
+      // const elementRef = action.selectedIframeElementData.elementRef;
       delete action.selectedIframeElementData.elementRef;
       _.extend(this.store_, action.selectedIframeElementData);
       if (this.store_.mode === 'action' && (this.store_.type !== 'click' || this.store_.type !== 'input')) {

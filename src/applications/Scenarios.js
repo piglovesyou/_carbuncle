@@ -40,17 +40,17 @@ const ScenarioListApp = React.createClass({
   },
 
   createState() {
-    var page = +this.getQuery().page || 0;
+    const page = +this.getQuery().page || 0;
     return _.extend({page}, ScenarioList.get());
   },
 
   render() {
-    var columns = [
+    const columns = [
       {id: 'title', label: 'title', formatter: row => row.title},
       {id: 'entries', label: 'entries', formatter: row => {
         if (!row.entries) return null;
         return row.entries.map(entry => {
-          var tooltip = entry.title + (entry.title && entry.css ? '\n\n' : '') + entry.css;
+          const tooltip = entry.title + (entry.title && entry.css ? '\n\n' : '') + entry.css;
           return (
             <div className='paged-table--scenario-list__entry' title={tooltip}>
               {componentHelper.renderIcon(entry.mode, entry.type)}

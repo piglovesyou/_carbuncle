@@ -1,7 +1,7 @@
 const _ = require('underscore');
 const React = require('react');
-// var {PER_PAGE} = require('../constants');
-// var {Link} = require('react-router');
+// const {PER_PAGE} = require('../constants');
+// const {Link} = require('react-router');
 
 const OtherPager = React.createClass({
   getDefaultProps: function() {
@@ -13,16 +13,16 @@ const OtherPager = React.createClass({
     };
   },
   render: function() {
-    var pageCount = this.props.maxPage;
-    var pageEnd = pageCount - 1;
+    const pageCount = this.props.maxPage;
+    const pageEnd = pageCount - 1;
     if (pageEnd <= 0) return <div></div>;
-    var margin = 5; // TODO: Const
-    var isLeftEdge = this.props.currentPage === 0;
-    var isRightEdge = this.props.currentPage === pageEnd;
-    var rangeStart = Math.max(0, this.props.currentPage - margin);
-    var rangeEnd = Math.min(this.props.currentPage + margin, pageEnd);
-    var leftskip;
-    var rightskip;
+    const margin = 5; // TODO: Const
+    const isLeftEdge = this.props.currentPage === 0;
+    const isRightEdge = this.props.currentPage === pageEnd;
+    const rangeStart = Math.max(0, this.props.currentPage - margin);
+    const rangeEnd = Math.min(this.props.currentPage + margin, pageEnd);
+    let leftskip;
+    let rightskip;
     if (rangeStart > 1) {
       leftskip = <li>
         <a href='#' onClick={goTo.bind(this, rangeStart - 1)}>...</a>

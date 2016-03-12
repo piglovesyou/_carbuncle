@@ -1,7 +1,7 @@
 const Dispatcher = require('../dispatcher');
 const _ = require('underscore');
 const {CHANGE_EVENT} = require('../constants');
-// var EditorState = require('./EditorState');
+// const EditorState = require('./EditorState');
 const Executor = require('../core/Executor');
 const Persist = require('../persist');
 const ScenarioList = require('./ScenarioList');
@@ -47,7 +47,7 @@ class ScenarioState extends Base {
       break;
 
     case 'editEntry':
-      var i = goog.array.findIndex(this.store_.entries, entry => action.entry.id === entry.id);
+      const i = goog.array.findIndex(this.store_.entries, entry => action.entry.id === entry.id);
       if (i < 0) {
         throw new Error('something wrong with editEntry@ScenarioState');
       }
@@ -61,7 +61,7 @@ class ScenarioState extends Base {
       break;
 
     case 'deleteEntry':
-      var deleted = goog.array.removeIf(this.store_.entries, entry => action.id === entry.id);
+      const deleted = goog.array.removeIf(this.store_.entries, entry => action.id === entry.id);
       if (!deleted) {
         throw new Error('something wrong with deleteEntry@ScenarioState');
       }
@@ -76,10 +76,10 @@ class ScenarioState extends Base {
     case 'preview':
 
       this.previewResetTimer = setTimeout(() => { // I don't know why I need this. Obviously it's nw's bug.
-        var executor = new Executor(this.store_.entries, 100);
+        const executor = new Executor(this.store_.entries, 100);
         this.resetExecutingState();
         this.emit(CHANGE_EVENT);
-        var last;
+        let last;
         executor.on('before', entry => {
           if (last) last['@executingState'] = 'done';
           entry['@executingState'] = 'doing';
@@ -133,7 +133,7 @@ class ScenarioState extends Base {
       break;
 
     case 'deleteScenario':
-      var scenario = action.scenario;
+      const scenario = action.scenario;
       if (this.store_._id !== scenario._id) {
         return;
       }
@@ -158,7 +158,7 @@ class ScenarioState extends Base {
 module.exports = new ScenarioState();
 
 function generateUID(entry) {
-  var md5 = new goog.crypt.Md5();
+  const md5 = new goog.crypt.Md5();
   md5.update(String(Date.now()) + entry.css + entry.mode + entry.type);
   return goog.crypt.byteArrayToHex(md5.digest());
 }

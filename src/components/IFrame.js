@@ -1,7 +1,7 @@
 
 const React = require('react');
-// var {HistoryLocation} = require('react-router');
-// var Path = require('path');
+// const {HistoryLocation} = require('react-router');
+// const Path = require('path');
 const Actions = require('../actions');
 const _ = require('underscore');
 
@@ -24,7 +24,7 @@ const IFrame = React.createClass({
   },
 
   enableSelectingEvent(enable) {
-    var d = this.getDocument();
+    const d = this.getDocument();
     if (enable) {
       d.addEventListener('click', this.onIframeClick, true);
       d.addEventListener('mousemove', this.onIframeMove, true);
@@ -68,8 +68,8 @@ const IFrame = React.createClass({
   },
 
   getBoundsOfElement(element) {
-    var iframePos = this.getPosition();
-    var pos = goog.style.getPageOffset(element);
+    const iframePos = this.getPosition();
+    const pos = goog.style.getPageOffset(element);
     return _.extend({
       x: iframePos.x + pos.x,
       y: iframePos.y + pos.y
@@ -77,7 +77,7 @@ const IFrame = React.createClass({
   },
 
   getBoundsOfCss(css) {
-    var element = this.querySelectorSafely(css);
+    const element = this.querySelectorSafely(css);
     if (element) {
       return this.getBoundsOfElement(element);
     }
@@ -106,8 +106,8 @@ const IFrame = React.createClass({
   },
 
   getPosition() {
-    var pos = goog.style.getPageOffset(this.refs.iframe.getDOMNode());
-    var offset = goog.style.getViewportPageOffset(this.getDocument());
+    const pos = goog.style.getPageOffset(this.refs.iframe.getDOMNode());
+    const offset = goog.style.getViewportPageOffset(this.getDocument());
     pos.x -= offset.x;
     pos.y -= offset.y;
     return pos;
@@ -118,10 +118,10 @@ const IFrame = React.createClass({
   },
 
   buildSelector(targetNode) {
-    var rv = [];
-    var node = targetNode;
+    const rv = [];
+    let node = targetNode;
     do {
-      var builder = [];
+      const builder = [];
 
       // First push tagName for readability.
       if (node.tagName !== 'DIV') {
@@ -129,17 +129,17 @@ const IFrame = React.createClass({
       }
 
       // Try DOM ID
-      var id = node.id && '#' + node.id;
+      const id = node.id && '#' + node.id;
       if (id && this.querySelectorSafely(id)) {
         builder.push(id);
         rv.push(builder.join(''));
         break; // Assume the id is always unique in the webpage.
       } else {
-        var className = goog.string.collapseWhitespace(node.className);
+        const className = goog.string.collapseWhitespace(node.className);
         if (!goog.string.isEmptyOrWhitespace(className)) {
           builder.push('.' + className.split(' ').join('.'));
         }
-        var tmpIndex = this.getChildIndex(node);
+        const tmpIndex = this.getChildIndex(node);
         if (tmpIndex > 0) {
           builder.push(':nth-child(' + (tmpIndex + 1) + ')');
         }
@@ -161,9 +161,9 @@ const IFrame = React.createClass({
   },
 
   getChildIndex(node) {
-    var children = goog.dom.getChildren(node.parentNode);
+    const children = goog.dom.getChildren(node.parentNode);
     if (node.parentNode && children.length > 1) {
-      for (var i = 0, item = children[i]; i < children.length; item = children[++i]) {
+      for (let i = 0, item = children[i]; i < children.length; item = children[++i]) {
         if (node === item) {
           return i;
         }

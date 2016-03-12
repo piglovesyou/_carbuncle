@@ -16,7 +16,7 @@ const Entries = React.createClass({
     return (
       <div>
         {this.props.data.map(entry => {
-          var tooltip = entry.title + (entry.title && entry.css ? '\n\n' : '') + entry.css;
+          const tooltip = entry.title + (entry.title && entry.css ? '\n\n' : '') + entry.css;
           return (
             <div className='paged-table--scenario-list__entry' title={tooltip} key={entry._id}>
               {componentHelper.renderIcon(entry.isBlock, entry.mode, entry.type)}
@@ -122,7 +122,7 @@ const ScenarioListComponent = React.createClass({
   mixins: [Navigation, State],
 
   setPage: function(index) {
-    var currentPage = goog.math.clamp(index, 0, this.getMaxPage());
+    const currentPage = goog.math.clamp(index, 0, this.getMaxPage());
     this.setState({ currentPage });
   },
   setPageSize: function() {
@@ -159,12 +159,12 @@ const ScenarioListComponent = React.createClass({
       );
   },
   handleClick(e) {
-    var rowEl = getAncestorFromEventTargetByClass(
+    const rowEl = getAncestorFromEventTargetByClass(
         this.refs.root.getDOMNode(), 'standard-row', e.target);
     if (rowEl) {
-      var index = _.indexOf(rowEl.parentNode.childNodes, rowEl);
+      const index = _.indexOf(rowEl.parentNode.childNodes, rowEl);
       assert(index >= 0);
-      var rowData = this.getSlicedList()[index];
+      const rowData = this.getSlicedList()[index];
       assert(rowData);
       if (this.props.onClickRow) {
         this.props.onClickRow(rowData);
