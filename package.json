@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "main": "dist/index.html",
   "scripts": {
+    "fetch-executables": "if [[ -d executables ]]; then rm -rf executables; fi; wget -qO- http://dl.nwjs.io/v0.13.0-rc2/nwjs-sdk-v0.13.0-rc2-linux-x64.tar.gz | tar xvz && mv nwjs-sdk-v0.13.0-rc2-linux-x64 executables",
     "postinstall": "mkdir -p public/{js,css}; bower install;",
     "watch-sass": "gulp watch-sass",
     "plovr": "plovr build plovr.json",

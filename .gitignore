@@ -1,6 +1,7 @@
 .tmp
 /node_modules
 /libs
+/executables
 /assets/javascript/main-min.js
 /assets/javascript/sandbox-min.js
 test.js
