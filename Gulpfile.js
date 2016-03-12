@@ -23,7 +23,7 @@ const SASS_INCLUDE_PATHS = [
 ];
 
 
-gulp.task('default', ['icons', 'css', 'closure-require']);
+gulp.task('default', ['icons', 'css', 'closure-require', 'webpack']);
 gulp.task('watch', ['closure-require', 'css'], watch);
 gulp.task('watch-sass', ['css'], watchSass);
 gulp.task('closure-require', closureRequire);

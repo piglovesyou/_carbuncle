@@ -9,8 +9,6 @@ module.exports = {
   devtool: 'source-map',
   module: {
     loaders: [
-      // { test: /\.css$/, loaders: ["style", "css"] },
-      // { test: /\.scss$/, loaders: ["style", "css", "sass"] },
       {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
