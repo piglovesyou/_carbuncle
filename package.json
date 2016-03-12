@@ -1,45 +1,48 @@
 {
-  "name": "carbuncle-atom",
+  "name": "carbuncle",
   "version": "0.0.1",
-  "main": "dist/index.html",
+  "main": "index.html",
   "scripts": {
+    "start": "",
+    "ui": "./executables/nw .",
     "fetch-executables": "if [[ -d executables ]]; then rm -rf executables; fi; wget -qO- http://dl.nwjs.io/v0.13.0-rc2/nwjs-sdk-v0.13.0-rc2-linux-x64.tar.gz | tar xvz && mv nwjs-sdk-v0.13.0-rc2-linux-x64 executables",
     "postinstall": "mkdir -p public/{js,css}; bower install;",
     "watch-sass": "gulp watch-sass",
-    "plovr": "plovr build plovr.json",
     "build": "gulp",
     "test": "eslint src && gulp"
   },
   "dependencies": {
-    "Effeckt": "git://github.com/piglovesyou/Effeckt.css#placeholder-bug-patched",
-    "babel": "^5.1.13",
-    "bower": "^1.3.12",
-    "eslint": "^0.15.0",
-    "flux": "^2.0.1",
-    "griddle-react": "^0.2.12",
-    "mkdirp": "^0.5.0",
-    "mongodb": "^2.0.27",
-    "node-jsx": "^0.12.4",
-    "object-assign": "^2.0.0",
-    "plovr": "^3.0.1",
-    "react": "^0.13.2",
-    "react-router": "^0.13.2",
-    "selenium-webdriver": "^2.45.1",
-    "underscore": "^1.8.3"
+    "Effeckt": "git://github.com/piglovesyou/Effeckt.css.git#placeholder-bug-patched"
   },
   "devDependencies": {
-    "coffee-script": "^1.9.0",
-    "gulp": "^3.8.10",
-    "gulp-autoprefixer": "^2.1.0",
+    "babel": "^5.8.35",
+    "bower": "^1.7.7",
+    "browserify": "^13.0.0",
+    "eslint": "^0.15.1",
+    "flux": "^2.1.1",
+    "griddle-react": "^0.2.16",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^2.3.1",
     "gulp-bower": "0.0.10",
     "gulp-notify": "^2.2.0",
     "gulp-plovr": "0.0.1",
-    "gulp-ruby-sass": "^1.0.0-alpha.2"
+    "gulp-sass": "^2.2.0",
+    "jsx-loader": "^0.13.2",
+    "mkdirp": "^0.5.1",
+    "mongodb": "^2.1.7",
+    "node-jsx": "^0.12.4",
+    "object-assign": "^2.1.1",
+    "plovr": "^3.1.0",
+    "react": "^0.13.3",
+    "react-router": "^0.13.5",
+    "selenium-webdriver": "^2.52.0",
+    "underscore": "^1.8.3",
+    "webpack-stream": "^3.1.0"
   },
-  "license": "ISC",
+  "license": "Apache 2",
   "window": {
     "min_width": 1024,
-    "min_height": 600
+    "min_height": 768
   },
   "webkit": {
     "plugin": true

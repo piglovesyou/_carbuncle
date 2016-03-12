@@ -1,7 +1,7 @@
 {
   "id": "carbuncle-atom",
-  "inputs": "src/closure-require.js",
-  "output-file": "dist/closure-require.js",
+  "inputs": "src/closure/require.js",
+  "output-file": "dist/closure-helpers.js",
   "debug": false,
   "mode": "SIMPLE",
   "level": "VERBOSE",
