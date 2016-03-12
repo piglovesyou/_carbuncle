@@ -1,10 +1,5 @@
 const React = require('react');
-const Router = require('react-router');
-const {
-  Route,
-  NotFoundRoute,
-  RouteHandler
-} = Router;
+const { Router, Route, NotFoundRoute, RouteHandler, hashHistory } = require('react-router');
 const Index = require('./applications');
 const Setting = require('./applications/Setting');
 const ScenarioList = require('./applications/ScenarioList');
@@ -29,10 +24,10 @@ const NotFound = React.createClass({
 });
 
 module.exports = (
-  <Route handler={RootApp}>
-    <Route handler={Index} name='index' path='/' />
-    <Route handler={ScenarioList} name='scenario-list' path='scenario-list' />
-    <Route handler={Setting} name='setting' path='setting' />
-    <NotFoundRoute handler={NotFound} />
-  </Route>
+  <Router history={hashHistory}>
+    <Route path="/" component={Index} />
+    <Route path="/scenario-list" component={ScenarioList} />
+    <Route path="/setting" component={Setting} />
+    <Route path="*" component={NotFound} />
+  </Router>
 );

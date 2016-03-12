@@ -6,8 +6,10 @@ const autoprefix = require('gulp-autoprefixer');
 const notify = require('gulp-notify');
 const Path = require('path');
 const plovr = require('gulp-plovr');
+const webpack = require('webpack');
 const webpackStream = require('webpack-stream');
-
+const webpackDevServer = require('webpack-dev-server');
+const gutil = require('gulp-util');
 
 const SASS_DIR = './src/sass';
 const BOWER_DIR = './bower_components';
@@ -23,49 +25,59 @@ const SASS_INCLUDE_PATHS = [
 ];
 
 
-gulp.task('default', ['icons', 'css', 'closure-require', 'webpack']);
-gulp.task('watch', ['closure-require', 'css'], watch);
-gulp.task('watch-sass', ['css'], watchSass);
-gulp.task('closure-require', closureRequire);
-gulp.task('icons', icons);
-gulp.task('css', css);
-gulp.task('webpack', webpack);
+gulp.task('default', ['icons', 'css', 'closure-require', 'js']);
 
 
-function watch() {
+gulp.task('watch', ['closure-require', 'css', 'js'], () => {
   gulp.watch(['./src/closure/require.js'], ['closure-require']);
   gulp.watch(Path.join(SASS_DIR, '**/*.sass'), ['css']);
-}
+  launchWebpackDevServer();
+});
 
-function watchSass() {
+gulp.task('watch-sass', ['css'], () => {
   gulp.watch(SASS_DIR + '/**/*.sass', ['css']);
-}
+})
 
-function css() {
+gulp.task('css', () => {
   return gulp.src(Path.join(SASS_DIR, 'main.sass'))
     .pipe(sass({
       includePaths: SASS_INCLUDE_PATHS
     }).on('error', sass.logError))
     .pipe(gulp.dest(DEPLOY_DIR));
-}
+});
 
-function icons() {
+gulp.task('icons', () => {
   return gulp.src([
     BOWER_DIR + '/bootstrap-sass-official/assets/fonts/bootstrap/**.*',
     BOWER_DIR + '/fontawesome/fonts/**.*'
   ])
   .pipe(gulp.dest(Path.join(DEPLOY_DIR, 'fonts')));
-}
+});
 
-function closureRequire() {
+gulp.task('closure-require', () => {
   gulp.src([PLOVR_CONFIG])
   .pipe(plovr({
     debug: false
   }));
-}
+});
 
-function webpack() {
+gulp.task('js', () => {
   return gulp.src('src/ui-main.js')
-    .pipe(webpackStream(require('./webpack.config.js')))
+    .pipe(webpackStream(require('./webpack.config')))
     .pipe(gulp.dest('dist/'));
+});
+
+gulp.task("webpack-dev-server", launchWebpackDevServer);
+
+function launchWebpackDevServer(callback) {
+    const compiler = webpack(require('./webpack.config'));
+
+    new webpackDevServer(compiler, {}).listen(3189, "localhost", function(err) {
+      if(err) throw new gutil.PluginError("webpack-dev-server", err);
+      // Server listening
+      gutil.log("[webpack-dev-server]", "http://localhost:3189/webpack-dev-server/index.html");
+
+      // keep the server alive or continue?
+      // callback();
+    });
 }

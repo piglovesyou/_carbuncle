@@ -7,10 +7,11 @@
     "ui": "./executables/nw .",
     "fetch-executables": "if [[ -d executables ]]; then rm -rf executables; fi; wget -qO- http://dl.nwjs.io/v0.13.0-rc2/nwjs-sdk-v0.13.0-rc2-linux-x64.tar.gz | tar xvz && mv nwjs-sdk-v0.13.0-rc2-linux-x64 executables",
     "postinstall": "mkdir -p public/{js,css}; bower install;",
+    "watch": "gulp watch",
     "watch-sass": "gulp watch-sass",
     "build": "gulp",
-    "test": "eslint src && gulp",
-    "lint": "eslint src"
+    "test": "eslint src Gulp.js && gulp",
+    "lint": "eslint src Gulp.js"
   },
   "devDependencies": {
     "Effeckt": "git://github.com/piglovesyou/Effeckt.css.git#placeholder-bug-patched",
@@ -35,6 +36,8 @@
     "selenium-webdriver": "^2.52.0",
     "standard": "^6.0.8",
     "underscore": "^1.8.3",
+    "webpack": "^1.12.14",
+    "webpack-dev-server": "^1.14.1",
     "webpack-stream": "^3.1.0"
   },
   "license": "Apache 2",

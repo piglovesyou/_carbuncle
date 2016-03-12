@@ -98,9 +98,9 @@ const Setting = React.createClass({
   onChange(e) {
     e.preventDefault();
     Actions.changeSetting({
-      database: goog.dom.forms.getValue(this.refs.database.getDOMNode()),
-      username: goog.dom.forms.getValue(this.refs.username.getDOMNode()),
-      password: goog.dom.forms.getValue(this.refs.password.getDOMNode())
+      database: goog.dom.forms.getValue(this.refs.database),
+      username: goog.dom.forms.getValue(this.refs.username),
+      password: goog.dom.forms.getValue(this.refs.password)
     });
   }
 

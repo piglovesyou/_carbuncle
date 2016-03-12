@@ -9,18 +9,18 @@ const IFrame = React.createClass({
 
   componentDidMount() {
     this.enableSelectingEvent(this.props.isSelectingElement);
-    this.refs.iframe.getDOMNode().addEventListener('load', this.onLoad);
-    this.refs.iframe.getDOMNode().setAttribute('nwdisable', 'nwdisable');
-    this.refs.iframe.getDOMNode().setAttribute('nwfaketop', 'nwfaketop');
+    this.refs.iframe.addEventListener('load', this.onLoad);
+    this.refs.iframe.setAttribute('nwdisable', 'nwdisable');
+    this.refs.iframe.setAttribute('nwfaketop', 'nwfaketop');
   },
 
   componentDidUpdate() {
     this.enableSelectingEvent(this.props.isSelectingElement);
   },
 
-  componentDidUnmount() {
+  componentWillUnmount() {
     this.enableSelectingEvent(false);
-    this.refs.iframe.getDOMNode().removeEventListener('load', this.onLoad);
+    this.refs.iframe.removeEventListener('load', this.onLoad);
   },
 
   enableSelectingEvent(enable) {
@@ -88,7 +88,7 @@ const IFrame = React.createClass({
     e.preventDefault();
     this.getDocument().removeEventListener('scroll', this.onScroll);
     Actions.locationChange({
-      url: this.refs.url.getDOMNode().value
+      url: this.refs.url.value
     });
   },
 
@@ -96,7 +96,7 @@ const IFrame = React.createClass({
     e.preventDefault();
     this.getDocument().addEventListener('scroll', this.onScroll);
     Actions.locationChange({
-      url: this.refs.iframe.getDOMNode().contentWindow.location.href,
+      url: this.refs.iframe.contentWindow.location.href,
       title: this.getDocument().title
     });
   },
@@ -106,7 +106,7 @@ const IFrame = React.createClass({
   },
 
   getPosition() {
-    const pos = goog.style.getPageOffset(this.refs.iframe.getDOMNode());
+    const pos = goog.style.getPageOffset(this.refs.iframe);
     const offset = goog.style.getViewportPageOffset(this.getDocument());
     pos.x -= offset.x;
     pos.y -= offset.y;
@@ -114,7 +114,7 @@ const IFrame = React.createClass({
   },
 
   getDocument() {
-    return goog.dom.getFrameContentDocument(this.refs.iframe.getDOMNode());
+    return goog.dom.getFrameContentDocument(this.refs.iframe);
   },
 
   buildSelector(targetNode) {

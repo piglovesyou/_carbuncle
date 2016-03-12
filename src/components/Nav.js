@@ -39,7 +39,6 @@ const Notification = React.createClass({
 const Nav = React.createClass({
   mixins: [State],
   render() {
-    const currentPathName = this.getPathname();
     return (
       <nav className='navbar navbar-default'>
         <div className='container-fluid'>
@@ -48,9 +47,9 @@ const Nav = React.createClass({
           </div>
           <div className='collapse navbar-collapse' id='bs-example-navbar-collapse-1'>
             <ul className='nav navbar-nav'>
-              <li className={currentPathName === '/' ? 'active' : ''}><Link to='/'>つくる</Link></li>
-              <li className={currentPathName === '/scenario-list' ? 'active' : ''}><Link to='/scenario-list'>一覧</Link></li>
-              <li className={currentPathName === '/setting' ? 'active' : ''}><Link to='/setting'>設定</Link></li>
+              <li><Link to='/' activeClassName="active">つくる</Link></li>
+              <li><Link to='/scenario-list' activeClassName="active">一覧</Link></li>
+              <li><Link to='/setting' activeClassName="active">設定</Link></li>
             </ul>
             <ul className='nav navbar-nav navbar-right'>
               <Notification />

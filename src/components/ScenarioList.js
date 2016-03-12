@@ -103,7 +103,7 @@ const ScenarioListComponent = React.createClass({
     this.syncPage();
   },
 
-  componentDidUnmount() {
+  componentWillUnmount() {
     this.props.store.removeChangeListener(this.onChange);
   },
 

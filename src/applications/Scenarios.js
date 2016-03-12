@@ -25,7 +25,7 @@ const ScenarioListApp = React.createClass({
     this.syncPage();
   },
 
-  componentDidUnmount() {
+  componentWillUnmount() {
     ScenarioList.removeChangeListener(this.onChange);
   },
 

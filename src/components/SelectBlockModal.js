@@ -43,8 +43,8 @@ class SelectBlockModal extends React.Component {
 }
 
 SelectBlockModal.propTypes = {
-  data: React.PropTypes.object,
-  shown: React.PropTypes.boolean
+  // data: React.PropTypes.object,
+  // shown: React.PropTypes.boolean
 };
 
 module.exports = SelectBlockModal;

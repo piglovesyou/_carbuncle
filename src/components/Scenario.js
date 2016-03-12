@@ -167,7 +167,7 @@ const Scenario = React.createClass({
 });
 
 Scenario.propTypes = {
-  id: React.PropTypes.string
+  id: React.PropTypes.number
 };
 
 module.exports = Scenario;

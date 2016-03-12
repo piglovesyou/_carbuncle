@@ -3,8 +3,9 @@ const Path = require('path');
 module.exports = {
   entry: Path.join(__dirname, 'src/ui-main'),
   output: {
-    path: Path.join(__dirname, '/dist'),
-    filename: 'ui-main.js'
+    path: __dirname,
+    filename: 'dist/ui-main.js',
+    publicPath: '/',
   },
   devtool: 'source-map',
   module: {

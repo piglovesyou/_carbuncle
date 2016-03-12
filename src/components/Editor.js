@@ -136,26 +136,26 @@ const Editor = React.createClass({
 
   onTitleChange() {
     Actions.editorChange({
-      title: goog.dom.forms.getValue(this.refs['entry-title'].getDOMNode())
+      title: goog.dom.forms.getValue(this.refs['entry-title'])
     });
   },
 
   onCssChange() {
     Actions.editorChange({
-      css: goog.dom.forms.getValue(this.refs['entry-css'].getDOMNode())
+      css: goog.dom.forms.getValue(this.refs['entry-css'])
     });
   },
 
   onTextChange() {
     Actions.editorChange({
-      text: this.refs['entry-text'] ? goog.dom.forms.getValue(this.refs['entry-text'].getDOMNode()) : null
+      text: this.refs['entry-text'] ? goog.dom.forms.getValue(this.refs['entry-text']) : null
     });
   },
 
   onSelectChange() {
     Actions.editorChange({
-      mode: goog.dom.forms.getValue(this.refs['entry-mode'].getDOMNode()),
-      type: goog.dom.forms.getValue(this.refs['entry-type'].getDOMNode())
+      mode: goog.dom.forms.getValue(this.refs['entry-mode']),
+      type: goog.dom.forms.getValue(this.refs['entry-type'])
     });
   },
 
@@ -163,11 +163,11 @@ const Editor = React.createClass({
     e.preventDefault();
     (this.props.isEdit ? Actions.editEntry : Actions.insertEntry)({
       id: this.props.isEdit ? this.props.id : null,
-      title: goog.dom.forms.getValue(this.refs['entry-title'].getDOMNode()),
-      css: goog.dom.forms.getValue(this.refs['entry-css'].getDOMNode()),
-      mode: goog.dom.forms.getValue(this.refs['entry-mode'].getDOMNode()),
-      type: goog.dom.forms.getValue(this.refs['entry-type'].getDOMNode()),
-      text: this.refs['entry-text'] ? goog.dom.forms.getValue(this.refs['entry-text'].getDOMNode()) : null
+      title: goog.dom.forms.getValue(this.refs['entry-title']),
+      css: goog.dom.forms.getValue(this.refs['entry-css']),
+      mode: goog.dom.forms.getValue(this.refs['entry-mode']),
+      type: goog.dom.forms.getValue(this.refs['entry-type']),
+      text: this.refs['entry-text'] ? goog.dom.forms.getValue(this.refs['entry-text']) : null
     });
   },
 
