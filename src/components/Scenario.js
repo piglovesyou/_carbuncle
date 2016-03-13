@@ -69,7 +69,7 @@ const Entry = React.createClass({
 
 const Scenario = React.createClass({
   componentDidUpdate() {
-    const container = this.refs['body'].getDOMNode();
+    const container = this.refs.body;
     const doing = container.querySelector('.scenario-entry--doing');
     if (doing) {
       container.scrollTop = goog.style.getContainerOffsetToScrollInto(doing, container, true).y;
@@ -148,15 +148,15 @@ const Scenario = React.createClass({
 
   onBlockChange() {
     Actions.changeScenario({
-      isBlock: !!goog.dom.forms.getValue(this.refs['scenario__block'].getDOMNode())
+      isBlock: !!goog.dom.forms.getValue(this.refs['scenario__block'])
     });
   },
 
   onChange(e) {
     e.preventDefault(e);
     Actions.changeScenario({
-      title: goog.dom.forms.getValue(this.refs['scenario__title'].getDOMNode()),
-      isBlock: !!goog.dom.forms.getValue(this.refs['scenario__block'].getDOMNode())
+      title: goog.dom.forms.getValue(this.refs['scenario__title']),
+      isBlock: !!goog.dom.forms.getValue(this.refs['scenario__block'])
     });
   },
 

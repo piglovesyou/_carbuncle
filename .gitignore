@@ -13,3 +13,5 @@ phantomjsdriver.log
 t.js
 t.html
 test.js
+
+chromedriver-std*.log

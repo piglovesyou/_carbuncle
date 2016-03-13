@@ -160,7 +160,7 @@ const ScenarioListComponent = React.createClass({
   },
   handleClick(e) {
     const rowEl = getAncestorFromEventTargetByClass(
-        this.refs.root.getDOMNode(), 'standard-row', e.target);
+        this.refs.root, 'standard-row', e.target);
     if (rowEl) {
       const index = _.indexOf(rowEl.parentNode.childNodes, rowEl);
       assert(index >= 0);

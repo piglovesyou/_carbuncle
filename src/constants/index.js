@@ -5,5 +5,6 @@ const MongoErrorCode = {
 module.exports = {
   CHANGE_EVENT: 'change',
   MongoErrorCode,
-  PER_PAGE: 10
+  PER_PAGE: 10,
+  CHROMEDRIVER_PORT: 9157
 };
