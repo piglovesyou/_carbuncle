@@ -217,7 +217,7 @@ const builder = {};
  * Listens for page loads/unloads. Call on window.sebuilder.getRecordingWindow() to get the record
  * window to listen on.
  */
-builder.loadlistener = {};
+module.exports = builder.loadlistener = {};
 
 /**
  * Apply this function to the frame specified and to all sub-frames

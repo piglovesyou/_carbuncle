@@ -211,6 +211,8 @@
 // Temporary shim definision to run without errors
 const sebuilder = {};
 const builder = {};
+builder.seleniumVersions = []
+const _t = () => {}; // What is this...
 
 
 /**
@@ -489,3 +491,5 @@ builder.selenium2.categories = [
 
 
 if (builder && builder.loader && builder.loader.loadNextMainScript) { builder.loader.loadNextMainScript(); }
+
+module.exports = builder.selenium2;

@@ -2,7 +2,9 @@ const React = require('react');
 const { Router, Route, IndexRoute, Link, IndexLink, hashHistory } = require('react-router');
 const Recorder = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/selenium2/recorder');
 
+global.carbuncleTargetWindow = null;
 let iframeEl;
+let recorder;
 
 class Browser extends React.Component {
   constructor(props) {
@@ -57,8 +59,13 @@ class Browser extends React.Component {
 module.exports = Browser;
 
 function onIFrameLoaded(e) {
-  const iframeEl = e.target;
-  console.log(iframeEl.contentWindow.location.href);
+  global.carbuncleTargetWindow = iframeEl.contentWindow;
+  recorder = new Recorder(iframeEl.contentWindow, (step) => {
+    // TODO: Use it.
+    console.log(step);
+  }, () => {
+    return null; // TODO: Return last step
+  })
 }
 
 function startRecording() {

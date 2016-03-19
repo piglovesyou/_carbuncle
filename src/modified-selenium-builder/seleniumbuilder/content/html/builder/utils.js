@@ -337,3 +337,5 @@ function newFragment() {
 
 
 if (builder && builder.loader && builder.loader.loadNextMainScript) { builder.loader.loadNextMainScript(); }
+
+module.exports = builder;

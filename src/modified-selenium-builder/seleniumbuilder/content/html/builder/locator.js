@@ -209,9 +209,15 @@
  */
 
 // Temporary shim definision to run without errors
-const sebuilder = {};
 const builder = {};
-
+const window = {};
+window.sebuilder = {};
+window.sebuilder.getRecordingWindow = () =>
+    global.carbuncleTargetWindow;
+const cssQuery = (query, doc) => {
+  return doc.querySelectorAll(query);
+};
+const Utils = require('./utils');
 
 /**
  * Data structure describing a Selenium 1/2 locator. The "values" property maps different ways of
@@ -258,14 +264,14 @@ builder.locator.locateElementById = function(window, id) {
 };
 
 builder.locator.locateElementByName = function(window, name) {
-  var jq = jQuery("[name='" + name + "']", window.document);
+  var jq = window.document.querySelectorAll("[name='" + name + "']");
   return jq[0] ? jq[0] : null;
 };
 
 builder.locator.locateElementByLink = function(window, linkText) {
-  linkText = builder.normalizeWhitespace(linkText.toLowerCase());
-  var els = jQuery("a", window.document).get().filter(function(el) {
-    return builder.normalizeWhitespace(jQuery(el).text().toLowerCase()) == linkText;
+  linkText = Utils.normalizeWhitespace(linkText.toLowerCase());
+  var els = window.document.querySelectorAll("a").filter(function(el) {
+    return Utils.normalizeWhitespace(jQuery(el).text().toLowerCase()) == linkText;
   });
   return els.length > 0 ? els[0] : null;
 };
@@ -636,7 +642,7 @@ function getHtmlXPath(node) {
         // XPath normalize-space command to ensure it will get matched correctly. Otherwise
         // links with eg newlines in them won't work. 
         if (hasNonstandardWhitespace(text)) {
-          attempt = attempt + "[normalize-space(.)='" + builder.normalizeWhitespace(text) + "']";
+          attempt = attempt + "[normalize-space(.)='" + Utils.normalizeWhitespace(text) + "']";
         } else {
           // (But if we can get away without it, do so!)
           attempt = attempt + "[.='" + text + "']";
@@ -702,3 +708,5 @@ function getCorrectCaseText(el, style) {
 }
 
 if (builder && builder.loader && builder.loader.loadNextMainScript) { builder.loader.loadNextMainScript(); }
+
+module.exports = builder.locator;

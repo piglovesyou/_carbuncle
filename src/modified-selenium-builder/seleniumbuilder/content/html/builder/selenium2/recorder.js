@@ -209,7 +209,6 @@
  */
 
 // Temporary shim definision to run without errors
-
 const sebuilder = {};
 sebuilder.prefManager = {};
 sebuilder.prefManager.getBoolPref = ()=>{};
@@ -218,6 +217,11 @@ const builder = {};
 builder.selenium2 = {};
 
 // TODO: Replace anything about firefox extension
+
+const Loadlistener = require('../loadlistener');
+const Locator = require('../locator');
+const Script = require('../script');
+const Selenium2 = require('./selenium2');
 
 builder.doRecordMouseovers = sebuilder.prefManager.getBoolPref("extensions.seleniumbuilder3.doRecordMouseovers");
 
@@ -257,10 +261,10 @@ module.exports = builder.selenium2.Recorder = function(top_window, recordStep, g
   this.listeners.unbindFrame        = function(frame, level) { rec.unbindFrame(frame, level); };
   
   // Initialise the recorder by binding to all frames in the recorder window.
-  builder.loadlistener.on_all_frames(top_window, this.listeners.bindFrame, 0);
+  Loadlistener.on_all_frames(top_window, this.listeners.bindFrame, 0);
   // Periodically check if new frames have appeared.  
   this.checkFrames = setInterval(function () {
-    builder.loadlistener.on_all_frames(rec.top_window, function (frame, level) {
+    Loadlistener.on_all_frames(rec.top_window, function (frame, level) {
       if (rec.bound.indexOf(frame) == -1) {
         rec.bindFrame(frame, level);
       }
@@ -268,7 +272,7 @@ module.exports = builder.selenium2.Recorder = function(top_window, recordStep, g
   }, 200);
   
   // Now listen on navigation functions in the browser.
-  this.bind_browser(window.sebuilder.getBrowser());
+  this.bind_browser(top_window);
 };
 
 builder.selenium2.Recorder.prototype = {
@@ -292,11 +296,11 @@ builder.selenium2.Recorder.prototype = {
             this.current_window !== this.top_window &&
             frameIndex === -1)     //-1 => it's not a descendant of current_window
         { 
-            this.recordStep(new builder.Step(builder.selenium2.stepTypes.switchToDefaultContent));
+            this.recordStep(new Script.Step(Selenium2.stepTypes.switchToDefaultContent));
         }
         var startFrameIndex = frameIndex + 1;
         for (var i = startFrameIndex; i < frames.length; i++) {            
-            this.recordStep(new builder.Step(builder.selenium2.stepTypes.switchToFrame, frames[i].name));
+            this.recordStep(new Script.Step(Selenium2.stepTypes.switchToFrame, frames[i].name));
         }
         this.current_window = this.element_window;
     }
@@ -306,8 +310,8 @@ builder.selenium2.Recorder.prototype = {
    */
   writeJsonMouseover: function(e) {
     if (builder.doRecordMouseovers) {
-      var locator = builder.locator.fromElement(e.target, /*applyTextTransforms*/ true);
-      this.recordStep(new builder.Step(builder.selenium2.stepTypes.mouseOverElement, locator));
+      var locator = Locator.fromElement(e.target, /*applyTextTransforms*/ true);
+      this.recordStep(new Script.Step(Selenium2.stepTypes.mouseOverElement, locator));
     }
   },
   
@@ -315,7 +319,7 @@ builder.selenium2.Recorder.prototype = {
    * Create an event from a received click on any element.
    */
   writeJsonClicks: function(e) {
-    var locator = builder.locator.fromElement(e.target, /*applyTextTransforms*/ true);
+    var locator = Locator.fromElement(e.target, /*applyTextTransforms*/ true);
     var lastStep = this.getLastRecordedStep(); //builder.getScript().getLastStep();
     
     this.writeJsonSwitchFrameIfNeeded(e.target);
@@ -330,11 +334,11 @@ builder.selenium2.Recorder.prototype = {
         return;
       }
       if (lastStep && e.type == 'dblclick') {
-        if (lastStep.type == builder.selenium2.stepTypes.clickElement ||
-            lastStep.type == builder.selenium2.stepTypes.clickElementWithOffset ||
-            lastStep.type == builder.selenium2.stepTypes.doubleClickElement)
+        if (lastStep.type == Selenium2.stepTypes.clickElement ||
+            lastStep.type == Selenium2.stepTypes.clickElementWithOffset ||
+            lastStep.type == Selenium2.stepTypes.doubleClickElement)
         {
-          lastStep.changeType(builder.selenium2.stepTypes.doubleClickElement);
+          lastStep.changeType(Selenium2.stepTypes.doubleClickElement);
           builder.stepdisplay.update();
           return;
         }
@@ -354,26 +358,26 @@ builder.selenium2.Recorder.prototype = {
     }
     
     if (e.type == 'dblclick') {
-      this.recordStep(new builder.Step(builder.selenium2.stepTypes.doubleClickElement, locator));
+      this.recordStep(new Script.Step(Selenium2.stepTypes.doubleClickElement, locator));
     } else if (e.target.type == "checkbox") {
       if (goog.dom.forms.getValue(e.target)) {
-        this.recordStep(new builder.Step(builder.selenium2.stepTypes.setElementSelected, locator));
+        this.recordStep(new Script.Step(Selenium2.stepTypes.setElementSelected, locator));
       } else {
-        this.recordStep(new builder.Step(builder.selenium2.stepTypes.setElementNotSelected, locator));
+        this.recordStep(new Script.Step(Selenium2.stepTypes.setElementNotSelected, locator));
       }
     } else {
-      this.recordStep(new builder.Step(builder.selenium2.stepTypes.clickElement, locator));
+      this.recordStep(new Script.Step(Selenium2.stepTypes.clickElement, locator));
     }
   },
   isTypeOrClickInSamePlace: function(step, locator) {
     if (!step) { return false; }
-    if (step.type != builder.selenium2.stepTypes.setElementText &&
-        step.type != builder.selenium2.stepTypes.sendKeysToElement &&
-        step.type != builder.selenium2.stepTypes.clickElement &&
-        step.type != builder.selenium2.stepTypes.doubleClickElement &&
-        step.type != builder.selenium2.stepTypes.setElementSelected &&
-        step.type != builder.selenium2.stepTypes.setElementNotSelected &&
-        step.type != builder.selenium2.stepTypes.submitElement)
+    if (step.type != Selenium2.stepTypes.setElementText &&
+        step.type != Selenium2.stepTypes.sendKeysToElement &&
+        step.type != Selenium2.stepTypes.clickElement &&
+        step.type != Selenium2.stepTypes.doubleClickElement &&
+        step.type != Selenium2.stepTypes.setElementSelected &&
+        step.type != Selenium2.stepTypes.setElementNotSelected &&
+        step.type != Selenium2.stepTypes.submitElement)
     {
       return false;
     }
@@ -400,7 +404,7 @@ builder.selenium2.Recorder.prototype = {
         var step = glrs();
         if (!step ||
             step.id == previousId ||
-            step.type != builder.selenium2.stepTypes.clickElement ||
+            step.type != Selenium2.stepTypes.clickElement ||
             e.target.nodeName.toLowerCase() == 'textbox')
         {
           // Ignore enter keypresses on select and option elements.
@@ -408,19 +412,19 @@ builder.selenium2.Recorder.prototype = {
             return;
           }
           // If something else has happened in the interim, eg a click, don't record an enter.
-          if (step && step.type == builder.selenium2.stepTypes.clickElement) {
+          if (step && step.type == Selenium2.stepTypes.clickElement) {
             return;
           }
           var t = e.target;
           if (t.nodeName == "BODY" && step && step.locator) {
-            recordStep(new builder.Step(
-              builder.selenium2.stepTypes.sendKeysToElement,
+            recordStep(new Script.Step(
+              Selenium2.stepTypes.sendKeysToElement,
               step.locator,
               "\n"));
           } else {
-            recordStep(new builder.Step(
-              builder.selenium2.stepTypes.sendKeysToElement,
-              builder.locator.fromElement(e.target, /*applyTextTransforms*/ true),
+            recordStep(new Script.Step(
+              Selenium2.stepTypes.sendKeysToElement,
+              Locator.fromElement(e.target, /*applyTextTransforms*/ true),
               "\n"));
           }
         }
@@ -428,7 +432,7 @@ builder.selenium2.Recorder.prototype = {
       return;
     }
     
-    var locator = builder.locator.fromElement(e.target, /*applyTextTransforms*/ true);
+    var locator = Locator.fromElement(e.target, /*applyTextTransforms*/ true);
     var lastStep = this.getLastRecordedStep(); //builder.getScript().getLastStep();
         
     // Under some circumstances, for example when the user presses an arrow key, an event can
@@ -441,7 +445,7 @@ builder.selenium2.Recorder.prototype = {
     if ({ textarea: 1, text: 1, password: 1, date: 1, datetime: 1, 'datetime-local': 1, email: 1, month: 1, number: 1, range: 1, search: 1, tel: 1, time: 1, url: 1, week: 1 }[e.target.type.toLowerCase()]) {      
       // Continue typing or replace a click with a type.
       if (lastStep && this.isTypeOrClickInSamePlace(lastStep, locator)) {
-        lastStep.changeType(builder.selenium2.stepTypes.setElementText);
+        lastStep.changeType(Selenium2.stepTypes.setElementText);
         lastStep.text = e.target.value;
         builder.stepdisplay.update();
         return;
@@ -450,30 +454,30 @@ builder.selenium2.Recorder.prototype = {
       // otherwise we get a spurious extra "type" step after the submit click step.
       var nextToLastStep = lastStep ? builder.getScript().getStepBefore(lastStep) : null;
       if (nextToLastStep && this.isTypeOrClickInSamePlace(nextToLastStep, locator)) {
-        nextToLastStep.changeType(builder.selenium2.stepTypes.setElementText);
+        nextToLastStep.changeType(Selenium2.stepTypes.setElementText);
         nextToLastStep.text = e.target.value;
         builder.stepdisplay.update();
         return;
       }
     
       // If this is an enter and we've already recorded the submit for it, ignore.
-      if (e.keyCode == 13 && this.lastLocator != null && lastStep && lastStep.type == builder.selenium2.stepTypes.clickElement) {
+      if (e.keyCode == 13 && this.lastLocator != null && lastStep && lastStep.type == Selenium2.stepTypes.clickElement) {
         return;
       }
     
       // Start typing
-      this.recordStep(new builder.Step(builder.selenium2.stepTypes.sendKeysToElement, locator, "\\" + e.keyCode));
+      this.recordStep(new Script.Step(Selenium2.stepTypes.sendKeysToElement, locator, "\\" + e.keyCode));
       return;
     }
     
     // Selecting
     if (e.target.type.toLowerCase() == 'select' || e.target.type.toLowerCase() == 'select-one') {
       var vals = {};
-      vals[builder.locator.methods.xpath] = [locator.getValueForMethod(builder.locator.methods.xpath) + "//option[" + (e.target.selectedIndex + 1) + "]"];
-      var optLoc = new builder.locator.Locator(builder.locator.methods.xpath, 0, vals);
+      vals[Locator.methods.xpath] = [locator.getValueForMethod(Locator.methods.xpath) + "//option[" + (e.target.selectedIndex + 1) + "]"];
+      var optLoc = new Locator.Locator(Locator.methods.xpath, 0, vals);
       
       // Add select
-      this.recordStep(new builder.Step(builder.selenium2.stepTypes.setElementSelected, optLoc));
+      this.recordStep(new Script.Step(Selenium2.stepTypes.setElementSelected, optLoc));
       return;
     }
     
@@ -489,10 +493,10 @@ builder.selenium2.Recorder.prototype = {
         }
         if (newlyAdded) {
           var vals = {};
-          vals[builder.locator.methods.xpath] = [locator.getValueForMethod(builder.locator.methods.xpath) + "/option[@value='" + currentVal[c] + "']"];
-          var optLoc = new builder.locator.Locator(builder.locator.methods.xpath, 0, vals);
+          vals[Locator.methods.xpath] = [locator.getValueForMethod(Locator.methods.xpath) + "/option[@value='" + currentVal[c] + "']"];
+          var optLoc = new Locator.Locator(Locator.methods.xpath, 0, vals);
           
-          this.recordStep(new builder.Step(builder.selenium2.stepTypes.setElementSelected, optLoc));
+          this.recordStep(new Script.Step(Selenium2.stepTypes.setElementSelected, optLoc));
         }
       }
       for (var o = 0; o < oldVal.length; o++) {
@@ -504,10 +508,10 @@ builder.selenium2.Recorder.prototype = {
         }
         if (!stillThere) {
           var vals = {};
-          vals[builder.locator.methods.xpath] = [locator.getValueForMethod(builder.locator.methods.xpath) + "/option[@value='" + oldVal[o] + "']"];
-          var optLoc = new builder.locator.Locator(builder.locator.methods.xpath, 0, vals);
+          vals[Locator.methods.xpath] = [locator.getValueForMethod(Locator.methods.xpath) + "/option[@value='" + oldVal[o] + "']"];
+          var optLoc = new Locator.Locator(Locator.methods.xpath, 0, vals);
           
-          this.recordStep(new builder.Step(builder.selenium2.stepTypes.setElementNotSelected, optLoc));
+          this.recordStep(new Script.Step(Selenium2.stepTypes.setElementNotSelected, optLoc));
         }
       }
       e.target.__sb_oldVal = currentVal;
@@ -518,14 +522,14 @@ builder.selenium2.Recorder.prototype = {
     if (e.target.type == 'radio') {
       // Replace a click with a radio button check
       if (lastStep && this.isTypeOrClickInSamePlace(lastStep, locator)) {
-        lastStep.changeType(builder.selenium2.stepTypes.setElementSelected);
+        lastStep.changeType(Selenium2.stepTypes.setElementSelected);
         lastStep.locator = locator
         builder.stepdisplay.update();
         return;
       }
 
       // Add radio button check
-      this.recordStep(new builder.Step(builder.selenium2.stepTypes.setElementSelected, locator));
+      this.recordStep(new Script.Step(Selenium2.stepTypes.setElementSelected, locator));
       return;
     }
   },
@@ -544,9 +548,9 @@ builder.selenium2.Recorder.prototype = {
    * However it has the advantage of providing the selectors needed for closer modification.
    */
   writeJsonType: function(e) {
-    var locator = builder.locator.fromElement(e.target, /*applyTextTransforms*/ true);
+    var locator = Locator.fromElement(e.target, /*applyTextTransforms*/ true);
     var lastStep = this.getLastRecordedStep(); //builder.getScript().getLastStep();
-    if (lastStep && lastStep.type == builder.selenium2.stepTypes.sendKeysToElement) {
+    if (lastStep && lastStep.type == Selenium2.stepTypes.sendKeysToElement) {
       if (e.which >= 32 || e.which == 9 || e.which == 10) {
         lastStep.text += String.fromCharCode(e.which);
       } else if (e.which == 8) {
@@ -555,7 +559,7 @@ builder.selenium2.Recorder.prototype = {
       builder.stepdisplay.update();
     } else {
       if (e.which >= 32 || e.which == 9 || e.which == 10) {
-        this.recordStep(new builder.Step(builder.selenium2.stepTypes.sendKeysToElement, locator, String.fromCharCode(e.which)));
+        this.recordStep(new Script.Step(Selenium2.stepTypes.sendKeysToElement, locator, String.fromCharCode(e.which)));
       }
     }
   },
@@ -563,7 +567,7 @@ builder.selenium2.Recorder.prototype = {
    * Record exact position of clicks for elements where it might be important (e.g canvas tags).
    */
   writeJsonClickAt: function(e) {
-    var locator = builder.locator.fromElement(e.target, /*applyTextTransforms*/ true);
+    var locator = Locator.fromElement(e.target, /*applyTextTransforms*/ true);
     var lastStep = this.getLastRecordedStep(); //builder.getScript().getLastStep();
     var offset = goog.style.getPageOffset(e.target);
     var coordString = (e.clientX - offset.left) + "," + (e.clientY - offset.top);
@@ -575,11 +579,11 @@ builder.selenium2.Recorder.prototype = {
         return;
       }
       if (lastStep && e.type == 'dblclick') {
-        if (lastStep.type == builder.selenium2.stepTypes.clickElement ||
-            lastStep.type == builder.selenium2.stepTypes.clickAt ||
-            lastStep.type == builder.selenium2.stepTypes.doubleClickElement)
+        if (lastStep.type == Selenium2.stepTypes.clickElement ||
+            lastStep.type == Selenium2.stepTypes.clickAt ||
+            lastStep.type == Selenium2.stepTypes.doubleClickElement)
         {
-          lastStep.changeType(builder.selenium2.stepTypes.doubleClickElement);
+          lastStep.changeType(Selenium2.stepTypes.doubleClickElement);
           builder.stepdisplay.update();
           return;
         }
@@ -593,7 +597,7 @@ builder.selenium2.Recorder.prototype = {
       rec.lastLocator = null;
     }, 1000);
     
-    this.recordStep(new builder.Step(builder.selenium2.clickAt, locator, coordString));
+    this.recordStep(new Script.Step(builder.selenium2.clickAt, locator, coordString));
   },
   writeJsonKeyPress: function(e) {
     if (e.which == 13) { // 13 is the key code for enter
@@ -607,16 +611,16 @@ builder.selenium2.Recorder.prototype = {
         var step = glrs();
         if (!step ||
             step.id == previousId ||
-            step.type != builder.selenium2.stepTypes.clickElement ||
+            step.type != Selenium2.stepTypes.clickElement ||
             e.target.nodeName.toLowerCase() == 'textbox')
         {
           // Ignore enter keypresses on select and option elements.
           if ({'select': true, 'option': true}[e.target.nodeName.toLowerCase()]) {
             return;
           }
-          recordStep(new builder.Step(
-            builder.selenium2.stepTypes.sendKeysToElement,
-            builder.locator.fromElement(e.target, /*applyTextTransforms*/ true),
+          recordStep(new Script.Step(
+            Selenium2.stepTypes.sendKeysToElement,
+            Locator.fromElement(e.target, /*applyTextTransforms*/ true),
             "\n"));
         }
       }, 100);
@@ -686,20 +690,20 @@ builder.selenium2.Recorder.prototype = {
     /*
     var rec = this;
     this.observe(frame.wrappedJSObject, 'alert', function (thiz, args, retval) {
-      rec.recordStep(new builder.Step(builder.selenium1.stepTypes.waitForAlert, args[0]));
+      rec.recordStep(new Script.Step(builder.selenium1.stepTypes.waitForAlert, args[0]));
     });
     this.observe(frame.wrappedJSObject, 'prompt', function (thiz, args, retval) {
       // Necessary: Selenium raises an error if a second alert/prompt/confirmation occurs
       // before this gets called.
-      rec.recordStep(new builder.Step(builder.selenium1.stepTypes.verifyPrompt, args[0]));
-      rec.recordStep(new builder.Step(builder.selenium1.stepTypes.answerOnNextPrompt, retval));
+      rec.recordStep(new Script.Step(builder.selenium1.stepTypes.verifyPrompt, args[0]));
+      rec.recordStep(new Script.Step(builder.selenium1.stepTypes.answerOnNextPrompt, retval));
     });
     this.observe(frame.wrappedJSObject, 'confirm', function (thiz, args, retval) {
-      rec.recordStep(new builder.Step(builder.selenium1.stepTypes.verifyConfirmation, args[0]));
+      rec.recordStep(new Script.Step(builder.selenium1.stepTypes.verifyConfirmation, args[0]));
       if (retval) {
-        rec.recordStep(new builder.Step(builder.selenium1.stepTypes.chooseOkOnNextConfirmation));
+        rec.recordStep(new Script.Step(builder.selenium1.stepTypes.chooseOkOnNextConfirmation));
       } else {
-        rec.recordStep(new builder.Step(builder.selenium1.stepTypes.chooseCancelOnNextConfirmation));
+        rec.recordStep(new Script.Step(builder.selenium1.stepTypes.chooseCancelOnNextConfirmation));
       }
     });
     */
@@ -816,27 +820,30 @@ builder.selenium2.Recorder.prototype = {
    */
   bind_browser: function(browser) {
     var rec = this;
-    // Firefox 3.5 Only
-    this.observe(browser, 'BrowserBack', function () {
-      if (browser.content == window.sebuilder.getRecordingWindow()) {
-        rec.recordStep(new builder.Step(builder.selenium2.stepTypes.goBack));
-      }
-    });
 
-    // The other BrowserReload* functions are just wrappers around this
-    this.observe(browser, 'BrowserReloadWithFlags', function () {
-      if (browser.content == window.sebuilder.getRecordingWindow()) {
-        rec.recordStep(new builder.Step(builder.selenium2.stepTypes.refresh));
-      }
-    });
+    // TODO: Consider about these
 
-    // Listen for the user actually typing in a URL into the navigation bar.
-    // (browser is a window, gBrowser is a Browser, and mCurrentBrowser is a TabBrowser)
-    this.observe(browser.gBrowser.mCurrentBrowser, 'loadURIWithFlags', function (browser, url) {
-      // We can't find out what the URL was until after we get destroyed (and then bound to
-      // the next content window) so we rely on who ever is listening to do this for us.
-      rec.recordStep(new builder.Step(builder.selenium2.stepTypes.get, ""));
-    });
+    // // Firefox 3.5 Only
+    // this.observe(browser, 'BrowserBack', function () {
+    //   if (browser.content == window.sebuilder.getRecordingWindow()) {
+    //     rec.recordStep(new Script.Step(Selenium2.stepTypes.goBack));
+    //   }
+    // });
+
+    // // The other BrowserReload* functions are just wrappers around this
+    // this.observe(browser, 'BrowserReloadWithFlags', function () {
+    //   if (browser.content == window.sebuilder.getRecordingWindow()) {
+    //     rec.recordStep(new Script.Step(Selenium2.stepTypes.refresh));
+    //   }
+    // });
+
+    // // Listen for the user actually typing in a URL into the navigation bar.
+    // // (browser is a window, gBrowser is a Browser, and mCurrentBrowser is a TabBrowser)
+    // this.observe(browser.gBrowser.mCurrentBrowser, 'loadURIWithFlags', function (browser, url) {
+    //   // We can't find out what the URL was until after we get destroyed (and then bound to
+    //   // the next content window) so we rely on who ever is listening to do this for us.
+    //   rec.recordStep(new Script.Step(Selenium2.stepTypes.get, ""));
+    // });
   },
   /**
    * Remove listeners from common navigation functions.
@@ -846,7 +853,7 @@ builder.selenium2.Recorder.prototype = {
     this.unobserve(browser.gBrowser.mCurrentBrowser, 'loadURIWithFlags');
   },
   destroy: function() {
-    builder.loadlistener.on_all_frames(this.top_window, this.listeners.unbindFrame, 0);
+    Loadlistener.on_all_frames(this.top_window, this.listeners.unbindFrame, 0);
     clearInterval(this.checkFrames);
     this.unbind_browser(window.sebuilder.getBrowser());
   }
