@@ -1,7 +1,13 @@
 const React = require('react');
-const { Router, Route, IndexRoute, Link, IndexLink, browserHistory } = require('react-router');
+const { Router, Route, IndexRoute, Link, IndexLink, hashHistory } = require('react-router');
 
 class Browser extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isRecording: false
+    }
+  }
   render() {
     return (
       <div className="browser">
@@ -10,20 +16,23 @@ class Browser extends React.Component {
             <div className="col-lg-6">
               <div className="input-group input-group-lg">
                 <span className="input-group-btn">
-                  <button className="btn btn-default">
+                  <button className="btn btn-default" title="history.back()">
                     <i className="fa fa-arrow-left"></i>
                   </button>
-                  <button className="btn btn-default">
+                  <button className="btn btn-default" title="location.reload()">
                     <i className="fa fa-refresh"></i>
                   </button>
                 </span>
                 <input type="text" className="form-control" placeholder="Target url" />
                 <span className="input-group-btn">
-                  <button className="btn btn-primary" onClick={this.props.onMenuButtonClick}>
+                  <button className="btn btn-default browser__rec-btn" title={this.state.isRecording ? 'Stop recording' : 'Start recording'}>
+                    <i className="fa fa-circle"></i>
+                  </button>
+                  <button className="btn btn-default" onClick={() => hashHistory.push('/dashboard')}>
                     <i className="fa fa-bars"></i>
                   </button>
-                  <button className="btn btn-default browser__rec-btn">
-                    <i className="fa fa-circle"></i>
+                  <button className="btn btn-default" onClick={() => hashHistory.push('/dashboard/setting')}>
+                    <i className="fa fa-cog"></i>
                   </button>
                 </span>
               </div>

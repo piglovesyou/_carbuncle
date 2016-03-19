@@ -13,13 +13,81 @@ class Palette extends React.Component {
   render() {
     return (
       <Draggable
-        handle=".handle"
-        start={{x: 512, y: 256}}
+        start={{x: 512, y: 128}}
         bounds="parent"
         onStop={this.onDragStop}
       >
         <div className="palette">
-          yeah <span className="handle">handle</span>
+          <div className="palette__header">
+            <span className="flex-spacer"></span>
+            <button className="btn"><i className="fa fa-cog"></i></button>
+          </div>
+          <div className="palette__body">
+            blass
+            <br />
+            blass
+            <br />
+            blass
+            <br />
+            blass
+            <br />
+            blass
+            <br />
+            blass
+            <br />
+            blass
+            <br />
+            blass
+            <br />
+            blass
+            <br />
+            blass
+            <br />
+            blass
+            <br />
+            blass
+            <br />
+            blass
+            <br />
+            blass
+            <br />
+            blass
+            <br />
+            blass
+            <br />
+            blass
+            <br />
+            blass
+            <br />
+            blass
+            <br />
+            blass
+            <br />
+            blass
+            <br />
+            blass
+            <br />
+            blass
+            <br />
+            blass
+            <br />
+            blass
+            <br />
+            blass
+            <br />
+            blass
+            <br />
+            blass
+            <br />
+            blass
+            <br />
+            
+          </div>
+          <div className="palette__footer">
+            <button className="btn"><i className="fa fa-cog"></i></button>
+            <span className="flex-spacer"></span>
+            <button className="btn"><i className="fa fa-cog"></i></button>
+          </div>
         </div>
       </Draggable>
     );

@@ -444,6 +444,8 @@ $pixelWidth: 1px
   flex-direction: column
   display: flex
 
+.flex-spacer
+  flex: 1
 
 .browser
   &__header
@@ -471,4 +473,15 @@ $pixelWidth: 1px
   top: 0
   left: 0
   background: white
-  padding: 10px
+  padding: 8px
+  display: flex
+  min-width: 320px
+  flex-direction: column
+
+  &__header,
+  &__footer
+    display: flex
+  &__body
+    flex: 1
+    max-height: 480px
+    overflow: auto
