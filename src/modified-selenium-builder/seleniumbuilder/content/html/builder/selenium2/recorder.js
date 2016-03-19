@@ -208,6 +208,17 @@
 
  */
 
+// Temporary shim definision to run without errors
+
+const sebuilder = {};
+sebuilder.prefManager = {};
+sebuilder.prefManager.getBoolPref = ()=>{};
+
+const builder = {};
+builder.selenium2 = {};
+
+// TODO: Replace anything about firefox extension
+
 builder.doRecordMouseovers = sebuilder.prefManager.getBoolPref("extensions.seleniumbuilder3.doRecordMouseovers");
 
 /**
@@ -217,7 +228,7 @@ builder.doRecordMouseovers = sebuilder.prefManager.getBoolPref("extensions.selen
  * @param {Function(step)} Function called with recorded steps
  * @param {Function} Function that returns last recorded step
  */
-builder.selenium2.Recorder = function(top_window, recordStep, getLastRecordedStep) {
+module.exports = builder.selenium2.Recorder = function(top_window, recordStep, getLastRecordedStep) {
   this.top_window = top_window;
   this.recordStep = recordStep;
   this.getLastRecordedStep = getLastRecordedStep;

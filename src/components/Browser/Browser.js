@@ -1,5 +1,6 @@
 const React = require('react');
 const { Router, Route, IndexRoute, Link, IndexLink, hashHistory } = require('react-router');
+const Recorder = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/selenium2/recorder');
 
 let iframeEl;
 
