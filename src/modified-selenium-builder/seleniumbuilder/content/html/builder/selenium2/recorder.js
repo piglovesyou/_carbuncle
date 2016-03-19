@@ -356,7 +356,7 @@ builder.selenium2.Recorder.prototype = {
     if (e.type == 'dblclick') {
       this.recordStep(new builder.Step(builder.selenium2.stepTypes.doubleClickElement, locator));
     } else if (e.target.type == "checkbox") {
-      if (jQuery(e.target).prop('checked')) {
+      if (goog.dom.forms.getValue(e.target)) {
         this.recordStep(new builder.Step(builder.selenium2.stepTypes.setElementSelected, locator));
       } else {
         this.recordStep(new builder.Step(builder.selenium2.stepTypes.setElementNotSelected, locator));
@@ -478,7 +478,7 @@ builder.selenium2.Recorder.prototype = {
     }
     
     if (e.target.type.toLowerCase() == 'select-multiple') {
-      var currentVal = jQuery(e.target).val();
+      var currentVal = goog.dom.forms.getValue(e.target);
       var oldVal = e.target.__sb_oldVal || [];
       for (var c = 0; c < currentVal.length; c++) {
         var newlyAdded = true;
@@ -565,7 +565,7 @@ builder.selenium2.Recorder.prototype = {
   writeJsonClickAt: function(e) {
     var locator = builder.locator.fromElement(e.target, /*applyTextTransforms*/ true);
     var lastStep = this.getLastRecordedStep(); //builder.getScript().getLastStep();
-    var offset = jQuery(e.target).offset();
+    var offset = goog.style.getPageOffset(e.target);
     var coordString = (e.clientX - offset.left) + "," + (e.clientY - offset.top);
     
     // To keep from generating multiple actions for the same click, update the previous click 
@@ -711,13 +711,13 @@ builder.selenium2.Recorder.prototype = {
   /** Turns off autocomplete for the given fields. */
   deactivateAutocomplete: function(elements) {
     for (var i = 0; i < elements.length; i++) {
-      jQuery(elements[i]).attr("autocomplete", "off");
+      elements[i].setAttribute("autocomplete", "off");
     }
   },
   /** Reactivate autocomplete for the given elements. */
   reactivateAutocomplete: function(elements) {
     for (var i = 0; i < elements.length; i++) {
-      jQuery(elements[i]).removeAttr("autocomplete");
+      elements[i].removeAttribute("autocomplete");
     }
   },
   /**
@@ -733,17 +733,18 @@ builder.selenium2.Recorder.prototype = {
     // going to attach click listeners to all links.
     var links = frame.document.getElementsByTagName('a');
     for (var i = 0; i < links.length; i++) {
-      jQuery(links[i]).bind("click", {}, this.listeners.writeJsonClicks, true);
+      links[i].addEventListener("click", this.listeners.writeJsonClicks, true);
       for (var z = 0; z < links[i].childNodes.length; z++) {
-        jQuery(links[i].childNodes[z]).bind("click", {}, this.listeners.writeJsonClicks, true);
+        links[i].childNodes[z].addEventListener("click", this.listeners.writeJsonClicks, true);
       }
     }
 
     this.overrideDialogs(frame.document);
 
-    jQuery('canvas', frame.document).
-        bind('click', {}, this.listeners.writeJsonClickAt, true).
-        bind('keypress', {}, this.listeners.writeJsonType, true);
+    Array.from(frame.document.querySelectorAll('canvas')).forEach(canvas => {
+      canvas.addEventListener('click', this.listeners.writeJsonClickAt, true);
+      canvas.addEventListener('keypress', this.listeners.writeJsonType, true);
+    })
     
     frame.document.addEventListener("dblclick", this.listeners.writeJsonClicks, true);
     frame.document.addEventListener("change", this.listeners.writeJsonChange, true);    
@@ -751,9 +752,8 @@ builder.selenium2.Recorder.prototype = {
     frame.document.addEventListener("mouseover", this.listeners.writeJsonMouseover, true);
 
     if (frame.document.designMode && frame.document.designMode.toLowerCase() == 'on') {
-      jQuery(frame.document).
-          bind("keypress", {}, this.listeners.writeJsonType, true).
-          bind("click", {}, this.listeners.writeJsonClickAt, true);
+      frame.document.addEventListener("keypress", this.listeners.writeJsonType, true).
+      frame.document.addEventListener("click", this.listeners.writeJsonClickAt, true);
     } else {
       frame.document.addEventListener("click", this.listeners.writeJsonClicks, true);
       //frame.document.addEventListener("keypress", this.listeners.writeJsonKeyPress, true); qqDPS
@@ -772,17 +772,18 @@ builder.selenium2.Recorder.prototype = {
     
     var links = frame.document.getElementsByTagName('a');
     for (var i = 0; i < links.length; i++) {
-      jQuery(links[i]).unbind("click", this.listeners.writeJsonClicks, true);
+      links[i].removeEventListener("click", this.listeners.writeJsonClicks, true);
       for (var z = 0; z < links[i].childNodes.length; z++) {
-        jQuery(links[i].childNodes[z]).unbind("click", this.listeners.writeJsonClicks, true);
+        links[i].childNodes[z].removeEventListener("click", this.listeners.writeJsonClicks, true);
       }
     }
 
     this.underrideDialogs(frame);
     
-    jQuery('canvas', frame.document).
-        unbind('click', this.listeners.writeJsonClickAt, true).
-        unbind('keypress', this.listeners.writeJsonType, true);
+    Array.from(frame.document.querySelectorAll('canvas')).forEach(canvas => {
+      canvas.removeEventListener('click', this.listeners.writeJsonClickAt, true);
+      canvas.removeEventListener('keypress', this.listeners.writeJsonType, true);
+    });
       
     frame.document.removeEventListener("dblclick", this.listeners.writeJsonClicks, true);
     frame.document.removeEventListener("change", this.listeners.writeJsonChange, true);    
@@ -790,9 +791,8 @@ builder.selenium2.Recorder.prototype = {
     frame.document.removeEventListener("mouseover", this.listeners.writeJsonMouseover, true);
     
     if (frame.document.designMode && frame.document.designMode.toLowerCase() == 'on') {
-      jQuery(frame.document).
-          unbind("keypress", this.listeners.writeJsonType, true).
-          unbind("click", this.listeners.writeJsonClickAt, true);
+      frame.document.removeEventListener("keypress", this.listeners.writeJsonType, true).
+      frame.document.removeEventListener("click", this.listeners.writeJsonClickAt, true);
     } else {
       frame.document.removeEventListener("click", this.listeners.writeJsonClicks, true);
       //frame.document.removeEventListener("keypress", this.listeners.writeJsonKeyPress, true); qqDPS
