@@ -11,13 +11,13 @@ const {CHROMEDRIVER_PORT} = require('./constants');
 // const Chrome = require('selenium-webdriver/chrome');
 
 const win = require('nw.gui').Window.get();
-win.moveTo(300, 200);
+win.moveTo(200, 150);
 win.showDevTools();
 const executor = new Http.Executor(new Http.HttpClient(`http://127.0.0.1:${CHROMEDRIVER_PORT}`));
 var command = new Command.Command(Command.Name.GET_SESSIONS);
 executor.execute(command).then(json => {
   if (!json || !json.value || !json.value[0]) {
-    return Promise.reject(new Error('Cannot find chromedriver'));
+    return Promise.reject(new Error('Cannot find session'));
   }
 
   const sessionId = json.value[0].id;
@@ -52,4 +52,6 @@ executor.execute(command).then(json => {
   //     driver.findElement(By.name('q')).sendKeys('blaaaaa');
   //   }, 2000);
   // };
-}).catch(console.error);
+}).catch(reason => {
+  console.log('Cannot find chromedriver', reason);
+});
