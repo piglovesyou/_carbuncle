@@ -1,8 +1,8 @@
 const React = require('react');
 const { Router, Route, IndexRoute, Link, IndexLink, hashHistory } = require('react-router');
 
-const Browser = require('../../components/Browser');
-const Palette = require('../../components/Palette');
+const Browser = require('./Browser');
+const Palette = require('./Palette');
 const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
 class Index extends React.Component {
