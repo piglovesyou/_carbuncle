@@ -1,6 +1,8 @@
 const React = require('react');
 const { Router, Route, IndexRoute, Link, IndexLink, hashHistory } = require('react-router');
 
+let iframeEl;
+
 class Browser extends React.Component {
   constructor(props) {
     super(props);
@@ -39,7 +41,10 @@ class Browser extends React.Component {
             </div>
           </div>
         </div>
-        <iframe className="browser__iframe" src={this.props.location} ref="iframe"></iframe>
+        <iframe ref={el => iframeEl = el}
+            onLoad={onIFrameLoaded}
+            className="browser__iframe"
+            src={this.props.location} />
       </div>
     );
   }
@@ -49,3 +54,12 @@ class Browser extends React.Component {
 }
 
 module.exports = Browser;
+
+function onIFrameLoaded(e) {
+  const iframeEl = e.target;
+  console.log(iframeEl.contentWindow.location.href);
+}
+
+function startRecording() {
+  var document = iframeEl.contentWindow.document;
+}
