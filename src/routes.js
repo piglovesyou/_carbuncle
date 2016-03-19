@@ -1,9 +1,9 @@
 const React = require('react');
 const { Router, Route, IndexRoute, NotFoundRoute, Link, hashHistory } = require('react-router');
-const Browser = require('./screens/Browser');
-const Dashboard = require('./screens/Dashboard');
-const DashboardIndex = require('./screens/Dashboard/Index');
-const DashboardSetting = require('./screens/Dashboard/Setting');
+const Browser = require('./components/Browser');
+const Dashboard = require('./components/Dashboard');
+const DashboardIndex = require('./components/Dashboard/Index');
+const DashboardSetting = require('./components/Dashboard/Setting');
 
 module.exports = (
   <Router history={hashHistory}>
