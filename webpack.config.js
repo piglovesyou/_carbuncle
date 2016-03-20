@@ -11,9 +11,13 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.js$/,
+        test: /\.js?$/,
         exclude: /(node_modules|bower_components)/,
-        loader: 'jsx'
+        loader: 'babel',
+        query: {
+          presets: ['react'],
+          plugins: ['transform-async-to-generator']
+        }
       }
     ]
   },

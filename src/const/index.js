@@ -6,5 +6,6 @@ module.exports = {
   CHANGE_EVENT: 'change',
   MongoErrorCode,
   PER_PAGE: 10,
-  CHROMEDRIVER_PORT: 9157
+  CHROMEDRIVER_PORT: 9157,
+  DRIVER_TARGET_ID: 'carbuncle-target-frame'
 };

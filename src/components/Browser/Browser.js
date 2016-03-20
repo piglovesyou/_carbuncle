@@ -1,6 +1,7 @@
 const React = require('react');
 const { Router, Route, IndexRoute, Link, IndexLink, hashHistory } = require('react-router');
 const Recorder = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/selenium2/recorder');
+const {DRIVER_TARGET_ID} = require('../../const');
 
 global.carbuncleTargetWindow = null;
 let iframeEl;
@@ -44,7 +45,8 @@ class Browser extends React.Component {
             </div>
           </div>
         </div>
-        <iframe ref={el => iframeEl = el}
+        <iframe id={DRIVER_TARGET_ID}
+            ref={el => iframeEl = el}
             onLoad={onIFrameLoaded}
             className="browser__iframe"
             src={this.props.location} />

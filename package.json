@@ -15,6 +15,10 @@
   },
   "devDependencies": {
     "Effeckt": "git://github.com/piglovesyou/Effeckt.css.git#placeholder-bug-patched",
+    "babel-core": "^6.7.2",
+    "babel-loader": "^6.2.4",
+    "babel-plugin-transform-async-to-generator": "^6.7.0",
+    "babel-preset-react": "^6.5.0",
     "bower": "^1.7.7",
     "eslint": "^2.4.0",
     "eslint-plugin-react": "^4.2.1",
@@ -26,7 +30,6 @@
     "gulp-notify": "^2.2.0",
     "gulp-plovr": "0.0.1",
     "gulp-sass": "^2.2.0",
-    "jsx-loader": "^0.13.2",
     "mkdirp": "^0.5.1",
     "mongodb": "^2.1.7",
     "object-assign": "^4.0.1",
