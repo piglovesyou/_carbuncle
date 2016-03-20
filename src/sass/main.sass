@@ -468,7 +468,7 @@ $pixelWidth: 1px
       background: $brand-danger
 
 .palette
-  @include box-shadow(0 1px 2px rgba(0,0,0,.185))
+  @include box-shadow(0 2px 2px rgba(0,0,0,.25))
   position: absolute
   top: 0
   left: 0
@@ -477,6 +477,7 @@ $pixelWidth: 1px
   display: flex
   min-width: 320px
   flex-direction: column
+  z-index: 10
 
   &__header,
   &__footer
