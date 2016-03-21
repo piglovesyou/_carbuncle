@@ -6,7 +6,7 @@ render(routes, document.getElementById('application-container'));
 
 const win = require('nw.gui').Window.get();
 win.moveTo(200, 150);
-win.showDevTools();
+// win.showDevTools();
 
 win.on('close', async () => {
   const driver = await Driver.getDefaultContent();

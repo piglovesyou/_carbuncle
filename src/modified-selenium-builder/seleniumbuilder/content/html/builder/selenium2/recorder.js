@@ -228,12 +228,13 @@ builder.doRecordMouseovers = sebuilder.prefManager.getBoolPref("extensions.selen
 /**
  * A class that can record clicks and typing on a window and all sub-windows.
  *
- * @param {Window} The frame to explore
+ * @param {HTMLIFrameElement} The frame to explore
  * @param {Function(step)} Function called with recorded steps
  * @param {Function} Function that returns last recorded step
  */
-module.exports = builder.selenium2.Recorder = function(top_window, recordStep, getLastRecordedStep) {
-  this.top_window = top_window;
+module.exports = builder.selenium2.Recorder = function(iFrameEl, recordStep, getLastRecordedStep) {
+  this.browser = iFrameEl;
+  this.top_window = iFrameEl.contentWindow;
   this.recordStep = recordStep;
   this.getLastRecordedStep = getLastRecordedStep;
   
@@ -244,7 +245,7 @@ module.exports = builder.selenium2.Recorder = function(top_window, recordStep, g
   this.lastLocTimeout;
   /**
    * List of frames to which the recorder has been bound. Gets continually updated via timeout.
-   */
+r  */
   this.bound = [];
   /** Listener functions attached to frames. Stored so they can be detached again. */
   this.listeners = {};
@@ -259,9 +260,10 @@ module.exports = builder.selenium2.Recorder = function(top_window, recordStep, g
   this.listeners.writeJsonMouseover = function(e) { rec.writeJsonMouseover(e); };
   this.listeners.bindFrame          = function(frame, level) { rec.bindFrame(frame, level);   };
   this.listeners.unbindFrame        = function(frame, level) { rec.unbindFrame(frame, level); };
+  this.listeners.handleIFrameLoad   = function(e) { rec.handleIFrameLoad(e); };
   
   // Initialise the recorder by binding to all frames in the recorder window.
-  Loadlistener.on_all_frames(top_window, this.listeners.bindFrame, 0);
+  Loadlistener.on_all_frames(this.top_window, this.listeners.bindFrame, 0);
   // Periodically check if new frames have appeared.  
   this.checkFrames = setInterval(function () {
     Loadlistener.on_all_frames(rec.top_window, function (frame, level) {
@@ -272,7 +274,7 @@ module.exports = builder.selenium2.Recorder = function(top_window, recordStep, g
   }, 200);
   
   // Now listen on navigation functions in the browser.
-  this.bind_browser(top_window);
+  this.bind_browser(iFrameEl);
 };
 
 builder.selenium2.Recorder.prototype = {
@@ -823,6 +825,8 @@ builder.selenium2.Recorder.prototype = {
 
     // TODO: Consider about these
 
+    browser.addEventListener('load', this.listeners.handleIFrameLoad);
+
     // // Firefox 3.5 Only
     // this.observe(browser, 'BrowserBack', function () {
     //   if (browser.content == window.sebuilder.getRecordingWindow()) {
@@ -849,13 +853,19 @@ builder.selenium2.Recorder.prototype = {
    * Remove listeners from common navigation functions.
    */
   unbind_browser: function(browser) {
-    this.unobserve(browser, 'BrowserBack', 'BrowserReloadWithFlags');
-    this.unobserve(browser.gBrowser.mCurrentBrowser, 'loadURIWithFlags');
+    browser.removeEventListener('load', this.listeners.handleIFrameLoad);
+
+    // this.unobserve(browser, 'BrowserBack', 'BrowserReloadWithFlags');
+    // this.unobserve(browser.gBrowser.mCurrentBrowser, 'loadURIWithFlags');
   },
   destroy: function() {
     Loadlistener.on_all_frames(this.top_window, this.listeners.unbindFrame, 0);
     clearInterval(this.checkFrames);
-    this.unbind_browser(window.sebuilder.getBrowser());
+    this.unbind_browser(this.browser);
+  },
+  handleIFrameLoad: function(e) {
+    const rec = this;
+    rec.recordStep(new Script.Step(Selenium2.stepTypes.get, e.target.contentWindow.location.href));
   }
 };
 

@@ -455,15 +455,20 @@ $pixelWidth: 1px
       display: flex
     .form-group
       flex: 1
+    .btn:focus
+      z-index: 3
   &__iframe
     flex: 1
     border: 0
   &__rec-btn
-    color: $brand-danger
-    &:hover
+    &,
+    &:hover,
+    &:active,
+    &:focus,
+    &:active:focus
       color: $brand-danger
     &--active,
-    &:focus
+    &--active:focus
       color: white
       background: $brand-danger
 

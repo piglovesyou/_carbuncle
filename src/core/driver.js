@@ -1,4 +1,4 @@
-const {WebDriver} = require('selenium-webdriver');
+const {WebDriver, By} = require('selenium-webdriver');
 const Http = require('selenium-webdriver/http');
 const Command = require('selenium-webdriver/lib/command');
 const {CHROMEDRIVER_PORT, DRIVER_TARGET_ID} = require('../const');
@@ -14,16 +14,17 @@ module.exports = {
 
 async function get() {
   const driver = await getDriver();
-  if (isDriverTargetFocused) {
+  if (isDriverTargetFocused === true) {
     return driver;
   }
   isDriverTargetFocused = true;
-  return await driver.switchTo().frame(driver.findElement(By.id(DRIVER_TARGET_ID)));
+  const driverTargetEl = await driver.findElement(By.id(DRIVER_TARGET_ID)).then(el => el);
+  return await driver.switchTo().frame(driverTargetEl);
 }
 
 async function getDefaultContent() {
   const driver = await getDriver();
-  if (!isDriverTargetFocused) {
+  if (isDriverTargetFocused === false) {
     return driver;
   }
   isDriverTargetFocused = false;

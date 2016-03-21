@@ -1,19 +1,8 @@
 const React = require('react');
 const { Router, Route, IndexRoute, Link, IndexLink, hashHistory } = require('react-router');
-const Recorder = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/selenium2/recorder');
 const {DRIVER_TARGET_ID} = require('../../const');
 
-global.carbuncleTargetWindow = null;
-let iframeEl;
-let recorder;
-
 class Browser extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isRecording: false
-    }
-  }
   render() {
     return (
       <div className="browser">
@@ -29,15 +18,31 @@ class Browser extends React.Component {
                     <i className="fa fa-refresh"></i>
                   </button>
                 </span>
-                <input type="text" className="form-control" placeholder="Target url" />
+                <form className=""
+                    onSubmit={this.props.onLocationTextSubmit}
+                >
+                  <input type="text"
+                      ref="locationInput"
+                      className="input-lg form-control"
+                      placeholder="Target url"
+                      onChange={this.props.onLocationTextChange}
+                      defaultValue="http://www.google.com/ncr"
+                  />
+                </form>
                 <span className="input-group-btn">
-                  <button className="btn btn-default browser__rec-btn" title={this.state.isRecording ? 'Stop recording' : 'Start recording'}>
+                  <button className={'btn btn-default browser__rec-btn' + (this.props.isRecording ? ' browser__rec-btn--active' : '')}
+                      title={this.props.isRecording ? 'Stop recording' : 'Start recording'}
+                      onClick={this.props.onRecordButtonClick}
+                  >
                     <i className="fa fa-circle"></i>
                   </button>
-                  <button className="btn btn-default" onClick={() => hashHistory.push('/dashboard')}>
+                  <button className={'btn btn-default' + (this.props.isRecording ? ' disabled' : '')}
+                      onClick={!this.props.isRecording ? () => hashHistory.push('/dashboard') : null}
+                  >
                     <i className="fa fa-bars"></i>
                   </button>
-                  <button className="btn btn-default" onClick={() => hashHistory.push('/dashboard/setting')}>
+                  <button className={'btn btn-default' + (this.props.isRecording ? ' disabled' : '')}
+                      onClick={!this.props.isRecording ? () => hashHistory.push('/dashboard/setting') : null}>
                     <i className="fa fa-cog"></i>
                   </button>
                 </span>
@@ -46,30 +51,22 @@ class Browser extends React.Component {
           </div>
         </div>
         <iframe id={DRIVER_TARGET_ID}
-            ref={el => iframeEl = el}
-            onLoad={onIFrameLoaded}
-            className="browser__iframe"
-            src={this.props.location} />
+          ref="iframe"
+          src={this.props.location}
+          onLoad={this.props.onIFrameLoaded}
+          className="browser__iframe"
+        />
       </div>
     );
   }
-
-  onLocationTextChange(e) {
+  get iFrameEl() {
+    return this.refs.iframe;
   }
+  get locationInputEl() {
+    return this.refs.locationInput;
+  }
+
 }
 
 module.exports = Browser;
 
-function onIFrameLoaded(e) {
-  global.carbuncleTargetWindow = iframeEl.contentWindow;
-  recorder = new Recorder(iframeEl.contentWindow, (step) => {
-    // TODO: Use it.
-    console.log(step);
-  }, () => {
-    return null; // TODO: Return last step
-  })
-}
-
-function startRecording() {
-  var document = iframeEl.contentWindow.document;
-}
