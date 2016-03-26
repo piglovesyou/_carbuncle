@@ -2,12 +2,11 @@ const {WebDriver, By, until} = require('selenium-webdriver');
 const Driver = require('./driver');
 const {timeout, showDevTools, closeDevTools} = require('../util');
 
-const win = require('nw.gui').Window.get();
-
 module.exports.execute = execute;
 
 async function execute(steps) {
 
+  // Hack: driver doesn't work when devtools has never shown.
   await showDevTools();
   await closeDevTools();
 
@@ -27,9 +26,8 @@ async function execute(steps) {
       case 'sendKeysToElement':
 
         const locator = By[step.locator.getName()](step.locator.getValue());
-        const element = await driver.wait(until.elementLocated(locator), 4 * 1000).then(el => {
-          return el
-        });
+        // Carbuncle always waits when to operate an element for stability. Why not?
+        const element = await driver.wait(until.elementLocated(locator), 4 * 1000).then(el => el);
         switch (step.type.name) {
           case 'clickElement':
             await element.click();
