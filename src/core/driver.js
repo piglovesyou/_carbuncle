@@ -18,8 +18,9 @@ async function get() {
     return driver;
   }
   isDriverTargetFocused = true;
-  const driverTargetEl = await driver.findElement(By.id(DRIVER_TARGET_ID)).then(el => el);
-  return await driver.switchTo().frame(driverTargetEl);
+  const frameEl = await driver.findElement(By.id(DRIVER_TARGET_ID)).then(el => el);
+  await driver.switchTo().frame(frameEl);
+  return driver;
 }
 
 async function getDefaultContent() {
