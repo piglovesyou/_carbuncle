@@ -27,7 +27,7 @@ async function execute(steps) {
 
         const locator = By[step.locator.getName()](step.locator.getValue());
         // Carbuncle always waits when to operate an element for stability. Why not?
-        const element = await driver.wait(until.elementLocated(locator), 4 * 1000).then(el => el);
+        const element = driver.wait(until.elementLocated(locator), 4 * 1000);
         switch (step.type.name) {
           case 'clickElement':
             await element.click();
