@@ -21,5 +21,10 @@ module.exports = {
       }
     ]
   },
-  target: 'node-webkit'
+  target: 'node-webkit',
+  externals: {
+    'selenium-webdriver': 'commonjs selenium-webdriver',
+    'driver': 'commonjs core/driver',
+    'util': 'commonjs util/index'
+  }
 };

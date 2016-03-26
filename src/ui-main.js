@@ -1,6 +1,7 @@
 const {render} = require('react-dom');
 const routes = require('./routes');
 const Driver = require('./core/driver');
+const {timeout} = require('./util');
 
 render(routes, document.getElementById('application-container'));
 
@@ -17,7 +18,3 @@ win.on('close', async () => {
   });
   // TODO: `chromedriver` process still exists. How do we terminate it from nw?
 });
-
-function timeout(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}

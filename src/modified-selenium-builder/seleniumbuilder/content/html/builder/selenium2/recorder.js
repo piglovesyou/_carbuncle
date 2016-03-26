@@ -232,11 +232,12 @@ builder.doRecordMouseovers = sebuilder.prefManager.getBoolPref("extensions.selen
  * @param {Function(step)} Function called with recorded steps
  * @param {Function} Function that returns last recorded step
  */
-module.exports = builder.selenium2.Recorder = function(iFrameEl, recordStep, getLastRecordedStep) {
+module.exports = builder.selenium2.Recorder = function(iFrameEl, recordStep, getLastRecordedStep, getStepBefore) {
   this.browser = iFrameEl;
   this.top_window = iFrameEl.contentWindow;
   this.recordStep = recordStep;
   this.getLastRecordedStep = getLastRecordedStep;
+  this.getStepBefore = getStepBefore;
   
   // These three variables are used to notice when the same event gets issued twice in a row.
   /** The last locator clicked on. */
@@ -341,7 +342,7 @@ builder.selenium2.Recorder.prototype = {
             lastStep.type == Selenium2.stepTypes.doubleClickElement)
         {
           lastStep.changeType(Selenium2.stepTypes.doubleClickElement);
-          builder.stepdisplay.update();
+          // builder.stepdisplay.update();
           return;
         }
       }
@@ -449,16 +450,16 @@ builder.selenium2.Recorder.prototype = {
       if (lastStep && this.isTypeOrClickInSamePlace(lastStep, locator)) {
         lastStep.changeType(Selenium2.stepTypes.setElementText);
         lastStep.text = e.target.value;
-        builder.stepdisplay.update();
+        // builder.stepdisplay.update();
         return;
       }
       // Also need to check for previous step in case of using enter to submit forms -
       // otherwise we get a spurious extra "type" step after the submit click step.
-      var nextToLastStep = lastStep ? builder.getScript().getStepBefore(lastStep) : null;
+      var nextToLastStep = lastStep ? this.getStepBefore(lastStep) /*builder.getScript().getStepBefore(lastStep)*/ : null;
       if (nextToLastStep && this.isTypeOrClickInSamePlace(nextToLastStep, locator)) {
         nextToLastStep.changeType(Selenium2.stepTypes.setElementText);
         nextToLastStep.text = e.target.value;
-        builder.stepdisplay.update();
+        // builder.stepdisplay.update();
         return;
       }
     
@@ -517,7 +518,7 @@ builder.selenium2.Recorder.prototype = {
         }
       }
       e.target.__sb_oldVal = currentVal;
-      builder.stepdisplay.update();
+      // builder.stepdisplay.update();
     }
     
     // Radio button
@@ -526,7 +527,7 @@ builder.selenium2.Recorder.prototype = {
       if (lastStep && this.isTypeOrClickInSamePlace(lastStep, locator)) {
         lastStep.changeType(Selenium2.stepTypes.setElementSelected);
         lastStep.locator = locator
-        builder.stepdisplay.update();
+        // builder.stepdisplay.update();
         return;
       }
 
@@ -558,7 +559,7 @@ builder.selenium2.Recorder.prototype = {
       } else if (e.which == 8) {
         lastStep.text = lastStep.text.substr(lastStep.text.length - 1);
       }
-      builder.stepdisplay.update();
+      // builder.stepdisplay.update();
     } else {
       if (e.which >= 32 || e.which == 9 || e.which == 10) {
         this.recordStep(new Script.Step(Selenium2.stepTypes.sendKeysToElement, locator, String.fromCharCode(e.which)));
@@ -586,7 +587,7 @@ builder.selenium2.Recorder.prototype = {
             lastStep.type == Selenium2.stepTypes.doubleClickElement)
         {
           lastStep.changeType(Selenium2.stepTypes.doubleClickElement);
-          builder.stepdisplay.update();
+          // builder.stepdisplay.update();
           return;
         }
       }
@@ -865,7 +866,7 @@ builder.selenium2.Recorder.prototype = {
   },
   handleIFrameLoad: function(e) {
     const rec = this;
-    rec.recordStep(new Script.Step(Selenium2.stepTypes.get, e.target.contentWindow.location.href));
+    rec.recordStep(new Script.Step(Selenium2.stepTypes.get, e.target.src));
   }
 };
 

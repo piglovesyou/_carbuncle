@@ -62,6 +62,10 @@ class Browser extends React.Component {
   get iFrameEl() {
     return this.refs.iframe;
   }
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.refs.iframe.contentWindow.location &&
+        this.props.location !== this.refs.iframe.contentWindow.location.href;
+  }
   get locationInputEl() {
     return this.refs.locationInput;
   }

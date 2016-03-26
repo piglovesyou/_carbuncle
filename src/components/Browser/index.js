@@ -77,7 +77,6 @@ function onRecordButtonClick(e) {
 }
 
 function pushStep(step) {
-  console.log(step);
   if (this.state.isPlaybacking) {
     return;
   }
@@ -92,7 +91,7 @@ function pushStep(step) {
 }
 
 function getLastStep() {
-  this.state.testCase[this.state.testCase.length - 1];
+  return this.state.testCase[this.state.testCase.length - 1];
 }
 
 function onIFrameLoaded(e) {
@@ -109,7 +108,12 @@ function createRecorder() {
   return new Recorder(
       this.refs.browser.iFrameEl,
       pushStep.bind(this),
-      getLastStep.bind(this));
+      getLastStep.bind(this),
+      getStepBefore.bind(this));
+}
+
+function getStepBefore(step) {
+  return this.state.testCase[this.state.testCase.findIndex(s => s.id === step.id) - 1];
 }
 
 module.exports = Index;

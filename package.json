@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node ./src/main.js",
     "ui": "./executables/nw .",
-    "fetch-executables": "if [[ -d executables ]]; then rm -rf executables; fi; wget -qO- http://dl.nwjs.io/v0.13.0-rc2/nwjs-sdk-v0.13.0-rc2-linux-x64.tar.gz | tar xvz && mv nwjs-sdk-v0.13.0-rc2-linux-x64 executables",
+    "fetch-executables": "if [[ -d executables ]]; then rm -rf executables; fi; wget -qO- http://dl.nwjs.io/v0.13.1/nwjs-sdk-v0.13.1-linux-x64.tar.gz | tar xvz && mv nwjs-sdk-v0.13.1-linux-x64 executables",
     "postinstall": "mkdir -p public/{js,css}; bower install;",
     "watch": "gulp watch",
     "watch-sass": "gulp watch-sass",
