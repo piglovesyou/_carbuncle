@@ -489,5 +489,31 @@ $pixelWidth: 1px
     display: flex
   &__body
     flex: 1
+    min-height: 32px
     max-height: 480px
     overflow: auto
+  &__handle
+    margin: 0 8px
+    cursor: move
+    text-align: center
+    &:hover
+      background-color: #f3f3f3
+
+.step
+  @extend .clearfix
+  &__buttons
+    margin: 8px 0
+    float: right
+    opacity: 0
+    transition: opacity .2 linear
+  &:hover &__buttons
+    opacity: 1
+  border-bottom: 1px #ccc solid
+  &:last-child
+    border-bottom: none
+  &__content
+    padding: 8px
+  &__name
+    margin-bottom: 2px
+  &__value
+    color: $gray-light

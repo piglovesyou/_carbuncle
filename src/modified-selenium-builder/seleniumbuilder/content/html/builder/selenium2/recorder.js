@@ -246,7 +246,7 @@ module.exports = builder.selenium2.Recorder = function(iFrameEl, recordStep, get
   this.lastLocTimeout;
   /**
    * List of frames to which the recorder has been bound. Gets continually updated via timeout.
-r  */
+   */
   this.bound = [];
   /** Listener functions attached to frames. Stored so they can be detached again. */
   this.listeners = {};
@@ -265,14 +265,23 @@ r  */
   
   // Initialise the recorder by binding to all frames in the recorder window.
   Loadlistener.on_all_frames(this.top_window, this.listeners.bindFrame, 0);
+
   // Periodically check if new frames have appeared.  
   this.checkFrames = setInterval(function () {
-    Loadlistener.on_all_frames(rec.top_window, function (frame, level) {
-      if (rec.bound.indexOf(frame) == -1) {
-        rec.bindFrame(frame, level);
-      }
-    }, 0);
+    Loadlistener.on_all_frames(rec.top_window, rec.bindFrame.bind(rec), 0);
   }, 200);
+
+  new MutationObserver(mutationRecords => {
+    // Possibly a new frame emerges
+    Loadlistener.on_all_frames(rec.top_window, rec.bindFrame.bind(rec), 0);
+  }).observe(this.top_window.document.body, {
+    subtree: true,
+    childList: true,
+    attributes: false,
+    characterData: false,
+    attributeOldValue: false,
+    characterDataOldValue: false
+  });
   
   // Now listen on navigation functions in the browser.
   this.bind_browser(iFrameEl);
@@ -733,6 +742,13 @@ builder.selenium2.Recorder.prototype = {
    * @param level The level of the frame - level 0 means it's a page in the browser
    */
   bindFrame: function(frame, level) {
+
+    // TODO: This can be speed up with frame uid table
+    if (this.bound.indexOf(frame) >= 0) {
+      // Already bounded
+      return;
+    }
+
     // Remember that this frame has been bound to.
     this.bound.push(frame);
     
@@ -751,7 +767,7 @@ builder.selenium2.Recorder.prototype = {
     Array.from(frame.document.querySelectorAll('canvas')).forEach(canvas => {
       canvas.addEventListener('click', this.listeners.writeJsonClickAt, true);
       canvas.addEventListener('keypress', this.listeners.writeJsonType, true);
-    })
+    });
     
     frame.document.addEventListener("dblclick", this.listeners.writeJsonClicks, true);
     frame.document.addEventListener("change", this.listeners.writeJsonChange, true);    
@@ -865,8 +881,8 @@ builder.selenium2.Recorder.prototype = {
     this.unbind_browser(this.browser);
   },
   handleIFrameLoad: function(e) {
-    const rec = this;
-    rec.recordStep(new Script.Step(Selenium2.stepTypes.get, e.target.src));
+    if (this.getLastRecordedStep()) return;
+    this.recordStep(new Script.Step(Selenium2.stepTypes.get, e.target.src));
   }
 };
 

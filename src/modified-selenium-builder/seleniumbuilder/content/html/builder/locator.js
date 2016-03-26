@@ -212,8 +212,10 @@
 const builder = {};
 const window = {};
 window.sebuilder = {};
-window.sebuilder.getRecordingWindow = () =>
-    global.carbuncleTargetWindow;
+window.sebuilder.getRecordingWindow = () => global.carbuncleTargetWindow;
+window.bridge = {};
+window.bridge.getRecordingWindow = () => global.carbuncleTargetWindow;
+
 const cssQuery = (query, doc) => {
   return doc.querySelectorAll(query);
 };
@@ -270,8 +272,8 @@ builder.locator.locateElementByName = function(window, name) {
 
 builder.locator.locateElementByLink = function(window, linkText) {
   linkText = Utils.normalizeWhitespace(linkText.toLowerCase());
-  var els = window.document.querySelectorAll("a").filter(function(el) {
-    return Utils.normalizeWhitespace(jQuery(el).text().toLowerCase()) == linkText;
+  var els = Array.from(window.document.querySelectorAll("a")).filter(function(el) {
+    return Utils.normalizeWhitespace(el.textContent.toLowerCase()) === linkText;
   });
   return els.length > 0 ? els[0] : null;
 };

@@ -60,9 +60,14 @@ function onLocationTextSubmit(e) {
 }
 
 function onPlaybackClick(e) {
+  if (this.recorder_) {
+    this.recorder_.destroy();
+    this.recorder_ = null;
+  }
   Executor.execute(this.state.testCase);
   this.setState({
-    isPlaybacking: true
+    isPlaybacking: true,
+    isRecording: false
   });
 }
 
@@ -77,6 +82,8 @@ function onRecordButtonClick(e) {
 }
 
 function pushStep(step) {
+  console.log(step);
+
   if (this.state.isPlaybacking) {
     return;
   }
