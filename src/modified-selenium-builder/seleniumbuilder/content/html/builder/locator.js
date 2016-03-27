@@ -210,11 +210,7 @@
 
 // Temporary shim definision to run without errors
 const builder = {};
-const window = {};
-window.sebuilder = {};
-window.sebuilder.getRecordingWindow = () => global.carbuncleTargetFrame.contentWindow;
-window.bridge = {};
-window.bridge.getRecordingWindow = () => global.carbuncleTargetFrame.contentWindow;
+const window = require('./dummywindow');
 
 const cssQuery = (query, doc) => {
   return doc.querySelectorAll(query);
@@ -725,3 +721,4 @@ function getCorrectCaseText(el, style) {
 if (builder && builder.loader && builder.loader.loadNextMainScript) { builder.loader.loadNextMainScript(); }
 
 module.exports = builder.locator;
+module.exports.getCorrectCaseText = getCorrectCaseText;

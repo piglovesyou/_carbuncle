@@ -13,6 +13,7 @@ const EventEmitter = require('events').EventEmitter;
 const Script = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/script');
 const Selenium2 = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/selenium2/selenium2');
 const Locator = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/locator');
+const VerifyExplorer = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/verifyexplorer');
 
 global.carbuncleTargetFrame = null;
 
@@ -174,45 +175,38 @@ function onLocationReloadClick() {
 }
 
 function onAddVerifyingStepClick() {
-  const selector = new Selecting(this);
+  // TODO: Write quit verify explorer logic
+  const explorer = new SuperVerifyExplorer(this);
   if (this.state.recorder) {
+    // destroy but let it keep recording
     this.state.recorder.destroy();
-    // destroy but still recording
   }
-  selector.on('select', locator => {
-    console.log(locator);
-    selector.destroy();
-    this.setState({
-      recorder: createRecorder.call(this)
-    });
-  });
+  // TODO:
+  // explorer.on('choose', () => {
+  //   debugger;
+  //   explorer.destroy();
+  // });
 }
 
-class Selecting extends EventEmitter {
-  constructor(component) {
-    super();
+class SuperVerifyExplorer extends VerifyExplorer {
+  constructor(component, justReturnLocator) {
+    super(component.iFrameWindow, Selenium2, pushStep.bind(component), justReturnLocator);
+    // EventEmitter.call(this);
     this.doc = component.iFrameWindow.document;
     this.component = component;
+
     this.component.setState({spotRect: {}});
-    this.doc.addEventListener('mouseover', this.onMove = this.onMove.bind(this));
     this.doc.addEventListener('scroll', this.onDocumentScroll = this.onDocumentScroll.bind(this));
-    this.doc.addEventListener('click', this.onClick = this.onClick.bind(this), true);
     this.styleEl_ = goog.style.installStyles('*{cursor:pointer!important}', this.doc);
   }
-  destroy() {
-    this.component.setState({spotRect: null});
-    this.doc.removeEventListener('mouseover', this.onMove);
-    this.doc.removeEventListener('scroll', this.onDocumentScroll);
-    this.doc.removeEventListener('click', this.onClick, true);
-    goog.style.installStyles(this.styleEl_);
+  /** @override */
+  handleMouseup(e) {
+    super.handleMouseup(e);
+    this.component.setState({ spotRect: null });
+    // this.emit('choose');
   }
-  onDocumentScroll(e) {
-    if (!this.lastRect_) return;
-    const spotRect = Object.assign({}, this.lastRect_);
-    this.applyScrollPos(spotRect);
-    this.component.setState({spotRect});
-  }
-  onMove(e) {
+  /** @override */
+  handleMouseover(e) {
     const locator = this.lastLocator_ = Locator.fromElement(e.target, true);
     const pos = goog.style.getFramedPageOffset(locator.getPreferredElement(), this.component.iFrameWindow);
     const size = goog.style.getBorderBoxSize(locator.getPreferredElement());
@@ -221,10 +215,22 @@ class Selecting extends EventEmitter {
     this.applyScrollPos(spotRect);
     this.component.setState({spotRect});
   }
-  onClick(e) {
-    this.emit('select', this.lastLocator_, this.lastRect_);
-    e.preventDefault();
-    e.stopPropagation();
+  /** @override */
+  resetBorder() {}
+  /** @override */
+  destroy() {
+    super.destroy();
+
+    this.component.setState({spotRect: null});
+    this.doc.removeEventListener('scroll', this.onDocumentScroll);
+    goog.style.installStyles(this.styleEl_);
+  }
+
+  onDocumentScroll(e) {
+    if (!this.lastRect_) return;
+    const spotRect = Object.assign({}, this.lastRect_);
+    this.applyScrollPos(spotRect);
+    this.component.setState({spotRect});
   }
   applyScrollPos(pos) {
     pos.x -= this.component.iFrameWindow.document.body.scrollLeft;

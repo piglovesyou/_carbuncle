@@ -9,7 +9,7 @@ class StepAdder extends React.Component {
   render() {
     return (
       <div className="step-adder">
-        <button className="btn btn-default"
+        <button className="step-adder__verify btn btn-default"
             onClick={this.props.onAddVerifyingStepClick}
             title="Add verifying step"
         >

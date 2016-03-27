@@ -211,6 +211,11 @@
 // Temporary shim definision to run without errors
 const sebuilder = {};
 const builder = {};
+const window = require('./dummywindow');
+const Loadlistener = require('./loadlistener');
+const Locator = require('./locator');
+const Script = require('./script');
+const Selenium2 = require('./selenium2/selenium2');
 
 
 /**
@@ -246,11 +251,11 @@ builder.VerifyExplorer = function(top_window, seleniumVersion, recordStep, justR
   
   function attach(frame, level) {
     for (var l in ae.listeners) {
-      jQuery(frame.document).bind(l, {}, ae.listeners[l], true);
+      frame.document.addEventListener(l, ae.listeners[l], true);
     }
   }
   
-  builder.loadlistener.on_all_frames(top_window, attach, 0);
+  Loadlistener.on_all_frames(top_window, attach, 0);
 };
 
 builder.VerifyExplorer.prototype = {
@@ -258,6 +263,8 @@ builder.VerifyExplorer.prototype = {
    * Highlights the mousedover element and removes highlight from old element.
    */
   handleMouseover: function(e) {
+    debugger;
+
     // If there is a previous highlit element, remove its borders
     if (this.highlit_element) {
       this.resetBorder({
@@ -280,23 +287,24 @@ builder.VerifyExplorer.prototype = {
     e.stopPropagation();
     e.preventDefault();
 
-    window.focus();
+    // TODO: Do I need this?
+    // window.focus();
 
     // Setup the params
-    var locator = builder.locator.fromElement(e.target, /*applyTextTransforms*/ this.seleniumVersion == builder.selenium2);
+    var locator = Locator.fromElement(e.target, /*applyTextTransforms*/ this.seleniumVersion == Selenium2);
     if (this.justReturnLocator) { this.recordStep(locator); return; }
 
     var tag = e.target.nodeName.toUpperCase();
     var selection = window.sebuilder.getRecordingWindow().getSelection();
 
     if (selection && selection.toString().trim().length > 0) {
-      this.recordStep(new builder.Step(builder.selenium2.stepTypes.verifyTextPresent,
+      this.recordStep(new Script.Step(Selenium2.stepTypes.verifyTextPresent,
         builder.normalizeWhitespace(selection.toString())));
       return;
     }
     
     if (tag == "SELECT") {
-      this.recordStep(new builder.Step(builder.selenium2.stepTypes.verifyElementValue, locator, e.target.value));
+      this.recordStep(new Script.Step(Selenium2.stepTypes.verifyElementValue, locator, e.target.value));
       return;
     }
     
@@ -314,21 +322,21 @@ builder.VerifyExplorer.prototype = {
         // checked property.
         var ae = this;
         setTimeout(function () {
-          var step = new builder.Step(builder.selenium2.stepTypes.verifyElementSelected, locator);
+          var step = new Script.Step(Selenium2.stepTypes.verifyElementSelected, locator);
           step.negated = !e.target.checked;
           ae.recordStep(step);
         }, 0);
       } else {
-        this.recordStep(new builder.Step(builder.selenium2.stepTypes.verifyElementValue, locator, e.target.value));
+        this.recordStep(new Script.Step(Selenium2.stepTypes.verifyElementValue, locator, e.target.value));
       }
       return;
     }
     if (tag == "TEXTAREA") {
-      this.recordStep(new builder.Step(builder.selenium2.stepTypes.verifyElementValue, locator, e.target.value));
+      this.recordStep(new Script.Step(Selenium2.stepTypes.verifyElementValue, locator, e.target.value));
       return;
     }
     if (e.target.textContent != "") {
-      var text = getCorrectCaseText(e.target);
+      var text = Locator.getCorrectCaseText(e.target);
       if (text.length > 200) {
         var nextSpace = text.indexOf(' ', 200);
         if (nextSpace > -1 && nextSpace < 250) {
@@ -342,12 +350,12 @@ builder.VerifyExplorer.prototype = {
           }
         }
       }
-      this.recordStep(new builder.Step(builder.selenium2.stepTypes.verifyTextPresent,
+      this.recordStep(new Script.Step(Selenium2.stepTypes.verifyTextPresent,
           builder.normalizeWhitespace(text)));
       return;
     }
     
-    this.recordStep(new builder.Step(builder.selenium2.stepTypes.verifyElementPresent, locator));
+    this.recordStep(new Script.Step(Selenium2.stepTypes.verifyElementPresent, locator));
   },
 
   /**
@@ -384,15 +392,17 @@ builder.VerifyExplorer.prototype = {
     
     function detach(frame, level) {
       for (var l in ae.listeners) {
-        jQuery(frame.document).unbind(l, ae.listeners[l], true);
+        frame.document.removeEventListener(l, ae.listeners[l], true);
       }
     }
     
     if (this.highlit_element) { this.resetBorder({ target: this.highlit_element }); }
-    builder.loadlistener.on_all_frames(this.top_window, detach, 0);
+    Loadlistener.on_all_frames(this.top_window, detach, 0);
   }
 };
 
 
 
 if (builder && builder.loader && builder.loader.loadNextMainScript) { builder.loader.loadNextMainScript(); }
+
+module.exports = builder.VerifyExplorer;
