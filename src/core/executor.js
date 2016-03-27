@@ -38,6 +38,11 @@ async function execute(steps) {
             break;
         }
         break;
+      
+      default:
+        await showDevTools();
+        throw new Error('TODO: ' + step.type.name);
+        break;
 
     }
 

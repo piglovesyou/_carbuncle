@@ -11,10 +11,16 @@ class Browser extends React.Component {
             <div className="col-lg-6">
               <div className="input-group input-group-lg">
                 <span className="input-group-btn">
-                  <button className="btn btn-default" title="history.back()">
+                  <button className="btn btn-default"
+                      title="history.back()"
+                      onClick={this.props.onHistoryBackClick}
+                  >
                     <i className="fa fa-arrow-left"></i>
                   </button>
-                  <button className="btn btn-default" title="location.reload()">
+                  <button className="btn btn-default"
+                      title="location.reload()"
+                      onClick={this.props.onLocationReloadClick}
+                  >
                     <i className="fa fa-refresh"></i>
                   </button>
                 </span>

@@ -6,6 +6,10 @@ const Palette = require('./Palette');
 const Recorder = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/selenium2/recorder');
 const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 const Executor = require('../../core/executor');
+
+const Script = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/script');
+const Selenium2 = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/selenium2/selenium2');
+
 // const assert = require('power-assert');
 
 global.carbuncleTargetFrame = null;
@@ -29,10 +33,12 @@ class Index extends React.Component {
           ref="browser"
           location={this.state.location}
           isRecording={this.state.isRecording}
-          onRecordButtonClick= {this.state.isPlaybacking ? null : onRecordButtonClick.bind(this)}
-          onIFrameLoaded=      {this.state.isPlaybacking ? null : onIFrameLoaded.bind(this)}
-          onLocationTextChange={this.state.isPlaybacking ? null : onLocationTextChange.bind(this)}
-          onLocationTextSubmit={this.state.isPlaybacking ? null : onLocationTextSubmit.bind(this)}
+          onRecordButtonClick=  {this.state.isPlaybacking ? null : onRecordButtonClick.bind(this)}
+          onIFrameLoaded=       {this.state.isPlaybacking ? null : onIFrameLoaded.bind(this)}
+          onLocationTextChange= {this.state.isPlaybacking ? null : onLocationTextChange.bind(this)}
+          onLocationTextSubmit= {this.state.isPlaybacking ? null : onLocationTextSubmit.bind(this)}
+          onHistoryBackClick=   {this.state.isPlaybacking ? null : onHistoryBackClick.bind(this)}
+          onLocationReloadClick={this.state.isPlaybacking ? null : onLocationReloadClick.bind(this)}
         />
         <Palette testCase={this.state.testCase}
             onPlaybackClick={onPlaybackClick.bind(this)} />
@@ -121,6 +127,16 @@ function createRecorder() {
 
 function getStepBefore(step) {
   return this.state.testCase[this.state.testCase.findIndex(s => s.id === step.id) - 1];
+}
+
+function onHistoryBackClick() {
+  this.refs.browser.iFrameEl.contentWindow.history.back();
+  pushStep.call(this, new Script.Step(Selenium2.stepTypes.goBack));
+}
+
+function onLocationReloadClick() {
+  this.refs.browser.iFrameEl.contentWindow.location.reload();
+  pushStep.call(this, new Script.Step(Selenium2.stepTypes.refresh));
 }
 
 module.exports = Index;

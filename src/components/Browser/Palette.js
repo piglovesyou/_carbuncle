@@ -15,9 +15,14 @@ class Step extends React.Component {
     return (
       <div className="step">
         <div className="step__buttons">
-          <button className="btn btn-sm btn-default" onClick={this.props.onStepRemoveClicked}>
-            <i className="fa fa-close"></i>
-          </button>
+          {this.props.onStepRemoveClicked
+            ?  <button className="btn btn-sm btn-default"
+                onClick={this.props.onStepRemoveClicked}
+                title="Remove this step"
+            >
+              <i className="fa fa-trash"></i>
+            </button>
+            : null}
         </div>
         <div className="step__content">
 
@@ -34,7 +39,19 @@ class Step extends React.Component {
   }
 
   renderValue() {
-    return this.props.url || this.props.text;
+    if (this.props.url) {
+      return this.props.url;
+    }
+    if (this.props.text) {
+      if (/^\n$/.test(this.props.text)) {
+        return 'Enter';
+      }
+      return this.props.text;
+    }
+    if (this.props.locator) {
+      return `${this.props.locator.getName()}: ${this.props.locator.getValue()}` 
+    }
+    return null;
   }
 };
 
@@ -49,7 +66,6 @@ class Palette extends React.Component {
         handle=".palette__handle"
         start={{x: 512, y: 128}}
         bounds="parent"
-        onStop={this.onDragStop}
         ref="draggable"
       >
         <div className="palette" ref="elm">
