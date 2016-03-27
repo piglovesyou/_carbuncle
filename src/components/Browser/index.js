@@ -18,7 +18,7 @@ class Index extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isRecording: false,
+      recorder: null,
       isPlaybacking: false,
       testCase: [],
       location: null
@@ -28,12 +28,13 @@ class Index extends React.Component {
     this.refresh = this.refresh.bind(this);
   }
   render() {
+    const isRecording = !!this.state.recorder;
     return (
       <div className="screens-index">
         <Browser
           ref="browser"
           location={this.state.location}
-          isRecording={this.state.isRecording}
+          isRecording={isRecording}
           onRecordButtonClick=  {this.state.isPlaybacking ? null : onRecordButtonClick.bind(this)}
           onIFrameLoaded=       {this.state.isPlaybacking ? null : onIFrameLoaded.bind(this)}
           onLocationTextChange= {this.state.isPlaybacking ? null : onLocationTextChange.bind(this)}
@@ -83,25 +84,26 @@ function onLocationTextSubmit(e) {
 }
 
 function onPlaybackClick(e) {
-  if (this.recorder_) {
-    this.recorder_.destroy();
-    this.recorder_ = null;
+  if (this.state.recorder) {
+    this.state.recorder.destroy();
   }
   Executor.execute(this.state.testCase);
   this.setState({
     isPlaybacking: true,
-    isRecording: false
+    recorder: null
   });
 }
 
 function onRecordButtonClick(e) {
-  const changeTo = !this.state.isRecording;
-  if (changeTo) {
-    this.recorder_ = createRecorder.call(this);
+  const isRecording = !!this.state.recorder;
+  if (isRecording) {
+    this.state.recorder.destroy();
+    this.setState({ recorder: null });
+  } else {
+    this.setState({
+      recorder: createRecorder.call(this)
+    });
   }
-  this.setState({
-    isRecording: changeTo
-  });
 }
 
 function pushStep(step) {
@@ -125,13 +127,11 @@ function getLastStep() {
 }
 
 function onIFrameLoaded(e) {
-  if (!this.state.isRecording || this.state.isPlaybacking) {
+  if (!this.state.recorder) {
     return;
   }
-  setTimeout(() => {
-    this.recorder_.destroy();
-    this.recorder_ = createRecorder.call(this);
-  }, 100);
+  this.state.recorder.destroy();
+  this.state.recorder = createRecorder.call(this);
 }
 
 function createRecorder() {
@@ -148,12 +148,16 @@ function getStepBefore(step) {
 
 function onHistoryBackClick() {
   this.refs.browser.iFrameEl.contentWindow.history.back();
-  pushStep.call(this, new Script.Step(Selenium2.stepTypes.goBack));
+  if (this.state.recorder) {
+    pushStep.call(this, new Script.Step(Selenium2.stepTypes.goBack));
+  }
 }
 
 function onLocationReloadClick() {
   this.refs.browser.iFrameEl.contentWindow.location.reload();
-  pushStep.call(this, new Script.Step(Selenium2.stepTypes.refresh));
+  if (this.state.recorder) {
+    pushStep.call(this, new Script.Step(Selenium2.stepTypes.refresh));
+  }
 }
 
 module.exports = Index;
