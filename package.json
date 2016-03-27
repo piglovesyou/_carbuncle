@@ -11,6 +11,7 @@
     "watch-sass": "gulp watch-sass",
     "build": "gulp",
     "test": "eslint src Gulp.js && gulp",
+    "plovr": "gulp closure-require",
     "lint": "eslint src Gulp.js"
   },
   "devDependencies": {

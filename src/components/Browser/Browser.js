@@ -1,6 +1,7 @@
 const React = require('react');
 const { Router, Route, IndexRoute, Link, IndexLink, hashHistory } = require('react-router');
 const {DRIVER_TARGET_ID} = require('../../const');
+const SvgMask = require('./SvgMask');
 
 class Browser extends React.Component {
   render() {
@@ -35,19 +36,19 @@ class Browser extends React.Component {
                   />
                 </form>
                 <span className="input-group-btn">
-                  <button className={'btn btn-default browser__rec-btn' + (this.props.isRecording ? ' browser__rec-btn--active' : '')}
-                      title={this.props.isRecording ? 'Stop recording' : 'Start recording'}
+                  <button className={'btn btn-default browser__rec-btn' + (this.props.disablePageMove ? ' browser__rec-btn--active' : '')}
+                      title={this.props.disablePageMove ? 'Stop recording' : 'Start recording'}
                       onClick={this.props.onRecordButtonClick}
                   >
                     <i className="fa fa-circle"></i>
                   </button>
-                  <button className={'btn btn-default' + (this.props.isRecording ? ' disabled' : '')}
-                      onClick={!this.props.isRecording ? () => hashHistory.push('/dashboard') : null}
+                  <button className={'btn btn-default' + (this.props.disablePageMove ? ' disabled' : '')}
+                      onClick={!this.props.disablePageMove ? () => hashHistory.push('/dashboard') : null}
                   >
                     <i className="fa fa-bars"></i>
                   </button>
-                  <button className={'btn btn-default' + (this.props.isRecording ? ' disabled' : '')}
-                      onClick={!this.props.isRecording ? () => hashHistory.push('/dashboard/setting') : null}>
+                  <button className={'btn btn-default' + (this.props.disablePageMove ? ' disabled' : '')}
+                      onClick={!this.props.disablePageMove ? () => hashHistory.push('/dashboard/setting') : null}>
                     <i className="fa fa-cog"></i>
                   </button>
                 </span>
@@ -55,12 +56,17 @@ class Browser extends React.Component {
             </div>
           </div>
         </div>
-        <iframe id={DRIVER_TARGET_ID}
-          ref="iframe"
-          src={this.props.location}
-          onLoad={this.props.onIFrameLoaded}
-          className="browser__iframe"
-        />
+        <div className="browser__body">
+          <iframe id={DRIVER_TARGET_ID}
+            ref="iframe"
+            src={this.props.location}
+            onLoad={this.props.onIFrameLoaded}
+            className="browser__iframe"
+          />
+          {this.props.spotRect
+            ?  <SvgMask {...this.props.spotRect} />
+            : null}
+        </div>
       </div>
     );
   }

@@ -313,6 +313,7 @@ builder.locator.Locator = function(preferredMethod, preferredAlternative, values
 };
 
 builder.locator.Locator.prototype = {
+  getPreferredElement: function() { return this.__preferredElement; },
   /** @return Name of the locator's preferred location method for the given version. */
   getName: function(selVersion) { return this.preferredMethod[selVersion]; },
   /** @return Value of the preferred method. */
@@ -435,10 +436,12 @@ builder.locator.getCSSSubPath = function(e) {
 builder.locator.fromElement = function(element, applyTextTransforms) {
   var values = {};
   var preferredMethod = null;
+  var preferredElement = element;
 
   // FIXME: This function needs a lot more thought, for example the "value" property is much
   // more useful for type="submit".
   // TODO: set locator.frame to be a locator to the frame containing the element
+
   
   // Locate by ID
   var id = element.getAttribute('id');
@@ -488,6 +491,7 @@ builder.locator.fromElement = function(element, applyTextTransforms) {
     }
     if (!preferredMethod) {
       preferredMethod = builder.locator.methods.css;
+      preferredElement = current;
     }
   }
   
@@ -527,6 +531,7 @@ builder.locator.fromElement = function(element, applyTextTransforms) {
   
   var loc = new builder.locator.Locator(preferredMethod, 0, values);
   loc.__originalElement = element;
+  loc.__preferredElement = preferredElement;
   return loc;
 };
 

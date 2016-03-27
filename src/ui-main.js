@@ -23,16 +23,24 @@ const {WebDriver, By, Key, until} = require('selenium-webdriver');
 const {timeout, showDevTools, closeDevTools} = require('./util');
 const assert = require('power-assert');
 (async () => {
-
   try {
-    await timeout(1200);
+    await timeout(800);
+    await showDevTools();
+
     var driver = await Driver.getDefaultContent();
     await driver.findElement(By.css('.browser__rec-btn')).click();
     // await locationInputEl.sendKeys('http://www.google.com/ncr');
     await driver.findElement(By.css('.browser_location-input')).sendKeys('http://passwordsgenerator.net/md5-hash-generator/');
     await driver.findElement(By.css('.browser_location-input')).sendKeys(Key.ENTER);
+
     var driver = await Driver.get();
     await driver.findElement(By.css('#txt1')).sendKeys('abc');
+
+    // await timeout(800);
+    // var driver = await Driver.getDefaultContent();
+    // await driver.findElement(By.css('.step-adder__verify')).click();
+
+    await showDevTools();
     
   } catch(e) {
     await showDevTools();

@@ -457,6 +457,10 @@ $pixelWidth: 1px
       flex: 1
     .btn:focus
       z-index: 3
+  &__body
+    flex: 1
+    position: relative
+    display: flex
   &__iframe
     flex: 1
     border: 0
@@ -517,3 +521,20 @@ $pixelWidth: 1px
     margin-bottom: 2px
   &__value
     color: $gray-light
+
+.svg-mask
+  position: absolute
+  z-index: 8
+  pointer-events: none
+  width: 100%
+  height: 100%
+  top: 0
+  left: 0
+  &__mask
+    height: 100%
+  &__mask-base
+    width: 100%
+    height: 100%
+  // &__mask-spot
+  //   width: 84px
+  //   height: 84px

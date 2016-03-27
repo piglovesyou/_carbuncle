@@ -92,7 +92,7 @@ class Palette extends React.Component {
                   onStepRemoveClicked={onStepRemoveClicked.bind(this, step)}
                   {...step} />
             })}
-            <StepAdder />
+            <StepAdder {...this.props} />
           </div>
           <div className="palette__footer">
             <button className="btn btn-default btn-lg"><i className="fa fa-fw fa-cog"></i></button>

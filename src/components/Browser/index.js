@@ -8,9 +8,11 @@ const Recorder = require('../../modified-selenium-builder/seleniumbuilder/conten
 const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 const Executor = require('../../core/executor');
 const BrowserEmitter = require('../../emitter/browser');
+const EventEmitter = require('events').EventEmitter;
 
 const Script = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/script');
 const Selenium2 = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/selenium2/selenium2');
+const Locator = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/locator');
 
 global.carbuncleTargetFrame = null;
 
@@ -23,7 +25,6 @@ class Index extends React.Component {
       testCase: [],
       location: null
     };
-    this.recorder_;
     this.goBack = this.goBack.bind(this);
     this.refresh = this.refresh.bind(this);
   }
@@ -34,16 +35,19 @@ class Index extends React.Component {
         <Browser
           ref="browser"
           location={this.state.location}
-          isRecording={isRecording}
+          disablePageMove={isRecording}
           onRecordButtonClick=  {this.state.isPlaybacking ? null : onRecordButtonClick.bind(this)}
           onIFrameLoaded=       {this.state.isPlaybacking ? null : onIFrameLoaded.bind(this)}
           onLocationTextChange= {this.state.isPlaybacking ? null : onLocationTextChange.bind(this)}
           onLocationTextSubmit= {this.state.isPlaybacking ? null : onLocationTextSubmit.bind(this)}
           onHistoryBackClick=   {this.state.isPlaybacking ? null : onHistoryBackClick.bind(this)}
           onLocationReloadClick={this.state.isPlaybacking ? null : onLocationReloadClick.bind(this)}
+          spotRect={this.state.spotRect}
         />
         <Palette testCase={this.state.testCase}
-            onPlaybackClick={onPlaybackClick.bind(this)} />
+            onPlaybackClick={onPlaybackClick.bind(this)}
+            onAddVerifyingStepClick={onAddVerifyingStepClick.bind(this)}
+        />
       </div>
     );
   }
@@ -166,6 +170,65 @@ function onLocationReloadClick() {
   this.refs.browser.iFrameEl.contentWindow.location.reload();
   if (this.state.recorder) {
     pushStep.call(this, new Script.Step(Selenium2.stepTypes.refresh));
+  }
+}
+
+function onAddVerifyingStepClick() {
+  const selector = new Selecting(this);
+  if (this.state.recorder) {
+    this.state.recorder.destroy();
+    // destroy but still recording
+  }
+  selector.on('select', locator => {
+    console.log(locator);
+    selector.destroy();
+    this.setState({
+      recorder: createRecorder.call(this)
+    });
+  });
+}
+
+class Selecting extends EventEmitter {
+  constructor(component) {
+    super();
+    this.doc = component.iFrameWindow.document;
+    this.component = component;
+    this.component.setState({spotRect: {}});
+    this.doc.addEventListener('mouseover', this.onMove = this.onMove.bind(this));
+    this.doc.addEventListener('scroll', this.onDocumentScroll = this.onDocumentScroll.bind(this));
+    this.doc.addEventListener('click', this.onClick = this.onClick.bind(this), true);
+    this.styleEl_ = goog.style.installStyles('*{cursor:pointer!important}', this.doc);
+  }
+  destroy() {
+    this.component.setState({spotRect: null});
+    this.doc.removeEventListener('mouseover', this.onMove);
+    this.doc.removeEventListener('scroll', this.onDocumentScroll);
+    this.doc.removeEventListener('click', this.onClick, true);
+    goog.style.installStyles(this.styleEl_);
+  }
+  onDocumentScroll(e) {
+    if (!this.lastRect_) return;
+    const spotRect = Object.assign({}, this.lastRect_);
+    this.applyScrollPos(spotRect);
+    this.component.setState({spotRect});
+  }
+  onMove(e) {
+    const locator = this.lastLocator_ = Locator.fromElement(e.target, true);
+    const pos = goog.style.getFramedPageOffset(locator.getPreferredElement(), this.component.iFrameWindow);
+    const size = goog.style.getBorderBoxSize(locator.getPreferredElement());
+    const rect = this.lastRect_ = Object.assign(pos, size);
+    const spotRect = Object.assign({}, rect);
+    this.applyScrollPos(spotRect);
+    this.component.setState({spotRect});
+  }
+  onClick(e) {
+    this.emit('select', this.lastLocator_, this.lastRect_);
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  applyScrollPos(pos) {
+    pos.x -= this.component.iFrameWindow.document.body.scrollLeft;
+    pos.y -= this.component.iFrameWindow.document.body.scrollTop;
   }
 }
 
