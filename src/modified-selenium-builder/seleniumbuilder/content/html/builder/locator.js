@@ -212,9 +212,9 @@
 const builder = {};
 const window = {};
 window.sebuilder = {};
-window.sebuilder.getRecordingWindow = () => global.carbuncleTargetWindow;
+window.sebuilder.getRecordingWindow = () => global.carbuncleTargetFrame.contentWindow;
 window.bridge = {};
-window.bridge.getRecordingWindow = () => global.carbuncleTargetWindow;
+window.bridge.getRecordingWindow = () => global.carbuncleTargetFrame.contentWindow;
 
 const cssQuery = (query, doc) => {
   return doc.querySelectorAll(query);

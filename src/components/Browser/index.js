@@ -1,19 +1,18 @@
 const React = require('react');
 const { Router, Route, IndexRoute, Link, IndexLink, hashHistory } = require('react-router');
+const assert = require('power-assert');
 
 const Browser = require('./Browser');
 const Palette = require('./Palette');
 const Recorder = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/selenium2/recorder');
 const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 const Executor = require('../../core/executor');
+const BrowserEmitter = require('../../emitter/browser');
 
 const Script = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/script');
 const Selenium2 = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/selenium2/selenium2');
 
-// const assert = require('power-assert');
-
 global.carbuncleTargetFrame = null;
-global.carbuncleTargetWindow = null;
 
 class Index extends React.Component {
   constructor(props) {
@@ -25,6 +24,8 @@ class Index extends React.Component {
       location: null
     };
     this.recorder_;
+    this.goBack = this.goBack.bind(this);
+    this.refresh = this.refresh.bind(this);
   }
   render() {
     return (
@@ -47,10 +48,26 @@ class Index extends React.Component {
   }
   componentDidMount() {
     global.carbuncleTargetFrame = this.refs.browser.iFrameEl;
-    global.carbuncleTargetWindow = this.refs.browser.iFrameEl.contentWindow;
+    BrowserEmitter.on('goBack', this.goBack);
+    BrowserEmitter.on('refresh', this.refresh);
+  }
+  componentWillUnmount() {
+    global.carbuncleTargetFrame = null;
+    if (this.recorder_) {
+      this.recorder_.destroy();
+      this.recorder_ = null;
+    }
+    BrowserEmitter.removeListener('goBack', this.goBack);
+    BrowserEmitter.removeListener('refresh', this.refresh);
   }
   get iFrameWindow() {
     return this.refs.browser.iFrameEl.contentWindow;
+  }
+  goBack() {
+    this.iFrameWindow.history.back();
+  }
+  refresh() {
+    this.iFrameWindow.location.reload();
   }
 }
 

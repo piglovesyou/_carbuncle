@@ -1,8 +1,9 @@
 const {WebDriver, By, until} = require('selenium-webdriver');
 const Driver = require('./driver');
 const {timeout, showDevTools, closeDevTools} = require('../util');
+const BrowserEmitter = require('../emitter/browser');
 
-module.exports.execute = execute;
+module.exports = {execute};
 
 async function execute(steps) {
 
@@ -14,38 +15,52 @@ async function execute(steps) {
 
   for (let step of steps) {
     
-    switch (step.type.name) {
+    try {
+      switch (step.type.name) {
 
-      case 'get':
+        case 'get':
 
-        await open(step.url);
-        break;
+          await open(step.url);
+          break;
 
-      case 'clickElement':
-      case 'setElementText':
-      case 'sendKeysToElement':
+        case 'clickElement':
+        case 'setElementText':
+        case 'sendKeysToElement':
 
-        const locator = By[step.locator.getName()](step.locator.getValue());
-        // Carbuncle always waits when to operate an element for stability. Why not?
-        const element = driver.wait(until.elementLocated(locator), 4 * 1000);
-        switch (step.type.name) {
-          case 'clickElement':
-            await element.click();
-            break;
-          case 'setElementText':
-          case 'sendKeysToElement':
-            await element.sendKeys(step.text);
-            break;
-        }
-        break;
-      
-      default:
-        await showDevTools();
-        throw new Error('TODO: ' + step.type.name);
-        break;
+          const locator = By[step.locator.getName()](step.locator.getValue());
+          // Carbuncle always waits when to operate an element for stability. Why not?
+          const element = driver.wait(until.elementLocated(locator), 4 * 1000);
+          switch (step.type.name) {
+            case 'clickElement':
+              await element.click();
+              break;
+            case 'setElementText':
+            case 'sendKeysToElement':
+              await element.sendKeys(step.text);
+              break;
+          }
+          break;
 
+        case 'goBack':
+          BrowserEmitter.emit('goBack');
+          break;
+
+        case 'refresh':
+          BrowserEmitter.emit('refresh');
+          break;
+
+        default:
+          await showDevTools();
+          throw new Error('TODO: ' + step.type.name);
+          break;
+
+      }
+
+    } catch(e) {
+      await showDevTools();
+      await timeout(800);
+      debugger;
     }
-
   }
 }
 

@@ -16,15 +16,19 @@ module.exports = {
         loader: 'babel',
         query: {
           presets: ['react'],
-          plugins: ['transform-async-to-generator']
+          plugins: [
+            'transform-async-to-generator',
+            'transform-class-properties'
+          ]
         }
       }
     ]
   },
   target: 'node-webkit',
   externals: {
+    'power-assert': 'commonjs power-assert',
     'selenium-webdriver': 'commonjs selenium-webdriver',
     'driver': 'commonjs core/driver',
-    'util': 'commonjs util/index'
+    'util': 'commonjs util/index',
   }
 };
