@@ -76,9 +76,16 @@ function onLocationTextChange(e) {
   console.log(e.type);
 }
 
+const {timeout, showDevTools, closeDevTools} = require('../..//util');
 function onLocationTextSubmit(e) {
+  // (async () => {
+  //   await showDevTools();
+  //   await timeout(800);
+  //   debugger;
+  // })();
   this.setState({
-    location: this.refs.browser.locationInputEl.value
+    location: this.refs.browser.locationInputEl.value +
+      (this.refs.browser.locationInputEl.value.endsWith(' ') ? '' : ' ')
   });
   e.preventDefault();
 }
@@ -130,8 +137,10 @@ function onIFrameLoaded(e) {
   if (!this.state.recorder) {
     return;
   }
-  this.state.recorder.destroy();
-  this.state.recorder = createRecorder.call(this);
+  setTimeout(() => {
+    this.state.recorder.destroy();
+    this.state.recorder = createRecorder.call(this);
+  }, 0); // We need this
 }
 
 function createRecorder() {

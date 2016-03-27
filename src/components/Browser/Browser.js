@@ -29,10 +29,9 @@ class Browser extends React.Component {
                 >
                   <input type="text"
                       ref="locationInput"
-                      className="input-lg form-control"
+                      className="browser_location-input input-lg form-control"
                       placeholder="Target url"
                       onChange={this.props.onLocationTextChange}
-                      defaultValue="http://www.google.com/ncr"
                   />
                 </form>
                 <span className="input-group-btn">

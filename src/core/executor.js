@@ -2,12 +2,14 @@ const {WebDriver, By, until} = require('selenium-webdriver');
 const Driver = require('./driver');
 const {timeout, showDevTools, closeDevTools} = require('../util');
 const BrowserEmitter = require('../emitter/browser');
+const Locator = require('../modified-selenium-builder/seleniumbuilder/content/html/builder/locator');
 
 module.exports = {execute};
 
 async function execute(steps) {
 
   // Hack: driver doesn't work when devtools has never shown.
+  // TODO: Move this to application launching
   await showDevTools();
   await closeDevTools();
 

@@ -1,7 +1,6 @@
 const {render} = require('react-dom');
 const routes = require('./routes');
 const Driver = require('./core/driver');
-const {timeout} = require('./util');
 
 render(routes, document.getElementById('application-container'));
 
@@ -18,3 +17,27 @@ win.on('close', async () => {
   });
   // TODO: `chromedriver` process still exists. How do we terminate it from nw?
 });
+
+// For development
+const {WebDriver, By, Key, until} = require('selenium-webdriver');
+const {timeout, showDevTools, closeDevTools} = require('./util');
+const assert = require('power-assert');
+(async () => {
+
+  try {
+    await timeout(1200);
+    var driver = await Driver.getDefaultContent();
+    await driver.findElement(By.css('.browser__rec-btn')).click();
+    // await locationInputEl.sendKeys('http://www.google.com/ncr');
+    await driver.findElement(By.css('.browser_location-input')).sendKeys('http://passwordsgenerator.net/md5-hash-generator/');
+    await driver.findElement(By.css('.browser_location-input')).sendKeys(Key.ENTER);
+    var driver = await Driver.get();
+    await driver.findElement(By.css('#txt1')).sendKeys('abc');
+    
+  } catch(e) {
+    await showDevTools();
+    await timeout(800);
+    debugger;
+  }
+
+})();

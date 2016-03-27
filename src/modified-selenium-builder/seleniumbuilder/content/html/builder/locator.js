@@ -242,10 +242,18 @@ builder.locator.methods = {
   xpath:      {toString: function() { return "xpath"; }},
 };
 
+/*
+ * Mmm I'm using selenium2 api but still I want to use shorter methods.
+ */
+// builder.locator.methods.id[builder.selenium2] = "id";
+// builder.locator.methods.name[builder.selenium2] = "name";
+// builder.locator.methods.link[builder.selenium2] = "link text";
+// builder.locator.methods.css[builder.selenium2] = "css selector";
+// builder.locator.methods.xpath[builder.selenium2] = "xpath";
 builder.locator.methods.id[builder.selenium2] = "id";
 builder.locator.methods.name[builder.selenium2] = "name";
-builder.locator.methods.link[builder.selenium2] = "link text";
-builder.locator.methods.css[builder.selenium2] = "css selector";
+builder.locator.methods.link[builder.selenium2] = "link";
+builder.locator.methods.css[builder.selenium2] = "css";
 builder.locator.methods.xpath[builder.selenium2] = "xpath";
 
 builder.locator.methodForName = function(seleniumVersion, name) {

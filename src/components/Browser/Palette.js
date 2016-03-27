@@ -5,12 +5,23 @@ const Draggable = require('react-draggable');
 
 const ReactDOM = require('react-dom');
 
-class Step extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
+class StepAdder extends React.Component {
+  render() {
+    return (
+      <div className="step-adder">
+        <button className="btn btn-default"
+            onClick={this.props.onAddVerifyingStepClick}
+            title="Add verifying step"
+        >
+          <i className="fa fa-plus"></i>
+          &nbsp;Verify
+        </button>
+      </div>
+    );
   }
+}
 
+class Step extends React.Component {
   render() {
     return (
       <div className="step">
@@ -81,6 +92,7 @@ class Palette extends React.Component {
                   onStepRemoveClicked={onStepRemoveClicked.bind(this, step)}
                   {...step} />
             })}
+            <StepAdder />
           </div>
           <div className="palette__footer">
             <button className="btn btn-default btn-lg"><i className="fa fa-fw fa-cog"></i></button>
