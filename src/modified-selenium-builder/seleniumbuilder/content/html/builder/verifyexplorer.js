@@ -216,6 +216,7 @@ const Loadlistener = require('./loadlistener');
 const Locator = require('./locator');
 const Script = require('./script');
 const Selenium2 = require('./selenium2/selenium2');
+const Utils = require('./utils');
 
 
 /**
@@ -299,7 +300,7 @@ builder.VerifyExplorer.prototype = {
 
     if (selection && selection.toString().trim().length > 0) {
       this.recordStep(new Script.Step(Selenium2.stepTypes.verifyTextPresent,
-        builder.normalizeWhitespace(selection.toString())));
+        Utils.normalizeWhitespace(selection.toString())));
       return;
     }
     
@@ -351,7 +352,7 @@ builder.VerifyExplorer.prototype = {
         }
       }
       this.recordStep(new Script.Step(Selenium2.stepTypes.verifyTextPresent,
-          builder.normalizeWhitespace(text)));
+          Utils.normalizeWhitespace(text)));
       return;
     }
     

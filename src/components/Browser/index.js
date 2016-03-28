@@ -15,6 +15,8 @@ const Selenium2 = require('../../modified-selenium-builder/seleniumbuilder/conte
 const Locator = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/locator');
 const VerifyExplorer = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/verifyexplorer');
 
+const mix = require('../../util/mix');
+
 global.carbuncleTargetFrame = null;
 
 class Index extends React.Component {
@@ -181,29 +183,32 @@ function onAddVerifyingStepClick() {
     // destroy but let it keep recording
     this.state.recorder.destroy();
   }
-  // TODO:
-  // explorer.on('choose', () => {
-  //   debugger;
-  //   explorer.destroy();
-  // });
+  explorer.on('choose', _ => {
+    explorer.destroy();
+    // Recorder somehow captures my mouseup and I don't want it
+    setTimeout(() => {
+      this.setState({
+        recorder: createRecorder.call(this)
+      });
+    }, 0);
+  });
 }
 
-class SuperVerifyExplorer extends VerifyExplorer {
+class SuperVerifyExplorer extends mix(VerifyExplorer, EventEmitter) {
   constructor(component, justReturnLocator) {
-    super(component.iFrameWindow, Selenium2, pushStep.bind(component), justReturnLocator);
-    // EventEmitter.call(this);
-    this.doc = component.iFrameWindow.document;
+    super();
+    VerifyExplorer.call(this, component.iFrameWindow, Selenium2, pushStep.bind(component), justReturnLocator);
     this.component = component;
 
-    this.component.setState({spotRect: {}});
-    this.doc.addEventListener('scroll', this.onDocumentScroll = this.onDocumentScroll.bind(this));
-    this.styleEl_ = goog.style.installStyles('*{cursor:pointer!important}', this.doc);
+    component.setState({spotRect: {}});
+    component.iFrameWindow.document.addEventListener('scroll', this.onDocumentScroll = this.onDocumentScroll.bind(this));
+    this.styleEl_ = goog.style.installStyles('*{cursor:pointer!important}', component.iFrameWindow.document);
   }
   /** @override */
   handleMouseup(e) {
     super.handleMouseup(e);
     this.component.setState({ spotRect: null });
-    // this.emit('choose');
+    this.emit('choose', this.lastLocator_);
   }
   /** @override */
   handleMouseover(e) {
@@ -222,10 +227,9 @@ class SuperVerifyExplorer extends VerifyExplorer {
     super.destroy();
 
     this.component.setState({spotRect: null});
-    this.doc.removeEventListener('scroll', this.onDocumentScroll);
+    this.component.iFrameWindow.document.removeEventListener('scroll', this.onDocumentScroll);
     goog.style.installStyles(this.styleEl_);
   }
-
   onDocumentScroll(e) {
     if (!this.lastRect_) return;
     const spotRect = Object.assign({}, this.lastRect_);
