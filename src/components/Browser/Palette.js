@@ -13,7 +13,7 @@ class StepAdder extends React.Component {
             onClick={this.props.onAddVerifyingStepClick}
             title="Add verifying step"
         >
-          <i className="fa fa-plus"></i>
+          <i className="fa fa-location-arrow fa-rotate-180"></i>
           &nbsp;Verify
         </button>
       </div>
