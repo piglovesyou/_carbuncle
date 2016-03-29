@@ -1,7 +1,7 @@
 const React = require('react');
 const { Router, Route, IndexRoute, Link, IndexLink, hashHistory } = require('react-router');
-const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 const Draggable = require('react-draggable');
+const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
 const ReactDOM = require('react-dom');
 
@@ -86,12 +86,18 @@ class Palette extends React.Component {
             </span>
             <button className="btn btn-default btn-lg"><i className="fa fa-fw fa-cog"></i></button>
           </div>
-          <div className="palette__body">
-            {this.props.testCase.map(step => {
-              return <Step key={step.id}
-                  onStepRemoveClicked={onStepRemoveClicked.bind(this, step)}
-                  {...step} />
-            })}
+          <div className="palette__body" ref="palette__body">
+            <ReactCSSTransitionGroup
+                transitionName="step"
+                transitionEnterTimeout={900}
+                transitionLeaveTimeout={200}
+            >
+              {this.props.testCase.map(step => {
+                return <Step key={step.id}
+                    onStepRemoveClicked={onStepRemoveClicked.bind(this, step)}
+                    {...step} />
+              })}
+            </ReactCSSTransitionGroup>
             <StepAdder {...this.props} />
           </div>
           <div className="palette__footer">
@@ -108,12 +114,21 @@ class Palette extends React.Component {
       // TODO: How I can force update draggable positioning
     }
   }
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.testCase.length > prevProps.testCase.length) {
+      scrollToBottom.call(this);
+    }
+  }
   onDragStop(e) {
     console.log(e.x, e.y);
   }
 }
 
 module.exports = Palette;
+
+function scrollToBottom() {
+  this.refs.palette__body.scrollTop = this.refs.palette__body.scrollHeight - this.refs.palette__body.offsetHeight;
+}
 
 function onStepRemoveClicked(step) {
   const index = this.props.testCase.findIndex(s => s.id === step.id);

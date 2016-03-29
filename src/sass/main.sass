@@ -432,7 +432,7 @@ $pixelWidth: 1px
   bottom: 0
   right: 0
   left: 0
-  
+
 
 
 
@@ -472,7 +472,10 @@ $pixelWidth: 1px
     &:active:focus
       color: $brand-danger
     &--active,
-    &--active:focus
+    &--active:hover,
+    &--active:active,
+    &--active:focus,
+    &--active:active:focus
       color: white
       background: $brand-danger
 
@@ -505,6 +508,7 @@ $pixelWidth: 1px
 
 .step
   @extend .clearfix
+  box-sizing: border-box
   &__buttons
     margin: 8px 0
     float: right
@@ -522,6 +526,22 @@ $pixelWidth: 1px
   &__value
     color: $gray-light
 
+.step-enter
+  opacity: 0.01
+  background-color: $state-success-bg
+  transition: opacity 200ms linear, background-color 100ms linear 800ms
+.step-enter.step-enter-active
+  opacity: 1
+  background-color: transparent
+.step-leave
+  opacity: 1
+  overflow: hidden
+  max-height: 80px
+  transition: opacity 100ms linear, max-height 200ms ease-out
+.step-leave.step-leave-active
+  opacity: 0.01
+  max-height: 0
+
 .svg-mask
   position: absolute
   z-index: 8
@@ -536,15 +556,15 @@ $pixelWidth: 1px
     width: 100%
     height: 100%
   &__mask-spot
-    transition: x 20ms ease-in, y 20ms ease-in, width 20ms ease-in, height 20ms ease-in
+    transition: x 20ms ease-out, y 20ms ease-out, width 20ms ease-out, height 20ms ease-out
 
-.svg-mask-enter 
+.svg-mask-enter
   opacity: 0.01
   transition: opacity 100ms linear
-.svg-mask-enter.svg-mask-enter-active 
+.svg-mask-enter.svg-mask-enter-active
   opacity: 1
-.svg-mask-leave 
+.svg-mask-leave
   opacity: 1
   transition: opacity 100ms linear
-.svg-mask-leave.svg-mask-leave-active 
+.svg-mask-leave.svg-mask-leave-active
   opacity: 0.01
