@@ -535,6 +535,16 @@ $pixelWidth: 1px
   &__mask-base
     width: 100%
     height: 100%
-  // &__mask-spot
-  //   width: 84px
-  //   height: 84px
+  &__mask-spot
+    transition: x 20ms ease-in, y 20ms ease-in, width 20ms ease-in, height 20ms ease-in
+
+.svg-mask-enter 
+  opacity: 0.01
+  transition: opacity 100ms linear
+.svg-mask-enter.svg-mask-enter-active 
+  opacity: 1
+.svg-mask-leave 
+  opacity: 1
+  transition: opacity 100ms linear
+.svg-mask-leave.svg-mask-leave-active 
+  opacity: 0.01

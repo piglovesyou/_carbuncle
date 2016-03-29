@@ -177,14 +177,19 @@ function onLocationReloadClick() {
 }
 
 function onAddVerifyingStepClick() {
-  // TODO: Write quit verify explorer logic
-  const explorer = new SuperVerifyExplorer(this);
+  if (this.verifyExplorer_) {
+    this.verifyExplorer_.destroy();
+    this.verifyExplorer_ = null;
+    return;
+  }
+  this.verifyExplorer_ = new SuperVerifyExplorer(this);
   if (this.state.recorder) {
     // destroy but let it keep recording
     this.state.recorder.destroy();
   }
-  explorer.on('choose', _ => {
-    explorer.destroy();
+  this.verifyExplorer_.on('choose', _ => {
+    this.verifyExplorer_.destroy();
+    this.verifyExplorer_ = null;
     // Recorder somehow captures my mouseup and I don't want it
     setTimeout(() => {
       this.setState({
@@ -200,7 +205,7 @@ class SuperVerifyExplorer extends mix(VerifyExplorer, EventEmitter) {
     VerifyExplorer.call(this, component.iFrameWindow, Selenium2, pushStep.bind(component), justReturnLocator);
     this.component = component;
 
-    component.setState({spotRect: {}});
+    component.setState({spotRect: {enable: true}});
     component.iFrameWindow.document.addEventListener('scroll', this.onDocumentScroll = this.onDocumentScroll.bind(this));
     this.styleEl_ = goog.style.installStyles('*{cursor:pointer!important}', component.iFrameWindow.document);
   }
@@ -216,7 +221,7 @@ class SuperVerifyExplorer extends mix(VerifyExplorer, EventEmitter) {
     const pos = goog.style.getFramedPageOffset(locator.getPreferredElement(), this.component.iFrameWindow);
     const size = goog.style.getBorderBoxSize(locator.getPreferredElement());
     const rect = this.lastRect_ = Object.assign(pos, size);
-    const spotRect = Object.assign({}, rect);
+    const spotRect = Object.assign({enable: true}, rect);
     this.applyScrollPos(spotRect);
     this.component.setState({spotRect});
   }
@@ -232,7 +237,7 @@ class SuperVerifyExplorer extends mix(VerifyExplorer, EventEmitter) {
   }
   onDocumentScroll(e) {
     if (!this.lastRect_) return;
-    const spotRect = Object.assign({}, this.lastRect_);
+    const spotRect = Object.assign({enable: true}, this.lastRect_);
     this.applyScrollPos(spotRect);
     this.component.setState({spotRect});
   }

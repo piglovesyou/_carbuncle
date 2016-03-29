@@ -63,9 +63,7 @@ class Browser extends React.Component {
             onLoad={this.props.onIFrameLoaded}
             className="browser__iframe"
           />
-          {this.props.spotRect
-            ?  <SvgMask {...this.props.spotRect} />
-            : null}
+          <SvgMask {...this.props.spotRect} />
         </div>
       </div>
     );

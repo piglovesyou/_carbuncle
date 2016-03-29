@@ -1,11 +1,7 @@
 const React = require('react');
+const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
-class SvgMask extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
+class SvgMaskContent extends React.Component {
   render() {
     return (
       <svg className="svg-mask">
@@ -21,7 +17,6 @@ class SvgMask extends React.Component {
       </svg>
     );
   }
-
   componentDidMount() {
     // Hack
     this.refs['base-rect'].setAttribute('mask', 'url(#svg-mask__mask)');
@@ -29,6 +24,24 @@ class SvgMask extends React.Component {
       this.refs['mask-base'].setAttribute('height', '100%');
     }, 0)
   }
+}
+
+class SvgMask extends React.Component {
+  render() {
+    return (
+      <ReactCSSTransitionGroup
+          transitionName="svg-mask"
+          transitionEnterTimeout={100}
+          transitionLeaveTimeout={100}
+      >
+        {this.props.enable
+          ? <SvgMaskContent {...this.props} />
+          : null
+        }
+      </ReactCSSTransitionGroup>
+    );
+  }
+
 };
 
 module.exports = SvgMask;
