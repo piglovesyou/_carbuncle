@@ -23,8 +23,14 @@ class StepAdder extends React.Component {
 
 class Step extends React.Component {
   render() {
+    const className = 'step' +
+        (this.props.isSuccessfullyExecuted === true
+          ? ' step--is-succeeded'
+          : this.props.isSuccessfullyExecuted === false
+          ? ' step--is-failed'
+          : '');
     return (
-      <div className="step">
+      <div className={className}>
         <div className="step__buttons">
           {this.props.onStepRemoveClicked
             ?  <button className="btn btn-sm btn-default"
@@ -67,10 +73,6 @@ class Step extends React.Component {
 };
 
 class Palette extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
   render() {
     return (
       <Draggable
@@ -108,11 +110,6 @@ class Palette extends React.Component {
         </div>
       </Draggable>
     );
-  }
-  componentDidUpdate(prevProps) {
-    if (prevProps.testCase.length < this.props.testCase.length) {
-      // TODO: How I can force update draggable positioning
-    }
   }
   componentDidUpdate(prevProps, prevState) {
     if (this.props.testCase.length > prevProps.testCase.length) {

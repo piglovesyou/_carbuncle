@@ -1,6 +1,7 @@
 const React = require('react');
 const { Router, Route, IndexRoute, Link, IndexLink, hashHistory } = require('react-router');
 const assert = require('power-assert');
+const {EventEmitter} = require('events');
 
 const Browser = require('./Browser');
 const Palette = require('./Palette');
@@ -8,7 +9,7 @@ const Recorder = require('../../modified-selenium-builder/seleniumbuilder/conten
 const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 const Executor = require('../../core/executor');
 const BrowserEmitter = require('../../emitter/browser');
-const EventEmitter = require('events').EventEmitter;
+const PaletteEmitter = require('../../emitter/palette');
 
 const Script = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/script');
 const Selenium2 = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/selenium2/selenium2');
@@ -23,6 +24,7 @@ class Index extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      // TODO: Recording/playbacking/selecting state is messy. Organize them nicely.
       recorder: null,
       isPlaybacking: false,
       testCase: [],
@@ -30,6 +32,8 @@ class Index extends React.Component {
     };
     this.goBack = this.goBack.bind(this);
     this.refresh = this.refresh.bind(this);
+    this.onStepExecuted = this.onStepExecuted.bind(this);
+    this.onTestcaseExecuted = this.onTestcaseExecuted.bind(this);
   }
   render() {
     const isRecording = !!this.state.recorder;
@@ -58,6 +62,8 @@ class Index extends React.Component {
     global.carbuncleTargetFrame = this.refs.browser.iFrameEl;
     BrowserEmitter.on('goBack', this.goBack);
     BrowserEmitter.on('refresh', this.refresh);
+    PaletteEmitter.on('step-executed', this.onStepExecuted);
+    PaletteEmitter.on('testcase-executed', this.onTestcaseExecuted);
   }
   componentWillUnmount() {
     global.carbuncleTargetFrame = null;
@@ -67,6 +73,24 @@ class Index extends React.Component {
     }
     BrowserEmitter.removeListener('goBack', this.goBack);
     BrowserEmitter.removeListener('refresh', this.refresh);
+    PaletteEmitter.removeListener('step-executed', this.onStepExecuted);
+    PaletteEmitter.removeListener('testcase-executed', this.onTestcaseExecuted);
+  }
+  onStepExecuted(step, isSucceeded) {
+    step.isSuccessfullyExecuted = isSucceeded;
+    this.setState({
+      testCase: this.state.testCase.slice(),
+      isPlaybacking: true
+    });
+  }
+  onTestcaseExecuted() {
+    setTimeout(() => {
+      this.state.testCase.forEach(step => step.isSuccessfullyExecuted = null);
+      this.setState({
+        testCase: this.state.testCase.slice(),
+        isPlaybacking: false
+      });
+    }, 2400);
   }
   get iFrameWindow() {
     return this.refs.browser.iFrameEl.contentWindow;
@@ -112,10 +136,14 @@ function onRecordButtonClick(e) {
   const isRecording = !!this.state.recorder;
   if (isRecording) {
     this.state.recorder.destroy();
-    this.setState({ recorder: null });
+    this.setState({
+      recorder: null,
+      isPlaybacking: false
+    });
   } else {
     this.setState({
-      recorder: createRecorder.call(this)
+      recorder: createRecorder.call(this),
+      isPlaybacking: false
     });
   }
 }
@@ -193,7 +221,8 @@ function onAddVerifyingStepClick() {
     // Recorder somehow captures my mouseup and I don't want it
     setTimeout(() => {
       this.setState({
-        recorder: createRecorder.call(this)
+        recorder: createRecorder.call(this),
+        isPlaybacking: false
       });
     }, 0);
   });

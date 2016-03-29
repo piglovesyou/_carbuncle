@@ -34,11 +34,16 @@ const assert = require('power-assert');
     await driver.findElement(By.css('.browser_location-input')).sendKeys(Key.ENTER);
 
     var driver = await Driver.get();
-    await driver.findElement(By.css('#txt1')).sendKeys('abc');
+    var txt1El = await driver.findElement(By.css('#txt1')).then(el => el);
+    txt1El.sendKeys('abc');
 
     // await timeout(800);
     // var driver = await Driver.getDefaultContent();
-    // await driver.findElement(By.css('.step-adder__verify')).click();
+    // var verifyBtn = driver.findElement(By.css('.step-adder__verify')).then(el => el);
+    // await driver.actions()
+    //   .click(verifyBtn)
+    //   .mouseMove(txt1El, {x: 10, y: 10})
+    //   .click(txt1El);
 
     await showDevTools();
     

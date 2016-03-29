@@ -509,6 +509,12 @@ $pixelWidth: 1px
 .step
   @extend .clearfix
   box-sizing: border-box
+  transition: background-color 100ms linear
+  &--is-succeeded
+    background-color: $state-success-bg
+  &--is-failed
+    background-color: $state-danger-bg
+
   &__buttons
     margin: 8px 0
     float: right
