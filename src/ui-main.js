@@ -38,14 +38,16 @@ const assert = require('power-assert');
     txt1ElPromise.sendKeys('abc');
     var txt1El = await txt1ElPromise.then(el => el);
 
-    await timeout(800);
+    // return;
+
+    // await timeout(800);
     // await showDevTools();
     // await timeout(800);
     // debugger;
 
-    var driver = await Driver.getDefaultContent();
-    await driver.findElement(By.css('.step-adder__verify')).click();
-    // "StaleElementReferenceError"
+    // var driver = await Driver.getDefaultContent();
+    // await driver.findElement(By.css('.step-adder__verify')).click();
+    // // "StaleElementReferenceError"
     // await driver.actions()
     //   .mouseMove(txt1El, {x: 10, y: 10})
     //   .click(txt1El)

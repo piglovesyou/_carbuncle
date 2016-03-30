@@ -100,12 +100,18 @@ class Palette extends React.Component {
                     {...step} />
               })}
             </ReactCSSTransitionGroup>
-            <StepAdder {...this.props} />
           </div>
           <div className="palette__footer">
-            <button className="btn btn-default btn-lg"><i className="fa fa-fw fa-cog"></i></button>
+            {this.props.onAddVerifyingStepClick
+              ? <button className="step-adder__verify btn btn-default"
+                    onClick={this.props.onAddVerifyingStepClick}
+                    title="Add verifying step"
+                >
+                  <i className="fa fa-location-arrow fa-flip-horizontal"></i>
+                  &nbsp;Verify
+                </button>
+              : null}
             <span className="flex-spacer"></span>
-            <button className="btn btn-default btn-lg"><i className="fa fa-fw fa-cog"></i></button>
           </div>
         </div>
       </Draggable>
