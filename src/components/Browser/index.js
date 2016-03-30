@@ -73,7 +73,9 @@ class Index extends React.Component {
     this.finalizeCurrentMode(nextState);
   }
   finalizeCurrentMode(state) {
-    this.previousMode_ = this.state.mode;
+    if (this.state.mode !== state.mode) {
+      this.previousMode_ = this.state.mode;
+    }
     switch(state.mode) {
       case Modes.RECORDING:
         if (!this.recorder_) {
