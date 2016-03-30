@@ -123,14 +123,14 @@ class Index extends React.Component {
     PaletteEmitter.removeListener('testcase-executed', this.onTestcaseExecuted);
   }
   onStepExecuted(step, isSucceeded) {
-    step.isSuccessfullyExecuted = isSucceeded;
+    step.isSuccessfullyExecuted_ = isSucceeded;
     this.setState({
       testCase: this.state.testCase.slice()
     });
   }
   onTestcaseExecuted() {
     setTimeout(() => {
-      this.state.testCase.forEach(step => step.isSuccessfullyExecuted = null);
+      this.state.testCase.forEach(step => step.isSuccessfullyExecuted_ = null);
       this.setState({ testCase: this.state.testCase.slice() });
     }, 2400);
     this.setState({ mode: this.previousMode_ });

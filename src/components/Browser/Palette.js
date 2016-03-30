@@ -24,9 +24,9 @@ class StepAdder extends React.Component {
 class Step extends React.Component {
   render() {
     const className = 'step' +
-        (this.props.isSuccessfullyExecuted === true
+        (this.props.isSuccessfullyExecuted_ === true
           ? ' step--is-succeeded'
-          : this.props.isSuccessfullyExecuted === false
+          : this.props.isSuccessfullyExecuted_ === false
           ? ' step--is-failed'
           : '');
     return (

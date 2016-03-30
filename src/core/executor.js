@@ -30,7 +30,7 @@ async function execute(steps) {
 
           case 'verifyElementValue':
             expected = step.value;
-            actual = await findElement(driver, step).getAttribute('value');
+            actual = await findElement(driver, step.locator).getAttribute('value');
             break;
 
           default:
@@ -54,17 +54,26 @@ async function execute(steps) {
             BrowserEmitter.emit('goBack');
             break;
 
-          case 'refresh':
-            BrowserEmitter.emit('refresh');
+          case 'goForward':
+            // TODO
             break;
 
           case 'clickElement':
-            findElement(driver, step).click();
+            findElement(driver, step.locator).click();
             break;
 
           case 'setElementText':
           case 'sendKeysToElement':
-            await findElement(driver, step).sendKeys(step.text);
+            await findElement(driver, step.locator).sendKeys(step.text);
+            break;
+
+          case 'doubleClickElement':
+            await driver.actions().doubleClick(
+                await findElement(driver, step.locator).then(el => el));
+            break;
+
+          case 'refresh':
+            BrowserEmitter.emit('refresh');
             break;
 
           default:
@@ -85,10 +94,10 @@ async function execute(steps) {
   PaletteEmitter.emit('testcase-executed', somethingBadOccured);
 }
 
-function findElement(driver, step) {
-  const locator = By[step.locator.getName()](step.locator.getValue());
+function findElement(driver, locator) {
+  const l = By[locator.getName()](locator.getValue());
   // Carbuncle always waits when to operate an element for stability. Why not?
-  return driver.wait(until.elementLocated(locator), 4 * 1000);
+  return driver.wait(until.elementLocated(l), 4 * 1000);
 }
 
 function open(url) {
