@@ -5,7 +5,7 @@ const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 class Dashboard extends React.Component {
   render() {
     return (
-      <div className="screens-dashboard">
+      <div className="dashboard">
         <div className="row">
           <div className="col-lg-6">
             <div className="input-group input-group-lg">

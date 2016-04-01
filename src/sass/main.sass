@@ -1,7 +1,9 @@
 
+/*******************************
+ * Variables for bootstrap
+ */
+
 $fa-font-path: "./fonts"
-
-
 
 // http://imperavi.com/kube/css/labels
 $state-success-text:             #0f0f0f
@@ -42,8 +44,6 @@ $btn-default-color: $gray-dark
 $btn-default-bg: #e0e3e5
 $btn-default-border: darken(#e0e3e5, 5%)
 
-
-
 $grid-gutter-width: 8px
 
 $input-color-placeholder: $gray-lighter
@@ -67,378 +67,72 @@ $pagination-hover-color: $gray-light
 
 
 
+/*******************************
+ * Variables for our application
+ */
 
-$effeckt-modal-min-width: 0
-$effeckt-modal-max-width: none
-$effeckt-modal-transition-duration: 400ms
-@import Effeckt/scss/_variables
-@import Effeckt/scss/_global
-@import Effeckt/scss/effeckt
-// @import Effeckt/scss/_variables
-// @import Effeckt/scss/modules/modal
-.effeckt-modal-wrap
-  display: flex
-  transform: none
-  top: 32px
-  right: 64px
-  bottom: 32px
-  left: 64px
-  .effeckt-modal
-    transition-timing-function: ease
-    animation-timing-function: ease
-    flex: 1
-    overflow: auto
-.effeckt-modal-overlay
-  background-color: rgba(255,255,255,.97)
-  @extend .fa
-  @extend .fa-close
-  &:before
-    color: $gray-lighter
-    position: absolute
-    top: 32px
-    right: 32px
-    font-size: 200%
-  &:hover
-    cursor: pointer
-  &:hover:before
-    color: $gray
-// .table>thead>tr>th
-//   border-bottom: none
-.table>tbody+tbody
-  border-top: none
+$z-index-palette: 10
+$z-index-svg-mask: 8
+$z-index-dashboard: 20
+$z-index-focused-button: 3
 
 
 
-$layout-border-color: $gray-lighter
+/*******************************
+ * Layout
+ */
 
-
-/* Overwrite bootstrap style */
-.navbar-default
-  background-color: white
-.form-control
-  border-color: transparent transparent $input-border
-  box-shadow: none
-  background-color: transparent
-  &:hover
-    background: $state-warning-bg
-  &:focus
-    @include box-shadow(inset 0 1px 1px rgba(0,0,0,.075))
-    @include form-control-focus
-    background-color: $input-bg
-.control-label
-  user-select: none
-.btn--fat
-  padding-left: 4.2em
-.pagination
-  margin-bottom: 0
-h3, .h3
-  margin-top: 0
-// select
-//   -webkit-appearance: none
-
-
-
-/* Layout */
 body,
 html
   width: 100%
   height: 100%
   overflow: hidden
 
-body,
 #application-container,
-.app-root,
-.bottom-content,
-.iframe
-  flex: 1
-  display: flex
-
-body,
-#application-container,
-.app-root,
-.iframe
-  flex-direction: column
-
-.layout-scrolable
-  flex: 1
-  overflow: auto
+.application-root,
+.browser-wrapper,
+.browser,
+.dashboard-wrapper,
+.dashboard
+  position: absolute
+  top: 0
+  right: 0
+  bottom: 0
+  left: 0
 
 
 
+/*******************************
+ * Styles for each components
+ */
 
+.application-root
+  background: #444
 
+.browser-wrapper
+  background-color: white
+  opacity: 1
+  $duration: 200ms
+  transition: transform $duration ease-out, opacity $duration linear
 
-
-
-.iframe
-  $border-color: #999
-  border-top: 3px $border-color solid
-  border-right: 3px $border-color solid
-.iframe--isSelectingElement
-  position: relative
-  z-index: 2
-.iframe__form
-  display: flex
-  height: 34px
-  > input[type="text"]
-    padding-left: .4em
-    padding-right: .4em
-    flex: 1
-.iframe__iframe
-  flex: 1
-  border: 0
-  background-color: #fff
-
-.navbar
-  border: none
-  border-bottom: 1px $layout-border-color solid
-.navbar-brand
-  min-width: 6em
-  text-align: center
-.navbar__notification
-  transition: visibility .2s, opacity .2s linear
+.dashboard-wrapper
+  background-color: white
+  // transform: translate(100%, 0)
   visibility: hidden
   opacity: 0
-  &.active
+  $duration: 300ms
+  transition: opacity $duration linear, visibility $duration linear
+
+.application-root--dashboard
+  .browser-wrapper
+    transform: scale(.6, .6)
+    opacity: .01
+  .dashboard-wrapper
+    z-index: 0
+    // transform: translate(0, 0)
     visibility: visible
     opacity: 1
-  .alert
-    padding: 8px
-  padding-top: 10px
-  padding-bottom: 10px
-  line-height: $line-height-computed
-  @media (min-width: $grid-float-breakpoint)
-    padding-top: $navbar-padding-vertical
-    padding-bottom: $navbar-padding-vertical
 
-.editor
-  padding: 16px 24px
-  background: whitesmoke
-  .form-group
-    margin-bottom: 8px
-  .form-group:last-child
-    margin-bottom: 0
-.editor--isedit
-  background: $state-success-bg
-.editor-topinputs
-  input[type="text"]
-    vertical-align: top
-
-.editor-bottominputs .btn
-  float: left
-  margin-left: $grid-gutter-width / 2
-  margin-right: $grid-gutter-width / 2
-
-.scenario
-  border-top: 1px $gray-lighter solid
-  width: 40%
-  display: flex
-  flex-direction: column
-  position: relative
-  background: white
-
-.scenario__header
-  padding: .8em 1.2em .8em
-  .form-group
-    margin-bottom: 0
-  .control-label
-    padding-left: 0
-    padding-right: 0
-  .fa-cube
-    margin-left: 4px
-.scenario__footer
-  padding: 1em 1.2em
-  text-align: right
-
-.scenario__body
-  flex: 1
-  border-top: 1px $layout-border-color solid
-  border-bottom: 1px $layout-border-color solid
-  margin-left: 1.2em
-  margin-right: 1.2em
-  padding: 0 .6em
-  overflow: auto
-.scenario__body-insertblock-wrap
-  padding: 1em 0 2em
-  text-align: center
-
-.scenario__body-insertblock
-  display: inline-block
-  margin: -1em
-  padding: 1em
-  text-align: center
-
-
-
-
-
-
-
-
-.scenario-entry
-  padding: 10px
-  border-bottom: 1px #d3d3d3 solid
-  font-size: 85%
-
-// .scenario-entry--action
-.scenario-entry--verify
-  background: $state-warning-bg
-.scenario-entry--block
-  background: $brand-primary
-
-.scenario-entry--doing
-  background: darkgreen
-.scenario-entry--done
-  background: limegreen
-.scenario-entry--fail
-  background: crimson
-.scenario-entry--doing *,
-.scenario-entry--done *,
-.scenario-entry--fail *
-  color: white !important
-.scenario-entry--done:first-of-type
-  margin-top: 0
-
-.scenario-entry__right
-  float: right
-.scenario-entry__meta
-  color: $gray-lighter
-  clear: both
-  span, a
-    margin-right: 4px
-.scenario-entry__title .fa,
-.app-root--scenario-list .cell--entries .fa
-  font-size: 140%
-  vertical-align: middle
-  margin-right: 4px
-
-
-
-
-
-
-
-
-
-.paged-table--scenario-list
-  .standard-row
-    cursor: pointer
-    .fa-trash
-      visibility: hidden
-    &:hover
-      background-color: $gray-lighter
-      .fa-trash
-        visibility: visible
-    &:active
-      background-color: $brand-primary
-      & .cell,
-      & + .standard-row .cell
-        border-color: transparent
-      .cell,
-      .fa
-        color: white
-  .cell--title
-    width: 240px
-  .cell--buttons
-    width: 160px
-    text-align: right
-    .btn
-      color: $btn-default-color
-      margin-left: 8px
-      width: 4em
-      &:hover
-        text-decoration: none
-        background-color: $brand-danger
-        color: white
-      &.fa
-        width: auto
-        min-height: 1.6em
-  .cell--updated-by
-    width: 160px
-
-.paged-table--scenario-list__entry
-  display: inline-block
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.mask
-  position: absolute
-  width: 100%
-  height: 100%
-  background-color: rgba(0,0,0,.1)
-  top: 0
-  left: 0
-  z-index: 1
-
-
-
-$pixelWidth: 1px
-.pixel
-  position: absolute
-  background: black
-  width: 0
-  height: 0
-  top: 0
-  left: 0
-  z-index: 9999
-.pixel__border
-  position: absolute
-  border: $pixelWidth dashed #f33
-  box-sizing: border-box
-  top: 0
-  left: 0
-  z-index: 9999
-.pixel__border-right
-  margin-left: -$pixelWidth * 2 // top and bottom border width
-.pixel__border-bottom
-  margin-top: -$pixelWidth * 2
-
-
-
-.app-root--setting
-  .fa-check
-    color: $brand-success
-  .fa-close
-    color: $brand-danger
-  label.control-label:last-of-type
-    text-align: left
-
-
-
-.table
-  margin-bottom: 0
-
-.griddle-body
-  position: relative
-  min-height: 480px
-  .footer-container
-    border-top: none
-    padding: 0
-.griddle-footer
-  position: absolute
-  bottom: 0
-  right: 0
-  left: 0
-
-
-
-
-/* ------------------------------------------------------ */
-
-.screens-index,
 .browser
   flex: 1
   flex-direction: column
@@ -456,7 +150,7 @@ $pixelWidth: 1px
     .form-group
       flex: 1
     .btn:focus
-      z-index: 3
+      z-index: $z-index-focused-button
   &__body
     flex: 1
     position: relative
@@ -489,7 +183,7 @@ $pixelWidth: 1px
   display: flex
   min-width: 320px
   flex-direction: column
-  z-index: 10
+  z-index: $z-index-palette
 
   &__header,
   &__footer
@@ -550,7 +244,7 @@ $pixelWidth: 1px
 
 .svg-mask
   position: absolute
-  z-index: 8
+  z-index: $z-index-svg-mask
   pointer-events: none
   width: 100%
   height: 100%
@@ -574,3 +268,4 @@ $pixelWidth: 1px
   transition: opacity 100ms linear
 .svg-mask-leave.svg-mask-leave-active
   opacity: 0.01
+

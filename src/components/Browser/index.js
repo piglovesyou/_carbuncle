@@ -48,7 +48,7 @@ class Index extends React.Component {
     const isPlaybacking = this.state.mode === Modes.PLAYBACKING;
     const isSelecting = this.state.mode === Modes.SELECTING;
     return (
-      <div className="screens-index">
+      <div className="browser-wrapper">
         <Browser
           ref="browser"
           location={this.state.location}

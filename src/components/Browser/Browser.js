@@ -43,12 +43,12 @@ class Browser extends React.Component {
                     <i className="fa fa-circle"></i>
                   </button>
                   <button className={'btn btn-default' + (this.props.disablePageMove ? ' disabled' : '')}
-                      onClick={!this.props.disablePageMove ? () => hashHistory.push('/dashboard') : null}
+                      onClick={!this.props.disablePageMove ? () => hashHistory.push('dashboard') : null}
                   >
                     <i className="fa fa-bars"></i>
                   </button>
                   <button className={'btn btn-default' + (this.props.disablePageMove ? ' disabled' : '')}
-                      onClick={!this.props.disablePageMove ? () => hashHistory.push('/dashboard/setting') : null}>
+                      onClick={!this.props.disablePageMove ? () => hashHistory.push('dashboard/setting') : null}>
                     <i className="fa fa-cog"></i>
                   </button>
                 </span>
