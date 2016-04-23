@@ -2,6 +2,7 @@ const React = require('react');
 const { Router, Route, IndexRoute, Link, IndexLink, hashHistory } = require('react-router');
 const assert = require('power-assert');
 const {EventEmitter} = require('events');
+const {Container} = require('flux/utils');
 
 const Browser = require('./Browser');
 const Palette = require('./Palette');
@@ -9,8 +10,8 @@ const Recorder = require('../../modified-selenium-builder/seleniumbuilder/conten
 const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 const Executor = require('../../core/executor');
 const BrowserEmitter = require('../../emitter/browser');
-const PaletteEmitter = require('../../emitter/palette');
 const {Modes} = require('../../const/browser');
+const Store = require('../../stores/browser');
 
 const Script = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/script');
 const Selenium2 = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/selenium2/selenium2');
@@ -22,6 +23,12 @@ const mix = require('../../util/mix');
 global.carbuncleTargetFrame = null;
 
 class Index extends React.Component {
+  static getStores() {
+    return [Store];
+  }
+  static calculateState(prevState) {
+    return Store.getState();
+  }
   constructor(props) {
     super(props);
     this.state = {
@@ -101,8 +108,8 @@ class Index extends React.Component {
     global.carbuncleTargetFrame = this.refs.browser.iFrameEl;
     BrowserEmitter.on('goBack', this.goBack);
     BrowserEmitter.on('refresh', this.refresh);
-    PaletteEmitter.on('step-executed', this.onStepExecuted);
-    PaletteEmitter.on('testcase-executed', this.onTestcaseExecuted);
+    BrowserEmitter.on('step-executed', this.onStepExecuted);
+    BrowserEmitter.on('testcase-executed', this.onTestcaseExecuted);
     this.finalizeCurrentMode(this.state);
   }
   componentWillUnmount() {
@@ -291,3 +298,4 @@ class SuperVerifyExplorer extends mix(VerifyExplorer, EventEmitter) {
 }
 
 module.exports = Index;
+// module.exports = Container.create(Index);

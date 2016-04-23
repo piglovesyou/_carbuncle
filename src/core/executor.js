@@ -2,8 +2,8 @@ const {WebDriver, By, until} = require('selenium-webdriver');
 const Driver = require('./driver');
 const {timeout, showDevTools, closeDevTools} = require('../util');
 const BrowserEmitter = require('../emitter/browser');
-const PaletteEmitter = require('../emitter/palette');
 const Locator = require('../modified-selenium-builder/seleniumbuilder/content/html/builder/locator');
+const {dispatch} = require('../dispatcher');
 
 const VERIFY_TIMEOUT = 800;
 
@@ -55,7 +55,8 @@ async function execute(steps) {
             return verifyResults(expected, actual, operator);
           });
         }, VERIFY_TIMEOUT);
-        PaletteEmitter.emit('step-executed', step, result, expected, lastActual);
+        dispatch({ type: 'step-executed', step, result, expected, lastActual });
+        BrowserEmitter.emit('step-executed', step, result, expected, lastActual);
         if (result === false) {
           console.log(expected, 'xxxxxxxxxxxxx', actual);
           somethingBadOccured = true;
@@ -70,6 +71,7 @@ async function execute(steps) {
             break;
 
           case 'goBack':
+            dispatch({ type: 'goBack' });
             BrowserEmitter.emit('goBack');
             break;
 
@@ -92,6 +94,7 @@ async function execute(steps) {
             break;
 
           case 'refresh':
+            dispatch({ type: 'refresh' });
             BrowserEmitter.emit('refresh');
             break;
 
@@ -101,7 +104,8 @@ async function execute(steps) {
         }
         // TODO When a step goes bad, it should pass false
         //      eg) element not found
-        PaletteEmitter.emit('step-executed', step, true);
+        dispatch({ type: 'step-executed', step });
+        BrowserEmitter.emit('step-executed', step, true);
       }
 
     } catch(e) {
@@ -110,7 +114,8 @@ async function execute(steps) {
       debugger;
     }
   }
-  PaletteEmitter.emit('testcase-executed', somethingBadOccured);
+  dispatch({ type: 'testcase-executed', somethingBadOccured });
+  BrowserEmitter.emit('testcase-executed', somethingBadOccured);
 }
 
 function verifyResults(expected, actual, operator) {
