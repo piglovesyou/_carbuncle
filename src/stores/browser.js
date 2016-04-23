@@ -1,11 +1,11 @@
 const {ReduceStore} = require('flux/utils');
 const {Modes} = require('../const/browser');
 const dispatcher = require('../dispatcher');
-const assert = require('power-assert');
+const assert = require('assert');
 
 class BrowserStore extends ReduceStore {
   getInitialState() {
-    this.previousMode_;
+    this.previousMode_ = null;
     return {
       mode: Modes.NEUTRAL,
       testCase: [],
@@ -20,9 +20,10 @@ class BrowserStore extends ReduceStore {
   }
 
   reduce(state, action) {
+    let newState;
     switch (action.type) {
       case 'step-executed':
-        return Object.assign({}, state, {
+        newState = Object.assign({}, state, {
           testCase: state.testCase.map(step => {
             if (step.id === action.step.id) {
               step.isSuccessfullyExecuted_ = true;
@@ -30,53 +31,54 @@ class BrowserStore extends ReduceStore {
             return step;
           })
         });
+        break;
 
       case 'testcase-executed':
         setTimeout(() => {
-          dispatcher.dispatch({
-            type: 'change', data: {
-              testCase: state.testCase.map(step => {
-                step.isSuccessfullyExecuted_ = null;
-                return step;
-              })
-            }
+          dispatcher.dispatchChange({
+            testCase: state.testCase.map(step => {
+              step.isSuccessfullyExecuted_ = null;
+              return step;
+            })
           });
         }, 2400);
-        const mode = this.previousMode_;
-        if (state.mode !== mode) this.previousMode_ = state.mode;
-        return Object.assign({}, state, { mode });
-        return
+        newState = Object.assign({}, state, { mode: this.previousMode_ });
+        break;
 
       case 'click-recording':
         {
           assert(state.mode === Modes.NEUTRAL || state.mode === Modes.RECORDING);
           const mode = state.mode === Modes.NEUTRAL ? Modes.RECORDING : Modes.NEUTRAL;
-          if (state.mode !== mode) this.previousMode_ = state.mode;
-          return Object.assign({}, state, { mode });
+          newState = Object.assign({}, state, { mode });
         }
+        break;
 
       case 'click-selecting-verify-step':
         {
           assert(state.mode === Modes.RECORDING || state.mode === Modes.SELECTING);
           const mode = state.mode === Modes.RECORDING ? Modes.SELECTING : Modes.RECORDING;
-          if (state.mode !== mode) this.previousMode_ = state.mode;
-          return Object.assign({}, state, { mode });
+          newState = Object.assign({}, state, { mode });
         }
+        break;
         
       case 'append-step':
         {
           assert(state.mode === Modes.RECORDING || state.mode === Modes.SELECTING);
-          return Object.assign({}, state, {
+          newState = Object.assign({}, state, {
             testCase: state.testCase.concat(action.step)
           });
         }
+        break;
 
       case 'change':
-        return Object.assign({}, state, action.data);
+        newState = Object.assign({}, state, action.data);
+        break;
 
       default:
         return state;
     }
+    if (state.mode !== newState.mode) this.previousMode_ = state.mode;
+    return newState || state;
   }
 }
 

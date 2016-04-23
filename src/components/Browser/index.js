@@ -12,7 +12,7 @@ const Executor = require('../../core/executor');
 const BrowserEmitter = require('../../emitter/browser');
 const {Modes} = require('../../const/browser');
 const Store = require('../../stores/browser');
-const {dispatch} = require('../../dispatcher');
+const {dispatch, dispatchChange} = require('../../dispatcher');
 
 const Script = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/script');
 const Selenium2 = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/selenium2/selenium2');
@@ -115,21 +115,6 @@ class Index extends React.Component {
     BrowserEmitter.removeListener('refresh', this.refresh);
     // BrowserEmitter.removeListener('testcase-executed', this.onTestcaseExecuted);
   }
-  // onTestcaseExecuted() {
-  //   setTimeout(() => {
-  //     dispatch({
-  //       type: 'change', data: {
-  //         testCase: this.state.testCase.map(step => {
-  //           step.isSuccessfullyExecuted_ = null;
-  //           return step;
-  //         })
-  //       }
-  //     });
-  //   }, 2400);
-  //   dispatch({
-  //     type: 'change', data: { mode: this.previousMode_ }
-  //   });
-  // }
   get iFrameWindow() {
     return this.refs.browser.iFrameEl.contentWindow;
   }
@@ -148,8 +133,7 @@ function createVerifyExplorer() {
     this.verifyExplorer_ = null;
     // Recorder somehow captures my mouseup and I don't want it
     setTimeout(() => {
-      dispatch({type: 'change', data: {mode: Modes.RECORDING} });
-      // this.setState({ mode: Modes.RECORDING });
+      dispatchChange({ mode: Modes.RECORDING });
     }, 0);
   });
   return verifyExplorer;
@@ -161,36 +145,22 @@ function onLocationTextChange(e) {
 
 const {timeout, showDevTools, closeDevTools} = require('../..//util');
 function onLocationTextSubmit(e) {
-  dispatch({type: 'change', data: {
+  dispatchChange({
     // TODO: Do this in other way
     location: this.refs.browser.locationInputEl.value +
       (this.refs.browser.locationInputEl.value.endsWith(' ') ? '' : ' ')
-  } });
-  // this.setState({
-  //   // TODO: Do this in other way
-  //   location: this.refs.browser.locationInputEl.value +
-  //     (this.refs.browser.locationInputEl.value.endsWith(' ') ? '' : ' ')
-  // });
+  });
   e.preventDefault();
 }
 
 function onPlaybackClick(e) {
-  dispatch({type: 'change', data: {mode: Modes.PLAYBACKING} });
+  dispatchChange({ mode: Modes.PLAYBACKING });
   // this.setState({ mode: Modes.PLAYBACKING });
   Executor.execute(this.state.testCase);
 }
 
 function onRecordButtonClick(e) {
   dispatch({ type: 'click-recording' });
-  // if (this.state.mode === Modes.NEUTRAL) {
-  //   dispatch({type: 'change', data: {mode: Modes.RECORDING} });
-  //   // this.setState({ mode: Modes.RECORDING });
-  // } else if (this.state.mode === Modes.RECORDING) {
-  //   dispatch({type: 'change', data: {mode: Modes.NEUTRAL} });
-  //   // this.setState({ mode: Modes.NEUTRAL });
-  // }  else {
-  //   assert.fail('dont let record btn be clicked besides NEUTRAL or RECORDING mode');
-  // }
 }
 
 function pushStep(step) {
@@ -249,15 +219,14 @@ class SuperVerifyExplorer extends mix(VerifyExplorer, EventEmitter) {
     VerifyExplorer.call(this, component.iFrameWindow, Selenium2, pushStep.bind(component), justReturnLocator);
     this.component = component;
 
-    dispatch({type: 'change', data: {spotRect: {enable: true} } });
-    // component.setState({spotRect: {enable: true}});
+    dispatchChange({ spotRect: {} });
     component.iFrameWindow.document.addEventListener('scroll', this.onDocumentScroll = this.onDocumentScroll.bind(this));
     this.styleEl_ = goog.style.installStyles('*{cursor:pointer!important}', component.iFrameWindow.document);
   }
   /** @override */
   handleMouseup(e) {
     super.handleMouseup(e);
-    dispatch({ type: 'change', data: {spotRect: null } });
+    dispatchChange({ spotRect: null });
     // this.component.setState({ spotRect: null });
     this.emit('choose', this.lastLocator_);
   }
@@ -267,10 +236,9 @@ class SuperVerifyExplorer extends mix(VerifyExplorer, EventEmitter) {
     const pos = goog.style.getFramedPageOffset(locator.getPreferredElement(), this.component.iFrameWindow);
     const size = goog.style.getBorderBoxSize(locator.getPreferredElement());
     const rect = this.lastRect_ = Object.assign(pos, size);
-    const spotRect = Object.assign({enable: true}, rect);
+    const spotRect = Object.assign({}, rect);
     this.applyScrollPos(spotRect);
-    dispatch({type: 'change', data: {spotRect} });
-    // this.component.setState({spotRect});
+    dispatchChange({ spotRect });
   }
   /** @override */
   resetBorder() {}
@@ -278,16 +246,16 @@ class SuperVerifyExplorer extends mix(VerifyExplorer, EventEmitter) {
   destroy() {
     super.destroy();
 
-    dispatch({type: 'change', data: {spotRect: null} });
+    dispatchChange({ spotRect: null });
     // this.component.setState({spotRect: null});
     this.component.iFrameWindow.document.removeEventListener('scroll', this.onDocumentScroll);
     goog.style.installStyles(this.styleEl_);
   }
   onDocumentScroll(e) {
     if (!this.lastRect_) return;
-    const spotRect = Object.assign({enable: true}, this.lastRect_);
+    const spotRect = Object.assign({}, this.lastRect_);
     this.applyScrollPos(spotRect);
-    dispatch({type: 'change', data: {spotRect} });
+    dispatchChange({spotRect});
     // this.component.setState({spotRect});
   }
   applyScrollPos(pos) {
