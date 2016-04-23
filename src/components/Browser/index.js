@@ -10,6 +10,7 @@ const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 const Executor = require('../../core/executor');
 const BrowserEmitter = require('../../emitter/browser');
 const PaletteEmitter = require('../../emitter/palette');
+const {Modes} = require('../../const/browser');
 
 const Script = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/script');
 const Selenium2 = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/selenium2/selenium2');
@@ -19,13 +20,6 @@ const VerifyExplorer = require('../../modified-selenium-builder/seleniumbuilder/
 const mix = require('../../util/mix');
 
 global.carbuncleTargetFrame = null;
-
-const Modes = {
-  NEUTRAL: 'neutral',
-  RECORDING: 'recording',
-  SELECTING: 'selecting', // Always during RECORDING
-  PLAYBACKING: 'playbacking'
-};
 
 class Index extends React.Component {
   constructor(props) {

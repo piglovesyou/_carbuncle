@@ -1,2 +1,6 @@
+const {Dispatcher} = require('flux');
 
-module.exports = new (require('flux').Dispatcher);
+const instance = new Dispatcher();
+
+module.exports = instance;
+module.exports.dispatch = instance.dispatch.bind(instance);
