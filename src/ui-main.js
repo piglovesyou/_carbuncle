@@ -18,34 +18,47 @@ win.on('close', async () => {
   // TODO: `chromedriver` process still exists. How do we terminate it from nw?
 });
 
-// For development
+// Only for development purpose
 const {WebDriver, By, Key, until} = require('selenium-webdriver');
 const {timeout, showDevTools, closeDevTools} = require('./util');
 const assert = require('power-assert');
 (async () => {
-  return;
+  // return;
   try {
     await timeout(800);
     await showDevTools();
-
     var driver = await Driver.getDefaultContent();
+
+    // Start recording
     await driver.findElement(By.css('.browser__rec-btn')).click();
-    // await locationInputEl.sendKeys('http://www.google.com/ncr');
-    await driver.findElement(By.css('.browser_location-input')).sendKeys('http://passwordsgenerator.net/md5-hash-generator/');
+
+    // Open web site
+    await driver.findElement(By.css('.browser_location-input')).sendKeys('http://www.google.com/ncr');
     await driver.findElement(By.css('.browser_location-input')).sendKeys(Key.ENTER);
 
-    var driver = await Driver.get();
-    var txt1ElPromise = driver.findElement(By.css('#txt1'));
-    txt1ElPromise.sendKeys('abc');
-    var txt1El = await txt1ElPromise.then(el => el);
+    driver = await Driver.get();
+    await driver.findElement(By.name('q')).sendKeys('carbuncle');
+    await driver.findElement(By.name('q')).sendKeys(Key.ENTER);
+    driver = await Driver.getDefaultContent();
+    await driver.findElement(By.css('.step-adder__verify')).click();
+    await timeout(400);
+    driver = await Driver.get();
+    driver.findElement(By.css('.srg .g')).click();
+     
+    // 
+    // await driver.findElement(By.css('.browser__rec-btn')).click();
+    // await driver.findElement(By.css('.browser_location-input')).sendKeys('http://passwordsgenerator.net/md5-hash-generator/');
+    // await driver.findElement(By.css('.browser_location-input')).sendKeys(Key.ENTER);
+    // var driver = await Driver.get();
+    // var txt1ElPromise = driver.findElement(By.css('#txt1'));
+    // txt1ElPromise.sendKeys('abc');
+    // var txt1El = await txt1ElPromise.then(el => el);
 
     // return;
-
     // await timeout(800);
     // await showDevTools();
     // await timeout(800);
     // debugger;
-
     // var driver = await Driver.getDefaultContent();
     // await driver.findElement(By.css('.step-adder__verify')).click();
     // // "StaleElementReferenceError"

@@ -5,6 +5,8 @@ const BrowserEmitter = require('../emitter/browser');
 const PaletteEmitter = require('../emitter/palette');
 const Locator = require('../modified-selenium-builder/seleniumbuilder/content/html/builder/locator');
 
+const VERIFY_TIMEOUT = 800;
+
 module.exports = {execute};
 
 async function execute(steps) {
@@ -25,20 +27,37 @@ async function execute(steps) {
 
       if (step.type.name.startsWith('verify')) {
         let expected;
-        let actual;
+        let getActual;
+        let operator;
         switch (step.type.name) {
 
           case 'verifyElementValue':
             expected = step.value;
-            actual = await findElement(driver, step.locator).getAttribute('value');
+            getActual = () => findElement(driver, step.locator).getAttribute('value');
+            operator = 'eq';
+            break;
+
+          case 'verifyTextPresent':
+            // ref. builder.selenium2.rcPlayback.types.verifyTextPresent
+            expected = step.text;
+            getActual = () => findElement(driver, By.tagName('body')).getText();
+            operator = 'contains';
             break;
 
           default:
             throw new Error(step);
             break;
         }
-        PaletteEmitter.emit('step-executed', step, expected === actual, expected, actual);
-        if (expected !== actual) {
+        let lastActual;
+        const result = await driver.wait(() => {
+          return getActual().then(actual => {
+            lastActual = actual;
+            return verifyResults(expected, actual, operator);
+          });
+        }, VERIFY_TIMEOUT);
+        PaletteEmitter.emit('step-executed', step, result, expected, lastActual);
+        if (result === false) {
+          console.log(expected, 'xxxxxxxxxxxxx', actual);
           somethingBadOccured = true;
           break;
         }
@@ -94,8 +113,21 @@ async function execute(steps) {
   PaletteEmitter.emit('testcase-executed', somethingBadOccured);
 }
 
+function verifyResults(expected, actual, operator) {
+  switch(operator) {
+    case 'eq':
+      return expected === actual;
+    case 'contains':
+      return actual.includes(expected);
+    default:
+      throw new Error('wrong operator key');
+  }
+}
+
 function findElement(driver, locator) {
-  const l = By[locator.getName()](locator.getValue());
+  const l = locator instanceof By
+      ? locator
+      : By[locator.getName()](locator.getValue());
   // Carbuncle always waits when to operate an element for stability. Why not?
   return driver.wait(until.elementLocated(l), 4 * 1000);
 }

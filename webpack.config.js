@@ -11,12 +11,13 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.js?$/,
+        test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
         loader: 'babel',
         query: {
           presets: ['react'],
           plugins: [
+            // 'add-module-exports',
             'transform-async-to-generator',
             'transform-class-properties'
           ]
