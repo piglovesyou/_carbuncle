@@ -43,8 +43,13 @@ const assert = require('power-assert');
     await driver.findElement(By.css('.step-adder__verify')).click();
     await timeout(400);
     driver = await Driver.get();
-    driver.findElement(By.css('.srg .g')).click();
-     
+    await timeout(400);
+    await driver.findElement(By.css('.g h3')).click();
+    await timeout(400);
+    driver = await Driver.getDefaultContent();
+    await timeout(400);
+    await driver.findElement(By.css('.palette__playback-btn')).click();
+
     // 
     // await driver.findElement(By.css('.browser__rec-btn')).click();
     // await driver.findElement(By.css('.browser_location-input')).sendKeys('http://passwordsgenerator.net/md5-hash-generator/');
@@ -67,7 +72,7 @@ const assert = require('power-assert');
     //   .click(txt1El)
     //   .perform();
 
-    await showDevTools();
+    // await showDevTools();
     
   } catch(e) {
     await showDevTools();

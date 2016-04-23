@@ -70,6 +70,15 @@ class BrowserStore extends ReduceStore {
         }
         break;
 
+      case 'remove-step':
+        {
+          assert(state.testCase.find(step => step.id === action.step.id));
+          newState = Object.assign({}, state, {
+            testCase: state.testCase.filter(step => step.id !== action.step.id)
+          });
+        }
+        break;
+
       case 'change':
         newState = Object.assign({}, state, action.data);
         break;

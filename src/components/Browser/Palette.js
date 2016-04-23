@@ -3,24 +3,11 @@ const { Router, Route, IndexRoute, Link, IndexLink, hashHistory } = require('rea
 const Draggable = require('react-draggable');
 const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 const Step = require('./Step');
+const {Modes} = require('../../const/browser');
+const {dispatch, dispatchChange} = require('../../dispatcher');
+const Executor = require('../../core/executor');
 
 const ReactDOM = require('react-dom');
-
-class StepAdder extends React.Component {
-  render() {
-    return (
-      <div className="step-adder">
-        <button className="step-adder__verify btn btn-default"
-            onClick={this.props.onAddVerifyingStepClick}
-            title="Add verifying step"
-        >
-          <i className="fa fa-location-arrow fa-flip-horizontal"></i>
-          &nbsp;Verify
-        </button>
-      </div>
-    );
-  }
-}
 
 class Palette extends React.Component {
   render() {
@@ -33,7 +20,7 @@ class Palette extends React.Component {
       >
         <div className="palette" ref="elm">
           <div className="palette__header">
-            <button className="btn btn-default btn-lg" onClick={this.props.onPlaybackClick}><i className="fa fa-fw fa-play"></i></button>
+            <button className="btn btn-default btn-lg palette__playback-btn" onClick={onPlaybackClick.bind(this)}><i className="fa fa-fw fa-play"></i></button>
             <span className="palette__handle flex-spacer">
             </span>
             <button className="btn btn-default btn-lg"><i className="fa fa-fw fa-cog"></i></button>
@@ -46,15 +33,15 @@ class Palette extends React.Component {
             >
               {this.props.testCase.map(step => {
                 return <Step key={step.id}
-                    onStepRemoveClicked={onStepRemoveClicked.bind(this, step)}
+                    onStepRemoveClicked={onStepRemoveClicked.bind(null, step)}
                     {...step} />
               })}
             </ReactCSSTransitionGroup>
           </div>
           <div className="palette__footer">
-            {this.props.onAddVerifyingStepClick
+            {this.props.isRecording
               ? <button className="step-adder__verify btn btn-default"
-                    onClick={this.props.onAddVerifyingStepClick}
+                    onClick={onAddVerifyingStepClick}
                     title="Add verifying step"
                 >
                   <i className="fa fa-location-arrow fa-flip-horizontal"></i>
@@ -77,6 +64,15 @@ class Palette extends React.Component {
   }
 }
 
+function onAddVerifyingStepClick() {
+  dispatch({type: 'click-selecting-verify-step'});
+}
+
+function onPlaybackClick(e) {
+  dispatchChange({ mode: Modes.PLAYBACKING });
+  Executor.execute(this.props.testCase);
+}
+
 module.exports = Palette;
 
 function scrollToBottom() {
@@ -84,9 +80,5 @@ function scrollToBottom() {
 }
 
 function onStepRemoveClicked(step) {
-  const index = this.props.testCase.findIndex(s => s.id === step.id);
-  if (index < 0) return;
-  this.setState({
-    testCase: this.props.testCase.splice(index, 1)
-  });
+  dispatch({ type: 'remove-step', step });
 }

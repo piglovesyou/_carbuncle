@@ -3,9 +3,11 @@ const { Router, Route, IndexRoute, Link, IndexLink, hashHistory } = require('rea
 const {DRIVER_TARGET_ID} = require('../../const');
 const SvgMask = require('./SvgMask');
 const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
+const {dispatch, dispatchChange} = require('../../dispatcher');
 
 class Browser extends React.Component {
   render() {
+    const {isPlaybacking} = this.props;
     return (
       <div className="browser">
         <div className="browser__header">
@@ -33,13 +35,12 @@ class Browser extends React.Component {
                       ref="locationInput"
                       className="browser_location-input input-lg form-control"
                       placeholder="Target url"
-                      onChange={this.props.onLocationTextChange}
                   />
                 </form>
                 <span className="input-group-btn">
                   <button className={'btn btn-default browser__rec-btn' + (this.props.disablePageMove ? ' browser__rec-btn--active' : '')}
                       title={this.props.disablePageMove ? 'Stop recording' : 'Start recording'}
-                      onClick={this.props.onRecordButtonClick}
+                      onClick={isPlaybacking ? null : this.onRecordButtonClick.bind(this)}
                   >
                     <i className="fa fa-circle"></i>
                   </button>
@@ -77,6 +78,11 @@ class Browser extends React.Component {
       </div>
     );
   }
+
+  onRecordButtonClick(e) {
+    dispatch({ type: 'click-recording' });
+  }
+
   get iFrameEl() {
     return this.refs.iframe;
   }

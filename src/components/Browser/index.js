@@ -1,25 +1,20 @@
 const React = require('react');
 const { Router, Route, IndexRoute, Link, IndexLink, hashHistory } = require('react-router');
 const assert = require('power-assert');
-const {EventEmitter} = require('events');
 const {Container} = require('flux/utils');
 
 const Browser = require('./Browser');
 const Palette = require('./Palette');
 const Recorder = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/selenium2/recorder');
 const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
-const Executor = require('../../core/executor');
 const BrowserEmitter = require('../../emitter/browser');
 const {Modes} = require('../../const/browser');
 const Store = require('../../stores/browser');
 const {dispatch, dispatchChange} = require('../../dispatcher');
+const SuperVerifyExplorer = require('../../core/verify-explorer');
 
 const Script = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/script');
 const Selenium2 = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/selenium2/selenium2');
-const Locator = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/locator');
-const VerifyExplorer = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/verifyexplorer');
-
-const mix = require('../../util/mix');
 
 global.carbuncleTargetFrame = null;
 
@@ -48,9 +43,8 @@ class Index extends React.Component {
           ref="browser"
           location={this.state.location}
           disablePageMove={!isNeutral}
-          onRecordButtonClick=  {isPlaybacking ? null : onRecordButtonClick.bind(this)}
+          isPlaybacking={isPlaybacking}
           onIFrameLoaded=       {isPlaybacking ? null : onIFrameLoaded.bind(this)}
-          onLocationTextChange= {isPlaybacking ? null : onLocationTextChange.bind(this)}
           onLocationTextSubmit= {isPlaybacking ? null : onLocationTextSubmit.bind(this)}
           onHistoryBackClick=   {isPlaybacking ? null : onHistoryBackClick.bind(this)}
           onLocationReloadClick={isPlaybacking ? null : onLocationReloadClick.bind(this)}
@@ -58,8 +52,6 @@ class Index extends React.Component {
         />
         <Palette testCase={this.state.testCase}
             isRecording={isRecording}
-            onPlaybackClick={onPlaybackClick.bind(this)}
-            onAddVerifyingStepClick={isRecording || isSelecting ? onAddVerifyingStepClick.bind(this) : null}
         />
       </div>
     );
@@ -127,7 +119,7 @@ class Index extends React.Component {
 }
 
 function createVerifyExplorer() {
-  const verifyExplorer = new SuperVerifyExplorer(this);
+  const verifyExplorer = new SuperVerifyExplorer(this, pushStep.bind(this));
   verifyExplorer.on('choose', _ => {
     verifyExplorer.destroy();
     this.verifyExplorer_ = null;
@@ -139,10 +131,6 @@ function createVerifyExplorer() {
   return verifyExplorer;
 }
 
-function onLocationTextChange(e) {
-  console.log(e.type);
-}
-
 const {timeout, showDevTools, closeDevTools} = require('../..//util');
 function onLocationTextSubmit(e) {
   dispatchChange({
@@ -151,16 +139,6 @@ function onLocationTextSubmit(e) {
       (this.refs.browser.locationInputEl.value.endsWith(' ') ? '' : ' ')
   });
   e.preventDefault();
-}
-
-function onPlaybackClick(e) {
-  dispatchChange({ mode: Modes.PLAYBACKING });
-  // this.setState({ mode: Modes.PLAYBACKING });
-  Executor.execute(this.state.testCase);
-}
-
-function onRecordButtonClick(e) {
-  dispatch({ type: 'click-recording' });
 }
 
 function pushStep(step) {
@@ -206,61 +184,6 @@ function onLocationReloadClick() {
   this.refs.browser.iFrameEl.contentWindow.location.reload();
   if (this.state.mode === Modes.RECORDING) {
     pushStep.call(this, new Script.Step(Selenium2.stepTypes.refresh));
-  }
-}
-
-function onAddVerifyingStepClick() {
-  dispatch({type: 'click-selecting-verify-step'});
-}
-
-class SuperVerifyExplorer extends mix(VerifyExplorer, EventEmitter) {
-  constructor(component, justReturnLocator) {
-    super();
-    VerifyExplorer.call(this, component.iFrameWindow, Selenium2, pushStep.bind(component), justReturnLocator);
-    this.component = component;
-
-    dispatchChange({ spotRect: {} });
-    component.iFrameWindow.document.addEventListener('scroll', this.onDocumentScroll = this.onDocumentScroll.bind(this));
-    this.styleEl_ = goog.style.installStyles('*{cursor:pointer!important}', component.iFrameWindow.document);
-  }
-  /** @override */
-  handleMouseup(e) {
-    super.handleMouseup(e);
-    dispatchChange({ spotRect: null });
-    // this.component.setState({ spotRect: null });
-    this.emit('choose', this.lastLocator_);
-  }
-  /** @override */
-  handleMouseover(e) {
-    const locator = this.lastLocator_ = Locator.fromElement(e.target, true);
-    const pos = goog.style.getFramedPageOffset(locator.getPreferredElement(), this.component.iFrameWindow);
-    const size = goog.style.getBorderBoxSize(locator.getPreferredElement());
-    const rect = this.lastRect_ = Object.assign(pos, size);
-    const spotRect = Object.assign({}, rect);
-    this.applyScrollPos(spotRect);
-    dispatchChange({ spotRect });
-  }
-  /** @override */
-  resetBorder() {}
-  /** @override */
-  destroy() {
-    super.destroy();
-
-    dispatchChange({ spotRect: null });
-    // this.component.setState({spotRect: null});
-    this.component.iFrameWindow.document.removeEventListener('scroll', this.onDocumentScroll);
-    goog.style.installStyles(this.styleEl_);
-  }
-  onDocumentScroll(e) {
-    if (!this.lastRect_) return;
-    const spotRect = Object.assign({}, this.lastRect_);
-    this.applyScrollPos(spotRect);
-    dispatchChange({spotRect});
-    // this.component.setState({spotRect});
-  }
-  applyScrollPos(pos) {
-    pos.x -= this.component.iFrameWindow.document.body.scrollLeft;
-    pos.y -= this.component.iFrameWindow.document.body.scrollTop;
   }
 }
 
