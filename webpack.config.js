@@ -18,6 +18,7 @@ module.exports = {
           presets: ['react'],
           plugins: [
             // 'add-module-exports',
+            'transform-es2015-classes',
             'transform-async-to-generator',
             'transform-class-properties'
           ]

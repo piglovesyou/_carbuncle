@@ -1,7 +1,6 @@
 const React = require('react');
-const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
-class SvgMaskContent extends React.Component {
+class SvgMask extends React.Component {
   render() {
     return (
       <svg className="svg-mask">
@@ -25,23 +24,5 @@ class SvgMaskContent extends React.Component {
     }, 0)
   }
 }
-
-class SvgMask extends React.Component {
-  render() {
-    return (
-      <ReactCSSTransitionGroup
-          transitionName="svg-mask"
-          transitionEnterTimeout={100}
-          transitionLeaveTimeout={100}
-      >
-        {this.props.enable
-          ? <SvgMaskContent {...this.props} />
-          : null
-        }
-      </ReactCSSTransitionGroup>
-    );
-  }
-
-};
 
 module.exports = SvgMask;

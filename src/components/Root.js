@@ -5,7 +5,6 @@ const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 class Root extends React.Component {
   render() {
     const isHome = this.props.location.pathname === '/';
-    console.log(this.props, isHome);
     return (
       <div className={'application-root' + (isHome ? '' : ' application-root--dashboard')}>
         <Browser />

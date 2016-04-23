@@ -12,6 +12,7 @@ const Executor = require('../../core/executor');
 const BrowserEmitter = require('../../emitter/browser');
 const {Modes} = require('../../const/browser');
 const Store = require('../../stores/browser');
+const {dispatch} = require('../../dispatcher');
 
 const Script = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/script');
 const Selenium2 = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/selenium2/selenium2');
@@ -31,17 +32,10 @@ class Index extends React.Component {
   }
   constructor(props) {
     super(props);
-    this.state = {
-      mode: Modes.NEUTRAL,
-      testCase: [],
-      location: null
-    };
     this.recorder_;
-    this.previousMode_;
     this.goBack = this.goBack.bind(this);
     this.refresh = this.refresh.bind(this);
-    this.onStepExecuted = this.onStepExecuted.bind(this);
-    this.onTestcaseExecuted = this.onTestcaseExecuted.bind(this);
+    // this.onTestcaseExecuted = this.onTestcaseExecuted.bind(this);
   }
   render() {
     const isNeutral = this.state.mode === Modes.NEUTRAL;
@@ -108,8 +102,7 @@ class Index extends React.Component {
     global.carbuncleTargetFrame = this.refs.browser.iFrameEl;
     BrowserEmitter.on('goBack', this.goBack);
     BrowserEmitter.on('refresh', this.refresh);
-    BrowserEmitter.on('step-executed', this.onStepExecuted);
-    BrowserEmitter.on('testcase-executed', this.onTestcaseExecuted);
+    // BrowserEmitter.on('testcase-executed', this.onTestcaseExecuted);
     this.finalizeCurrentMode(this.state);
   }
   componentWillUnmount() {
@@ -120,22 +113,23 @@ class Index extends React.Component {
     }
     BrowserEmitter.removeListener('goBack', this.goBack);
     BrowserEmitter.removeListener('refresh', this.refresh);
-    PaletteEmitter.removeListener('step-executed', this.onStepExecuted);
-    PaletteEmitter.removeListener('testcase-executed', this.onTestcaseExecuted);
+    // BrowserEmitter.removeListener('testcase-executed', this.onTestcaseExecuted);
   }
-  onStepExecuted(step, isSucceeded) {
-    step.isSuccessfullyExecuted_ = isSucceeded;
-    this.setState({
-      testCase: this.state.testCase.slice()
-    });
-  }
-  onTestcaseExecuted() {
-    setTimeout(() => {
-      this.state.testCase.forEach(step => step.isSuccessfullyExecuted_ = null);
-      this.setState({ testCase: this.state.testCase.slice() });
-    }, 2400);
-    this.setState({ mode: this.previousMode_ });
-  }
+  // onTestcaseExecuted() {
+  //   setTimeout(() => {
+  //     dispatch({
+  //       type: 'change', data: {
+  //         testCase: this.state.testCase.map(step => {
+  //           step.isSuccessfullyExecuted_ = null;
+  //           return step;
+  //         })
+  //       }
+  //     });
+  //   }, 2400);
+  //   dispatch({
+  //     type: 'change', data: { mode: this.previousMode_ }
+  //   });
+  // }
   get iFrameWindow() {
     return this.refs.browser.iFrameEl.contentWindow;
   }
@@ -154,7 +148,8 @@ function createVerifyExplorer() {
     this.verifyExplorer_ = null;
     // Recorder somehow captures my mouseup and I don't want it
     setTimeout(() => {
-      this.setState({ mode: Modes.RECORDING });
+      dispatch({type: 'change', data: {mode: Modes.RECORDING} });
+      // this.setState({ mode: Modes.RECORDING });
     }, 0);
   });
   return verifyExplorer;
@@ -166,36 +161,40 @@ function onLocationTextChange(e) {
 
 const {timeout, showDevTools, closeDevTools} = require('../..//util');
 function onLocationTextSubmit(e) {
-  this.setState({
+  dispatch({type: 'change', data: {
     // TODO: Do this in other way
     location: this.refs.browser.locationInputEl.value +
       (this.refs.browser.locationInputEl.value.endsWith(' ') ? '' : ' ')
-  });
+  } });
+  // this.setState({
+  //   // TODO: Do this in other way
+  //   location: this.refs.browser.locationInputEl.value +
+  //     (this.refs.browser.locationInputEl.value.endsWith(' ') ? '' : ' ')
+  // });
   e.preventDefault();
 }
 
 function onPlaybackClick(e) {
-  this.setState({ mode: Modes.PLAYBACKING });
+  dispatch({type: 'change', data: {mode: Modes.PLAYBACKING} });
+  // this.setState({ mode: Modes.PLAYBACKING });
   Executor.execute(this.state.testCase);
 }
 
 function onRecordButtonClick(e) {
-  if (this.state.mode === Modes.NEUTRAL) {
-    this.setState({ mode: Modes.RECORDING });
-  } else if (this.state.mode === Modes.RECORDING) {
-    this.setState({ mode: Modes.NEUTRAL });
-  }  else {
-    assert.fail('dont let record btn be clicked besides NEUTRAL or RECORDING mode');
-  }
+  dispatch({ type: 'click-recording' });
+  // if (this.state.mode === Modes.NEUTRAL) {
+  //   dispatch({type: 'change', data: {mode: Modes.RECORDING} });
+  //   // this.setState({ mode: Modes.RECORDING });
+  // } else if (this.state.mode === Modes.RECORDING) {
+  //   dispatch({type: 'change', data: {mode: Modes.NEUTRAL} });
+  //   // this.setState({ mode: Modes.NEUTRAL });
+  // }  else {
+  //   assert.fail('dont let record btn be clicked besides NEUTRAL or RECORDING mode');
+  // }
 }
 
 function pushStep(step) {
-  assert(this.state.mode === Modes.RECORDING || this.state.mode === Modes.SELECTING);
-  console.log(step);
-
-  const testCase = this.state.testCase.slice();
-  testCase.push(step);
-  this.setState({ testCase });
+  dispatch({ type: 'append-step', step });
 }
 
 function getLastStep() {
@@ -203,6 +202,7 @@ function getLastStep() {
 }
 
 function onIFrameLoaded(e) {
+  dispatch({ type: 'browser-iframe-loaded' })
   if (this.state.mode !== Modes.RECORDING) return;
 
   // Attach events on new frame
@@ -240,13 +240,7 @@ function onLocationReloadClick() {
 }
 
 function onAddVerifyingStepClick() {
-  if (this.state.mode === Modes.RECORDING) {
-    this.setState({ mode: Modes.SELECTING });
-  } else if (this.state.mode === Modes.SELECTING) {
-    this.setState({ mode: Modes.RECORDING });
-  } else {
-    assert.fail('dont show verify button besides RECORDING mode');
-  }
+  dispatch({type: 'click-selecting-verify-step'});
 }
 
 class SuperVerifyExplorer extends mix(VerifyExplorer, EventEmitter) {
@@ -255,14 +249,16 @@ class SuperVerifyExplorer extends mix(VerifyExplorer, EventEmitter) {
     VerifyExplorer.call(this, component.iFrameWindow, Selenium2, pushStep.bind(component), justReturnLocator);
     this.component = component;
 
-    component.setState({spotRect: {enable: true}});
+    dispatch({type: 'change', data: {spotRect: {enable: true} } });
+    // component.setState({spotRect: {enable: true}});
     component.iFrameWindow.document.addEventListener('scroll', this.onDocumentScroll = this.onDocumentScroll.bind(this));
     this.styleEl_ = goog.style.installStyles('*{cursor:pointer!important}', component.iFrameWindow.document);
   }
   /** @override */
   handleMouseup(e) {
     super.handleMouseup(e);
-    this.component.setState({ spotRect: null });
+    dispatch({ type: 'change', data: {spotRect: null } });
+    // this.component.setState({ spotRect: null });
     this.emit('choose', this.lastLocator_);
   }
   /** @override */
@@ -273,7 +269,8 @@ class SuperVerifyExplorer extends mix(VerifyExplorer, EventEmitter) {
     const rect = this.lastRect_ = Object.assign(pos, size);
     const spotRect = Object.assign({enable: true}, rect);
     this.applyScrollPos(spotRect);
-    this.component.setState({spotRect});
+    dispatch({type: 'change', data: {spotRect} });
+    // this.component.setState({spotRect});
   }
   /** @override */
   resetBorder() {}
@@ -281,7 +278,8 @@ class SuperVerifyExplorer extends mix(VerifyExplorer, EventEmitter) {
   destroy() {
     super.destroy();
 
-    this.component.setState({spotRect: null});
+    dispatch({type: 'change', data: {spotRect: null} });
+    // this.component.setState({spotRect: null});
     this.component.iFrameWindow.document.removeEventListener('scroll', this.onDocumentScroll);
     goog.style.installStyles(this.styleEl_);
   }
@@ -289,7 +287,8 @@ class SuperVerifyExplorer extends mix(VerifyExplorer, EventEmitter) {
     if (!this.lastRect_) return;
     const spotRect = Object.assign({enable: true}, this.lastRect_);
     this.applyScrollPos(spotRect);
-    this.component.setState({spotRect});
+    dispatch({type: 'change', data: {spotRect} });
+    // this.component.setState({spotRect});
   }
   applyScrollPos(pos) {
     pos.x -= this.component.iFrameWindow.document.body.scrollLeft;
@@ -297,5 +296,5 @@ class SuperVerifyExplorer extends mix(VerifyExplorer, EventEmitter) {
   }
 }
 
-module.exports = Index;
-// module.exports = Container.create(Index);
+// module.exports = Index;
+module.exports = Container.create(Index);

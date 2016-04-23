@@ -5,7 +5,7 @@ const BrowserEmitter = require('../emitter/browser');
 const Locator = require('../modified-selenium-builder/seleniumbuilder/content/html/builder/locator');
 const {dispatch} = require('../dispatcher');
 
-const VERIFY_TIMEOUT = 800;
+const VERIFY_TIMEOUT = 1600;
 
 module.exports = {execute};
 
@@ -56,9 +56,8 @@ async function execute(steps) {
           });
         }, VERIFY_TIMEOUT);
         dispatch({ type: 'step-executed', step, result, expected, lastActual });
-        BrowserEmitter.emit('step-executed', step, result, expected, lastActual);
         if (result === false) {
-          console.log(expected, 'xxxxxxxxxxxxx', actual);
+          console.log(expected, actual);
           somethingBadOccured = true;
           break;
         }
@@ -71,7 +70,6 @@ async function execute(steps) {
             break;
 
           case 'goBack':
-            dispatch({ type: 'goBack' });
             BrowserEmitter.emit('goBack');
             break;
 
@@ -94,7 +92,6 @@ async function execute(steps) {
             break;
 
           case 'refresh':
-            dispatch({ type: 'refresh' });
             BrowserEmitter.emit('refresh');
             break;
 
@@ -102,10 +99,7 @@ async function execute(steps) {
             throw new Error('TODO: ' + step.type.name);
             break;
         }
-        // TODO When a step goes bad, it should pass false
-        //      eg) element not found
         dispatch({ type: 'step-executed', step });
-        BrowserEmitter.emit('step-executed', step, true);
       }
 
     } catch(e) {
@@ -115,7 +109,6 @@ async function execute(steps) {
     }
   }
   dispatch({ type: 'testcase-executed', somethingBadOccured });
-  BrowserEmitter.emit('testcase-executed', somethingBadOccured);
 }
 
 function verifyResults(expected, actual, operator) {

@@ -2,6 +2,7 @@ const React = require('react');
 const { Router, Route, IndexRoute, Link, IndexLink, hashHistory } = require('react-router');
 const {DRIVER_TARGET_ID} = require('../../const');
 const SvgMask = require('./SvgMask');
+const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
 class Browser extends React.Component {
   render() {
@@ -63,7 +64,15 @@ class Browser extends React.Component {
             onLoad={this.props.onIFrameLoaded}
             className="browser__iframe"
           />
-          <SvgMask {...this.props.spotRect} />
+          <ReactCSSTransitionGroup
+              transitionName="svg-mask"
+              transitionEnterTimeout={100}
+              transitionLeaveTimeout={100}
+          >
+            {this.props.spotRect
+              ? <SvgMask {...this.props.spotRect} />
+              : null}
+          </ReactCSSTransitionGroup>
         </div>
       </div>
     );
