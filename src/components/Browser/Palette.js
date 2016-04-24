@@ -39,7 +39,7 @@ class Palette extends React.Component {
             </ReactCSSTransitionGroup>
           </div>
           <div className="palette__footer">
-            {this.props.isRecording
+            {this.props.isRecording || this.props.isSelecting
               ? <button className="step-adder__verify btn btn-default"
                     onClick={onAddVerifyingStepClick}
                     title="Add verifying step"

@@ -52,6 +52,7 @@ class Index extends React.Component {
         />
         <Palette testCase={this.state.testCase}
             isRecording={isRecording}
+            isSelecting={isSelecting}
         />
       </div>
     );

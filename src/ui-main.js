@@ -23,7 +23,6 @@ const {WebDriver, By, Key, until} = require('selenium-webdriver');
 const {timeout, showDevTools, closeDevTools} = require('./util');
 const assert = require('power-assert');
 (async () => {
-  // return;
   try {
     await timeout(800);
     await showDevTools();
@@ -36,6 +35,8 @@ const assert = require('power-assert');
     await driver.findElement(By.css('.browser_location-input')).sendKeys('http://www.google.com/ncr');
     await driver.findElement(By.css('.browser_location-input')).sendKeys(Key.ENTER);
 
+    // return;
+
     driver = await Driver.get();
     await driver.findElement(By.name('q')).sendKeys('carbuncle');
     await driver.findElement(By.name('q')).sendKeys(Key.ENTER);
@@ -43,9 +44,9 @@ const assert = require('power-assert');
     await driver.findElement(By.css('.step-adder__verify')).click();
     await timeout(400);
     driver = await Driver.get();
-    await timeout(400);
+    // await timeout(400);
     await driver.findElement(By.css('.g h3')).click();
-    await timeout(400);
+    // await timeout(400);
     driver = await Driver.getDefaultContent();
     await timeout(400);
     await driver.findElement(By.css('.palette__playback-btn')).click();

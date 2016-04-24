@@ -12,8 +12,8 @@ class Root extends React.Component {
           component="div"
           className="dashboard-wrapper"
           transitionName="dashboard"
-          transitionEnterTimeout={1200}
-          transitionLeaveTimeout={1200}
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={200}
         >
           {this.props.children}
         </ReactCSSTransitionGroup>

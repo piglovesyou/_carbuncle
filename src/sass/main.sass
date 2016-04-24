@@ -75,6 +75,7 @@ $z-index-palette: 10
 $z-index-svg-mask: 8
 $z-index-dashboard: 20
 $z-index-focused-button: 3
+$z-index-browser-and-dashboard: 100
 
 
 
@@ -111,27 +112,40 @@ html
 
 .browser-wrapper
   background-color: white
-  opacity: 1
-  $duration: 200ms
-  transition: transform $duration ease-out, opacity $duration linear
 
 .dashboard-wrapper
+  /* z-index: 0 */
+.dashboard
   background-color: white
-  // transform: translate(100%, 0)
-  visibility: hidden
-  opacity: 0
-  $duration: 300ms
-  transition: opacity $duration linear, visibility $duration linear
-
-.application-root--dashboard
-  .browser-wrapper
-    transform: scale(.6, .6)
-    opacity: .01
-  .dashboard-wrapper
-    z-index: 0
-    // transform: translate(0, 0)
-    visibility: visible
+  &-enter
+    transition: transform 200ms ease-out 300ms, opacity 200ms linear 300ms
+    transform: translate(20%, 0)
+    opacity: 0.01
+    &-active
+      transform: translate(0, 0)
+      opacity: 1
+  &-leave
+    transition: transform 200ms ease-in, opacity 200ms linear
+    transform: translate(0, 0)
     opacity: 1
+    &-active
+      transform: translate(20%, 0)
+      opacity: 0.01
+
+.application-root
+  .browser-wrapper
+    opacity: 1
+    transition: transform 200ms ease-out, opacity 200ms linear
+    z-index: $z-index-browser-and-dashboard + 1
+  .dashboard-wrapper
+    z-index: $z-index-browser-and-dashboard
+  &--dashboard
+    .browser-wrapper
+      z-index: $z-index-browser-and-dashboard
+      transform: scale(.8, .8)
+      opacity: .01
+    .dashboard-wrapper
+      z-index: $z-index-browser-and-dashboard + 1
 
 .browser
   flex: 1
