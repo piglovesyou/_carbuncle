@@ -2,26 +2,64 @@ const {ReduceStore} = require('flux/utils');
 const {Modes} = require('../const/browser');
 const dispatcher = require('../dispatcher');
 const assert = require('assert');
+const db = require('../persist');
+const {dispatch, dispatchChange} = require('../dispatcher');
+const {convertStepToJson, convertStepToInstance} = require('../util/persist');
+const {generateHash} = require('../util');
+const userdata = require('../persist/userdata');
 
 class BrowserStore extends ReduceStore {
+  constructor(x) {
+    super(x);
+
+    const lastTestCaseId = userdata.get('lastTestCaseId');
+    if (lastTestCaseId != null) {
+      db.testcases.get(lastTestCaseId).then(testCase => {
+        dispatch({
+          type: 'testcase-loaded',
+          id: testCase.key,
+          steps: testCase.steps
+        });
+      })
+    }
+  }
+
   getInitialState() {
     this.previousMode_ = null;
     return {
       mode: Modes.NEUTRAL,
+      testCaseId: undefined,
       testCase: [],
       location: null,
       spotRect: null,
-      // _hook: 0
     };
-  }
-
-  areEqual(one, two) {
-    return one === two;
   }
 
   reduce(state, action) {
     let newState;
     switch (action.type) {
+      case 'testcase-loaded':
+        newState = Object.assign({}, state);
+        // TODO why do I need this
+        newState.testCaseId = action.id;
+        newState.testCase = action.steps.map(convertStepToInstance);
+        break;
+
+      case 'save-testcase':
+        {
+          // debugger;
+          db.testcases.put({
+            key: action.id,
+            steps: action.steps.map(convertStepToJson),
+            modifiedAt: Date.now()
+          }).then(([id]) => {
+            dispatchChange({ testCaseId: id });
+            userdata.put('lastTestCaseId', id);
+          });
+          newState = state;
+        }
+        break;
+
       case 'step-executed':
         newState = Object.assign({}, state, {
           testCase: state.testCase.map(step => {
@@ -86,8 +124,9 @@ class BrowserStore extends ReduceStore {
       default:
         return state;
     }
+    assert(newState);
     if (state.mode !== newState.mode) this.previousMode_ = state.mode;
-    return newState || state;
+    return newState;
   }
 }
 

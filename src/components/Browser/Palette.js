@@ -11,6 +11,8 @@ const ReactDOM = require('react-dom');
 
 class Palette extends React.Component {
   render() {
+    const steps = this.props.testCase.map(step =>
+        <Step key={step.id} onStepRemoveClicked={onStepRemoveClicked.bind(null, step)} {...step} />);
     return (
       <Draggable
         handle=".palette__handle"
@@ -23,20 +25,20 @@ class Palette extends React.Component {
             <button className="btn btn-default btn-lg palette__playback-btn" onClick={onPlaybackClick.bind(this)}><i className="fa fa-fw fa-play"></i></button>
             <span className="palette__handle flex-spacer">
             </span>
-            <button className="btn btn-default btn-lg"><i className="fa fa-fw fa-cog"></i></button>
+            <button className="btn btn-default btn-lg"
+                onClick={onClickSaveTestCase.bind(this)}
+            >
+              <i className="fa fa-fw fa-save"></i>
+            </button>
           </div>
           <div className="palette__body" ref="palette__body">
-            <ReactCSSTransitionGroup
-                transitionName="step"
-                transitionEnterTimeout={900}
-                transitionLeaveTimeout={200}
-            >
-              {this.props.testCase.map(step => {
-                return <Step key={step.id}
-                    onStepRemoveClicked={onStepRemoveClicked.bind(null, step)}
-                    {...step} />
-              })}
-            </ReactCSSTransitionGroup>
+            {this.props.isRecording || this.props.isSelecting
+              ? <ReactCSSTransitionGroup
+                 transitionName="step"
+                 transitionEnterTimeout={900}
+                 transitionLeaveTimeout={200}
+                >{steps}</ReactCSSTransitionGroup>
+              : steps}
           </div>
           <div className="palette__footer">
             {this.props.isRecording || this.props.isSelecting
@@ -62,6 +64,14 @@ class Palette extends React.Component {
   onDragStop(e) {
     console.log(e.x, e.y);
   }
+}
+
+function onClickSaveTestCase() {
+  dispatch({
+    type: 'save-testcase',
+    id: this.props.testCaseId,
+    steps: this.props.testCase
+  });
 }
 
 function onAddVerifyingStepClick() {

@@ -30,7 +30,6 @@ class Index extends React.Component {
     this.recorder_;
     this.goBack = this.goBack.bind(this);
     this.refresh = this.refresh.bind(this);
-    // this.onTestcaseExecuted = this.onTestcaseExecuted.bind(this);
   }
   render() {
     const isNeutral = this.state.mode === Modes.NEUTRAL;
@@ -51,6 +50,7 @@ class Index extends React.Component {
           spotRect={this.state.spotRect}
         />
         <Palette testCase={this.state.testCase}
+            testCaseId={this.state.testCaseId}
             isRecording={isRecording}
             isSelecting={isSelecting}
         />
