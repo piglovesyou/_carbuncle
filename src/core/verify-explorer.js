@@ -2,7 +2,7 @@ const VerifyExplorer = require('../modified-selenium-builder/seleniumbuilder/con
 const {EventEmitter} = require('events');
 const Selenium2 = require('../modified-selenium-builder/seleniumbuilder/content/html/builder/selenium2/selenium2');
 const Locator = require('../modified-selenium-builder/seleniumbuilder/content/html/builder/locator');
-const {dispatchChange} = require('../dispatcher');
+const {dispatchBrowserStateChange} = require('../action');
 const mix = require('../util/mix');
 
 class SuperVerifyExplorer extends mix(VerifyExplorer, EventEmitter) {
@@ -11,14 +11,14 @@ class SuperVerifyExplorer extends mix(VerifyExplorer, EventEmitter) {
     VerifyExplorer.call(this, component.iFrameWindow, Selenium2, pushStep, !pushStep);
     this.component = component;
 
-    dispatchChange({ spotRect: {} });
+    dispatchBrowserStateChange({ spotRect: {} });
     component.iFrameWindow.document.addEventListener('scroll', this.onDocumentScroll = this.onDocumentScroll.bind(this));
     this.styleEl_ = goog.style.installStyles('*{cursor:pointer!important}', component.iFrameWindow.document);
   }
   /** @override */
   handleMouseup(e) {
     super.handleMouseup(e);
-    dispatchChange({ spotRect: null });
+    dispatchBrowserStateChange({ spotRect: null });
     // this.component.setState({ spotRect: null });
     this.emit('choose', this.lastLocator_);
   }
@@ -30,7 +30,7 @@ class SuperVerifyExplorer extends mix(VerifyExplorer, EventEmitter) {
     const rect = this.lastRect_ = Object.assign(pos, size);
     const spotRect = Object.assign({}, rect);
     this.applyScrollPos(spotRect);
-    dispatchChange({ spotRect });
+    dispatchBrowserStateChange({ spotRect });
   }
   /** @override */
   resetBorder() {}
@@ -38,7 +38,7 @@ class SuperVerifyExplorer extends mix(VerifyExplorer, EventEmitter) {
   destroy() {
     super.destroy();
 
-    dispatchChange({ spotRect: null });
+    dispatchBrowserStateChange({ spotRect: null });
     // this.component.setState({spotRect: null});
     this.component.iFrameWindow.document.removeEventListener('scroll', this.onDocumentScroll);
     goog.style.installStyles(this.styleEl_);
@@ -47,7 +47,7 @@ class SuperVerifyExplorer extends mix(VerifyExplorer, EventEmitter) {
     if (!this.lastRect_) return;
     const spotRect = Object.assign({}, this.lastRect_);
     this.applyScrollPos(spotRect);
-    dispatchChange({spotRect});
+    dispatchBrowserStateChange({spotRect});
     // this.component.setState({spotRect});
   }
   applyScrollPos(pos) {

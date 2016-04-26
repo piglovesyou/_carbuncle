@@ -4,7 +4,7 @@ const Draggable = require('react-draggable');
 const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 const Step = require('./Step');
 const {Modes} = require('../../const/browser');
-const {dispatch, dispatchChange} = require('../../dispatcher');
+const {dispatch, dispatchBrowserStateChange} = require('../../action');
 const Executor = require('../../core/executor');
 
 const ReactDOM = require('react-dom');
@@ -67,19 +67,18 @@ class Palette extends React.Component {
 }
 
 function onClickSaveTestCase() {
-  dispatch({
-    type: 'save-testcase',
+  dispatch('save-testcase', {
     id: this.props.testCaseId,
     steps: this.props.testCase
   });
 }
 
 function onAddVerifyingStepClick() {
-  dispatch({type: 'click-selecting-verify-step'});
+  dispatch('click-selecting-verify-step');
 }
 
 function onPlaybackClick(e) {
-  dispatchChange({ mode: Modes.PLAYBACKING });
+  dispatchBrowserStateChange({ mode: Modes.PLAYBACKING });
   Executor.execute(this.props.testCase);
 }
 
@@ -90,5 +89,5 @@ function scrollToBottom() {
 }
 
 function onStepRemoveClicked(step) {
-  dispatch({ type: 'remove-step', step });
+  dispatch('remove-step', { step });
 }

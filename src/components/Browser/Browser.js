@@ -3,7 +3,7 @@ const { Router, Route, IndexRoute, Link, IndexLink, hashHistory } = require('rea
 const {DRIVER_TARGET_ID} = require('../../const');
 const SvgMask = require('./SvgMask');
 const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
-const {dispatch, dispatchChange} = require('../../dispatcher');
+const {dispatch} = require('../../action');
 
 class Browser extends React.Component {
   render() {
@@ -80,7 +80,7 @@ class Browser extends React.Component {
   }
 
   onRecordButtonClick(e) {
-    dispatch({ type: 'click-recording' });
+    dispatch('click-recording');
   }
 
   get iFrameEl() {

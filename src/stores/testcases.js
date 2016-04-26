@@ -1,6 +1,5 @@
 const {ReduceStore} = require('flux/utils');
 const dispatcher = require('../dispatcher');
-const {dispatch} = dispatcher;
 const assert = require('assert');
 const db = require('../persist');
 

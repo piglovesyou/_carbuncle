@@ -10,7 +10,7 @@ const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 const BrowserEmitter = require('../../emitter/browser');
 const {Modes} = require('../../const/browser');
 const Store = require('../../stores/browser');
-const {dispatch, dispatchChange} = require('../../dispatcher');
+const {dispatch, dispatchBrowserStateChange} = require('../../action');
 const SuperVerifyExplorer = require('../../core/verify-explorer');
 
 const Script = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/script');
@@ -126,7 +126,7 @@ function createVerifyExplorer() {
     this.verifyExplorer_ = null;
     // Recorder somehow captures my mouseup and I don't want it
     setTimeout(() => {
-      dispatchChange({ mode: Modes.RECORDING });
+      dispatchBrowserStateChange({ mode: Modes.RECORDING });
     }, 0);
   });
   return verifyExplorer;
@@ -134,7 +134,7 @@ function createVerifyExplorer() {
 
 const {timeout, showDevTools, closeDevTools} = require('../..//util');
 function onLocationTextSubmit(e) {
-  dispatchChange({
+  dispatchBrowserStateChange({
     // TODO: Do this in other way
     location: this.refs.browser.locationInputEl.value +
       (this.refs.browser.locationInputEl.value.endsWith(' ') ? '' : ' ')
@@ -143,7 +143,7 @@ function onLocationTextSubmit(e) {
 }
 
 function pushStep(step) {
-  dispatch({ type: 'append-step', step });
+  dispatch('append-step', { step });
 }
 
 function getLastStep() {
@@ -151,7 +151,7 @@ function getLastStep() {
 }
 
 function onIFrameLoaded(e) {
-  dispatch({ type: 'browser-iframe-loaded' })
+  dispatch('browser-iframe-loaded')
   if (this.state.mode !== Modes.RECORDING) return;
 
   // Attach events on new frame

@@ -3,7 +3,7 @@ const Driver = require('./driver');
 const {timeout, showDevTools, closeDevTools} = require('../util');
 const BrowserEmitter = require('../emitter/browser');
 const Locator = require('../modified-selenium-builder/seleniumbuilder/content/html/builder/locator');
-const {dispatch} = require('../dispatcher');
+const {dispatch} = require('../action');
 
 const VERIFY_TIMEOUT = 1600;
 
@@ -55,7 +55,7 @@ async function execute(steps) {
             return verifyResults(expected, actual, operator);
           });
         }, VERIFY_TIMEOUT);
-        dispatch({ type: 'step-executed', step, result, expected, lastActual });
+        dispatch('step-executed', { step, result, expected, lastActual });
         if (result === false) {
           console.log(expected, actual);
           somethingBadOccured = true;
@@ -99,7 +99,7 @@ async function execute(steps) {
             throw new Error('TODO: ' + step.type.name);
             break;
         }
-        dispatch({ type: 'step-executed', step });
+        dispatch('step-executed', { step });
       }
 
     } catch(e) {
@@ -108,7 +108,7 @@ async function execute(steps) {
       debugger;
     }
   }
-  dispatch({ type: 'testcase-executed', somethingBadOccured });
+  dispatch('testcase-executed', { somethingBadOccured });
 }
 
 function verifyResults(expected, actual, operator) {

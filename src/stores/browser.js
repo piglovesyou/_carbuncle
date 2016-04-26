@@ -1,9 +1,9 @@
 const {ReduceStore} = require('flux/utils');
 const {Modes} = require('../const/browser');
-const dispatcher = require('../dispatcher');
 const assert = require('assert');
 const db = require('../persist');
-const {dispatch, dispatchChange} = require('../dispatcher');
+const dispatcher = require('../dispatcher');
+const {dispatch, dispatchBrowserStateChange} = require('../action');
 const {convertStepToJson, convertStepToInstance} = require('../util/persist');
 const {generateHash} = require('../util');
 const userdata = require('../persist/userdata');
@@ -15,8 +15,10 @@ class BrowserStore extends ReduceStore {
     const lastTestCaseId = userdata.get('lastTestCaseId');
     if (lastTestCaseId != null) {
       db.testcases.get(lastTestCaseId).then(testCase => {
-        dispatch({
-          type: 'testcase-loaded',
+        if (testCase == null) {
+          return;
+        }
+        dispatch('testcase-loaded', {
           id: testCase.key,
           steps: testCase.steps
         });
@@ -53,7 +55,7 @@ class BrowserStore extends ReduceStore {
             steps: action.steps.map(convertStepToJson),
             modifiedAt: Date.now()
           }).then(([id]) => {
-            dispatchChange({ testCaseId: id });
+            dispatchBrowserStateChange({ testCaseId: id });
             userdata.put('lastTestCaseId', id);
           });
           newState = state;
@@ -73,7 +75,7 @@ class BrowserStore extends ReduceStore {
 
       case 'testcase-executed':
         setTimeout(() => {
-          dispatcher.dispatchChange({
+          dispatchBrowserStateChange({
             testCase: state.testCase.map(step => {
               step.isSuccessfullyExecuted_ = null;
               return step;
@@ -117,8 +119,8 @@ class BrowserStore extends ReduceStore {
         }
         break;
 
-      case 'change':
-        newState = Object.assign({}, state, action.data);
+      case 'browser-state-change':
+        newState = Object.assign({}, state, action.state);
         break;
 
       default:
