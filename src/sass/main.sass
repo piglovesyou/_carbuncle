@@ -167,8 +167,11 @@ html
     .browser__location-input
       input[type="text"]
         color: white !important
+      :placeholder-shown,
+      ::-webkit-input-placeholder
+        color: rgba(255,255,255,0.6)
       hr:first-child
-        border-color: transparent !important
+        border-color: rgba(255,255,255,0.7) !important
       hr:nth-child(2)
         border-color: white !important
 
