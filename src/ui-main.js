@@ -5,7 +5,7 @@ const Driver = require('./core/driver');
 render(routes, document.getElementById('application-container'));
 
 const win = require('nw.gui').Window.get();
-win.moveTo(200, 150);
+win.moveTo(100, 100);
 // win.showDevTools();
 
 win.on('close', async () => {
@@ -33,10 +33,10 @@ const assert = require('power-assert');
     await driver.findElement(By.css('.browser__rec-btn')).click();
 
     // Open web site
-    await driver.findElement(By.css('.browser_location-input')).sendKeys('http://www.google.com/ncr');
-    await driver.findElement(By.css('.browser_location-input')).sendKeys(Key.ENTER);
+    await driver.findElement(By.css('.browser__location-input input')).sendKeys('http://www.google.com/ncr');
+    await driver.findElement(By.css('.browser__location-input input')).sendKeys(Key.ENTER);
 
-    // return;
+    return;
 
     driver = await Driver.get();
     await driver.findElement(By.name('q')).sendKeys('carbuncle');
@@ -54,8 +54,8 @@ const assert = require('power-assert');
 
     // 
     // await driver.findElement(By.css('.browser__rec-btn')).click();
-    // await driver.findElement(By.css('.browser_location-input')).sendKeys('http://passwordsgenerator.net/md5-hash-generator/');
-    // await driver.findElement(By.css('.browser_location-input')).sendKeys(Key.ENTER);
+    // await driver.findElement(By.css('.browser__location-input')).sendKeys('http://passwordsgenerator.net/md5-hash-generator/');
+    // await driver.findElement(By.css('.browser__location-input')).sendKeys(Key.ENTER);
     // var driver = await Driver.get();
     // var txt1ElPromise = driver.findElement(By.css('#txt1'));
     // txt1ElPromise.sendKeys('abc');

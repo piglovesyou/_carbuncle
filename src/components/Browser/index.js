@@ -32,12 +32,14 @@ class Index extends React.Component {
     this.refresh = this.refresh.bind(this);
   }
   render() {
+    // TODO: not mode, use flags
+    // no need NEUTRAL
     const isNeutral = this.state.mode === Modes.NEUTRAL;
     const isRecording = this.state.mode === Modes.RECORDING;
     const isPlaybacking = this.state.mode === Modes.PLAYBACKING;
     const isSelecting = this.state.mode === Modes.SELECTING;
     return (
-      <div className="browser-wrapper">
+      <div className={`browser-wrapper browser-wrapper--${this.state.mode}`}>
         <Browser
           ref="browser"
           location={this.state.location}
@@ -60,7 +62,19 @@ class Index extends React.Component {
   componentWillUpdate(nextProps, nextState) {
     this.finalizeCurrentMode(nextState);
   }
+  // get isRecording() {
+  //   return Boolean(this.state.mode & Modes.RECORDING);
+  // }
+  // get isSelecting() {
+  //   return Boolean(this.state.mode & Modes.SELECTING);
+  // }
+  // get isPlaybacking() {
+  //   return Boolean(this.state.mode & Modes.PLAYBACKING);
+  // }
   finalizeCurrentMode(state) {
+    // assert(state.mode & Modes.SELECTING && state.mode & Modes.RECORDING);
+    // assert(state.mode & Modes.SELECTING && !(state.mode & Modes.PLAYBACKING));
+    // assert(state.mode & Modes.PLAYBACKING && !(state.mode & Modes.SELECTING));
     if (this.state.mode !== state.mode) {
       this.previousMode_ = this.state.mode;
     }

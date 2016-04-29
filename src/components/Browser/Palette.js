@@ -6,6 +6,7 @@ const Step = require('./Step');
 const {Modes} = require('../../const/browser');
 const {dispatch, dispatchBrowserStateChange} = require('../../action');
 const Executor = require('../../core/executor');
+const {RaisedButton, IconButton} = require('material-ui');
 
 const ReactDOM = require('react-dom');
 
@@ -22,14 +23,6 @@ class Palette extends React.Component {
       >
         <div className="palette" ref="elm">
           <div className="palette__header">
-            <button className="btn btn-default btn-lg palette__playback-btn" onClick={onPlaybackClick.bind(this)}><i className="fa fa-fw fa-play"></i></button>
-            <span className="palette__handle flex-spacer">
-            </span>
-            <button className="btn btn-default btn-lg"
-                onClick={onClickSaveTestCase.bind(this)}
-            >
-              <i className="fa fa-fw fa-save"></i>
-            </button>
           </div>
           <div className="palette__body" ref="palette__body">
             {this.props.isRecording || this.props.isSelecting
@@ -42,15 +35,23 @@ class Palette extends React.Component {
           </div>
           <div className="palette__footer">
             {this.props.isRecording || this.props.isSelecting
-              ? <button className="step-adder__verify btn btn-default"
+              ? <IconButton className="step-adder__verify"
+                    iconClassName="fa fa-location-arrow fa-flip-horizontal"
+                    tooltip="Verify element"
                     onClick={onAddVerifyingStepClick}
-                    title="Add verifying step"
-                >
-                  <i className="fa fa-location-arrow fa-flip-horizontal"></i>
-                  &nbsp;Verify
-                </button>
+                ></IconButton>
               : null}
+            <IconButton className="palette__playback-btn"
+                tooltip="Playback testCase"
+                iconClassName="fa fa-fw fa-play"
+                onClick={onPlaybackClick.bind(this)}
+            ></IconButton>
             <span className="flex-spacer"></span>
+            <IconButton
+                tooltip="Save testCase"
+                iconClassName="fa fa-fw fa-save"
+                onClick={onClickSaveTestCase.bind(this)}
+            ></IconButton>
           </div>
         </div>
       </Draggable>
