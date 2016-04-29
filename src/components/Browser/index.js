@@ -44,7 +44,7 @@ class Index extends React.Component {
           ref="browser"
           location={this.state.location}
           disablePageMove={!isNeutral}
-          isPlaybacking={isPlaybacking}
+          enableRecBtn={isNeutral || isRecording}
           onIFrameLoaded=       {isPlaybacking ? null : onIFrameLoaded.bind(this)}
           onLocationTextSubmit= {isPlaybacking ? null : onLocationTextSubmit.bind(this)}
           onHistoryBackClick=   {isPlaybacking ? null : onHistoryBackClick.bind(this)}
@@ -60,24 +60,9 @@ class Index extends React.Component {
     );
   }
   componentWillUpdate(nextProps, nextState) {
-    this.finalizeCurrentMode(nextState);
+    this.finalizeHelpers(nextState);
   }
-  // get isRecording() {
-  //   return Boolean(this.state.mode & Modes.RECORDING);
-  // }
-  // get isSelecting() {
-  //   return Boolean(this.state.mode & Modes.SELECTING);
-  // }
-  // get isPlaybacking() {
-  //   return Boolean(this.state.mode & Modes.PLAYBACKING);
-  // }
-  finalizeCurrentMode(state) {
-    // assert(state.mode & Modes.SELECTING && state.mode & Modes.RECORDING);
-    // assert(state.mode & Modes.SELECTING && !(state.mode & Modes.PLAYBACKING));
-    // assert(state.mode & Modes.PLAYBACKING && !(state.mode & Modes.SELECTING));
-    if (this.state.mode !== state.mode) {
-      this.previousMode_ = this.state.mode;
-    }
+  finalizeHelpers(state) {
     switch(state.mode) {
       case Modes.RECORDING:
         if (!this.recorder_) {
@@ -110,7 +95,7 @@ class Index extends React.Component {
     BrowserEmitter.on('goBack', this.goBack);
     BrowserEmitter.on('refresh', this.refresh);
     // BrowserEmitter.on('testcase-executed', this.onTestcaseExecuted);
-    this.finalizeCurrentMode(this.state);
+    this.finalizeHelpers(this.state);
   }
   componentWillUnmount() {
     global.carbuncleTargetFrame = null;

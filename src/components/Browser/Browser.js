@@ -9,7 +9,7 @@ const {RaisedButton, IconButton, TextField} = require('material-ui');
 
 class Browser extends React.Component {
   render() {
-    const {isPlaybacking} = this.props;
+    const {enableRecBtn} = this.props;
     return (
       <div className="browser">
         <div className="browser__header">
@@ -34,7 +34,8 @@ class Browser extends React.Component {
               className="browser__rec-btn"
               iconClassName="fa fa-circle"
               tooltip={this.props.disablePageMove ? 'Stop recording' : 'Start recording'}
-              onClick={isPlaybacking ? null : this.onRecordButtonClick.bind(this)}
+              onClick={enableRecBtn ? this.onRecordButtonClick.bind(this) : null}
+              disabled={!enableRecBtn}
           ></IconButton>
           <IconButton
               disabled={this.props.disablePageMove}

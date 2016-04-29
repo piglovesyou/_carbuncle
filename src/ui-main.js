@@ -36,8 +36,6 @@ const assert = require('power-assert');
     await driver.findElement(By.css('.browser__location-input input')).sendKeys('http://www.google.com/ncr');
     await driver.findElement(By.css('.browser__location-input input')).sendKeys(Key.ENTER);
 
-    return;
-
     driver = await Driver.get();
     await driver.findElement(By.name('q')).sendKeys('carbuncle');
     await driver.findElement(By.name('q')).sendKeys(Key.ENTER);

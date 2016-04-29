@@ -155,9 +155,9 @@ html
 .flex-spacer
   flex: 1
 
-// TODO: not mode, use flags (about browser/index.js)
 .browser-wrapper
-  &--recording
+  &--recording,
+  &--selecting
     .browser__header
       background-color: $brand-danger
       .fa
@@ -234,11 +234,14 @@ html
 .step
   @extend .clearfix
   box-sizing: border-box
-  transition: opacity 100ms linear, background-color 100ms linear
+  transition: color 100ms linear, opacity 100ms linear, background-color 100ms linear
   &--is-succeeded
-    background-color: $state-success-bg
+    background-color: $brand-success
   &--is-failed
-    background-color: $state-danger-bg
+    background-color: $brand-danger
+  &--is-succeeded
+    &, & .step__value
+      color: white
 
   &__buttons
     margin: 8px 0
@@ -259,9 +262,11 @@ html
 
 .step-enter
   opacity: 0.01
+  background-color: $brand-primary
+  &, & .step__value
+    color: white
 .step-enter.step-enter-active
   opacity: 1
-  background-color: $state-success-bg
 .step-leave
   opacity: 1
   overflow: hidden
