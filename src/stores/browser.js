@@ -34,6 +34,7 @@ class BrowserStore extends ReduceStore {
       testCase: [],
       location: null,
       spotRect: null,
+      selectedPaletteTab: 'steps',
     };
   }
 

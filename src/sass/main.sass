@@ -213,11 +213,14 @@ html
   top: 0
   left: 0
   background: white
-  padding: 8px
+  /* padding: 8px */
   display: flex
   min-width: 320px
   flex-direction: column
   z-index: $z-index-palette
+
+  &__tab-container
+    padding: 16px
 
   &__header,
   &__footer
@@ -237,7 +240,7 @@ html
 .step
   @extend .clearfix
   box-sizing: border-box
-  transition: color 100ms linear, opacity 100ms linear, background-color 100ms linear
+  transition: opacity 100ms linear, background-color 100ms linear
   &--is-succeeded
     background-color: $brand-success
   &--is-failed

@@ -264,8 +264,6 @@ builder.VerifyExplorer.prototype = {
    * Highlights the mousedover element and removes highlight from old element.
    */
   handleMouseover: function(e) {
-    debugger;
-
     // If there is a previous highlit element, remove its borders
     if (this.highlit_element) {
       this.resetBorder({

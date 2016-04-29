@@ -6,7 +6,7 @@ const Step = require('./Step');
 const {Modes} = require('../../const/browser');
 const {dispatch, dispatchBrowserStateChange} = require('../../action');
 const Executor = require('../../core/executor');
-const {RaisedButton, IconButton} = require('material-ui');
+const {RaisedButton, IconButton, Tabs, Tab, Slider, TextField} = require('material-ui');
 
 const ReactDOM = require('react-dom');
 
@@ -16,23 +16,34 @@ class Palette extends React.Component {
         <Step key={step.id} onStepRemoveClicked={onStepRemoveClicked.bind(null, step)} {...step} />);
     return (
       <Draggable
-        handle=".palette__handle"
+        handle=".palette__tabs"
         start={{x: 512, y: 128}}
-        bounds="parent"
         ref="draggable"
       >
         <div className="palette" ref="elm">
-          <div className="palette__header">
-          </div>
-          <div className="palette__body" ref="palette__body">
-            {this.props.isRecording || this.props.isSelecting
-              ? <ReactCSSTransitionGroup
-                 transitionName="step"
-                 transitionEnterTimeout={900}
-                 transitionLeaveTimeout={200}
-                >{steps}</ReactCSSTransitionGroup>
-              : steps}
-          </div>
+          <Tabs className="palette__tabs"
+            tabItemContainerStyle={{backgroundColor: 'lightgray'}}
+            contentContainerClassName="palette__tab-container"
+          >
+            <Tab label="steps" style={tabStyle}>
+              <div className="palette__body" ref="palette__body">
+                {this.props.isRecording || this.props.isSelecting
+                  ? <ReactCSSTransitionGroup
+                     transitionName="step"
+                     transitionEnterTimeout={900}
+                     transitionLeaveTimeout={200}
+                    >{steps}</ReactCSSTransitionGroup>
+                  : steps
+                }
+              </div>
+            </Tab>
+            <Tab label="meta" style={tabStyle} selected={true}>
+              <TextField
+                placeholder="Testcase title"
+                tooltip="Testcase title"
+              ></TextField>
+            </Tab>
+          </Tabs>
           <div className="palette__footer">
             {this.props.isRecording || this.props.isSelecting
               ? <IconButton className="step-adder__verify"

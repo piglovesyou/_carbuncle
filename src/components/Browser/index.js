@@ -12,6 +12,7 @@ const {Modes} = require('../../const/browser');
 const Store = require('../../stores/browser');
 const {dispatch, dispatchBrowserStateChange} = require('../../action');
 const SuperVerifyExplorer = require('../../core/verify-explorer');
+const {RaisedButton, IconButton, Tabs, Tab, Slider} = require('material-ui');
 
 const Script = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/script');
 const Selenium2 = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/selenium2/selenium2');
@@ -38,6 +39,7 @@ class Index extends React.Component {
     const isRecording = this.state.mode === Modes.RECORDING;
     const isPlaybacking = this.state.mode === Modes.PLAYBACKING;
     const isSelecting = this.state.mode === Modes.SELECTING;
+
     return (
       <div className={`browser-wrapper browser-wrapper--${this.state.mode}`}>
         <Browser

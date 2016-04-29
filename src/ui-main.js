@@ -23,7 +23,7 @@ const {WebDriver, By, Key, until} = require('selenium-webdriver');
 const {timeout, showDevTools, closeDevTools} = require('./util');
 const assert = require('power-assert');
 (async () => {
-  // return;
+  return;
   try {
     await timeout(800);
     await showDevTools();
