@@ -9,25 +9,6 @@ import {generateHash} from '../util';
 import userdata from '../persist/userdata';
 
 class BrowserStore extends ReduceStore {
-  constructor(x) {
-    super(x);
-
-    const lastTestCaseId = userdata.get('lastTestCaseId');
-    if (lastTestCaseId != null) {
-      db.testcases.get(lastTestCaseId).then(testCase => {
-        if (testCase == null) {
-          return;
-        }
-        dispatch('testcase-loaded', {
-          // SyncedDB currently supports only "key" keyPath.
-          // TODO: It looks like I should "key" instead of "id" everywhere for now.
-          id: testCase.key,
-          title: testCase.title,
-          steps: testCase.steps
-        });
-      })
-    }
-  }
 
   getInitialState() {
     this.previousMode_ = null;
@@ -45,13 +26,6 @@ class BrowserStore extends ReduceStore {
   reduce(state, action) {
     let newState;
     switch (action.type) {
-      case 'testcase-loaded':
-        newState = Object.assign({}, state);
-        newState.testCaseId = action.id;
-        newState.testCaseTitle = action.title;
-        // TODO: We should use "steps" as steps array property
-        newState.testCase = action.steps.map(convertStepToInstance);
-        break;
 
       case 'step-executed':
         newState = Object.assign({}, state, {

@@ -10,7 +10,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import BrowserEmitter from '../../emitter/browser';
 import {Modes} from '../../const/browser';
 import Store from '../../stores/browser';
-import {dispatch, dispatchBrowserStateChange} from '../../action';
+import {dispatch, dispatchBrowserStateChange, loadLastTestCase} from '../../action';
 import SuperVerifyExplorer from '../../core/verify-explorer';
 import IconButton from 'material-ui/IconButton';
 
@@ -100,6 +100,7 @@ class Index extends React.Component {
     BrowserEmitter.on('refresh', this.refresh);
     // BrowserEmitter.on('testcase-executed', this.onTestcaseExecuted);
     this.finalizeHelpers(this.state);
+    loadLastTestCase();
   }
   componentWillUnmount() {
     global.carbuncleTargetFrame = null;

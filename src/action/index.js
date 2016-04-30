@@ -6,14 +6,6 @@ import userdata from '../persist/userdata';
 
 const action = module.exports = {
 
-  dispatchBrowserStateChange(newState) {
-    // XXX: Can't I remove this function?
-    dispatcher.dispatch({
-      type: 'browser-state-change',
-      state: newState
-    });
-  },
-
   async saveTestCase(payload) {
     const [id] = await db.testcases.put({
       key: payload.id,
@@ -24,6 +16,26 @@ const action = module.exports = {
     if (!id) return;
     userdata.put('lastTestCaseId', id);
     action.dispatchBrowserStateChange({ testCaseId: id });
+  },
+
+  async loadLastTestCase() {
+    const lastTestCaseId = userdata.get('lastTestCaseId');
+    if (lastTestCaseId == null) return;
+    const testCase = await db.testcases.get(lastTestCaseId);
+    if (testCase == null) return;
+    action.dispatchBrowserStateChange({
+      testCaseId: testCase.key,
+      testCaseTitle: testCase.title,
+      testCase: testCase.steps.map(convertStepToInstance),
+    });
+  },
+
+  dispatchBrowserStateChange(newState) {
+    // XXX: Can't I remove this function?
+    dispatcher.dispatch({
+      type: 'browser-state-change',
+      state: newState
+    });
   },
 
   dispatch(type, payload) {
