@@ -6,7 +6,7 @@
     "start": "node ./src/main.js",
     "fetch-nwjs": "node fetch-nwjs.js",
     "postinstall": "npm run fetch-nwjs",
-    "prepublish": "npm run build",
+    "prepublish": "bower install; npm run build",
     "watch": "gulp watch",
     "watch-sass": "gulp watch-sass",
     "build": "gulp",
