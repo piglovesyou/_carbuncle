@@ -1,7 +1,7 @@
 import {WebDriver, By} from 'selenium-webdriver';
 import Http from 'selenium-webdriver/http';
 import Command from 'selenium-webdriver/lib/command';
-const {CHROMEDRIVER_PORT, DRIVER_TARGET_ID} = require('../const');
+import {CHROMEDRIVER_PORT, DRIVER_TARGET_ID} from '../const';
 
 const executor = new Http.Executor(new Http.HttpClient(`http://127.0.0.1:${CHROMEDRIVER_PORT}`));
 let driverInstance;
@@ -45,8 +45,8 @@ async function getDriver() {
 async function findSession() {
   var command = new Command.Command(Command.Name.GET_SESSIONS);
   const json = await executor.execute(command);
-  if (!json || !json.value || !json.value[0]) {
+  if (!json || !json[0]) {
     throw new Error('Cannot find session');
   }
-  return json.value[0];
+  return json[0];
 }

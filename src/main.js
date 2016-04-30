@@ -8,6 +8,8 @@ const Chrome = require('selenium-webdriver/chrome');
 const FS = require('fs');
 const CHROMEDRIVER_PORT = require('./const').CHROMEDRIVER_PORT;
 
+console.log('main.js', CHROMEDRIVER_PORT)
+
 const command = Path.resolve(__dirname, '../executables/chromedriver');
 const options = new Chrome.Options();
 options.addArguments(`nwapp=${Path.resolve(__dirname, '..')}`);
