@@ -4,7 +4,7 @@ import Draggable from 'react-draggable';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import Step from './Step';
 import {Modes} from '../../const/browser';
-import {dispatch, dispatchBrowserStateChange} from '../../action';
+import {dispatch, dispatchBrowserStateChange, saveTestCase} from '../../action';
 import Executor from '../../core/executor';
 import IconButton from 'material-ui/IconButton';
 import TextField from 'material-ui/TextField';
@@ -147,7 +147,7 @@ class Palette extends React.Component {
 }
 
 function onClickSaveTestCase() {
-  dispatch('save-testcase', {
+  saveTestCase({
     id: this.props.testCaseId,
     title: this.props.testCaseTitle,
     steps: this.props.testCase,

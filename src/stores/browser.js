@@ -53,22 +53,6 @@ class BrowserStore extends ReduceStore {
         newState.testCase = action.steps.map(convertStepToInstance);
         break;
 
-      case 'save-testcase':
-        {
-          // TODO: Write storing logic in Action.
-          db.testcases.put({
-            key: action.id,
-            title: action.title,
-            steps: action.steps.map(convertStepToJson),
-            modifiedAt: new Date(),
-          }).then(([id]) => {
-            dispatchBrowserStateChange({ testCaseId: id });
-            userdata.put('lastTestCaseId', id);
-          });
-          newState = state;
-        }
-        break;
-
       case 'step-executed':
         newState = Object.assign({}, state, {
           testCase: state.testCase.map(step => {

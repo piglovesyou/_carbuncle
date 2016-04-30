@@ -12,12 +12,6 @@ class TestCasesStore extends ReduceStore {
 
   reduce(state, action) {
     switch (action.type) {
-      case 'save-testcase':
-        {
-          // console.log(action)
-          break;
-        }
-
       default:
         return state;
     }
