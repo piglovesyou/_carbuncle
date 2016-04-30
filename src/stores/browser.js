@@ -19,7 +19,10 @@ class BrowserStore extends ReduceStore {
           return;
         }
         dispatch('testcase-loaded', {
+          // SyncedDB currently supports only "key" keyPath.
+          // TODO: It looks like I should "key" instead of "id" everywhere for now.
           id: testCase.key,
+          title: testCase.title,
           steps: testCase.steps
         });
       })
@@ -30,11 +33,12 @@ class BrowserStore extends ReduceStore {
     this.previousMode_ = null;
     return {
       mode: Modes.NEUTRAL,
-      testCaseId: undefined,
-      testCase: [],
       location: null,
       spotRect: null,
       selectedPaletteTab: 'steps',
+      testCaseId: undefined,
+      testCase: [],
+      testCaseTitle: '',
     };
   }
 
@@ -43,18 +47,20 @@ class BrowserStore extends ReduceStore {
     switch (action.type) {
       case 'testcase-loaded':
         newState = Object.assign({}, state);
-        // TODO why do I need this
         newState.testCaseId = action.id;
+        newState.testCaseTitle = action.title;
+        // TODO: We should use "steps" as steps array property
         newState.testCase = action.steps.map(convertStepToInstance);
         break;
 
       case 'save-testcase':
         {
-          // debugger;
+          // TODO: Write storing logic in Action.
           db.testcases.put({
             key: action.id,
+            title: action.title,
             steps: action.steps.map(convertStepToJson),
-            modifiedAt: Date.now()
+            modifiedAt: new Date(),
           }).then(([id]) => {
             dispatchBrowserStateChange({ testCaseId: id });
             userdata.put('lastTestCaseId', id);

@@ -57,7 +57,6 @@ async function execute(steps) {
         }, VERIFY_TIMEOUT);
         dispatch('step-executed', { step, result, expected, lastActual });
         if (result === false) {
-          console.log(expected, actual);
           somethingBadOccured = true;
           break;
         }

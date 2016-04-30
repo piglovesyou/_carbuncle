@@ -53,8 +53,10 @@ class Index extends React.Component {
           onLocationReloadClick={isPlaybacking ? null : onLocationReloadClick.bind(this)}
           spotRect={this.state.spotRect}
         />
-        <Palette testCase={this.state.testCase}
+        <Palette
+            testCase={this.state.testCase}
             testCaseId={this.state.testCaseId}
+            testCaseTitle={this.state.testCaseTitle}
             isRecording={isRecording}
             isSelecting={isSelecting}
         />

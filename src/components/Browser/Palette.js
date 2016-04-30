@@ -9,13 +9,85 @@ import Executor from '../../core/executor';
 import IconButton from 'material-ui/IconButton';
 import TextField from 'material-ui/TextField';
 import {Tabs, Tab} from 'material-ui/Tabs';
+import Divider from 'material-ui/Divider';
+import {List, ListItem} from 'material-ui/List';
+import Popover from 'material-ui/Popover';
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
 
-import ReactDOM from 'react-dom';
+class StepContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { isOpened: false };
+  }
+  render() {
+    const steps = this.props.testCase.map((step, i) => {
+      return [
+        i > 0 ? <Divider className="palette__divider" key={i} /> : null,
+        <Step key={step.id}
+            onTouchTap={this.handleTouchTap.bind(this, step)}
+            {...step} />
+      ];
+    });
+    return (
+      <List className="palette__body" ref="palette__body">
+        {this.props.isRecording || this.props.isSelecting
+          ? <ReactCSSTransitionGroup
+             transitionName="step"
+             transitionEnterTimeout={900}
+             transitionLeaveTimeout={200}
+            >{steps}</ReactCSSTransitionGroup>
+          : steps
+        }
+        <Popover
+          open={this.state.isOpened}
+          anchorEl={this.state.menuTargetEl}
+          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+          targetOrigin={{horizontal: 'left', vertical: 'top'}}
+          onRequestClose={this.handleRequestClose.bind(this)}
+        >
+          <Menu>
+            <MenuItem primaryText="Remove" onTouchTap={this.handleItemRemove.bind(this)} />
+            <MenuItem primaryText="Edit" onTouchTap={this.handleItemEdit.bind(this)} />
+          </Menu>
+        </Popover>
+      </List>
+    );
+  }
+  handleRequestClose() {
+    this.closeMenu();
+  }
+  handleTouchTap(step, e) {
+    e.preventDefault();
+    this.setState({
+      isOpened: true,
+      menuTargetEl: e.currentTarget,
+      menuTargetStep: step,
+    });
+  }
+  handleItemRemove(e) {
+    const {menuTargetStep} = this.state;
+    if (!menuTargetStep) return;
+    dispatch('remove-step', { step: menuTargetStep });
+    this.closeMenu();
+  }
+  handleItemEdit(e) {
+    const {menuTargetStep} = this.state;
+    if (!menuTargetStep) return;
+    // TODO: What we do?
+    this.closeMenu();
+  }
+  closeMenu() {
+    this.setState({
+      isOpened: false,
+      menuTargetEl: null,
+      menuTargetStep: null,
+    });
+  }
+}
 
 class Palette extends React.Component {
   render() {
-    const steps = this.props.testCase.map(step =>
-        <Step key={step.id} onStepRemoveClicked={onStepRemoveClicked.bind(null, step)} {...step} />);
     return (
       <Draggable
         handle=".palette__tabs"
@@ -28,22 +100,15 @@ class Palette extends React.Component {
             contentContainerClassName="palette__tab-container"
           >
             <Tab label="steps">
-              <div className="palette__body" ref="palette__body">
-                {this.props.isRecording || this.props.isSelecting
-                  ? <ReactCSSTransitionGroup
-                     transitionName="step"
-                     transitionEnterTimeout={900}
-                     transitionLeaveTimeout={200}
-                    >{steps}</ReactCSSTransitionGroup>
-                  : steps
-                }
-              </div>
+              <StepContainer {...this.props} />
             </Tab>
             <Tab label="meta">
               <TextField
                 name="_"
                 placeholder="Testcase title"
                 tooltip="Testcase title"
+                value={this.props.testCaseTitle}
+                onChange={(e) => dispatchBrowserStateChange({testCaseTitle: e.target.value})}
               ></TextField>
             </Tab>
           </Tabs>
@@ -72,9 +137,9 @@ class Palette extends React.Component {
     );
   }
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.testCase.length > prevProps.testCase.length) {
-      scrollToBottom.call(this);
-    }
+    // if (this.props.testCase.length > prevProps.testCase.length) {
+    //   scrollToBottom.call(this);
+    // }
   }
   onDragStop(e) {
     console.log(e.x, e.y);
@@ -84,7 +149,8 @@ class Palette extends React.Component {
 function onClickSaveTestCase() {
   dispatch('save-testcase', {
     id: this.props.testCaseId,
-    steps: this.props.testCase
+    title: this.props.testCaseTitle,
+    steps: this.props.testCase,
   });
 }
 
@@ -101,8 +167,4 @@ module.exports = Palette;
 
 function scrollToBottom() {
   this.refs.palette__body.scrollTop = this.refs.palette__body.scrollHeight - this.refs.palette__body.offsetHeight;
-}
-
-function onStepRemoveClicked(step) {
-  dispatch('remove-step', { step });
 }

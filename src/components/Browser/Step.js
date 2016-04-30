@@ -1,5 +1,6 @@
 import React from 'react';
 import IconButton from 'material-ui/IconButton';
+import {List, ListItem} from 'material-ui/List';
 
 class Step extends React.Component {
   render() {
@@ -10,7 +11,7 @@ class Step extends React.Component {
           ? ' step--is-failed'
           : '');
     return (
-      <div className={className}>
+      <ListItem className={className} onTouchTap={this.props.onTouchTap}>
         <div className="step__buttons">
           {this.props.onStepRemoveClicked
             ? <IconButton className=""
@@ -30,7 +31,7 @@ class Step extends React.Component {
           </div>
 
         </div>
-      </div>
+      </ListItem>
     );
   }
 

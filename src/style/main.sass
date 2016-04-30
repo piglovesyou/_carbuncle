@@ -219,8 +219,8 @@ html
   flex-direction: column
   z-index: $z-index-palette
 
-  &__tab-container
-    padding: 16px
+  &__divider
+    width: 100%
 
   &__header,
   &__footer
@@ -238,7 +238,7 @@ html
       background-color: #f3f3f3
 
 .step
-  @extend .clearfix
+  // @extend .clearfix
   box-sizing: border-box
   transition: opacity 100ms linear, background-color 100ms linear
   &--is-succeeded
@@ -259,8 +259,8 @@ html
   border-bottom: 1px #ccc solid
   &:last-child
     border-bottom: none
-  &__content
-    padding: 8px
+  // &__content
+  //   padding: 16px
   &__name
     margin-bottom: 2px
   &__value
