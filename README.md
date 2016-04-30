@@ -4,10 +4,10 @@ Carbuncle
 Develop
 ---------
 
-To develop ui
+To develop
 ```
-$ npm run ui
 $ npm run watch
+$ npm start
 ```
 
 To test (Currently it only lint and build scripts)
