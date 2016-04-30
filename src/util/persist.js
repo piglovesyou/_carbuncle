@@ -1,5 +1,5 @@
-const Script = require('../modified-selenium-builder/seleniumbuilder/content/html/builder/script');
-const Selenium2 = require('../modified-selenium-builder/seleniumbuilder/content/html/builder/selenium2/selenium2');
+import Script from '../modified-selenium-builder/seleniumbuilder/content/html/builder/script';
+import Selenium2 from '../modified-selenium-builder/seleniumbuilder/content/html/builder/selenium2/selenium2';
 
 module.exports = {convertStepToJson, convertStepToInstance};
 

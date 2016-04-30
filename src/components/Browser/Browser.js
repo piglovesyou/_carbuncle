@@ -1,11 +1,12 @@
-const React = require('react');
-const ReactDOM = require('react-dom');
-const { Router, Route, IndexRoute, Link, IndexLink, hashHistory } = require('react-router');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Router, Route, IndexRoute, Link, IndexLink, hashHistory } from 'react-router';
 const {DRIVER_TARGET_ID} = require('../../const');
-const SvgMask = require('./SvgMask');
-const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
-const {dispatch} = require('../../action');
-const {RaisedButton, IconButton, TextField} = require('material-ui');
+import SvgMask from './SvgMask';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import {dispatch} from '../../action';
+import TextField from 'material-ui/TextField';
+import IconButton from 'material-ui/IconButton';
 
 class Browser extends React.Component {
   render() {
@@ -26,6 +27,7 @@ class Browser extends React.Component {
               onSubmit={this.props.onLocationTextSubmit}
           >
             <TextField className="browser__location-input"
+                name="_"
                 ref={(el) => {if (el) this.locationInput_ = ReactDOM.findDOMNode(el).querySelector('input')}}
                 placeholder="Target url"
             ></TextField>

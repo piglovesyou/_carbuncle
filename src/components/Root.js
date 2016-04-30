@@ -1,6 +1,6 @@
-const React = require('react');
-const Browser = require('./Browser');
-const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
+import React from 'react';
+import Browser from './Browser';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 class Root extends React.Component {
   render() {

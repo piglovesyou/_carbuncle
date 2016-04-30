@@ -1,25 +1,29 @@
-const React = require('react');
-const { Router, Route, IndexRoute, NotFoundRoute, Link, hashHistory } = require('react-router');
-const Root = require('./components/Root');
-const Dashboard = require('./components/Dashboard');
-const TestCases = require('./components/Dashboard/TestCases');
-const Setting = require('./components/Dashboard/Setting');
+import React from 'react';
+import { Router, Route, IndexRoute, NotFoundRoute, Link, hashHistory } from 'react-router';
+import Root from './components/Root';
+import Dashboard from './components/Dashboard';
+import TestCases from './components/Dashboard/TestCases';
+import Setting from './components/Dashboard/Setting';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+injectTapEventPlugin();
+
+import Theme from './style/theme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 module.exports = (
-  <Router history={hashHistory}>
-    <Route path='/' component={Root}>
-      <Route path='dashboard' component={Dashboard}>
-        <IndexRoute component={TestCases}/>
-        <Route path='setting' component={Setting} />
+  <MuiThemeProvider muiTheme={Theme}>
+    <Router history={hashHistory}>
+      <Route path='/' component={Root}>
+        <Route path='dashboard' component={Dashboard}>
+          <IndexRoute component={TestCases}/>
+          <Route path='setting' component={Setting} />
+        </Route>
       </Route>
-    </Route>
-  </Router>
+    </Router>
+  </MuiThemeProvider>
 );
 
-const injectTapEventPlugin = require('react-tap-event-plugin');
 // Needed for onTouchTap
 // // Can go away when react 1.0 release
 // // Check this repo:
 // // https://github.com/zilverline/react-tap-event-plugin
-injectTapEventPlugin();
-

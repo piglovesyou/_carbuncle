@@ -11,7 +11,7 @@ const webpackStream = require('webpack-stream');
 const webpackDevServer = require('webpack-dev-server');
 const gutil = require('gulp-util');
 
-const SASS_DIR = './src/sass';
+const SASS_DIR = './src/style';
 const BOWER_DIR = './bower_components';
 const DEPLOY_DIR = './dist';
 const UI_ENTRY_POINT = './src/main.js';

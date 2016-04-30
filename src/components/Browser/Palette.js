@@ -1,14 +1,16 @@
-const React = require('react');
-const { Router, Route, IndexRoute, Link, IndexLink, hashHistory } = require('react-router');
-const Draggable = require('react-draggable');
-const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
-const Step = require('./Step');
-const {Modes} = require('../../const/browser');
-const {dispatch, dispatchBrowserStateChange} = require('../../action');
-const Executor = require('../../core/executor');
-const {RaisedButton, IconButton, Tabs, Tab, Slider, TextField} = require('material-ui');
+import React from 'react';
+import { Router, Route, IndexRoute, Link, IndexLink, hashHistory } from 'react-router';
+import Draggable from 'react-draggable';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import Step from './Step';
+import {Modes} from '../../const/browser';
+import {dispatch, dispatchBrowserStateChange} from '../../action';
+import Executor from '../../core/executor';
+import IconButton from 'material-ui/IconButton';
+import TextField from 'material-ui/TextField';
+import {Tabs, Tab} from 'material-ui/Tabs';
 
-const ReactDOM = require('react-dom');
+import ReactDOM from 'react-dom';
 
 class Palette extends React.Component {
   render() {
@@ -25,7 +27,7 @@ class Palette extends React.Component {
             tabItemContainerStyle={{backgroundColor: 'lightgray'}}
             contentContainerClassName="palette__tab-container"
           >
-            <Tab label="steps" style={tabStyle}>
+            <Tab label="steps">
               <div className="palette__body" ref="palette__body">
                 {this.props.isRecording || this.props.isSelecting
                   ? <ReactCSSTransitionGroup
@@ -37,8 +39,9 @@ class Palette extends React.Component {
                 }
               </div>
             </Tab>
-            <Tab label="meta" style={tabStyle} selected={true}>
+            <Tab label="meta">
               <TextField
+                name="_"
                 placeholder="Testcase title"
                 tooltip="Testcase title"
               ></TextField>

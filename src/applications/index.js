@@ -1,18 +1,18 @@
 const _ = require('underscore');
-const React = require('react');
-const Actions = require('../actions');
-const Nav = require('../components/Nav');
-const Editor = require('../components/Editor');
-const IFrame = require('../components/IFrame');
-const Scenario = require('../components/Scenario');
-const Mask = require('../components/Mask');
-const Pixel = require('../components/Pixel');
-const SelectBlockModal = require('../components/SelectBlockModal');
+import React from 'react';
+import Actions from '../actions';
+import Nav from '../components/Nav';
+import Editor from '../components/Editor';
+import IFrame from '../components/IFrame';
+import Scenario from '../components/Scenario';
+import Mask from '../components/Mask';
+import Pixel from '../components/Pixel';
+import SelectBlockModal from '../components/SelectBlockModal';
 
-const Store = require('../stores');
-const EditorState = require('../stores/EditorState');
-const IFrameState = require('../stores/IFrameState');
-const ScenarioState = require('../stores/ScenarioState');
+import Store from '../stores';
+import EditorState from '../stores/EditorState';
+import IFrameState from '../stores/IFrameState';
+import ScenarioState from '../stores/ScenarioState';
 
 const Index = React.createClass({
 

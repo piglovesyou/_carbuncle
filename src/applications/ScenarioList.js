@@ -1,8 +1,8 @@
-const React = require('react');
-const Nav = require('../components/Nav');
-const ScenarioListComponent = require('../components/ScenarioList');
-const Actions = require('../actions');
-const ScenarioList = require('../stores/ScenarioList');
+import React from 'react';
+import Nav from '../components/Nav';
+import ScenarioListComponent from '../components/ScenarioList';
+import Actions from '../actions';
+import ScenarioList from '../stores/ScenarioList';
 
 
 const ScenarioListApp = React.createClass({

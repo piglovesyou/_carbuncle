@@ -1,4 +1,5 @@
-const React = require('react');
+import React from 'react';
+import IconButton from 'material-ui/IconButton';
 
 class Step extends React.Component {
   render() {
@@ -12,12 +13,11 @@ class Step extends React.Component {
       <div className={className}>
         <div className="step__buttons">
           {this.props.onStepRemoveClicked
-            ?  <button className="btn btn-sm btn-default"
+            ? <IconButton className=""
                 onClick={this.props.onStepRemoveClicked}
                 title="Remove this step"
-            >
-              <i className="fa fa-trash"></i>
-            </button>
+                iconClassName="fa fa-trash"
+              ></IconButton>
             : null}
         </div>
         <div className="step__content">

@@ -1,4 +1,4 @@
-const syncedDB = require('synceddb-client');
+import syncedDB from 'synceddb-client';
 const {SERVER_HOST} = require('../const');
 
 const db = syncedDB.open({ // Open database.

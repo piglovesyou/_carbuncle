@@ -210,12 +210,12 @@
 
 // Temporary shim definision to run without errors
 const builder = {};
-const window = require('./dummywindow');
+import window from './dummywindow';
 
 const cssQuery = (query, doc) => {
   return doc.querySelectorAll(query);
 };
-const Utils = require('./utils');
+import Utils from './utils';
 
 /**
  * Data structure describing a Selenium 1/2 locator. The "values" property maps different ways of

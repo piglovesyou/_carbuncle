@@ -17,7 +17,7 @@ module.exports = {
         query: {
           presets: ['react'],
           plugins: [
-            // 'add-module-exports',
+            'transform-es2015-modules-commonjs',
             'transform-es2015-classes',
             'transform-async-to-generator',
             'transform-class-properties'

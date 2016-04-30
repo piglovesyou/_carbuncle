@@ -1,11 +1,11 @@
-const {render} = require('react-dom');
-const routes = require('./routes');
-const Driver = require('./core/driver');
+import {render} from 'react-dom';
+import routes from './routes';
+import Driver from './core/driver';
 
 render(routes, document.getElementById('application-container'));
 
 const win = require('nw.gui').Window.get();
-win.moveTo(100, 100);
+win.moveTo(0, 20);
 // win.showDevTools();
 
 win.on('close', async () => {
@@ -19,11 +19,11 @@ win.on('close', async () => {
 });
 
 // Only for development purpose
-const {WebDriver, By, Key, until} = require('selenium-webdriver');
-const {timeout, showDevTools, closeDevTools} = require('./util');
-const assert = require('power-assert');
+import {WebDriver, By, Key, until} from 'selenium-webdriver';
+import {timeout, showDevTools, closeDevTools} from './util';
+import assert from 'power-assert';
 (async () => {
-  return;
+  // return;
   try {
     await timeout(800);
     await showDevTools();

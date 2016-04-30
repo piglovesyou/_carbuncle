@@ -208,7 +208,7 @@
 
  */
 
-const Locator = require('../../locator');
+import Locator from '../../locator';
 
 // Temporary shim definision to run without errors
 const builder = {};

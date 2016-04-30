@@ -1,9 +1,9 @@
-const VerifyExplorer = require('../modified-selenium-builder/seleniumbuilder/content/html/builder/verifyexplorer');
-const {EventEmitter} = require('events');
-const Selenium2 = require('../modified-selenium-builder/seleniumbuilder/content/html/builder/selenium2/selenium2');
-const Locator = require('../modified-selenium-builder/seleniumbuilder/content/html/builder/locator');
-const {dispatchBrowserStateChange} = require('../action');
-const mix = require('../util/mix');
+import VerifyExplorer from '../modified-selenium-builder/seleniumbuilder/content/html/builder/verifyexplorer';
+import {EventEmitter} from 'events';
+import Selenium2 from '../modified-selenium-builder/seleniumbuilder/content/html/builder/selenium2/selenium2';
+import Locator from '../modified-selenium-builder/seleniumbuilder/content/html/builder/locator';
+import {dispatchBrowserStateChange} from '../action';
+import mix from '../util/mix';
 
 class SuperVerifyExplorer extends mix(VerifyExplorer, EventEmitter) {
   constructor(component, pushStep) {

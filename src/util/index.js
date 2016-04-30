@@ -1,4 +1,4 @@
-const gui = require('nw.gui');
+import gui from 'nw.gui';
 const win = require('nw.gui').Window.get();
 
 module.exports = {

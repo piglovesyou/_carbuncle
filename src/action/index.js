@@ -1,5 +1,5 @@
-const {HashLocation} = require('react-router');
-const dispatcher = require('../dispatcher');
+import {HashLocation} from 'react-router';
+import dispatcher from '../dispatcher';
 
 module.exports = {dispatch, dispatchBrowserStateChange};
 

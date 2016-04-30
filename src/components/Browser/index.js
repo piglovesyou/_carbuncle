@@ -1,21 +1,21 @@
-const React = require('react');
-const { Router, Route, IndexRoute, Link, IndexLink, hashHistory } = require('react-router');
-const assert = require('power-assert');
-const {Container} = require('flux/utils');
+import React from 'react';
+import { Router, Route, IndexRoute, Link, IndexLink, hashHistory } from 'react-router';
+import assert from 'power-assert';
+import {Container} from 'flux/utils';
 
-const Browser = require('./Browser');
-const Palette = require('./Palette');
-const Recorder = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/selenium2/recorder');
-const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
-const BrowserEmitter = require('../../emitter/browser');
-const {Modes} = require('../../const/browser');
-const Store = require('../../stores/browser');
-const {dispatch, dispatchBrowserStateChange} = require('../../action');
-const SuperVerifyExplorer = require('../../core/verify-explorer');
-const {RaisedButton, IconButton, Tabs, Tab, Slider} = require('material-ui');
+import Browser from './Browser';
+import Palette from './Palette';
+import Recorder from '../../modified-selenium-builder/seleniumbuilder/content/html/builder/selenium2/recorder';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import BrowserEmitter from '../../emitter/browser';
+import {Modes} from '../../const/browser';
+import Store from '../../stores/browser';
+import {dispatch, dispatchBrowserStateChange} from '../../action';
+import SuperVerifyExplorer from '../../core/verify-explorer';
+import IconButton from 'material-ui/IconButton';
 
-const Script = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/script');
-const Selenium2 = require('../../modified-selenium-builder/seleniumbuilder/content/html/builder/selenium2/selenium2');
+import Script from '../../modified-selenium-builder/seleniumbuilder/content/html/builder/script';
+import Selenium2 from '../../modified-selenium-builder/seleniumbuilder/content/html/builder/selenium2/selenium2';
 
 global.carbuncleTargetFrame = null;
 
@@ -133,7 +133,7 @@ function createVerifyExplorer() {
   return verifyExplorer;
 }
 
-const {timeout, showDevTools, closeDevTools} = require('../..//util');
+import {timeout, showDevTools, closeDevTools} from '../..//util';
 function onLocationTextSubmit(e) {
   dispatchBrowserStateChange({
     // TODO: Do this in other way

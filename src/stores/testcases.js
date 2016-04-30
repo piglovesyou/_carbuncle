@@ -1,7 +1,7 @@
-const {ReduceStore} = require('flux/utils');
-const dispatcher = require('../dispatcher');
-const assert = require('assert');
-const db = require('../persist');
+import {ReduceStore} from 'flux/utils';
+import dispatcher from '../dispatcher';
+import assert from 'assert';
+import db from '../persist';
 
 class TestCasesStore extends ReduceStore {
   getInitialState() {

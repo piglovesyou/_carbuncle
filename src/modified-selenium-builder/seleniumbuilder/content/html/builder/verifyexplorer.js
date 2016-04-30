@@ -211,12 +211,12 @@
 // Temporary shim definision to run without errors
 const sebuilder = {};
 const builder = {};
-const window = require('./dummywindow');
-const Loadlistener = require('./loadlistener');
-const Locator = require('./locator');
-const Script = require('./script');
-const Selenium2 = require('./selenium2/selenium2');
-const Utils = require('./utils');
+import window from './dummywindow';
+import Loadlistener from './loadlistener';
+import Locator from './locator';
+import Script from './script';
+import Selenium2 from './selenium2/selenium2';
+import Utils from './utils';
 
 
 /**

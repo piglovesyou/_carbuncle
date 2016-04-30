@@ -208,9 +208,9 @@
 
  */
 
-const Selenium2Io = require('./selenium2/io/io');
-const Selenium2IoFormatsJson = require('./selenium2/io/formats/json');
-const Locator = require('./locator');
+import Selenium2Io from './selenium2/io/io';
+import Selenium2IoFormatsJson from './selenium2/io/formats/json';
+import Locator from './locator';
 
 // Temporary shim definision to run without errors
 const sebuilder = {};

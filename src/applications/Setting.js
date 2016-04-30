@@ -1,8 +1,8 @@
 
-const React = require('react');
-const Nav = require('../components/Nav');
-const Actions = require('../actions');
-const SettingState = require('../stores/SettingState');
+import React from 'react';
+import Nav from '../components/Nav';
+import Actions from '../actions';
+import SettingState from '../stores/SettingState';
 
 const Setting = React.createClass({
 

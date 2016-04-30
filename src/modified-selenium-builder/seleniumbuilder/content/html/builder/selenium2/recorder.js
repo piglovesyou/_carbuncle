@@ -218,10 +218,10 @@ builder.selenium2 = {};
 
 // TODO: Replace anything about firefox extension
 
-const Loadlistener = require('../loadlistener');
-const Locator = require('../locator');
-const Script = require('../script');
-const Selenium2 = require('./selenium2');
+import Loadlistener from '../loadlistener';
+import Locator from '../locator';
+import Script from '../script';
+import Selenium2 from './selenium2';
 
 builder.doRecordMouseovers = sebuilder.prefManager.getBoolPref("extensions.seleniumbuilder3.doRecordMouseovers");
 

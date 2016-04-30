@@ -1,12 +1,12 @@
-const {ReduceStore} = require('flux/utils');
-const {Modes} = require('../const/browser');
-const assert = require('assert');
-const db = require('../persist');
-const dispatcher = require('../dispatcher');
-const {dispatch, dispatchBrowserStateChange} = require('../action');
-const {convertStepToJson, convertStepToInstance} = require('../util/persist');
-const {generateHash} = require('../util');
-const userdata = require('../persist/userdata');
+import {ReduceStore} from 'flux/utils';
+import {Modes} from '../const/browser';
+import assert from 'assert';
+import db from '../persist';
+import dispatcher from '../dispatcher';
+import {dispatch, dispatchBrowserStateChange} from '../action';
+import {convertStepToJson, convertStepToInstance} from '../util/persist';
+import {generateHash} from '../util';
+import userdata from '../persist/userdata';
 
 class BrowserStore extends ReduceStore {
   constructor(x) {

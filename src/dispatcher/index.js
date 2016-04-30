@@ -1,4 +1,4 @@
-const {Dispatcher} = require('flux');
+import {Dispatcher} from 'flux';
 
 const instance = new Dispatcher();
 

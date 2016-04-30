@@ -1,9 +1,9 @@
-const {WebDriver, By, until} = require('selenium-webdriver');
-const Driver = require('./driver');
-const {timeout, showDevTools, closeDevTools} = require('../util');
-const BrowserEmitter = require('../emitter/browser');
-const Locator = require('../modified-selenium-builder/seleniumbuilder/content/html/builder/locator');
-const {dispatch} = require('../action');
+import {WebDriver, By, until} from 'selenium-webdriver';
+import Driver from './driver';
+import {timeout, showDevTools, closeDevTools} from '../util';
+import BrowserEmitter from '../emitter/browser';
+import Locator from '../modified-selenium-builder/seleniumbuilder/content/html/builder/locator';
+import {dispatch} from '../action';
 
 const VERIFY_TIMEOUT = 1600;
 

@@ -1,6 +1,6 @@
-const React = require('react');
-const { Router, Route, IndexRoute, Link, IndexLink, hashHistory } = require('react-router');
-const ReactCSSTransitionGroup = require('react-addons-css-transition-group');
+import React from 'react';
+import { Router, Route, IndexRoute, Link, IndexLink, hashHistory } from 'react-router';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 class Dashboard extends React.Component {
   render() {

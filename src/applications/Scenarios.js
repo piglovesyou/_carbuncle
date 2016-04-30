@@ -1,11 +1,11 @@
 const _ = require('underscore');
-const React = require('react');
-const Nav = require('../components/Nav');
-const {State} = require('react-router');
-const Table = require('../components/Table');
-const Actions = require('../actions');
-const ScenarioList = require('../stores/ScenarioList');
-const componentHelper = require('../components/helper');
+import React from 'react';
+import Nav from '../components/Nav';
+import {State} from 'react-router';
+import Table from '../components/Table';
+import Actions from '../actions';
+import ScenarioList from '../stores/ScenarioList';
+import componentHelper from '../components/helper';
 
 const ScenarioListApp = React.createClass({
 

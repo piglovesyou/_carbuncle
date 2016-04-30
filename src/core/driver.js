@@ -1,6 +1,6 @@
-const {WebDriver, By} = require('selenium-webdriver');
-const Http = require('selenium-webdriver/http');
-const Command = require('selenium-webdriver/lib/command');
+import {WebDriver, By} from 'selenium-webdriver';
+import Http from 'selenium-webdriver/http';
+import Command from 'selenium-webdriver/lib/command';
 const {CHROMEDRIVER_PORT, DRIVER_TARGET_ID} = require('../const');
 
 const executor = new Http.Executor(new Http.HttpClient(`http://127.0.0.1:${CHROMEDRIVER_PORT}`));
