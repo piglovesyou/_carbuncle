@@ -6,16 +6,22 @@ import db from '../persist';
 class TestCasesStore extends ReduceStore {
   getInitialState() {
     return {
-      testCase: [],
+      testCases: [],
     };
   }
 
   reduce(state, action) {
+    let newState;
     switch (action.type) {
       default:
         return state;
+
+      case 'testcases-state-change':
+        newState = Object.assign({}, state, action.state);
+        break;
     }
-    return state;
+    assert(newState);
+    return newState;
   }
 }
 

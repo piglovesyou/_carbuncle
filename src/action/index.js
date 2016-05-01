@@ -30,8 +30,21 @@ const action = module.exports = {
     });
   },
 
+  async loadTestCases(page) {
+    const testCases = await db.testcases.key.getAll();
+    action.dispatchTestCasesStateChange({ testCases });
+  },
+
+  dispatchTestCasesStateChange(newState) {
+    // XXX: Refactor
+    dispatcher.dispatch({
+      type: 'testcases-state-change',
+      state: newState
+    });
+  },
+
   dispatchBrowserStateChange(newState) {
-    // XXX: Can't I remove this function?
+    // XXX: Refactor
     dispatcher.dispatch({
       type: 'browser-state-change',
       state: newState
