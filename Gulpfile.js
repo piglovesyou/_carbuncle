@@ -19,7 +19,6 @@ const PLOVR_CONFIG = './plovr.json';
 
 const SASS_INCLUDE_PATHS = [
   SASS_DIR,
-  Path.join(BOWER_DIR, 'bootstrap-sass-official/assets/stylesheets'),
   Path.join(BOWER_DIR, 'fontawesome/scss'),
   Path.join(__dirname, './node_modules'),
 ];
@@ -48,7 +47,6 @@ gulp.task('css', () => {
 
 gulp.task('icons', () => {
   return gulp.src([
-    BOWER_DIR + '/bootstrap-sass-official/assets/fonts/bootstrap/**.*',
     BOWER_DIR + '/fontawesome/fonts/**.*'
   ])
   .pipe(gulp.dest(Path.join(DEPLOY_DIR, 'fonts')));
