@@ -31,6 +31,7 @@ class Index extends React.Component {
     this.recorder_;
     this.goBack = this.goBack.bind(this);
     this.refresh = this.refresh.bind(this);
+    loadLastTestCase();
   }
   render() {
     // TODO: not mode, use flags
@@ -100,7 +101,6 @@ class Index extends React.Component {
     BrowserEmitter.on('refresh', this.refresh);
     // BrowserEmitter.on('testcase-executed', this.onTestcaseExecuted);
     this.finalizeHelpers(this.state);
-    loadLastTestCase();
   }
   componentWillUnmount() {
     global.carbuncleTargetFrame = null;

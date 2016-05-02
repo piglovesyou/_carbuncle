@@ -18,10 +18,9 @@ const action = module.exports = {
     action.dispatchBrowserStateChange({ testCaseId: id });
   },
 
-  async loadLastTestCase() {
-    const lastTestCaseId = userdata.get('lastTestCaseId');
-    if (lastTestCaseId == null) return;
-    const testCase = await db.testcases.get(lastTestCaseId);
+  async loadTestCase(id) {
+    if (id == null) return;
+    const testCase = await db.testcases.get(id);
     if (testCase == null) return;
     action.dispatchBrowserStateChange({
       testCaseId: testCase.key,
@@ -30,9 +29,13 @@ const action = module.exports = {
     });
   },
 
+  async loadLastTestCase() {
+    return action.loadTestCase(userdata.get('lastTestCaseId'));
+  },
+
   async loadTestCases(page) {
     const testCases = await db.testcases.key.getAll();
-    action.dispatchTestCasesStateChange({ testCases });
+    return action.dispatchTestCasesStateChange({ testCases });
   },
 
   dispatchTestCasesStateChange(newState) {

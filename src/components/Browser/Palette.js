@@ -127,6 +127,11 @@ class Palette extends React.Component {
             ></IconButton>
             <span className="flex-spacer"></span>
             <IconButton
+                tooltip="Create new testCase"
+                iconClassName="fa fa-fw fa-file-o"
+                onClick={onClickNewTestCase.bind(this)}
+            ></IconButton>
+            <IconButton
                 tooltip="Save testCase"
                 iconClassName="fa fa-fw fa-save"
                 onClick={onClickSaveTestCase.bind(this)}
@@ -144,6 +149,16 @@ class Palette extends React.Component {
   onDragStop(e) {
     console.log(e.x, e.y);
   }
+}
+
+function onClickNewTestCase() {
+  dispatchBrowserStateChange({
+    mode: Modes.NEUTRAL,
+    spotRect: null,
+    testCaseId: undefined,
+    testCase: [],
+    testCaseTitle: '',
+  });
 }
 
 function onClickSaveTestCase() {

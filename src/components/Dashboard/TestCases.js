@@ -1,8 +1,10 @@
 import React from 'react';
+import { hashHistory } from 'react-router';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn, TableFooter} from 'material-ui/Table';
+import FlatButton from 'material-ui/FlatButton';
 import {Container} from 'flux/utils';
 import Store from '../../stores/testcases';
-import {dispatch, dispatchBrowserStateChange, loadTestCases} from '../../action';
+import {dispatch, dispatchBrowserStateChange, loadTestCases, loadTestCase} from '../../action';
 import {getRecordKeyForDisplay} from '../../util';
 
 class TestCases extends React.Component {
@@ -25,6 +27,7 @@ class TestCases extends React.Component {
               <TableHeaderColumn>ID</TableHeaderColumn>
               <TableHeaderColumn>Title</TableHeaderColumn>
               <TableHeaderColumn>Steps</TableHeaderColumn>
+              <TableHeaderColumn> </TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -33,13 +36,18 @@ class TestCases extends React.Component {
                 <TableRowColumn>{getRecordKeyForDisplay(testCase.key)}</TableRowColumn>
                 <TableRowColumn>{testCase.title}</TableRowColumn>
                 <TableRowColumn>{testCase.steps.length}</TableRowColumn>
+                <TableRowColumn style={{textAlign: 'right'}}
+                  onTouchTap={handleEditClick.bind(null, testCase)}
+                >
+                  <FlatButton>edit</FlatButton>
+                </TableRowColumn>
               </TableRow>
             )}
           </TableBody>
 
           <TableFooter>
             <TableRow>
-              <TableRowColumn colSpan="3" style={{textAlign: 'center'}}>
+              <TableRowColumn colSpan="4" style={{textAlign: 'center'}}>
                 All test cases are displayed.
               </TableRowColumn>
             </TableRow>
@@ -52,5 +60,12 @@ class TestCases extends React.Component {
     loadTestCases(0);
   }
 };
+
+function handleEditClick(testCase, e) {
+  e.preventDefault();
+  e.stopPropagation();
+  loadTestCase(testCase.key);
+  hashHistory.push('/')
+}
 
 module.exports = Container.create(TestCases);
