@@ -45,13 +45,6 @@ class Browser extends React.Component {
               tooltip={!this.props.disablePageMove ? 'Go testcases' : null}
               onClick={!this.props.disablePageMove ? () => hashHistory.push('dashboard') : null}
           ></IconButton>
-          <IconButton
-              disabled={this.props.disablePageMove}
-              iconClassName="fa fa-cog"
-              tooltip={!this.props.disablePageMove ? 'Go settings' : null}
-              tooltipPosition="bottom-left"
-              onClick={!this.props.disablePageMove ? () => hashHistory.push('dashboard/setting') : null}
-          ></IconButton>
         </div>
         <div className="browser__body">
           <iframe id={DRIVER_TARGET_ID}
