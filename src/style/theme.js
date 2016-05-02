@@ -10,5 +10,7 @@ export default getMuiTheme({
   appBar: {
   },
   iconButton: {
+  },
+  list: {
   }
 });

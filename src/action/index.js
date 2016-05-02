@@ -20,6 +20,7 @@ const action = module.exports = {
 
   async loadTestCase(id) {
     if (id == null) return;
+    userdata.put('lastTestCaseId', id);
     const testCase = await db.testcases.get(id);
     if (testCase == null) return;
     action.dispatchBrowserStateChange({

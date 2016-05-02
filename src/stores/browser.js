@@ -6,7 +6,6 @@ import dispatcher from '../dispatcher';
 import {dispatch, dispatchBrowserStateChange} from '../action';
 import {convertStepToJson, convertStepToInstance} from '../util/persist';
 import {generateHash} from '../util';
-import userdata from '../persist/userdata';
 
 class BrowserStore extends ReduceStore {
 

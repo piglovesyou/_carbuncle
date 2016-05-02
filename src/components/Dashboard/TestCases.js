@@ -6,6 +6,7 @@ import {Container} from 'flux/utils';
 import Store from '../../stores/testcases';
 import {dispatch, dispatchBrowserStateChange, loadTestCases, loadTestCase} from '../../action';
 import {getRecordKeyForDisplay} from '../../util';
+import Moment from 'moment'
 
 class TestCases extends React.Component {
   static getStores() {
@@ -27,6 +28,7 @@ class TestCases extends React.Component {
               <TableHeaderColumn>ID</TableHeaderColumn>
               <TableHeaderColumn>Title</TableHeaderColumn>
               <TableHeaderColumn>Steps</TableHeaderColumn>
+              <TableHeaderColumn>ModifiedAt</TableHeaderColumn>
               <TableHeaderColumn> </TableHeaderColumn>
             </TableRow>
           </TableHeader>
@@ -36,10 +38,9 @@ class TestCases extends React.Component {
                 <TableRowColumn>{getRecordKeyForDisplay(testCase.key)}</TableRowColumn>
                 <TableRowColumn>{testCase.title}</TableRowColumn>
                 <TableRowColumn>{testCase.steps.length}</TableRowColumn>
-                <TableRowColumn style={{textAlign: 'right'}}
-                  onTouchTap={handleEditClick.bind(null, testCase)}
-                >
-                  <FlatButton>edit</FlatButton>
+                <TableRowColumn>{Moment(testCase.modifiedAt).startOf('minute').fromNow()}</TableRowColumn>
+                <TableRowColumn style={{textAlign: 'right'}}>
+                  <FlatButton onTouchTap={handleEditClick.bind(null, testCase)}>edit</FlatButton>
                 </TableRowColumn>
               </TableRow>
             )}
@@ -47,7 +48,7 @@ class TestCases extends React.Component {
 
           <TableFooter>
             <TableRow>
-              <TableRowColumn colSpan="4" style={{textAlign: 'center'}}>
+              <TableRowColumn colSpan="5" style={{textAlign: 'center'}}>
                 All test cases are displayed.
               </TableRowColumn>
             </TableRow>

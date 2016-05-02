@@ -102,14 +102,20 @@ class Palette extends React.Component {
             <Tab label="steps">
               <StepContainer {...this.props} />
             </Tab>
-            <Tab label="meta">
-              <TextField
-                name="_"
-                placeholder="Testcase title"
-                tooltip="Testcase title"
-                value={this.props.testCaseTitle}
-                onChange={(e) => dispatchBrowserStateChange({testCaseTitle: e.target.value})}
-              ></TextField>
+            <Tab label="meta" contentContainerStyle={{padding: 16}}>
+              <div className="palette__meta-content">
+                <div className="palette__meta-content__item">
+                  <TextField
+                    style={{width: '100%'}}
+                    floatingLabelFixed={true}
+                    floatingLabelText="Title"
+                    hintText="Testcase title"
+                    value={this.props.testCaseTitle}
+                    onChange={(e) => dispatchBrowserStateChange({testCaseTitle: e.target.value})}
+                  ></TextField>
+                </div>
+                <Divider />
+              </div>
             </Tab>
           </Tabs>
           <div className="palette__footer">
