@@ -1,4 +1,4 @@
-import syncedDB from 'synceddb-client';
+import syncedDB from 'piglovesyou-synceddb-client';
 const {SERVER_HOST} = require('../const');
 
 const db = syncedDB.open({ // Open database.

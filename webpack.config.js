@@ -18,6 +18,7 @@ module.exports = {
           presets: ['react'],
           plugins: [
             'transform-es2015-modules-commonjs',
+            // FluxContainer needs this
             'transform-es2015-classes',
             'transform-async-to-generator',
             'transform-class-properties'
