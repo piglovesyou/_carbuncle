@@ -8,7 +8,7 @@ class Store extends ReduceStore {
     };
   }
   reduce(state, action) {
-    switch(action.type) {
+    switch (action.type) {
     case 'testcase-executed':
       return Object.assign({}, {
         notification: `Testcase${action.title ? ` "${action.title}"` : ''} has sucessfully executed.`

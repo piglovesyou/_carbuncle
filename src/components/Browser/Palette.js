@@ -29,7 +29,7 @@ class StepContainer extends React.Component {
             onTouchTap={this.handleTouchTap.bind(this, step)}
             {...step} />
       ];
-    }) : <ListItem className="muted-text" disabled={true}>Record some operations.</ListItem>;
+    }) : <ListItem className='muted-text' disabled={true}>Record some operations.</ListItem>;
     return (
       <List className='palette__body' ref='palette__body'>
         {this.props.isRecording || this.props.isSelecting
