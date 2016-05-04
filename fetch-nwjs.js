@@ -2,7 +2,7 @@ const FS = require('fs');
 const OS = require('os');
 const assert = require('assert');
 const request = require('request');
-const tar = require('tar-fs')
+const tar = require('tar-fs');
 const Path = require('path');
 const rimraf = require('rimraf').sync;
 const ProgressBar = require('progress');
@@ -38,13 +38,13 @@ function main() {
     d = Path.resolve(d);
     if (FS.existsSync(d)) {
       rimraf(d);
-      console.log(`  Removed: ${d}`)
+      console.log(`  Removed: ${d}`);
     }
   }
 
   const req = requestWithProgressBar(url);
 
-  switch(ExtensionMap[osType]) {
+  switch (ExtensionMap[osType]) {
   case '.tar.gz':
     req.pipe(zlib.createGunzip())
     .pipe(tar.extract(__dirname))
@@ -90,7 +90,7 @@ function requestWithProgressBar(url) {
 }
 
 function normalizeOsType(osType) {
-  switch(true) {
+  switch (true) {
   case /^linux/i.test(osType):
     return 'linux';
   case /^windows/i.test(osType):

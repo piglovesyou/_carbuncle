@@ -35,7 +35,7 @@ gulp.task('watch', ['closure-require', 'css', 'js'], () => {
 
 gulp.task('watch-sass', ['css'], () => {
   gulp.watch(SASS_DIR + '/**/*.sass', ['css']);
-})
+});
 
 gulp.task('css', () => {
   return gulp.src(Path.join(SASS_DIR, 'main.sass'))
@@ -65,17 +65,17 @@ gulp.task('js', () => {
     .pipe(gulp.dest('dist/'));
 });
 
-gulp.task("webpack-dev-server", launchWebpackDevServer);
+gulp.task('webpack-dev-server', launchWebpackDevServer);
 
 function launchWebpackDevServer(callback) {
-    const compiler = webpack(require('./webpack.config'));
+  const compiler = webpack(require('./webpack.config'));
 
-    new webpackDevServer(compiler, {}).listen(3189, "localhost", function(err) {
-      if(err) throw new gutil.PluginError("webpack-dev-server", err);
+  new webpackDevServer(compiler, {}).listen(3189, 'localhost', function(err) {
+    if (err) throw new gutil.PluginError('webpack-dev-server', err);
       // Server listening
-      gutil.log("[webpack-dev-server]", "http://localhost:3189/webpack-dev-server/index.html");
+    gutil.log('[webpack-dev-server]', 'http://localhost:3189/webpack-dev-server/index.html');
 
       // keep the server alive or continue?
       // callback();
-    });
+  });
 }
