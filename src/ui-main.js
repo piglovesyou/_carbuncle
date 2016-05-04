@@ -25,7 +25,7 @@ import {WebDriver, By, Key, until} from 'selenium-webdriver';
 import {timeout, showDevTools, closeDevTools} from './util';
 import assert from 'power-assert';
 (async function () {
-  // return;
+  return;
   try {
     await timeout(800);
     await showDevTools();

@@ -39,6 +39,14 @@ const action = module.exports = {
     return action.dispatchTestCasesStateChange({ testCases });
   },
 
+  dispatchRootStateChange(newState) {
+    // XXX: Refactor
+    dispatcher.dispatch({
+      type: 'root-state-change',
+      state: newState
+    });
+  },
+
   dispatchTestCasesStateChange(newState) {
     // XXX: Refactor
     dispatcher.dispatch({

@@ -21,7 +21,7 @@ class TestCases extends React.Component {
   }
   render() {
     return (
-      <div className="dashboard__body dashboard__body--testcases">
+      <div className='dashboard__body dashboard__body--testcases'>
         <h2>Testcases</h2>
         <Table>
           <TableHeader>

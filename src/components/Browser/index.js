@@ -99,7 +99,6 @@ class Index extends React.Component {
     global.carbuncleTargetFrame = this.refs.browser.iFrameEl;
     BrowserEmitter.on('goBack', this.goBack);
     BrowserEmitter.on('refresh', this.refresh);
-    // BrowserEmitter.on('testcase-executed', this.onTestcaseExecuted);
     this.finalizeHelpers(this.state);
   }
   componentWillUnmount() {

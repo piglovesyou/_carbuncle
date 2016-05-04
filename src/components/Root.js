@@ -1,8 +1,18 @@
 import React from 'react';
 import Browser from './Browser';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import {Container} from 'flux/utils';
+import Store from '../stores/root';
+import {dispatchRootStateChange} from '../action';
+import Snackbar from 'material-ui/Snackbar';
 
 class Root extends React.Component {
+  static getStores() {
+    return [Store];
+  }
+  static calculateState(prevState) {
+    return Store.getState();
+  }
   render() {
     const isHome = this.props.location.pathname === '/';
     return (
@@ -17,9 +27,19 @@ class Root extends React.Component {
         >
           {this.props.children}
         </ReactCSSTransitionGroup>
+        <Snackbar
+          open={this.state.notification !== null}
+          message={this.state.notification || ''}
+          autoHideDuration={4000}
+          onRequestClose={this.handleRequestClose.bind(this)}
+        />
       </div>
     );
   }
+  handleRequestClose() {
+    this.setState({notification: null});
+  }
 };
 
-module.exports = Root;
+module.exports = (Root);
+module.exports = Container.create(Root);

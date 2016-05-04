@@ -7,7 +7,7 @@ import {dispatch, dispatchBrowserStateChange} from '../action';
 import {convertStepToJson, convertStepToInstance} from '../util/persist';
 import {generateHash} from '../util';
 
-class BrowserStore extends ReduceStore {
+class Store extends ReduceStore {
 
   getInitialState() {
     this.previousMode_ = null;
@@ -96,4 +96,4 @@ class BrowserStore extends ReduceStore {
   }
 }
 
-module.exports = new BrowserStore(dispatcher);
+module.exports = new Store(dispatcher);
