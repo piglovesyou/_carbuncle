@@ -39,7 +39,7 @@ async function getDriver() {
   }
   isDriverTargetFocused = false;
   const session = await findSession();
-  return driverInstance = WebDriver.attachToSession(executor, session.id);
+  return (driverInstance = WebDriver.attachToSession(executor, session.id));
 }
 
 async function findSession() {

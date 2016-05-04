@@ -28,7 +28,7 @@ class Browser extends React.Component {
           >
             <TextField className='browser__location-input'
                 name='_'
-                ref={(el) => { if (el) this.locationInput_ = ReactDOM.findDOMNode(el).querySelector('input'); }}
+                ref={el => { if (el) this.locationInput_ = ReactDOM.findDOMNode(el).querySelector('input'); }}
                 placeholder='Target url'
             ></TextField>
           </form>

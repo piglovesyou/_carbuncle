@@ -1,4 +1,5 @@
 /*eslint no-unreachable: 0*/
+/*eslint no-debugger: 0*/
 import {render} from 'react-dom';
 import routes from './routes';
 import Driver from './core/driver';
@@ -73,11 +74,9 @@ import assert from 'power-assert';
     //   .perform();
 
     // await showDevTools();
-
   } catch (e) {
     await showDevTools();
     await timeout(800);
     debugger;
   }
-
 })();

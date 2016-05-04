@@ -71,27 +71,27 @@ class Index extends React.Component {
     switch (state.mode) {
     case Modes.RECORDING:
       if (!this.recorder_) {
-          this.recorder_ = createRecorder.call(this);
-        }
+        this.recorder_ = createRecorder.call(this);
+      }
       break;
     default:
       if (this.recorder_) {
-          this.recorder_.destroy();
-          this.recorder_ = null;
-        }
+        this.recorder_.destroy();
+        this.recorder_ = null;
+      }
       break;
     }
     switch (state.mode) {
     case Modes.SELECTING:
       if (!this.verifyExplorer_) {
-          this.verifyExplorer_ = createVerifyExplorer.call(this);
-        }
+        this.verifyExplorer_ = createVerifyExplorer.call(this);
+      }
       break;
     default:
       if (this.verifyExplorer_) {
-          this.verifyExplorer_.destroy();
-          this.verifyExplorer_ = null;
-        }
+        this.verifyExplorer_.destroy();
+        this.verifyExplorer_ = null;
+      }
       break;
     }
   }

@@ -111,7 +111,7 @@ class Palette extends React.Component {
                     floatingLabelText='Title'
                     hintText='Testcase title'
                     value={this.props.testCaseTitle}
-                    onChange={(e) => dispatchBrowserStateChange({testCaseTitle: e.target.value})}
+                    onChange={e => dispatchBrowserStateChange({testCaseTitle: e.target.value})}
                   ></TextField>
                 </div>
                 <Divider />

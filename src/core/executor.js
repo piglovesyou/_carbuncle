@@ -1,3 +1,4 @@
+/*eslint no-debugger: 0*/
 import {WebDriver, By, until} from 'selenium-webdriver';
 import Driver from './driver';
 import {timeout, showDevTools, closeDevTools} from '../util';
@@ -10,7 +11,6 @@ const VERIFY_TIMEOUT = 1600;
 module.exports = {execute};
 
 async function execute(steps) {
-
   // Hack: driver doesn't work when devtools has never shown.
   // TODO: Move this to application launching
   await showDevTools();
@@ -20,7 +20,6 @@ async function execute(steps) {
   let somethingBadOccured = false;
 
   for (let step of steps) {
-
     try {
       // TODO: When the next step is an operation on an element,
       // use driver.actions().mouseMove() more to emulate a user behavior.
@@ -46,7 +45,6 @@ async function execute(steps) {
 
         default:
           throw new Error(step);
-          break;
         }
         let lastActual;
         const result = await driver.wait(() => {
@@ -60,10 +58,8 @@ async function execute(steps) {
           somethingBadOccured = true;
           break;
         }
-
       } else {
         switch (step.type.name) {
-
         case 'get':
           await open(step.url);
           break;
@@ -96,11 +92,9 @@ async function execute(steps) {
 
         default:
           throw new Error('TODO: ' + step.type.name);
-          break;
         }
         dispatch('step-executed', { step });
       }
-
     } catch (e) {
       await showDevTools();
       await timeout(800);

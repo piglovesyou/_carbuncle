@@ -8,7 +8,7 @@ const Path = require('path');
 const plovr = require('gulp-plovr');
 const webpack = require('webpack');
 const webpackStream = require('webpack-stream');
-const webpackDevServer = require('webpack-dev-server');
+const WebpackDevServer = require('webpack-dev-server');
 const gutil = require('gulp-util');
 
 const SASS_DIR = './src/style';
@@ -70,7 +70,7 @@ gulp.task('webpack-dev-server', launchWebpackDevServer);
 function launchWebpackDevServer(callback) {
   const compiler = webpack(require('./webpack.config'));
 
-  new webpackDevServer(compiler, {}).listen(3189, 'localhost', function(err) {
+  new WebpackDevServer(compiler, {}).listen(3189, 'localhost', function(err) {
     if (err) throw new gutil.PluginError('webpack-dev-server', err);
       // Server listening
     gutil.log('[webpack-dev-server]', 'http://localhost:3189/webpack-dev-server/index.html');
