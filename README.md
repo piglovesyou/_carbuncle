@@ -1,6 +1,6 @@
 Note: Still under construction.
 
-Carbuncle
+Carbuncle [![Build Status](https://travis-ci.org/piglovesyou/carbuncle.svg?branch=master)](https://travis-ci.org/piglovesyou/carbuncle)
 ===================
 
 Develop
