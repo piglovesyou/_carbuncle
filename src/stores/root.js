@@ -11,7 +11,7 @@ class Store extends ReduceStore {
     switch (action.type) {
     case 'testcase-executed':
       return Object.assign({}, {
-        notification: `Testcase${action.title ? ` "${action.title}"` : ''} has sucessfully executed.`
+        notification: `Testcase${action.title ? ` "${action.title}"` : ''} has sucessfully executed`
       });
     case 'root-state-change':
       return Object.assign({}, state, action.state);

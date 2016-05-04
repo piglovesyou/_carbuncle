@@ -67,7 +67,7 @@ class TestCases extends React.Component {
 function handleRemoveClick(testCase, e) {
   e.preventDefault();
   e.stopPropagation();
-  removeTestCase(testCase.key)
+  removeTestCase(testCase.key);
 }
 
 function handleEditClick(testCase, e) {

@@ -9,6 +9,7 @@ const action = module.exports = {
   async removeTestCase(id) {
     const rv = await db.testcases.delete(id);
     // TODO: erase browser store if the key matches
+    // TODO: erase user data as well
     return action.loadTestCases(0);
   },
 
@@ -22,6 +23,9 @@ const action = module.exports = {
     if (!id) return;
     userdata.put('lastTestCaseId', id);
     action.dispatchBrowserStateChange({ testCaseId: id });
+    action.dispatchRootStateChange({
+      notification: `Testcase${action.title ? ` "${action.title}"` : ''} has sucessfully saved`
+    });
   },
 
   async loadTestCase(id) {
