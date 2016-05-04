@@ -6,6 +6,12 @@ import userdata from '../persist/userdata';
 
 const action = module.exports = {
 
+  async removeTestCase(id) {
+    const rv = await db.testcases.delete(id);
+    // TODO: erase browser store if the key matches
+    return action.loadTestCases(0);
+  },
+
   async saveTestCase(payload) {
     const [id] = await db.testcases.put({
       key: payload.id,

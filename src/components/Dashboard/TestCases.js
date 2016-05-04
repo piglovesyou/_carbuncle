@@ -4,7 +4,7 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 import FlatButton from 'material-ui/FlatButton';
 import {Container} from 'flux/utils';
 import Store from '../../stores/testcases';
-import {dispatch, dispatchBrowserStateChange, loadTestCases, loadTestCase} from '../../action';
+import {dispatch, dispatchBrowserStateChange, loadTestCases, loadTestCase, removeTestCase} from '../../action';
 import {getRecordKeyForDisplay} from '../../util';
 import Moment from 'moment';
 
@@ -41,7 +41,8 @@ class TestCases extends React.Component {
                 <TableRowColumn>{testCase.steps.length}</TableRowColumn>
                 <TableRowColumn>{Moment(testCase.modifiedAt).startOf('minute').fromNow()}</TableRowColumn>
                 <TableRowColumn style={{textAlign: 'right'}}>
-                  <FlatButton onTouchTap={handleEditClick.bind(null, testCase)}>edit</FlatButton>
+                  <FlatButton onTouchTap={handleEditClick.bind(null, testCase)}>open</FlatButton>
+                  <FlatButton onTouchTap={handleRemoveClick.bind(null, testCase)}>remove</FlatButton>
                 </TableRowColumn>
               </TableRow>
             )}
@@ -62,6 +63,12 @@ class TestCases extends React.Component {
     loadTestCases(0);
   }
 };
+
+function handleRemoveClick(testCase, e) {
+  e.preventDefault();
+  e.stopPropagation();
+  removeTestCase(testCase.key)
+}
 
 function handleEditClick(testCase, e) {
   e.preventDefault();
