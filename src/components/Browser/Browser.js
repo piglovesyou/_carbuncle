@@ -7,6 +7,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import {dispatch} from '../../action';
 import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
+import assert from 'power-assert';
 
 class Browser extends React.Component {
   render() {
@@ -65,6 +66,12 @@ class Browser extends React.Component {
         </div>
       </div>
     );
+  }
+
+  componentDidMount() {
+    assert(this.locationInput_);
+    // I don't like the yellow background
+    this.locationInput_.setAttribute('autocomplete', 'off');
   }
 
   onRecordButtonClick(e) {

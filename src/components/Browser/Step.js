@@ -11,7 +11,7 @@ class Step extends React.Component {
           ? ' step--is-failed'
           : '');
     return (
-      <ListItem className={className} onTouchTap={this.props.onTouchTap}>
+      <ListItem ref="root" className={className} onTouchTap={this.props.onTouchTap}>
         <div className='step__buttons'>
           {this.props.onStepRemoveClicked
             ? <IconButton className=''

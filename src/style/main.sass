@@ -77,11 +77,17 @@ $z-index-focused-button: 3
 $z-index-browser-and-dashboard: 100
 
 
+/*******************************
+ * Common
+ */
+
 
 /*******************************
  * Layout
  */
 
+body
+  font-family: Roboto, sans-serif
 body,
 html
   width: 100%
@@ -173,6 +179,10 @@ html
         border-color: rgba(255,255,255,0.7) !important
       hr:nth-child(2)
         border-color: white !important
+  &--playbacking
+    .browser__header
+      background-color: $brand-warning
+    
 
 .browser
   &__header
@@ -184,6 +194,8 @@ html
     display: flex
   &__location-input
     flex: 1
+    input[type="text"]:-webkit-autofill
+      -webkit-box-shadow: 0 0 0px 1000px transparent inset
   &__body
     flex: 1
     position: relative
@@ -222,10 +234,14 @@ html
     text-align: center
     &:hover
       background-color: #f3f3f3
-  &__meta-content
+  &-meta-content
     padding: 0 !important
     &__item
       padding: 16px
+    &__label
+      color: rgba(0, 0, 0, 0.298039)
+    &__value
+      margin-top: 16px
 
 .step
   // @extend .clearfix
@@ -256,19 +272,21 @@ html
   &__value
     color: $gray-light
 
-.step-enter
+.step-enter .step
   opacity: 0.01
-  background-color: $brand-primary
-  &, & .step__value
+  &,
+  & .step__name,
+  & .step__value
     color: white
-.step-enter.step-enter-active
+.step-enter.step-enter-active .step
   opacity: 1
-.step-leave
+  background-color: $brand-primary
+.step-leave .step
   opacity: 1
   overflow: hidden
   max-height: 80px
   transition: opacity 100ms linear, max-height 200ms ease-out
-.step-leave.step-leave-active
+.step-leave.step-leave-active .step
   opacity: 0.01
   max-height: 0
 

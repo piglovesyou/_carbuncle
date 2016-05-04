@@ -14,6 +14,7 @@ import {List, ListItem} from 'material-ui/List';
 import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
+import {getRecordKeyForDisplay} from '../../util';
 
 class StepContainer extends React.Component {
   constructor(props) {
@@ -103,12 +104,15 @@ class Palette extends React.Component {
               <StepContainer {...this.props} />
             </Tab>
             <Tab label='meta' contentContainerStyle={{padding: 16}}>
-              <div className='palette__meta-content'>
-                <div className='palette__meta-content__item'>
+              <div className='palette-meta-content'>
+                <div className='palette-meta-content__item'>
+                  <div className='palette-meta-content__label'>Id</div>
+                  <div className='palette-meta-content__value'>${getRecordKeyForDisplay(this.props.testCaseId)}</div>
+                </div>
+                <div className='palette-meta-content__item'>
+                  <div className='palette-meta-content__label'>Title</div>
                   <TextField
                     style={{width: '100%'}}
-                    floatingLabelFixed={true}
-                    floatingLabelText='Title'
                     hintText='Testcase title'
                     value={this.props.testCaseTitle}
                     onChange={e => dispatchBrowserStateChange({testCaseTitle: e.target.value})}
