@@ -10,12 +10,13 @@ const VERIFY_TIMEOUT = 1600;
 
 module.exports = {execute};
 
-async function execute(steps) {
+async function execute(testCase) {
   // Hack: driver doesn't work when devtools has never shown.
   // TODO: Move this to application launching
   await showDevTools();
   await closeDevTools();
 
+  const {steps, title} = testCase;
   const driver = await Driver.get();
   let somethingBadOccured = false;
 
@@ -101,7 +102,9 @@ async function execute(steps) {
       debugger;
     }
   }
-  dispatch('testcase-executed', { somethingBadOccured });
+  dispatch('testcase-executed', Object.assign(testCase, {
+    somethingBadOccured
+  }));
 }
 
 function verifyResults(expected, actual, operator) {

@@ -22,14 +22,14 @@ class StepContainer extends React.Component {
     this.state = { isOpened: false };
   }
   render() {
-    const steps = this.props.testCase.map((step, i) => {
+    const steps = this.props.testCase.length > 0 ? this.props.testCase.map((step, i) => {
       return [
         i > 0 ? <Divider className='palette__divider' key={i} /> : null,
         <Step key={step.id}
             onTouchTap={this.handleTouchTap.bind(this, step)}
             {...step} />
       ];
-    });
+    }) : <ListItem className="muted-text" disabled={true}>Record some operations.</ListItem>;
     return (
       <List className='palette__body' ref='palette__body'>
         {this.props.isRecording || this.props.isSelecting
@@ -106,10 +106,6 @@ class Palette extends React.Component {
             <Tab label='meta' contentContainerStyle={{padding: 16}}>
               <div className='palette-meta-content'>
                 <div className='palette-meta-content__item'>
-                  <div className='palette-meta-content__label'>Id</div>
-                  <div className='palette-meta-content__value'>${getRecordKeyForDisplay(this.props.testCaseId)}</div>
-                </div>
-                <div className='palette-meta-content__item'>
                   <div className='palette-meta-content__label'>Title</div>
                   <TextField
                     style={{width: '100%'}}
@@ -118,7 +114,10 @@ class Palette extends React.Component {
                     onChange={e => dispatchBrowserStateChange({testCaseTitle: e.target.value})}
                   ></TextField>
                 </div>
-                <Divider />
+                <div className='palette-meta-content__item'>
+                  <div className='palette-meta-content__label'>Id</div>
+                  <div className='palette-meta-content__value'>{getRecordKeyForDisplay(this.props.testCaseId)}</div>
+                </div>
               </div>
             </Tab>
           </Tabs>
@@ -185,7 +184,11 @@ function onAddVerifyingStepClick() {
 
 function onPlaybackClick(e) {
   dispatchBrowserStateChange({ mode: Modes.PLAYBACKING });
-  Executor.execute(this.props.testCase);
+  Executor.execute({
+    id: this.props.testCaseId,
+    title: this.props.testCaseTitle,
+    steps: this.props.testCase,
+  });
 }
 
 module.exports = Palette;

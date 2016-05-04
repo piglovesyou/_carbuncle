@@ -10,9 +10,8 @@ class Store extends ReduceStore {
   reduce(state, action) {
     switch(action.type) {
     case 'testcase-executed':
-      console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
       return Object.assign({}, {
-        notification: 'done!!!!!!!!'
+        notification: `Testcase${action.title ? ` "${action.title}"` : ''} has sucessfully executed.`
       });
     case 'root-state-change':
       return Object.assign({}, state, action.state);

@@ -17,8 +17,8 @@ module.exports = {
   },
 
   getRecordKeyForDisplay(rawId) {
-    if (rawId == null) return;
-    const matched = rawId.match(/([^0\.]{6})/);
+    if (rawId == null) return '';
+    const matched = rawId.match(/([^0\.]{8})/);
     return matched ? matched[1] : '';
   },
 };
