@@ -26,8 +26,8 @@ class BrowserStore extends ReduceStore {
     let newState;
     switch (action.type) {
 
-      case 'step-executed':
-        newState = Object.assign({}, state, {
+    case 'step-executed':
+      newState = Object.assign({}, state, {
           testCase: state.testCase.map(step => {
             if (step.id === action.step.id) {
               step.isSuccessfullyExecuted_ = true;
@@ -35,10 +35,10 @@ class BrowserStore extends ReduceStore {
             return step;
           })
         });
-        break;
+      break;
 
-      case 'testcase-executed':
-        setTimeout(() => {
+    case 'testcase-executed':
+      setTimeout(() => {
           dispatchBrowserStateChange({
             testCase: state.testCase.map(step => {
               step.isSuccessfullyExecuted_ = null;
@@ -46,49 +46,49 @@ class BrowserStore extends ReduceStore {
             })
           });
         }, 2400);
-        newState = Object.assign({}, state, { mode: this.previousMode_ });
-        break;
+      newState = Object.assign({}, state, { mode: this.previousMode_ });
+      break;
 
-      case 'click-recording':
-        {
+    case 'click-recording':
+      {
           assert(state.mode === Modes.NEUTRAL || state.mode === Modes.RECORDING);
           const mode = state.mode === Modes.NEUTRAL ? Modes.RECORDING : Modes.NEUTRAL;
           newState = Object.assign({}, state, { mode });
         }
-        break;
+      break;
 
-      case 'click-selecting-verify-step':
-        {
+    case 'click-selecting-verify-step':
+      {
           assert(state.mode === Modes.RECORDING || state.mode === Modes.SELECTING);
           const mode = state.mode === Modes.RECORDING ? Modes.SELECTING : Modes.RECORDING;
           newState = Object.assign({}, state, { mode });
         }
-        break;
-        
-      case 'append-step':
-        {
+      break;
+
+    case 'append-step':
+      {
           assert(state.mode === Modes.RECORDING || state.mode === Modes.SELECTING);
           newState = Object.assign({}, state, {
             testCase: state.testCase.concat(action.step)
           });
         }
-        break;
+      break;
 
-      case 'remove-step':
-        {
+    case 'remove-step':
+      {
           assert(state.testCase.find(step => step.id === action.step.id));
           newState = Object.assign({}, state, {
             testCase: state.testCase.filter(step => step.id !== action.step.id)
           });
         }
-        break;
+      break;
 
-      case 'browser-state-change':
-        newState = Object.assign({}, state, action.state);
-        break;
+    case 'browser-state-change':
+      newState = Object.assign({}, state, action.state);
+      break;
 
-      default:
-        return state;
+    default:
+      return state;
     }
     assert(newState);
     if (state.mode !== newState.mode) this.previousMode_ = state.mode;

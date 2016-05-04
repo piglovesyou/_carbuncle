@@ -9,9 +9,9 @@ class Root extends React.Component {
       <div className={'application-root' + (isHome ? '' : ' application-root--dashboard')}>
         <Browser />
         <ReactCSSTransitionGroup
-          component="div"
-          className="dashboard-wrapper"
-          transitionName="dashboard"
+          component='div'
+          className='dashboard-wrapper'
+          transitionName='dashboard'
           transitionEnterTimeout={500}
           transitionLeaveTimeout={200}
         >

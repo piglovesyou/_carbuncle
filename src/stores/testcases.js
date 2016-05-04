@@ -13,12 +13,12 @@ class TestCasesStore extends ReduceStore {
   reduce(state, action) {
     let newState;
     switch (action.type) {
-      default:
-        return state;
+    default:
+      return state;
 
-      case 'testcases-state-change':
-        newState = Object.assign({}, state, action.state);
-        break;
+    case 'testcases-state-change':
+      newState = Object.assign({}, state, action.state);
+      break;
     }
     assert(newState);
     return newState;

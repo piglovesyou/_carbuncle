@@ -23,17 +23,17 @@ class StepContainer extends React.Component {
   render() {
     const steps = this.props.testCase.map((step, i) => {
       return [
-        i > 0 ? <Divider className="palette__divider" key={i} /> : null,
+        i > 0 ? <Divider className='palette__divider' key={i} /> : null,
         <Step key={step.id}
             onTouchTap={this.handleTouchTap.bind(this, step)}
             {...step} />
       ];
     });
     return (
-      <List className="palette__body" ref="palette__body">
+      <List className='palette__body' ref='palette__body'>
         {this.props.isRecording || this.props.isSelecting
           ? <ReactCSSTransitionGroup
-             transitionName="step"
+             transitionName='step'
              transitionEnterTimeout={900}
              transitionLeaveTimeout={200}
             >{steps}</ReactCSSTransitionGroup>
@@ -47,8 +47,8 @@ class StepContainer extends React.Component {
           onRequestClose={this.handleRequestClose.bind(this)}
         >
           <Menu>
-            <MenuItem primaryText="Remove" onTouchTap={this.handleItemRemove.bind(this)} />
-            <MenuItem primaryText="Edit" onTouchTap={this.handleItemEdit.bind(this)} />
+            <MenuItem primaryText='Remove' onTouchTap={this.handleItemRemove.bind(this)} />
+            <MenuItem primaryText='Edit' onTouchTap={this.handleItemEdit.bind(this)} />
           </Menu>
         </Popover>
       </List>
@@ -90,26 +90,26 @@ class Palette extends React.Component {
   render() {
     return (
       <Draggable
-        handle=".palette__tabs"
+        handle='.palette__tabs'
         start={{x: 512, y: 128}}
-        ref="draggable"
+        ref='draggable'
       >
-        <div className="palette" ref="elm">
-          <Tabs className="palette__tabs"
+        <div className='palette' ref='elm'>
+          <Tabs className='palette__tabs'
             tabItemContainerStyle={{backgroundColor: 'lightgray'}}
-            contentContainerClassName="palette__tab-container"
+            contentContainerClassName='palette__tab-container'
           >
-            <Tab label="steps">
+            <Tab label='steps'>
               <StepContainer {...this.props} />
             </Tab>
-            <Tab label="meta" contentContainerStyle={{padding: 16}}>
-              <div className="palette__meta-content">
-                <div className="palette__meta-content__item">
+            <Tab label='meta' contentContainerStyle={{padding: 16}}>
+              <div className='palette__meta-content'>
+                <div className='palette__meta-content__item'>
                   <TextField
                     style={{width: '100%'}}
                     floatingLabelFixed={true}
-                    floatingLabelText="Title"
-                    hintText="Testcase title"
+                    floatingLabelText='Title'
+                    hintText='Testcase title'
                     value={this.props.testCaseTitle}
                     onChange={(e) => dispatchBrowserStateChange({testCaseTitle: e.target.value})}
                   ></TextField>
@@ -118,28 +118,28 @@ class Palette extends React.Component {
               </div>
             </Tab>
           </Tabs>
-          <div className="palette__footer">
+          <div className='palette__footer'>
             {this.props.isRecording || this.props.isSelecting
-              ? <IconButton className="step-adder__verify"
-                    iconClassName="fa fa-location-arrow fa-flip-horizontal"
-                    tooltip="Verify element"
+              ? <IconButton className='step-adder__verify'
+                    iconClassName='fa fa-location-arrow fa-flip-horizontal'
+                    tooltip='Verify element'
                     onClick={onAddVerifyingStepClick}
                 ></IconButton>
               : null}
-            <IconButton className="palette__playback-btn"
-                tooltip="Playback testCase"
-                iconClassName="fa fa-fw fa-play"
+            <IconButton className='palette__playback-btn'
+                tooltip='Playback testCase'
+                iconClassName='fa fa-fw fa-play'
                 onClick={onPlaybackClick.bind(this)}
             ></IconButton>
-            <span className="flex-spacer"></span>
+            <span className='flex-spacer'></span>
             <IconButton
-                tooltip="Create new testCase"
-                iconClassName="fa fa-fw fa-file-o"
+                tooltip='Create new testCase'
+                iconClassName='fa fa-fw fa-file-o'
                 onClick={onClickNewTestCase.bind(this)}
             ></IconButton>
             <IconButton
-                tooltip="Save testCase"
-                iconClassName="fa fa-fw fa-save"
+                tooltip='Save testCase'
+                iconClassName='fa fa-fw fa-save'
                 onClick={onClickSaveTestCase.bind(this)}
             ></IconButton>
           </div>

@@ -1,3 +1,4 @@
+/*eslint no-unreachable: 0*/
 import {render} from 'react-dom';
 import routes from './routes';
 import Driver from './core/driver';
@@ -8,7 +9,7 @@ const win = require('nw.gui').Window.get();
 win.moveTo(0, 20);
 // win.showDevTools();
 
-win.on('close', async () => {
+win.on('close', async function () {
   const driver = await Driver.getDefaultContent();
   await timeout(400); // I don't know why I need this timeout to close stablly
   // We don need to call `driver.close()`, let nw.js close its window by itself.
@@ -22,7 +23,7 @@ win.on('close', async () => {
 import {WebDriver, By, Key, until} from 'selenium-webdriver';
 import {timeout, showDevTools, closeDevTools} from './util';
 import assert from 'power-assert';
-(async () => {
+(async function () {
   return;
   try {
     await timeout(800);
@@ -50,7 +51,6 @@ import assert from 'power-assert';
     await timeout(400);
     await driver.findElement(By.css('.palette__playback-btn')).click();
 
-    // 
     // await driver.findElement(By.css('.browser__rec-btn')).click();
     // await driver.findElement(By.css('.browser__location-input')).sendKeys('http://passwordsgenerator.net/md5-hash-generator/');
     // await driver.findElement(By.css('.browser__location-input')).sendKeys(Key.ENTER);
@@ -73,8 +73,8 @@ import assert from 'power-assert';
     //   .perform();
 
     // await showDevTools();
-    
-  } catch(e) {
+
+  } catch (e) {
     await showDevTools();
     await timeout(800);
     debugger;

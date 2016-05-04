@@ -33,5 +33,5 @@ HttpUtil.waitForServer(`http://127.0.0.1:${CHROMEDRIVER_PORT}`, 10 * 1000)
 // XXX: We should call this but we can't:
 // https://github.com/nwjs/nw.js/blob/nw14/src/api/app/app.js#L129
 function getDataPath() {
-  return Path.join(Os.homedir(), '.config/carbuncle')
+  return Path.join(Os.homedir(), '.config/carbuncle');
 }

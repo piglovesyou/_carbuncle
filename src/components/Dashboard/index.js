@@ -7,16 +7,16 @@ import IconButton from 'material-ui/IconButton';
 class Dashboard extends React.Component {
   render() {
     return (
-      <div className="dashboard">
-        <div className="dashboard__header">
-          <IconButton iconClassName="fa fa-arrow-left"
+      <div className='dashboard'>
+        <div className='dashboard__header'>
+          <IconButton iconClassName='fa fa-arrow-left'
             onClick={() => hashHistory.push('/')}
           />
-          <span className="flex-spacer"></span>
-          <IconButton iconClassName="fa fa-bars"
+          <span className='flex-spacer'></span>
+          <IconButton iconClassName='fa fa-bars'
              onClick={() => hashHistory.push('/dashboard')}
           />
-          <IconButton iconClassName="fa fa-cog"
+          <IconButton iconClassName='fa fa-cog'
              onClick={() => hashHistory.push('/dashboard/setting')}
           />
         </div>

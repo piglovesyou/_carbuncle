@@ -12,21 +12,21 @@ class Step extends React.Component {
           : '');
     return (
       <ListItem className={className} onTouchTap={this.props.onTouchTap}>
-        <div className="step__buttons">
+        <div className='step__buttons'>
           {this.props.onStepRemoveClicked
-            ? <IconButton className=""
+            ? <IconButton className=''
                 onClick={this.props.onStepRemoveClicked}
-                title="Remove this step"
-                iconClassName="fa fa-trash"
+                title='Remove this step'
+                iconClassName='fa fa-trash'
               ></IconButton>
             : null}
         </div>
-        <div className="step__content">
+        <div className='step__content'>
 
-          <div className="step__name">
+          <div className='step__name'>
             {this.props.type.name}
           </div>
-          <div className="step__value">
+          <div className='step__value'>
             {this.renderValue()}
           </div>
 
@@ -46,7 +46,7 @@ class Step extends React.Component {
       return this.props.text;
     }
     if (this.props.locator) {
-      return `${this.props.locator.getName()}: ${this.props.locator.getValue()}` 
+      return `${this.props.locator.getName()}: ${this.props.locator.getValue()}`;
     }
     return null;
   }

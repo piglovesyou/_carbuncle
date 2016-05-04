@@ -9,8 +9,8 @@
     "watch": "gulp watch",
     "watch-sass": "gulp watch-sass",
     "build": "gulp",
-    "lint": "eslint --fix *.js src",
-    "test": "eslint *.js src && gulp",
+    "lint": "eslint --ignore-pattern src/modified-selenium-builder/** *.js src",
+    "test": "npm run lint && gulp",
     "plovr": "gulp closure-require"
   },
   "dependencies": {

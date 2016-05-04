@@ -30,7 +30,7 @@ function shortenPath(path, max, delimiter = '...') {
     return path;
   }
   var basename = Path.basename(path);
-  return path.slice(0, max - delimiter.length - basename.length)
-    + delimiter + basename;
+  return path.slice(0, max - delimiter.length - basename.length) +
+    delimiter + basename;
 }
 

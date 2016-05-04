@@ -44,13 +44,13 @@ class Index extends React.Component {
     return (
       <div className={`browser-wrapper browser-wrapper--${this.state.mode}`}>
         <Browser
-          ref="browser"
+          ref='browser'
           location={this.state.location}
           disablePageMove={!isNeutral}
           enableRecBtn={isNeutral || isRecording}
-          onIFrameLoaded=       {isPlaybacking ? null : onIFrameLoaded.bind(this)}
+          onIFrameLoaded= {isPlaybacking ? null : onIFrameLoaded.bind(this)}
           onLocationTextSubmit= {isPlaybacking ? null : onLocationTextSubmit.bind(this)}
-          onHistoryBackClick=   {isPlaybacking ? null : onHistoryBackClick.bind(this)}
+          onHistoryBackClick= {isPlaybacking ? null : onHistoryBackClick.bind(this)}
           onLocationReloadClick={isPlaybacking ? null : onLocationReloadClick.bind(this)}
           spotRect={this.state.spotRect}
         />
@@ -68,31 +68,31 @@ class Index extends React.Component {
     this.finalizeHelpers(nextState);
   }
   finalizeHelpers(state) {
-    switch(state.mode) {
-      case Modes.RECORDING:
-        if (!this.recorder_) {
+    switch (state.mode) {
+    case Modes.RECORDING:
+      if (!this.recorder_) {
           this.recorder_ = createRecorder.call(this);
         }
-        break;
-      default:
-        if (this.recorder_) {
+      break;
+    default:
+      if (this.recorder_) {
           this.recorder_.destroy();
           this.recorder_ = null;
         }
-        break;
+      break;
     }
-    switch(state.mode) {
-      case Modes.SELECTING:
-        if (!this.verifyExplorer_) {
+    switch (state.mode) {
+    case Modes.SELECTING:
+      if (!this.verifyExplorer_) {
           this.verifyExplorer_ = createVerifyExplorer.call(this);
         }
-        break;
-      default:
-        if (this.verifyExplorer_) {
+      break;
+    default:
+      if (this.verifyExplorer_) {
           this.verifyExplorer_.destroy();
           this.verifyExplorer_ = null;
         }
-        break;
+      break;
     }
   }
   componentDidMount() {
@@ -155,7 +155,7 @@ function getLastStep() {
 }
 
 function onIFrameLoaded(e) {
-  dispatch('browser-iframe-loaded')
+  dispatch('browser-iframe-loaded');
   if (this.state.mode !== Modes.RECORDING) return;
 
   // Attach events on new frame

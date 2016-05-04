@@ -20,7 +20,7 @@ async function execute(steps) {
   let somethingBadOccured = false;
 
   for (let step of steps) {
-    
+
     try {
       // TODO: When the next step is an operation on an element,
       // use driver.actions().mouseMove() more to emulate a user behavior.
@@ -31,22 +31,22 @@ async function execute(steps) {
         let operator;
         switch (step.type.name) {
 
-          case 'verifyElementValue':
-            expected = step.value;
-            getActual = () => findElement(driver, step.locator).getAttribute('value');
-            operator = 'eq';
-            break;
+        case 'verifyElementValue':
+          expected = step.value;
+          getActual = () => findElement(driver, step.locator).getAttribute('value');
+          operator = 'eq';
+          break;
 
-          case 'verifyTextPresent':
+        case 'verifyTextPresent':
             // ref. builder.selenium2.rcPlayback.types.verifyTextPresent
-            expected = step.text;
-            getActual = () => findElement(driver, By.tagName('body')).getText();
-            operator = 'contains';
-            break;
+          expected = step.text;
+          getActual = () => findElement(driver, By.tagName('body')).getText();
+          operator = 'contains';
+          break;
 
-          default:
-            throw new Error(step);
-            break;
+        default:
+          throw new Error(step);
+          break;
         }
         let lastActual;
         const result = await driver.wait(() => {
@@ -64,44 +64,44 @@ async function execute(steps) {
       } else {
         switch (step.type.name) {
 
-          case 'get':
-            await open(step.url);
-            break;
+        case 'get':
+          await open(step.url);
+          break;
 
-          case 'goBack':
-            BrowserEmitter.emit('goBack');
-            break;
+        case 'goBack':
+          BrowserEmitter.emit('goBack');
+          break;
 
-          case 'goForward':
+        case 'goForward':
             // TODO
-            break;
+          break;
 
-          case 'clickElement':
-            findElement(driver, step.locator).click();
-            break;
+        case 'clickElement':
+          findElement(driver, step.locator).click();
+          break;
 
-          case 'setElementText':
-          case 'sendKeysToElement':
-            await findElement(driver, step.locator).sendKeys(step.text);
-            break;
+        case 'setElementText':
+        case 'sendKeysToElement':
+          await findElement(driver, step.locator).sendKeys(step.text);
+          break;
 
-          case 'doubleClickElement':
-            await driver.actions().doubleClick(
+        case 'doubleClickElement':
+          await driver.actions().doubleClick(
                 await findElement(driver, step.locator).then(el => el));
-            break;
+          break;
 
-          case 'refresh':
-            BrowserEmitter.emit('refresh');
-            break;
+        case 'refresh':
+          BrowserEmitter.emit('refresh');
+          break;
 
-          default:
-            throw new Error('TODO: ' + step.type.name);
-            break;
+        default:
+          throw new Error('TODO: ' + step.type.name);
+          break;
         }
         dispatch('step-executed', { step });
       }
 
-    } catch(e) {
+    } catch (e) {
       await showDevTools();
       await timeout(800);
       debugger;
@@ -111,13 +111,13 @@ async function execute(steps) {
 }
 
 function verifyResults(expected, actual, operator) {
-  switch(operator) {
-    case 'eq':
-      return expected === actual;
-    case 'contains':
-      return actual.includes(expected);
-    default:
-      throw new Error('wrong operator key');
+  switch (operator) {
+  case 'eq':
+    return expected === actual;
+  case 'contains':
+    return actual.includes(expected);
+  default:
+    throw new Error('wrong operator key');
   }
 }
 

@@ -8,7 +8,7 @@ class Setting extends React.Component {
 
   render() {
     return (
-      <div className="dashboard-setting">
+      <div className='dashboard-setting'>
         dashboard-setting
       </div>
     );

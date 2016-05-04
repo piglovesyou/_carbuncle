@@ -6,7 +6,7 @@ import {Container} from 'flux/utils';
 import Store from '../../stores/testcases';
 import {dispatch, dispatchBrowserStateChange, loadTestCases, loadTestCase} from '../../action';
 import {getRecordKeyForDisplay} from '../../util';
-import Moment from 'moment'
+import Moment from 'moment';
 
 class TestCases extends React.Component {
   static getStores() {
@@ -48,7 +48,7 @@ class TestCases extends React.Component {
 
           <TableFooter>
             <TableRow>
-              <TableRowColumn colSpan="5" style={{textAlign: 'center'}}>
+              <TableRowColumn colSpan='5' style={{textAlign: 'center'}}>
                 All test cases are displayed.
               </TableRowColumn>
             </TableRow>
@@ -66,7 +66,7 @@ function handleEditClick(testCase, e) {
   e.preventDefault();
   e.stopPropagation();
   loadTestCase(testCase.key);
-  hashHistory.push('/')
+  hashHistory.push('/');
 }
 
 module.exports = Container.create(TestCases);
