@@ -34,33 +34,39 @@ describe('Carbuncle', function() {
     assert(!(await getpid('nw')));
   });
 
-  it.skip('should correctly launch and halt', async function () {
+  it('records and playbacks general Google NCR operations', async function () {
     // TODO: Not stable. Why?
-
     const driver = await getDriver();
 
     // Start recording
     await driver.findElement(By.css('.browser__rec-btn')).click();
 
     // Open web site
-    await driver.findElement(By.css('.browser__location-input input')).sendKeys('http://www.google.com/ncr');
-    await driver.findElement(By.css('.browser__location-input input')).sendKeys(Key.ENTER);
+    await driver.findElement(By.css('.browser__location-input input'))
+    .sendKeys('http://www.google.com/ncr', Key.ENTER);
 
     await switchToFrame(driver);
-    await driver.findElement(By.name('q')).sendKeys('carbuncle');
-    await driver.findElement(By.name('q')).sendKeys(Key.ENTER);
+    await driver.findElement(By.name('q'))
+    .sendKeys('carbuncle', Key.ENTER);
 
     await switchToDefaultContent(driver);
     await driver.findElement(By.css('.step-adder__verify')).click();
     await timeout(400);
 
     await switchToFrame(driver);
-    // await timeout(400);
     await driver.findElement(By.css('.g h3')).click();
-    // await timeout(400);
 
     await switchToDefaultContent(driver);
     await timeout(400);
     await driver.findElement(By.css('.palette__playback-btn')).click();
+
+    // Not good. Timeout depends on response from Google.
+    await timeout(4 * 1000);
+
+    // Need to switch default content for carbuncle switched to a frame
+    await switchToDefaultContent(driver);
+    await driver.wait(() =>
+      driver.findElement(By.css('.snackbar')).getText().then(text =>
+        text.includes('Testcase has sucessfully executed')), 2 * 1000);
   });
 });

@@ -11,11 +11,6 @@ const VERIFY_TIMEOUT = 1600;
 module.exports = {execute};
 
 async function execute(testCase) {
-  // Hack: driver doesn't work when devtools has never shown.
-  // TODO: Move this to application launching
-  await showDevTools();
-  await closeDevTools();
-
   const {steps, title} = testCase;
   const driver = await Driver.get();
   let somethingBadOccured = false;

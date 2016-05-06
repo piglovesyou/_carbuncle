@@ -28,6 +28,7 @@ class Root extends React.Component {
           {this.props.children}
         </ReactCSSTransitionGroup>
         <Snackbar
+          className='snackbar'
           open={this.state.notification !== null}
           message={this.state.notification || ''}
           autoHideDuration={4000}

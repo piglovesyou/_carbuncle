@@ -38,6 +38,8 @@ export async function launchCarbuncle() {
   childProcess.fork('./src/main', [], {
     env: Object.assign({ NODE_ENV: 'production' }, process.env),
   });
+  // Wait for show and hide devtools. See `../src/ui-main.js`
+  await timeout(2000);
   await waitForDriverGetsReady();
 }
 
