@@ -1,4 +1,6 @@
 const Path = require('path');
+const FS = require('fs');
+const babelRc = JSON.parse(FS.readFileSync('./.babelrc'));
 
 module.exports = {
   entry: Path.join(__dirname, 'src/ui-main'),
@@ -14,16 +16,7 @@ module.exports = {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
         loader: 'babel',
-        query: {
-          presets: ['react'],
-          plugins: [
-            'transform-es2015-modules-commonjs',
-            // FluxContainer needs this
-            'transform-es2015-classes',
-            'transform-async-to-generator',
-            'transform-class-properties'
-          ]
-        }
+        query: babelRc,
       }
     ]
   },
