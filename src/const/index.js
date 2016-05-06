@@ -1,4 +1,5 @@
 module.exports = {
+  PROCESS_NAME: 'carbuncle',
   CHANGE_EVENT: 'change',
   PER_PAGE: 10,
   CHROMEDRIVER_PORT: 9515,

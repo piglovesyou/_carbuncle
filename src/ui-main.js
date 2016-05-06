@@ -1,23 +1,30 @@
 /*eslint no-unreachable: 0*/
 /*eslint no-debugger: 0*/
+
+// TODO: Is there way to write stdout down as a log file in nwjs?
+
+import getpid from 'getpid';
 import {render} from 'react-dom';
 import routes from './routes';
 import Driver from './core/driver';
+import {PROCESS_NAME} from './const';
+import kill from 'tree-kill';
 
 render(routes, document.getElementById('application-container'));
 
 const win = require('nw.gui').Window.get();
 win.moveTo(0, 20);
-// win.showDevTools();
-
-win.on('close', async function () {
-  const driver = await Driver.getDefaultContent();
-  await timeout(400); // I don't know why I need this timeout to close stablly
-  // We don need to call `driver.close()`, let nw.js close its window by itself.
-  driver.quit().thenFinally(() => {
-    win.close(true);
+win.on('close', () => {
+  getpid(PROCESS_NAME, async function(err, pid) {
+    if (err || !pid) {
+      const driver = await Driver.getDefaultContent();
+      await timeout(400); // For stable closing
+      driver.quit();
+    } else {
+      // Send SIGTERM
+      kill(pid);
+    }
   });
-  // TODO: `chromedriver` process still exists. How do we terminate it from nw?
 });
 
 // Only for development purpose

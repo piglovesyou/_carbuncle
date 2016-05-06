@@ -4,6 +4,8 @@ import Root from './components/Root';
 import Dashboard from './components/Dashboard';
 import TestCases from './components/Dashboard/TestCases';
 import Setting from './components/Dashboard/Setting';
+
+// For material-ui
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
@@ -22,8 +24,3 @@ module.exports = (
     </Router>
   </MuiThemeProvider>
 );
-
-// Needed for onTouchTap
-// // Can go away when react 1.0 release
-// // Check this repo:
-// // https://github.com/zilverline/react-tap-event-plugin

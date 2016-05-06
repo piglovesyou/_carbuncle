@@ -31,6 +31,9 @@ module.exports = {
   externals: {
     'power-assert': 'commonjs power-assert',
     'selenium-webdriver': 'commonjs selenium-webdriver',
+    'package': 'commonjs ./package.json',
+    'getpid': 'commonjs getpid',
+    'tree-kill': 'commonjs tree-kill',
     'driver': 'commonjs core/driver',
     'util': 'commonjs util/index',
   }
