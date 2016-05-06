@@ -13,7 +13,7 @@ import kill from 'tree-kill';
 render(routes, document.getElementById('application-container'));
 
 const win = require('nw.gui').Window.get();
-win.moveTo(0, 20);
+win.moveTo(500, 50);
 win.on('close', () => {
   getpid(PROCESS_NAME, async function (err, pid) {
     if (err || !pid) {
