@@ -8,11 +8,12 @@ Develop
 
 To develop
 ```
-$ npm run watch
+$ npm install
+$ npm run watch &
 $ npm start
 ```
 
-To test (Currently it only lint and build scripts)
+To test
 ```
 $ npm test
 ```
