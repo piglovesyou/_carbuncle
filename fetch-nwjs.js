@@ -12,7 +12,7 @@ const unzip = require('unzip');
 const fstream = require('fstream');
 const StdoutReplacer = require('./src/util/stdoutreplacer');
 
-const TARGET_VERSION = 'v0.13.1';
+const TARGET_VERSION = 'v0.14.4';
 const AvailableArch = {
   x64: true,
   ia32: true,
