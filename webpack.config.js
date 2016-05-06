@@ -1,12 +1,13 @@
+const webpack = require('webpack');
 const Path = require('path');
 const FS = require('fs');
 const babelRc = JSON.parse(FS.readFileSync('./.babelrc'));
+// const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
-  entry: Path.join(__dirname, 'src/ui-main'),
+  entry: './src/ui-main',
   output: {
-    path: __dirname,
-    filename: 'dist/ui-main.js',
+    filename: 'ui-main.js',
     publicPath: '/',
   },
   devtool: 'source-map',
@@ -29,5 +30,5 @@ module.exports = {
     'tree-kill': 'commonjs tree-kill',
     'driver': 'commonjs core/driver',
     'util': 'commonjs util/index',
-  }
+  },
 };

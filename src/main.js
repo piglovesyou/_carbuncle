@@ -25,7 +25,7 @@ HttpUtil.waitForServer(`http://127.0.0.1:${CHROMEDRIVER_PORT}`, 10 * 1000)
   options.addArguments(`nwapp=${Path.resolve(__dirname, '..')}`);
   options.addArguments(`user-data-dir=${getDataPath()}`);
   return Wd.WebDriver.createSession(executor, options.toCapabilities());
-})
+});
 
 // Is there a way to call `require('nw.gui').App.dataPath` ?
 // https://github.com/nwjs/nw.js/blob/nw14/src/api/app/app.js#L129
