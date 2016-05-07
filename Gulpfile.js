@@ -27,7 +27,7 @@ const SASS_INCLUDE_PATHS = [
 gulp.task('default', ['icons', 'css', 'closure-require', 'js']);
 
 
-gulp.task('watch', ['closure-require', 'css', 'js'], () => {
+gulp.task('watch', [], () => {
   gulp.watch(['./src/closure/require.js'], ['closure-require']);
   gulp.watch(Path.join(SASS_DIR, '**/*.sass'), ['css']);
   launchWebpackDevServer();
@@ -68,14 +68,11 @@ gulp.task('js', () => {
 gulp.task('webpack-dev-server', launchWebpackDevServer);
 
 function launchWebpackDevServer(callback) {
-  const compiler = webpack(require('./webpack.config'));
+  const config = webpack(require('./webpack.config'));
 
-  new WebpackDevServer(compiler, {}).listen(3189, 'localhost', function(err) {
+  new WebpackDevServer(config, {}).listen(3189, 'localhost', function(err) {
     if (err) throw new gutil.PluginError('webpack-dev-server', err);
-      // Server listening
-    gutil.log('[webpack-dev-server]', 'http://localhost:3189/webpack-dev-server/index.html');
-
-      // keep the server alive or continue?
+      gutil.log('[webpack-dev-server]', 'http://localhost:3189/webpack-dev-server/index.html');
       // callback();
   });
 }

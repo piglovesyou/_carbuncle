@@ -15,7 +15,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 render(routes, document.getElementById('application-container'));
 
 const win = require('nw.gui').Window.get();
-if (!isProduction) win.moveTo(500, 50);
+if (!isProduction) win.moveTo(0, 20);
 win.on('close', () => {
   win.hide();
   getpid(PROCESS_NAME, async function (err, pid) {
@@ -30,9 +30,12 @@ win.on('close', () => {
   });
 });
 
-(async function () {
-  // Hack: driver doesn't work when devtools has never shown.
-  // So we do that on application launching.
-  await showDevTools();
-  await closeDevTools();
-})();
+console.log(isProduction)
+if (isProduction) {
+  (async function () {
+    // Hack: driver doesn't work when devtools has never shown.
+    // So we do that on application launching.
+    await showDevTools();
+    await closeDevTools();
+  })();
+}

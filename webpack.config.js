@@ -7,8 +7,8 @@ const babelRc = JSON.parse(FS.readFileSync('./.babelrc'));
 module.exports = {
   entry: './src/ui-main',
   output: {
+    path: Path.resolve('./dist'),
     filename: 'ui-main.js',
-    publicPath: '/',
   },
   devtool: 'source-map',
   module: {
