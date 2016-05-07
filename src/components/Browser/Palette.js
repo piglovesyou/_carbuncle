@@ -22,14 +22,11 @@ class StepContainer extends React.Component {
     this.state = { isOpened: false };
   }
   render() {
-    const steps = this.props.testCase.length > 0 ? this.props.testCase.map((step, i) => {
-      return [
-        i > 0 ? <Divider className='palette__divider' key={i} /> : null,
-        <Step key={step.id}
-            onTouchTap={this.handleTouchTap.bind(this, step)}
-            {...step} />
-      ];
-    }) : <ListItem className='muted-text' disabled={true}>Record some operations.</ListItem>;
+    const children = this.props.testCase.reduce((children, step, i) => {
+      if (i > 0) children.push(<Divider key={`${step.id}--divider`} className='palette__divider' />);
+      children.push(<Step key={step.id} onTouchTap={this.handleTouchTap.bind(this, step)} {...step} />);
+      return children;
+    }, []);
     return (
       <List className='palette__body' ref='palette__body'>
         {this.props.isRecording || this.props.isSelecting
@@ -37,8 +34,8 @@ class StepContainer extends React.Component {
              transitionName='step'
              transitionEnterTimeout={900}
              transitionLeaveTimeout={200}
-            >{steps}</ReactCSSTransitionGroup>
-          : steps
+            >{children}</ReactCSSTransitionGroup>
+          : children
         }
         <Popover
           open={this.state.isOpened}
