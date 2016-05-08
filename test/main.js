@@ -14,7 +14,7 @@ import {Command, Name} from 'selenium-webdriver/lib/command';
 import {getDriver, switchToDefaultContent, switchToFrame, timeout, launchCarbuncle, terminateAll} from './lib';
 
 describe('Carbuncle', function() {
-  this.timeout(20 * 1000);
+  this.timeout(45 * 1000);
 
   beforeEach(launchCarbuncle);
   afterEach(terminateAll);
@@ -35,8 +35,10 @@ describe('Carbuncle', function() {
   });
 
   it('records and playbacks general Google NCR operations', async function () {
-    // TODO: Not stable. Why?
     const driver = await getDriver();
+
+    // Make sure playbacking is not starged
+    assert(!(await driver.executeScript('return window.global.carbuncleLastTestCaseSucceeded')));
 
     // Start recording
     await driver.findElement(By.css('.browser__rec-btn')).click();
@@ -60,13 +62,11 @@ describe('Carbuncle', function() {
     await timeout(400);
     await driver.findElement(By.css('.palette__playback-btn')).click();
 
-    // Not good. Timeout depends on response from Google.
-    await timeout(4 * 1000);
+    // Not good but we provide just enough time here
+    await timeout(8 * 1000);
 
-    // Need to switch default content for carbuncle switched to a frame
+    // Make sure playbacking is not starged
     await switchToDefaultContent(driver);
-    await driver.wait(() =>
-      driver.findElement(By.css('.snackbar')).getText().then(text =>
-        text.includes('Testcase has sucessfully executed')), 2 * 1000);
+    assert(await driver.executeScript('return window.global.carbuncleLastTestCaseSucceeded'));
   });
 });

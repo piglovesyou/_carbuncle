@@ -17,6 +17,8 @@ async function execute(testCase) {
 
   let failedStep;
   let failedReason;
+  // For test usage
+  delete global.carbuncleLastTestCaseSucceeded;
 
   for (let step of steps) {
     try {
