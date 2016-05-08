@@ -210,6 +210,8 @@
 
 // Temporary shim definision to run without errors
 const builder = {};
+import Selenium2 from './selenium2/selenium2';
+builder.selenium2 = Selenium2;
 import window from './dummywindow';
 
 const cssQuery = (query, doc) => {
@@ -311,7 +313,9 @@ builder.locator.Locator = function(preferredMethod, preferredAlternative, values
 builder.locator.Locator.prototype = {
   getPreferredElement: function() { return this.__preferredElement; },
   /** @return Name of the locator's preferred location method for the given version. */
-  getName: function(selVersion) { return this.preferredMethod[selVersion]; },
+  getName: function(selVersion) {
+    return this.preferredMethod[selVersion] || /* hack*/ this.preferredMethod[builder.selenium2];
+  },
   /** @return Value of the preferred method. */
   getValue: function()    {
     if (this.values[this.preferredMethod]) {

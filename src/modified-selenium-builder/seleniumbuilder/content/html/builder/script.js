@@ -208,11 +208,11 @@
 
  */
 
+// Temporary shim definision to run without errors
+
 import Selenium2Io from './selenium2/io/io';
 import Selenium2IoFormatsJson from './selenium2/io/formats/json';
 import Locator from './locator';
-
-// Temporary shim definision to run without errors
 const sebuilder = {};
 const builder = {};
 
@@ -343,17 +343,15 @@ builder.stepFromJSON = function(parsedJSON, seleniumVersion) {
   var step = new builder.Step(seleniumVersion.stepTypes[parsedJSON.type]);
   step.negated = parsedJSON.negated || false;
   step.step_name = parsedJSON.step_name || null;
-  var pNames = step.getParamNames();
-  for (var j = 0; j < pNames.length; j++) {
-    if (parsedJSON[pNames[j]]) {
-      if (step.type.getParamType(pNames[j]) == "locator") {
-        step[pNames[j]] = Selenium2Io.jsonToLoc(parsedJSON[pNames[j]]);
-      } else {
-        step[pNames[j]] = "" + parsedJSON[pNames[j]];
-      }
+  // mod for readability
+  for (let pName of step.getParamNames()) {
+    if (!parsedJSON[pName]) return;
+    if (step.type.getParamType(pName) === "locator") {
+      step[pName] = Selenium2Io.jsonToLoc(parsedJSON[pName]);
+    } else {
+      step[pName] = "" + parsedJSON[pName];
     }
   }
-  
   return step;
 };
 
@@ -371,22 +369,21 @@ builder.Step.prototype = {
     }
   },
   toJSON: function() {
-    var cleanStep = { type: this.type.name };
+    const cleanStep = { type: this.type.name };
     if (this.negated) {
       cleanStep.negated = true;
     }
     if (this.step_name) {
       cleanStep.step_name = this.step_name;
     }
-    var pNames = this.getParamNames();
-    for (var j = 0; j < pNames.length; j++) {
-      if (this.type.getParamType(pNames[j]) == "locator") {
-        cleanStep[pNames[j]] = Selenium2IoFormatsJson.locToJSON(this[pNames[j]]);
+    // mod for readability
+    for (let pName of this.getParamNames()) {
+      if (this.type.getParamType(pName) === "locator") {
+        cleanStep[pName] = Selenium2IoFormatsJson.locToJSON(this[pName]);
       } else {
-        cleanStep[pNames[j]] = this[pNames[j]];
+        cleanStep[pName] = this[pName];
       }
     }
-    
     return cleanStep;
   }
 };

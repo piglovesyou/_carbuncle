@@ -209,19 +209,20 @@
  */
 
 // Temporary shim definision to run without errors
+import Selenium2 from './selenium2';
+
 const sebuilder = {};
 sebuilder.prefManager = {};
 sebuilder.prefManager.getBoolPref = ()=>{};
 
 const builder = {};
-builder.selenium2 = {};
+builder.selenium2 = Selenium2;
 
 // TODO: Replace anything about firefox extension
 
 import Loadlistener from '../loadlistener';
 import Locator from '../locator';
 import Script from '../script';
-import Selenium2 from './selenium2';
 
 builder.doRecordMouseovers = sebuilder.prefManager.getBoolPref("extensions.seleniumbuilder3.doRecordMouseovers");
 

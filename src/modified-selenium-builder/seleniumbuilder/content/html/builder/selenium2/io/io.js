@@ -211,8 +211,9 @@
 import Locator from '../../locator';
 
 // Temporary shim definision to run without errors
+import Selenium2 from '../selenium2';
 const builder = {};
-builder.selenium2 = {};
+builder.selenium2 = Selenium2;
 
 
 builder.selenium2.io = {};
