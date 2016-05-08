@@ -1,18 +1,5 @@
 {
-  "name": "leviathan",
-  "main": "index.js",
-  "version": "0.0.0",
-  "authors": [
-    "Takamura Soichi <takamura_s@ariel-networks.com>"
-  ],
-  "license": "MIT",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
+  "name": "carbuncle",
   "dependencies": {
     "fontawesome": "~4.3.0"
   }
