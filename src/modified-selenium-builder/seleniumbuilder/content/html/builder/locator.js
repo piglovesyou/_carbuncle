@@ -212,7 +212,7 @@
 const builder = {};
 import Selenium2 from './selenium2/selenium2';
 builder.selenium2 = Selenium2;
-import window from './dummywindow';
+import Window from './dummywindow';
 
 const cssQuery = (query, doc) => {
   return doc.querySelectorAll(query);
@@ -383,7 +383,7 @@ builder.locator.prevHighlightOriginalStyle = null;
 
 builder.locator.deHighlight = function(callback) {
   if (!builder.locator.prevHighlightMethod) { callback(); return; }
-  var win = window.sebuilder.getRecordingWindow();
+  var win = Window.sebuilder.getRecordingWindow();
   var node = builder.locator.locateElement(win, builder.locator.prevHighlightMethod, builder.locator.prevHighlightValue);
   if (node) {
     node.style.border = builder.locator.prevHighlightOriginalStyle;
@@ -397,7 +397,7 @@ builder.locator.highlight = function(method, value) {
   builder.locator.deHighlight(function() {
     builder.locator.prevHighlightMethod = method;
     builder.locator.prevHighlightValue = value;
-    var win = window.sebuilder.getRecordingWindow();
+    var win = Window.sebuilder.getRecordingWindow();
     var node = builder.locator.locateElement(win, method, value);
     if (node) {
       builder.locator.prevHighlightOriginalStyle = node.style.border;
@@ -636,7 +636,7 @@ function getHtmlXPath(node) {
   if (nodeName === "html") {
     return "//html";
   }
-  var myPath = getMyXPath(node, window.sebuilder.getRecordingWindow().document);
+  var myPath = getMyXPath(node, Window.sebuilder.getRecordingWindow().document);
 
   var index = myPath.indexOf("']");
   if (index > -1 && index < myPath.length - 2) {
@@ -648,9 +648,9 @@ function getHtmlXPath(node) {
 
     // Attempt to key on the text content of the node for extra precision.
     if (text && text.length < 30) {
-      var parent = getMyXPath(node.parentNode, window.sebuilder.getRecordingWindow().document);
+      var parent = getMyXPath(node.parentNode, Window.sebuilder.getRecordingWindow().document);
       if (parent.indexOf("']") > -1) {
-        var win = window.bridge.getRecordingWindow();
+        var win = Window.bridge.getRecordingWindow();
         var attempt = parent.substr(0, parent.indexOf("']") + 2) + "//" + nodeName;
         // If the text contains whitespace characters that aren't spaces, we convert any
         // runs of whitespace into single spaces and trim off the ends, then use the
@@ -682,7 +682,7 @@ function hasNonstandardWhitespace(text) {
  * Uses the given locator to find the node it identifies. 
  */
 function findNode(locatorType, locator) {
-  return builder.locator.locateElement(window.sebuilder.getRecordingWindow(), locatorType, locator);
+  return builder.locator.locateElement(Window.sebuilder.getRecordingWindow(), locatorType, locator);
 }
 
 /** Function from global.js in Windmill, licensed under Apache 2.0. */
