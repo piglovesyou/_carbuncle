@@ -30,7 +30,7 @@ win.on('close', () => {
   });
 });
 
-console.log(isProduction)
+console.log(isProduction);
 if (isProduction) {
   (async function () {
     // Hack: driver doesn't work when devtools has never shown.
