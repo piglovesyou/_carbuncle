@@ -109,7 +109,6 @@ class Index extends React.Component {
     }
     BrowserEmitter.removeListener('goBack', this.goBack);
     BrowserEmitter.removeListener('refresh', this.refresh);
-    // BrowserEmitter.removeListener('testcase-executed', this.onTestcaseExecuted);
   }
   get iFrameWindow() {
     return this.refs.browser.iFrameEl.contentWindow;

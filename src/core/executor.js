@@ -6,6 +6,7 @@ import BrowserEmitter from '../emitter/browser';
 import Locator from '../modified-selenium-builder/seleniumbuilder/content/html/builder/locator';
 import {dispatch} from '../action';
 
+const isProduction = process.env.NODE_ENV === 'production';
 const VERIFY_TIMEOUT = 1600;
 
 module.exports = {execute};
@@ -13,7 +14,9 @@ module.exports = {execute};
 async function execute(testCase) {
   const {steps, title} = testCase;
   const driver = await Driver.get();
-  let somethingBadOccured = false;
+
+  let failedStep;
+  let failedReason;
 
   for (let step of steps) {
     try {
@@ -51,8 +54,7 @@ async function execute(testCase) {
         }, VERIFY_TIMEOUT);
         dispatch('step-executed', { step, result, expected, lastActual });
         if (result === false) {
-          somethingBadOccured = true;
-          break;
+          throw new Error('Verify step failed.');
         }
       } else {
         switch (step.type.name) {
@@ -92,14 +94,17 @@ async function execute(testCase) {
         dispatch('step-executed', { step });
       }
     } catch (e) {
-      await showDevTools();
-      await timeout(800);
-      debugger;
+      failedStep = step;
+      failedReason = e;
+      // For debug
+      if (!isProduction) {
+        await showDevTools();
+        await timeout(800);
+        debugger;
+      }
     }
   }
-  dispatch('testcase-executed', Object.assign(testCase, {
-    somethingBadOccured
-  }));
+  dispatch('testcase-executed', Object.assign(testCase, { failedStep, failedReason }));
 }
 
 function verifyResults(expected, actual, operator) {
