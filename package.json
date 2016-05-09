@@ -1,6 +1,6 @@
 {
   "name": "carbuncle",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "index.html",
   "bin": {
     "carbuncle": "./bin/carbuncle.js"
