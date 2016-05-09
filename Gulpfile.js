@@ -12,14 +12,14 @@ const WebpackDevServer = require('webpack-dev-server');
 const gutil = require('gulp-util');
 
 const SASS_DIR = './src/style';
-const BOWER_DIR = './bower_components';
+const NODE_MODULES_DIR = './node_modules';
 const DEPLOY_DIR = './dist';
 const UI_ENTRY_POINT = './src/main.js';
 const PLOVR_CONFIG = './plovr.json';
 
 const SASS_INCLUDE_PATHS = [
   SASS_DIR,
-  Path.join(BOWER_DIR, 'fontawesome/scss'),
+  Path.join(NODE_MODULES_DIR, 'font-awesome/scss'),
   Path.join(__dirname, './node_modules'),
 ];
 
@@ -47,7 +47,7 @@ gulp.task('css', () => {
 
 gulp.task('icons', () => {
   return gulp.src([
-    BOWER_DIR + '/fontawesome/fonts/**.*'
+    NODE_MODULES_DIR + '/font-awesome/fonts/*'
   ])
   .pipe(gulp.dest(Path.join(DEPLOY_DIR, 'fonts')));
 });
