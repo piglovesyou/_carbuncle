@@ -15,6 +15,7 @@ import {getDriver, switchToDefaultContent, switchToFrame, timeout, launchCarbunc
 
 describe('Carbuncle', function() {
   this.timeout(45 * 1000);
+  this.retries(3);
 
   beforeEach(launchCarbuncle);
   afterEach(terminateAll);
