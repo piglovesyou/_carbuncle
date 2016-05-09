@@ -20,6 +20,14 @@
     "mocha": "mocha",
     "plovr": "gulp closure-require"
   },
+  "files": [
+    "bin",
+    "dist",
+    "src",
+    "README.md",
+    "fetch-nwjs.js",
+    "index.html"
+  ],
   "dependencies": {
     "fstream": "^1.0.8",
     "getpid": "0.0.1",
