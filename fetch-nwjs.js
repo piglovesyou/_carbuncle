@@ -1,3 +1,4 @@
+// TODO: Move to Gulp.js
 const FS = require('fs');
 const OS = require('os');
 const assert = require('assert');
@@ -11,6 +12,7 @@ const DEST_DIR = 'executables';
 const unzip = require('unzip');
 const fstream = require('fstream');
 const StdoutReplacer = require('./src/util/stdoutreplacer');
+const glob = require('glob');
 
 const TARGET_VERSION = 'v0.14.4';
 const AvailableArch = {
@@ -75,6 +77,7 @@ function main() {
   function finalize() {
     assert(target);
     FS.renameSync(target, DEST_DIR);
+    glob.sync(Path.join(DEST_DIR, '**')).forEach(file => FS.chmodSync(file, parseInt('0755', 8))); // Too wide?
     console.log(`  Fetched: ${Path.resolve(DEST_DIR)}`);
     console.log('  Done!');
   }

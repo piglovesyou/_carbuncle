@@ -15,8 +15,8 @@ const child = ChildProcess.spawn(command, [`--port=${CHROMEDRIVER_PORT}`], {
   env: process.env,
   stdio: [ null, 'pipe', 'pipe' ],
 });
-child.stdout.pipe(FS.createWriteStream(Path.resolve(__dirname, '../chromedriver-stdout.log'), {flags: 'a'}));
-child.stderr.pipe(FS.createWriteStream(Path.resolve(__dirname, '../chromedriver-stderr.log'), {flags: 'a'}));
+child.stdout.pipe(FS.createWriteStream(Path.resolve(getDataPath(), 'chromedriver-stdout.log'), {flags: 'a'}));
+child.stderr.pipe(FS.createWriteStream(Path.resolve(getDataPath(), 'chromedriver-stderr.log'), {flags: 'a'}));
 
 HttpUtil.waitForServer(`http://127.0.0.1:${CHROMEDRIVER_PORT}`, 10 * 1000)
 .then(() => {
