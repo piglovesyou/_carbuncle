@@ -7,8 +7,10 @@ const Http = require('selenium-webdriver/http');
 const Chrome = require('selenium-webdriver/chrome');
 const FS = require('fs');
 const {PROCESS_NAME, CHROMEDRIVER_PORT} = require('./const');
+const mkdirp = require('mkdirp');
 
 process.title = PROCESS_NAME;
+mkdirp.sync(getDataPath());
 
 const command = Path.resolve(__dirname, '../executables/chromedriver');
 const child = ChildProcess.spawn(command, [`--port=${CHROMEDRIVER_PORT}`], {
